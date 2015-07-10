@@ -1,5 +1,10 @@
 package org.openbox.sf5.application;
 
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+@ManagedBean
+@SessionScoped
 public class LoginBean {
 	
     private String name;
