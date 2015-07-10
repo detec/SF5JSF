@@ -13,11 +13,12 @@
             <h:panelGrid columns="2">
                 <h:outputText value="Name"></h:outputText>
                 <h:inputText value="#{loginBean.name}"></h:inputText>
-                <h:outputText value="Password"></h:outputText>
-                <h:inputSecret value="#{loginBean.password}"></h:inputSecret>
+                
+                
             </h:panelGrid>
             <h:commandButton value="Login" action="login"></h:commandButton>
-        </h:form>
+			<h:commandButton value="Register" action="register"></h:commandButton>
+		</h:form>
 
 	</ui:define>
 

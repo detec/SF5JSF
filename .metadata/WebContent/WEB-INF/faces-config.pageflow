@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14364644007590" configfile="/SF5JSF/WebContent/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="408" y="144" id="pf14364661690690" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14364661690691" path="/login.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="SettingsList.xhtml" x="252" y="48" id="pf14364661690693" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf14364661690691" path="/SettingsList.xhtml"/>
-  <links id="pf14364661690691" target="pf14364661690690" source="pf14364661690693"/>
+  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="432" y="12" id="pf14364661690690" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf14365169269910" path="/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="SettingsList.xhtml" x="415" y="156" id="pf14364661690693" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14365169269910" path="/SettingsList.xhtml"/>
+  <links id="pf14365169269910" target="pf14364661690693" source="pf14364661690690" outcome="login"/>
 </pageflow:Pageflow>

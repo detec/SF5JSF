@@ -6,11 +6,32 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:f="http://java.sun.com/jsf/core">
 
+
 <ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
 
 	<ui:define name="content">
 	    <h:outputLabel value="Current user: #{loginBean.name}"></h:outputLabel>
+	    
+	    <h:dataTable border="1" var = "s">
+	<h:column id="ID">
+		<f:facet name="header" >
+			<h:outputText value="#{s.id}"></h:outputText>
+		</f:facet>
+	</h:column>
+	<h:column id="Name">
+		<f:facet name="header">
+			<h:outputText value="#{s.Name}" ></h:outputText>
+		</f:facet>
+	</h:column>
+	<h:column id="LastUpdate">
+		<f:facet name="header">
+			<h:outputText value="#{s.TheLastEntry}"></h:outputText>
+		</f:facet>		
+	</h:column>
+</h:dataTable>
 	</ui:define>
 
+
 </ui:composition>
+
 </html>
