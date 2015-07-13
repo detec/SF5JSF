@@ -10,12 +10,54 @@
 		<managed-bean-class>org.openbox.sf5.application.LoginBean</managed-bean-class>
 		<managed-bean-scope>session</managed-bean-scope>
 	</managed-bean>
+	<managed-bean>
+		<description>Users class</description>
+		<managed-bean-name>users</managed-bean-name>
+		<managed-bean-class>org.openbox.sf5.db.Users</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+	</managed-bean>
+	<managed-bean>
+		<description>Work with settings</description>
+		<managed-bean-name>settingsController</managed-bean-name>
+		<managed-bean-class>org.openbox.sf5.application.SettingsController</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+        <property-name>currentUser</property-name>
+        <value>#{users}</value>
+    	</managed-property>
+	</managed-bean>
+	<managed-bean>
+		<managed-bean-name>settingsFormController</managed-bean-name>
+		<managed-bean-class>org.openbox.sf5.application.SettingsFormController</managed-bean-class>
+		<managed-bean-scope>session</managed-bean-scope>
+		<managed-property>
+			<property-name>setting</property-name>
+			<property-class>org.openbox.sf5.db.Settings</property-class>
+			<value>#{settings}</value>
+		</managed-property>
+	</managed-bean>
 	<navigation-rule>
 		<display-name>login.xhtml</display-name>
 		<from-view-id>/login.xhtml</from-view-id>
 		<navigation-case>
 			<from-outcome>register</from-outcome>
 			<to-view-id>/register.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>SettingsList.xhtml</display-name>
+		<from-view-id>/SettingsList.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>newSetting</from-outcome>
+			<to-view-id>/Setting.xhtml</to-view-id>
+		</navigation-case>
+	</navigation-rule>
+	<navigation-rule>
+		<display-name>Setting.xhtml</display-name>
+		<from-view-id>/Setting.xhtml</from-view-id>
+		<navigation-case>
+			<from-outcome>cancel</from-outcome>
+			<to-view-id>/SettingsList.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 

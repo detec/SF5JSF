@@ -1,6 +1,7 @@
 package org.openbox.sf5.application;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
@@ -116,6 +117,11 @@ public class LoginBean {
 			List<Users> rec = (List<Users>) session.createCriteria(Users.class)
 					.add(Restrictions.eq("Login", name)).list();
 			user = rec.get(0);
+			
+			// set faces parameter
+//			Map<String, String> params = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+//			params.put("currentuserid", getCurrentUserStringId());
+			
 			return "/SettingsList.xhtml?faces-redirect=true";
         }
     }

@@ -10,8 +10,10 @@
 <ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
 
 	<ui:define name="content">
-	    <h:outputLabel value="Current user: #{loginBean.name}"></h:outputLabel>
-	    <f:param name="currentuserid" value="#{loginBean.currentUserStringId}" />
+	    <h:outputLabel value="Current user: #{loginBean.name}">
+	    
+	    </h:outputLabel>
+	    
 	    <h:dataTable border="1" var = "s" value="#{settingsController.settingsbyUser}">
 	<h:column id="ID">
 		<f:facet name="header" >
@@ -20,15 +22,19 @@
 	</h:column>
 	<h:column id="Name">
 		<f:facet name="header">
-			<h:outputText value="#{s.Name}" ></h:outputText>
+			<h:outputText value="#{s.name}" ></h:outputText>
 		</f:facet>
 	</h:column>
 	<h:column id="LastUpdate">
 		<f:facet name="header">
-			<h:outputText value="#{s.TheLastEntry}"></h:outputText>
+			<h:outputText value="#{s.theLastEntry}"></h:outputText>
 		</f:facet>		
 	</h:column>
 </h:dataTable>
+<h:form>
+	<h:commandButton value="Add..." action="newSetting">
+	</h:commandButton>
+</h:form>
 	</ui:define>
 
 

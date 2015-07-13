@@ -13,6 +13,8 @@ import java.util.List;
 
 
 
+
+import javax.faces.bean.ManagedBean;
 //import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -35,7 +37,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.OrderBy;
 
 
-
+@ManagedBean
 @Entity
 @Table(name="Settings")
 public class Settings implements Serializable {

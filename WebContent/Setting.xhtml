@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
+	<ui:define name="content">
+	    <h:panelGrid columns="6">
+	     <h:outputText value="Name"></h:outputText>
+	     <h:inputText value="#{settings.name}"></h:inputText>
+			
+		<h:outputText value="ID"></h:outputText>
+	     <h:outputLabel value="#{settings.id}"></h:outputLabel>
+	     <h:outputText value="Last update date"></h:outputText>
+	     <h:outputLabel value="#{settings.theLastEntry}"></h:outputLabel>
+	    </h:panelGrid>
+	    <h:panelGroup>
+	    	<h:outputText value="Transponders"></h:outputText>
+	    	<h:panelGroup>
+	    	<h:form>
+				<h:commandButton value="Add"></h:commandButton>
+				<h:commandButton value="Up"></h:commandButton>
+				<h:commandButton value="Down"></h:commandButton>
+				</h:form>
+			
+			</h:panelGroup>
+	    	
+			<h:dataTable border="1" id="SettingsConversion">
+				<h:column id="LineNo">
+					<f:facet name="header">
+						<h:outputText value="Line no."></h:outputText>
+					</f:facet>
+				</h:column>
+				<h:column id="Transponder">
+					<f:facet name="header">
+						<h:outputText value="Transponder"></h:outputText>
+					</f:facet>
+				</h:column>
+					<h:column id="Polarization">
+					<f:facet name="header">
+						<h:outputText value="Pol."></h:outputText>
+					</f:facet>
+				</h:column>
+				<h:column id="Carrier">
+					<f:facet name="header">
+						<h:outputText value="Carrier"></h:outputText>
+					</f:facet>
+				</h:column>
+				<h:column id="Speed">
+					<f:facet name="header">
+						<h:outputText value="Speed"></h:outputText>
+					</f:facet>
+				</h:column>
+				<h:column id="Satellite">
+					<f:facet name="header">
+						<h:outputText value="Satellite"></h:outputText>
+					</f:facet>
+				</h:column>
+				<h:column id="FEC">
+					<f:facet name="header">
+						<h:outputText value="FEC"></h:outputText>
+					</f:facet>
+				</h:column>
+				<h:column id="Satindex">
+					<f:facet name="header">
+						<h:outputText value="SatIdx"></h:outputText>
+					</f:facet>
+				</h:column>
+				<h:column id="Tpindex">
+					<f:facet name="header">
+						<h:outputText value="TpIdx"></h:outputText>
+					</f:facet>
+				</h:column>
+				<h:column id="Intersection">
+					<f:facet name="header">
+						<h:outputText value="Int-tion #"></h:outputText>
+					</f:facet>
+				</h:column>
+				<h:column id="Comment">
+					<f:facet name="header">
+						<h:outputText value="Comment"></h:outputText>
+					</f:facet>
+				</h:column>
+			</h:dataTable>
+			
+		</h:panelGroup>
+		<h:form>
+				<h:commandButton value="OK"></h:commandButton>
+				<h:commandButton value="Cancel" action="cancel"></h:commandButton>
+			</h:form>
+	</ui:define>
+
+</ui:composition>
+
+</html>

@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14364644007590" configfile="/SF5JSF/WebContent/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" x="432" y="12" id="pf14364661690690" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf14365571051260" path="/login.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="SettingsList.xhtml" x="415" y="156" id="pf14364661690693" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" path="/SettingsList.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="register.xhtml" x="278" y="116" id="pf14365571051261" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14365571051260" path="/register.xhtml"/>
-  <links id="pf14365571051260" target="pf14365571051261" source="pf14364661690690" outcome="register"/>
+  <nodes xsi:type="pageflow:PFPage" name="SettingsList.xhtml" x="156" y="24" id="pf14364661690693" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf14367800883590" inlinks="pf14367950808492" path="/SettingsList.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" id="pf14367784973293" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf14367784973294" path="/login.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="register.xhtml" x="48" y="144" id="pf14367784973295" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14367784973294" path="/register.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="Setting.xhtml" x="252" y="168" id="pf14367800883591" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" outlinks="pf14367950808492" inlinks="pf14367800883590" path="/Setting.xhtml"/>
+  <links id="pf14367784973294" target="pf14367784973295" source="pf14367784973293" outcome="register"/>
+  <links id="pf14367800883590" target="pf14367800883591" source="pf14364661690693" outcome="newSetting"/>
+  <links id="pf14367950808492" target="pf14364661690693" source="pf14367800883591" outcome="cancel"/>
 </pageflow:Pageflow>
