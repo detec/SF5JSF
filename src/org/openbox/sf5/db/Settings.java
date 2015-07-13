@@ -9,6 +9,10 @@ import java.util.List;
 
 
 
+
+
+
+
 //import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,6 +20,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.SequenceGenerator;
@@ -23,6 +28,8 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.JoinColumnOrFormula;
+import org.hibernate.annotations.ManyToAny;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.OrderBy;
@@ -93,6 +100,21 @@ public class Settings implements Serializable {
 		this.TheLastEntry = TheLastEntry;
 	}
 
+
+//	@ManyToAny(metaColumn = @Column)
+	@JoinColumn(name="User", unique = false, nullable = false)
+	private Users User;
+
+	public Users getUser() {
+		return this.User;
+	}
+
+ 	public void setUser(Users User) {
+		this.User = User;
+	}
+
+	
+ 	
  	@OneToMany(mappedBy = "parent_id", fetch = FetchType.EAGER, orphanRemoval = true)
 	@Cascade({CascadeType.SAVE_UPDATE, CascadeType.DELETE})
  	@OrderColumn(name="LineNumber")
@@ -122,11 +144,12 @@ public class Settings implements Serializable {
 		this.Satellites = Satellites;
 	}
 
-	public Settings(String Name, String PropsFile, Timestamp TheLastEntry, List<SettingsConversion> Conversion, List<SettingsSatellites> Satellites) {
+	public Settings(String Name, String PropsFile, Timestamp lastEntry, Users User, List<SettingsConversion> Conversion, List<SettingsSatellites> Satellites) {
 
-	this.Name= Name;
+		this.Name= Name;
 		this.PropsFile = PropsFile;
-		this.TheLastEntry = TheLastEntry;
+		this.TheLastEntry = lastEntry;
+		this.User = User;
 		this.Conversion = Conversion;
 		this.Satellites = Satellites;
 
@@ -145,6 +168,7 @@ public class Settings implements Serializable {
 		if (otherSettings.Name.equals(this.Name)
 	&& otherSettings.PropsFile.equals(this.PropsFile)
 	&& otherSettings.TheLastEntry == this.TheLastEntry
+	&& otherSettings.User.equals(this.User)
 	&& otherSettings.Conversion.equals(this.Conversion)
 	&& otherSettings.Satellites.equals(this.Satellites)
 ) return true;

@@ -14,9 +14,15 @@
 		<display-name>login.xhtml</display-name>
 		<from-view-id>/login.xhtml</from-view-id>
 		<navigation-case>
-			<from-outcome>login</from-outcome>
-			<to-view-id>/SettingsList.xhtml</to-view-id>
+			<from-outcome>register</from-outcome>
+			<to-view-id>/register.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
 
+<application> 
+    <resource-bundle> 
+    <base-name>net.javabeat.jsf.application</base-name> 
+     <var>msg</var> 
+    </resource-bundle> 
+</application> 
 </faces-config>

@@ -13,17 +13,11 @@ public class NavigationBean implements Serializable{
 	private static final long serialVersionUID = 1520318172495977648L;
 	
     /**
-
      * Go to login page.
-
      * @return Login page name.
-
      */
-
     public String toLogin() {
-
         return "/login.xhtml";
-
     }
     
     /**
@@ -32,7 +26,7 @@ public class NavigationBean implements Serializable{
      */
 
     public String redirectToWelcome() {
-        return "/welcome.xhtml?faces-redirect=true";
+        return "/SettingsList.xhtml?faces-redirect=true";
     }
 
     /**
@@ -41,7 +35,7 @@ public class NavigationBean implements Serializable{
      */
 
     public String toWelcome() {
-        return "/welcome.xhtml";
+        return "/SettingsList.xhtml";
     }
     
 

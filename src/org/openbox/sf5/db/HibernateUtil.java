@@ -20,13 +20,13 @@ public class HibernateUtil {
             if (configuration.getProperty("hibernate.connection.url").equals("${db.jdbcUrl}")) {
             	// manually override property with test server
             	configuration.setProperty("hibernate.connection.url"
-            			, "jdbc:h2:tcp://localhost/~/test;MVCC=true");
+            			, "jdbc:h2:tcp://localhost/~/sf5jsftest;MVCC=true");
             }
             StandardServiceRegistryBuilder ssrb = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
             SessionFactory sessionFactory = configuration.buildSessionFactory(ssrb.build());
             sessionFactory.openSession();
             return sessionFactory;
-       //     logger.info("Test connection with the database created successfuly.");
+       //     logger.info("Test connection with the database created successfully.");
         }
         catch (Throwable ex) {
             // Make sure you log the exception, as it might be swallowed

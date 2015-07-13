@@ -11,8 +11,8 @@
 
 	<ui:define name="content">
 	    <h:outputLabel value="Current user: #{loginBean.name}"></h:outputLabel>
-	    
-	    <h:dataTable border="1" var = "s">
+	    <f:param name="currentuserid" value="#{loginBean.currentUserStringId}" />
+	    <h:dataTable border="1" var = "s" value="#{settingsController.settingsbyUser}">
 	<h:column id="ID">
 		<f:facet name="header" >
 			<h:outputText value="#{s.id}"></h:outputText>
