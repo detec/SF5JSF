@@ -6,14 +6,6 @@ import java.util.Set;
 import java.util.List;
 
 
-
-
-
-
-
-
-
-
 import javax.faces.bean.ManagedBean;
 //import javax.persistence.CascadeType;
 import javax.persistence.Column;

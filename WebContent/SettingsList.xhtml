@@ -17,18 +17,23 @@
 	    <h:dataTable border="1" var = "s" value="#{settingsController.settingsbyUser}">
 	<h:column id="ID">
 		<f:facet name="header" >
-			<h:outputText value="#{s.id}"></h:outputText>
-		</f:facet>
+			<h:outputText value="ID"></h:outputText>
+			</f:facet>
+	<h:link value="#{s.id}">
+	 <f:param name="id" value="#{s.id}" />
+	</h:link>
 	</h:column>
 	<h:column id="Name">
 		<f:facet name="header">
-			<h:outputText value="#{s.name}" ></h:outputText>
+			<h:outputText value="Name" ></h:outputText>
 		</f:facet>
+		<h:outputText value="#{s.name}" ></h:outputText>
 	</h:column>
 	<h:column id="LastUpdate">
 		<f:facet name="header">
-			<h:outputText value="#{s.theLastEntry}"></h:outputText>
-		</f:facet>		
+			<h:outputText value="Last update date"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{s.theLastEntry}"></h:outputText>		
 	</h:column>
 </h:dataTable>
 <h:form>
