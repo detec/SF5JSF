@@ -4,12 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
 
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
@@ -19,8 +22,12 @@ import org.openbox.sf5.db.Users;
 import org.openbox.sf5.service.ObjectsController;
 
 @ManagedBean(name = "settingsController")
-@SessionScoped
+@ViewScoped
 public class SettingsController {
+	
+	
+	@ManagedProperty(value="#{loginBean}")
+	private LoginBean CurrentLogin;
 	
 	private Users currentUser;
 
@@ -32,6 +39,15 @@ public class SettingsController {
 		this.currentUser = currentUser;
 	}
 
+	@PostConstruct
+    public void init() {
+		
+		// let's initialize current user
+		if (CurrentLogin == null) return;
+		currentUser = CurrentLogin.getUser(); 
+		
+	}
+	
 	public List<Settings> getSettingsbyUser() {
 		List<Settings> settingsList = new ArrayList<Settings>();
 		
@@ -63,5 +79,14 @@ public class SettingsController {
 		  
 		return settingsList;
 	}
+
+	public LoginBean getCurrentLogin() {
+		return CurrentLogin;
+	}
+
+	public void setCurrentLogin(LoginBean currentLogin) {
+		CurrentLogin = currentLogin;
+	}
+
 	
 }

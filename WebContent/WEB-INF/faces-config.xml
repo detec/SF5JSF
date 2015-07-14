@@ -4,38 +4,6 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
     version="2.2">
-	<managed-bean>
-		<description>Class to authenticate</description>
-		<managed-bean-name>loginBean</managed-bean-name>
-		<managed-bean-class>org.openbox.sf5.application.LoginBean</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<description>Users class</description>
-		<managed-bean-name>users</managed-bean-name>
-		<managed-bean-class>org.openbox.sf5.db.Users</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-	</managed-bean>
-	<managed-bean>
-		<description>Work with settings</description>
-		<managed-bean-name>settingsController</managed-bean-name>
-		<managed-bean-class>org.openbox.sf5.application.SettingsController</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-		<managed-property>
-        <property-name>currentUser</property-name>
-        <value>#{users}</value>
-    	</managed-property>
-	</managed-bean>
-	<managed-bean>
-		<managed-bean-name>settingsFormController</managed-bean-name>
-		<managed-bean-class>org.openbox.sf5.application.SettingsFormController</managed-bean-class>
-		<managed-bean-scope>session</managed-bean-scope>
-		<managed-property>
-			<property-name>setting</property-name>
-			<property-class>org.openbox.sf5.db.Settings</property-class>
-			<value>#{settings}</value>
-		</managed-property>
-	</managed-bean>
 	<navigation-rule>
 		<display-name>login.xhtml</display-name>
 		<from-view-id>/login.xhtml</from-view-id>
@@ -60,11 +28,4 @@
 			<to-view-id>/SettingsList.xhtml</to-view-id>
 		</navigation-case>
 	</navigation-rule>
-
-<application> 
-    <resource-bundle> 
-    <base-name>net.javabeat.jsf.application</base-name> 
-     <var>msg</var> 
-    </resource-bundle> 
-</application> 
 </faces-config>

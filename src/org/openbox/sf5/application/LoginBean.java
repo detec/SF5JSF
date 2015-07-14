@@ -1,5 +1,6 @@
 package org.openbox.sf5.application;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -12,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.Session;
 import org.hibernate.annotations.Table;
@@ -21,12 +23,21 @@ import org.openbox.sf5.db.TheDVBRangeValues;
 import org.openbox.sf5.db.Users;
 import org.openbox.sf5.service.ObjectsController;
 
+
+
 @ManagedBean
 @SessionScoped
-public class LoginBean {
+public class LoginBean implements Serializable{
 	
-    private String name;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@NotNull(message = "Please enter login")
+	private String name;
     
+	@NotNull(message = "Please enter your full name")
     private String fullName;
     
     private String loginMessage;
@@ -34,10 +45,6 @@ public class LoginBean {
 	private Users user;
     
     private boolean loggedIn;
-
-    @ManagedProperty(value="#{navigationBean}")
-    private NavigationBean navigationBean;
-
 	
     public String getName ()
     {
@@ -149,7 +156,6 @@ public class LoginBean {
 			// set current user
 			this.user = newUser;
 			
-			//return navigationBean.redirectToWelcome();
 			return "/SettingsList.xhtml?faces-redirect=true";
 		}
 		

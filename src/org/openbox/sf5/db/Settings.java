@@ -29,7 +29,6 @@ import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.OrderBy;
 
 
-@ManagedBean
 @Entity
 @Table(name="Settings")
 public class Settings implements Serializable {

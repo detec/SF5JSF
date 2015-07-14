@@ -27,6 +27,10 @@
     <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
     <param-value>resources.application</param-value>
   </context-param>
+  <context-param>
+    <param-name>javax.faces.INTERPRET_EMPTY_STRING_SUBMITTED_VALUES_AS_NULL</param-name>
+    <param-value>true</param-value>
+</context-param>
   <listener>
     <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
   </listener>

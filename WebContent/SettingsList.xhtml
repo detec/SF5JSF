@@ -36,11 +36,8 @@
 		<h:outputText value="#{s.theLastEntry}"></h:outputText>		
 	</h:column>
 </h:dataTable>
-<h:form>
-	<h:commandButton value="Add..." action="newSetting">
-	</h:commandButton>
-</h:form>
-	</ui:define>
+ <h:link value="Add setting..." outcome="setting" />
+</ui:define>
 
 
 </ui:composition>
