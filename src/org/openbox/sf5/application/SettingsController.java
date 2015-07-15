@@ -1,5 +1,6 @@
 package org.openbox.sf5.application;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -23,13 +24,31 @@ import org.openbox.sf5.service.ObjectsController;
 
 @ManagedBean(name = "settingsController")
 @ViewScoped
-public class SettingsController {
+public class SettingsController implements Serializable {
 	
+	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7396280960466432737L;
+
+
 	
 	@ManagedProperty(value="#{loginBean}")
 	private LoginBean CurrentLogin;
 	
 	private Users currentUser;
+	
+	public LoginBean getCurrentLogin() {
+		return this.CurrentLogin;
+	}
+
+	public void setCurrentLogin(LoginBean currentLogin) {
+		this.CurrentLogin = currentLogin;
+	}
+	
+	
+
 
 	public Users getCurrentUser() {
 		return currentUser;
@@ -39,14 +58,14 @@ public class SettingsController {
 		this.currentUser = currentUser;
 	}
 
-	@PostConstruct
-    public void init() {
-		
-		// let's initialize current user
-		if (CurrentLogin == null) return;
-		currentUser = CurrentLogin.getUser(); 
-		
-	}
+//	@PostConstruct
+//    public void init() {
+//		
+//		// let's initialize current user
+//		if (CurrentLogin == null) return;
+//		currentUser = CurrentLogin.getUser(); 
+//		
+//	}
 	
 	public List<Settings> getSettingsbyUser() {
 		List<Settings> settingsList = new ArrayList<Settings>();
@@ -80,13 +99,7 @@ public class SettingsController {
 		return settingsList;
 	}
 
-	public LoginBean getCurrentLogin() {
-		return CurrentLogin;
-	}
 
-	public void setCurrentLogin(LoginBean currentLogin) {
-		CurrentLogin = currentLogin;
-	}
 
 	
 }

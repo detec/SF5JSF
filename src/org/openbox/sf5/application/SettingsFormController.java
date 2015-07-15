@@ -4,6 +4,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -11,8 +12,12 @@ import org.openbox.sf5.db.Settings;
 
 @ManagedBean(name="setting")
 @ViewScoped
-public class SettingsFormController{
+public class SettingsFormController implements Serializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -4706281624885080396L;
 	private Settings setting;
 
 	public Settings getSetting() {

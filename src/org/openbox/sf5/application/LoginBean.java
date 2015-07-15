@@ -25,14 +25,19 @@ import org.openbox.sf5.service.ObjectsController;
 
 
 
-@ManagedBean
+@ManagedBean(name="loginBean")
 @SessionScoped
 public class LoginBean implements Serializable{
 	
     /**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 4615292844760430977L;
+
+	/**
+	 * 
+	 */
+
 
 	@NotNull(message = "Please enter login")
 	private String name;
