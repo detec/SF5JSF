@@ -10,6 +10,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
+import javax.inject.*;
 
 
 import javax.faces.context.FacesContext;
@@ -22,7 +23,7 @@ import org.openbox.sf5.db.Settings;
 import org.openbox.sf5.db.Users;
 import org.openbox.sf5.service.ObjectsController;
 
-@ManagedBean(name = "settingsController")
+@Named(value = "settingsController")
 @ViewScoped
 public class SettingsController implements Serializable {
 	
@@ -32,9 +33,13 @@ public class SettingsController implements Serializable {
 	 */
 	private static final long serialVersionUID = 7396280960466432737L;
 
-
+	// let's place default constructor
+	public SettingsController() {
+		
+	}
 	
-	@ManagedProperty(value="#{loginBean}")
+	//@ManagedProperty(value="#{loginBean}")
+	//@Inject
 	private LoginBean CurrentLogin;
 	
 	private Users currentUser;
@@ -58,15 +63,16 @@ public class SettingsController implements Serializable {
 		this.currentUser = currentUser;
 	}
 
-//	@PostConstruct
-//    public void init() {
-//		
-//		// let's initialize current user
-//		if (CurrentLogin == null) return;
-//		currentUser = CurrentLogin.getUser(); 
-//		
-//	}
+	@PostConstruct
+    public void init() {
+		
+		// let's initialize current user
+		if (this.CurrentLogin == null) return;
+		this.currentUser = this.CurrentLogin.getUser(); 
+		
+	}
 	
+    
 	public List<Settings> getSettingsbyUser() {
 		List<Settings> settingsList = new ArrayList<Settings>();
 		

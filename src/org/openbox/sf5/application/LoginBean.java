@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,6 +27,7 @@ import org.openbox.sf5.service.ObjectsController;
 
 
 @ManagedBean(name="loginBean")
+//@Named(value = "loginBean")
 @SessionScoped
 public class LoginBean implements Serializable{
 	
@@ -34,9 +36,10 @@ public class LoginBean implements Serializable{
 	 */
 	private static final long serialVersionUID = 4615292844760430977L;
 
-	/**
-	 * 
-	 */
+	// add default constructor
+	public LoginBean() {
+		
+	}
 
 
 	@NotNull(message = "Please enter login")

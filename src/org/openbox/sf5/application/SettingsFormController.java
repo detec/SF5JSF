@@ -3,6 +3,7 @@ package org.openbox.sf5.application;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
 import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -10,7 +11,7 @@ import java.util.Date;
 
 import org.openbox.sf5.db.Settings;
 
-@ManagedBean(name="setting")
+@Named(value = "setting")
 @ViewScoped
 public class SettingsFormController implements Serializable {
 	
