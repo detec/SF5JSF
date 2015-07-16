@@ -9,7 +9,7 @@ import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ManagedProperty;
-import javax.faces.bean.SessionScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.*;
 
 
@@ -39,7 +39,7 @@ public class SettingsController implements Serializable {
 	}
 	
 	//@ManagedProperty(value="#{loginBean}")
-	//@Inject
+	@Inject
 	private LoginBean CurrentLogin;
 	
 	private Users currentUser;

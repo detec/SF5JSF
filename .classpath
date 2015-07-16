@@ -39,5 +39,6 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaxValidation"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaxInject"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/CDIAPI2"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>

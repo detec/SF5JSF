@@ -1,31 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<faces-config
-    xmlns="http://xmlns.jcp.org/xml/ns/javaee"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd"
-    version="2.2">
-	<navigation-rule>
-		<display-name>login.xhtml</display-name>
-		<from-view-id>/login.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>register</from-outcome>
-			<to-view-id>/register.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	<navigation-rule>
-		<display-name>SettingsList.xhtml</display-name>
-		<from-view-id>/SettingsList.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>newSetting</from-outcome>
-			<to-view-id>/Setting.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
-	<navigation-rule>
-		<display-name>Setting.xhtml</display-name>
-		<from-view-id>/Setting.xhtml</from-view-id>
-		<navigation-case>
-			<from-outcome>cancel</from-outcome>
-			<to-view-id>/SettingsList.xhtml</to-view-id>
-		</navigation-case>
-	</navigation-rule>
+<faces-config version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+ <managed-bean>
+  <managed-bean-name>settingsController</managed-bean-name>
+  <managed-bean-class>org.openbox.sf5.application.SettingsController</managed-bean-class>
+  <managed-bean-scope>session</managed-bean-scope>
+  <managed-property>
+   <property-name>currentLogin</property-name>
+   <property-class>org.openbox.sf5.application.LoginBean</property-class>
+   <value/>
+  </managed-property>
+ </managed-bean>
+ <navigation-rule>
+  <display-name>login.xhtml</display-name>
+  <from-view-id>/login.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>register</from-outcome>
+   <to-view-id>/register.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <display-name>SettingsList.xhtml</display-name>
+  <from-view-id>/SettingsList.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>newSetting</from-outcome>
+   <to-view-id>/Setting.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ <navigation-rule>
+  <display-name>Setting.xhtml</display-name>
+  <from-view-id>/Setting.xhtml</from-view-id>
+  <navigation-case>
+   <from-outcome>cancel</from-outcome>
+   <to-view-id>/SettingsList.xhtml</to-view-id>
+  </navigation-case>
+ </navigation-rule>
+ <application/>
 </faces-config>
