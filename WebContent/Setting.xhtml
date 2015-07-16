@@ -7,15 +7,20 @@
 	xmlns:f="http://java.sun.com/jsf/core">
 
 <ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
+    <f:metadata>
+        <f:viewParam name="id" value="#{setting.id}" />
+        <f:event type="preRenderView" listener="#{setting.init()}" />
+    </f:metadata>
+    
 	<ui:define name="content">
 	    <h:panelGrid columns="6">
 	     <h:outputText value="Name"></h:outputText>
-	     <h:inputText value="#{setting.name}"></h:inputText>
+	     <h:inputText value="#{setting.name}" style="font-weight: bold; font-style: normal"></h:inputText>
 			
 		<h:outputText value="ID"></h:outputText>
-	     <h:outputLabel value="#{setting.id}"></h:outputLabel>
+	     <h:outputLabel value="#{setting.id}" style="font-weight: bold"></h:outputLabel>
 	     <h:outputText value="Last update date"></h:outputText>
-	     <h:outputLabel value="#{setting.theLastEntry}"></h:outputLabel>
+	     <h:outputLabel value="#{setting.theLastEntry}" style="font-weight: bold"></h:outputLabel>
 	    </h:panelGrid>
 	    <h:panelGroup>
 	    	<h:outputText value="Transponders"></h:outputText>
@@ -88,7 +93,7 @@
 			
 		</h:panelGroup>
 		<h:form>
-				<h:commandButton value="OK"></h:commandButton>
+				<h:commandButton value="OK" action="#{setting.saveSetting()}"></h:commandButton>
 				<h:commandButton value="Cancel" action="cancel"></h:commandButton>
 			</h:form>
 	</ui:define>

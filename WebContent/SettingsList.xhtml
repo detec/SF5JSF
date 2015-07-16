@@ -10,7 +10,7 @@
 <ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
 
 	<ui:define name="content">
-	    <h:outputLabel value="Current user: #{loginBean.name}">
+	    <h:outputLabel value="Current login: #{loginBean.name}, #{loginBean.user.name}">
 	    
 	    </h:outputLabel>
 	    
@@ -19,7 +19,7 @@
 		<f:facet name="header" >
 			<h:outputText value="ID"></h:outputText>
 			</f:facet>
-	<h:link value="#{s.id}">
+	<h:link value="#{s.id}" outcome="Setting">
 	 <f:param name="id" value="#{s.id}" />
 	</h:link>
 	</h:column>
