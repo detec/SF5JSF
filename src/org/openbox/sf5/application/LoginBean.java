@@ -15,14 +15,10 @@ import org.openbox.sf5.db.HibernateUtil;
 import org.openbox.sf5.db.Users;
 import org.openbox.sf5.service.ObjectsController;
 
-//@ManagedBean(name="loginBean")
 @Named(value = "loginBean")
 @SessionScoped
 public class LoginBean implements Serializable {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 4615292844760430977L;
 
 	// add default constructor
@@ -37,6 +33,16 @@ public class LoginBean implements Serializable {
 	private String fullName;
 
 	private Users user;
+
+	private Object CurrentObject;
+
+	public Object getCurrentObject() {
+		return CurrentObject;
+	}
+
+	public void setCurrentObject(Object currentObject) {
+		CurrentObject = currentObject;
+	}
 
 	private boolean loggedIn;
 
@@ -144,6 +150,15 @@ public class LoginBean implements Serializable {
 			return "/SettingsList.xhtml?faces-redirect=true";
 		}
 
+	}
+
+	public String logout() {
+		this.loggedIn = false;
+		this.fullName = "";
+		this.name = "";
+		this.user = null;
+
+		return "login";
 	}
 
 	public boolean userExists(String username) {

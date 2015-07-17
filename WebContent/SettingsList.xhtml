@@ -13,7 +13,7 @@
 	    <h:outputLabel value="Current login: #{loginBean.name}, #{loginBean.user.name}">
 	    
 	    </h:outputLabel>
-	    
+	    <h:form>
 	    <h:dataTable border="1" var = "s" value="#{settingsController.settingsbyUser}">
 	<h:column id="ID">
 		<f:facet name="header" >
@@ -35,8 +35,18 @@
 		</f:facet>
 		<h:outputText value="#{s.theLastEntry}"></h:outputText>		
 	</h:column>
+	<h:column id="Remove">
+		<f:facet name="header" >
+			<h:outputText value="Delete"></h:outputText>
+			</f:facet>
+	<h:commandLink value="Delete" action="#{settingsController.removeSetting(s.id)}"/>
+	
+	</h:column>	
 </h:dataTable>
- <h:link value="Add setting..." outcome="Setting" />
+</h:form>
+<h:form>
+	<h:commandLink value="Add setting..." action="#{settingsController.addSetting()}"></h:commandLink>
+</h:form>
 </ui:define>
 
 

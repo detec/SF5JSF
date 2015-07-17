@@ -1,9 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 
+
 <html xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
 	xmlns:f="http://java.sun.com/jsf/core">
 
 <ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
@@ -20,8 +22,12 @@
 		<h:outputText value="ID"></h:outputText>
 	     <h:outputLabel value="#{setting.id}" style="font-weight: bold"></h:outputLabel>
 	     <h:outputText value="Last update date"></h:outputText>
-	     <h:outputLabel value="#{setting.theLastEntry}" style="font-weight: bold"></h:outputLabel>
-	    </h:panelGrid>
+	     <h:outputLabel style="font-weight: bold" value="#{setting.theLastEntry}">
+	     	<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+	     </h:outputLabel>
+
+
+		</h:panelGrid>
 	    <h:panelGroup>
 	    	<h:outputText value="Transponders"></h:outputText>
 	    	<h:panelGroup>
@@ -32,6 +38,8 @@
 				</h:form>
 			
 			</h:panelGroup>
+	    	
+	    	<h:form>
 	    	
 			<h:dataTable border="1" id="SettingsConversion">
 				<h:column id="LineNo">
@@ -89,13 +97,24 @@
 						<h:outputText value="Comment"></h:outputText>
 					</f:facet>
 				</h:column>
+				<h:column id="ActionColumn">
+					<f:facet name="header">
+						<h:outputText value="Actions"></h:outputText>
+					</f:facet>
+					<h:commandLink value="Edit" action="stub" rendered="true" />
+					<h:commandLink value="Remove" action="stub" rendered="true" />
+					<h:selectBooleanCheckbox></h:selectBooleanCheckbox>
+
+					</h:column>
 			</h:dataTable>
+			</h:form>
 			
 		</h:panelGroup>
 		<h:form>
 				<h:commandButton value="OK" action="#{setting.saveSetting()}"></h:commandButton>
 				<h:commandButton value="Cancel" action="cancel"></h:commandButton>
-			</h:form>
+				</h:form>
+		
 	</ui:define>
 
 </ui:composition>
