@@ -10,7 +10,7 @@
 	<ui:define name="content">
 	<h:form id="form" enctype="multipart/form-data">
 	
-	 <h:inputFile id="file" value="#{importFile.file}" validator="#{importFile.validateFile()}"/>
+	 <h:inputFile id="file" value="#{importFile.file}" validator="#{importFile.validateFile}"/>
 	 
 	 <h:commandButton value="Upload transponders file..."
       action="#{importFile.upload()}">

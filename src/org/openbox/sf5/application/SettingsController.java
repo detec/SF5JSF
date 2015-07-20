@@ -9,12 +9,12 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
-import org.openbox.sf5.db.HibernateUtil;
 import org.openbox.sf5.db.Settings;
 import org.openbox.sf5.db.Users;
 import org.openbox.sf5.service.ObjectsController;
+import org.openbox.sf5.service.ObjectsListService;
 
 @Named(value = "settingsController")
 @ViewScoped
@@ -71,10 +71,13 @@ public class SettingsController implements Serializable {
 			return settingsList;
 		}
 
-		Session session = HibernateUtil.openSession();
-		settingsList = session.createCriteria(Settings.class)
-				.add(Restrictions.eq("User", currentUser)).list();
+		// Session session = HibernateUtil.openSession();
+		// settingsList = session.createCriteria(Settings.class)
+		// .add(Restrictions.eq("User", currentUser)).list();
 
+		Criterion criterion = Restrictions.eq("User", currentUser);
+		settingsList = (List<Settings>) ObjectsListService
+				.ObjectsCriterionList(Settings.class, criterion);
 		return settingsList;
 	}
 

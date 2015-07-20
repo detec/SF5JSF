@@ -30,7 +30,6 @@ public class ImportTranspondersFile implements Serializable {
 	 */
 	private static final long serialVersionUID = 6409041462672614971L;
 
-
 	private Part file;
 	private String fileContent;
 
@@ -74,27 +73,23 @@ public class ImportTranspondersFile implements Serializable {
 
 		}
 
-
-
 	}
 
-		  public Part getFile() {
-		    return file;
-		  }
+	public Part getFile() {
+		return file;
+	}
 
-		  public void setFile(Part file) {
-		    this.file = file;
-		  }
-
-
+	public void setFile(Part file) {
+		this.file = file;
+	}
 
 	public void validateFile(FacesContext ctx, UIComponent comp, Object value) {
 		List<FacesMessage> msgs = new ArrayList<FacesMessage>();
 		Part file = (Part) value;
 
-		if (!"text/xml".equals(file.getContentType())) {
-			msgs.add(new FacesMessage("Not an xml file!"));
-		}
+		// if (!"text/xml".equals(file.getContentType())) {
+		// msgs.add(new FacesMessage("Not an xml file!"));
+		// }
 		if (!msgs.isEmpty()) {
 			throw new ValidatorException(msgs);
 		}
@@ -107,6 +102,5 @@ public class ImportTranspondersFile implements Serializable {
 	public void setFileContent(String fileContent) {
 		this.fileContent = fileContent;
 	}
-
 
 }

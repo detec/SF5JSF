@@ -13,7 +13,7 @@
 	    <h:outputLabel value="Current login: #{loginBean.name}, #{loginBean.user.name}">
 	    
 	    </h:outputLabel>
-	    <h:form  enctype="multipart/form-data">>
+	    <h:form  enctype="multipart/form-data">
 	    <h:dataTable border="1" var = "s" value="#{settingsController.settingsbyUser}">
 	<h:column id="ID">
 		<f:facet name="header" >
@@ -48,9 +48,9 @@
 </h:form>
 <h:form>
 	<h:commandLink value="Add setting..." action="#{settingsController.addSetting()}"></h:commandLink>
-	<h:commandLink>
-		<h:outputText value="Import transponders from file..." outcome="importtranspondersfile"></h:outputText>
-	</h:commandLink>
+	<h:link  value="Import transponders from file..." outcome="importtranspondersfile">
+		
+	</h:link>
 	
 </h:form>
 </ui:define>
