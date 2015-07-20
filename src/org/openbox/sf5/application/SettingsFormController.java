@@ -11,7 +11,13 @@ import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.openbox.sf5.db.CarrierFrequency;
+import org.openbox.sf5.db.Polarization;
+import org.openbox.sf5.db.Satellites;
 import org.openbox.sf5.db.Settings;
+import org.openbox.sf5.db.SettingsConversion;
+import org.openbox.sf5.db.Transponders;
+import org.openbox.sf5.db.TypesOfFEC;
 import org.openbox.sf5.db.Users;
 import org.openbox.sf5.service.ObjectsController;
 
@@ -42,19 +48,19 @@ public class SettingsFormController implements Serializable {
 
 	public String getName() {
 		// return setting.getName();
-		return this.Name;
+		return Name;
 	}
 
 	public void setName(String pName) {
 		// setting.setName(pName);
-		this.Name = pName;
+		Name = pName;
 	}
 
 	public Date getTheLastEntry() {
 		// return setting.getTheLastEntry();
 		// return this.TheLastEntry;
-		return this.TheLastEntry == null ? null : new Date(
-				this.TheLastEntry.getTime());
+		return TheLastEntry == null ? null : new Date(
+				TheLastEntry.getTime());
 	}
 
 	public void setTheLastEntry() {
@@ -64,20 +70,20 @@ public class SettingsFormController implements Serializable {
 
 	public long getId() {
 		// return setting.getId();
-		return this.Id;
+		return Id;
 	}
 
 	public void setId(long pId) {
 		// setting.setId(pId);
-		this.Id = pId;
+		Id = pId;
 	}
 
 	@PostConstruct
 	public void init() {
-		if (this.CurrentLogin == null) {
+		if (CurrentLogin == null) {
 			return;
 		}
-		this.currentUser = this.CurrentLogin.getUser();
+		currentUser = CurrentLogin.getUser();
 
 		// we have new idea how to create settings
 		// if (this.Id != 0) {
@@ -97,24 +103,24 @@ public class SettingsFormController implements Serializable {
 		// }
 
 		// Analyze if we have current object set in session bean
-		if (this.CurrentLogin.getCurrentObject() != null
-				&& this.CurrentLogin.getCurrentObject() instanceof Settings) {
+		if (CurrentLogin.getCurrentObject() != null
+				&& CurrentLogin.getCurrentObject() instanceof Settings) {
 
-			this.setting = (Settings) this.CurrentLogin.getCurrentObject();
+			setting = (Settings) CurrentLogin.getCurrentObject();
 		}
 
 		// load passed settings id
-		if (this.Id != 0) {
+		if (Id != 0) {
 			ObjectsController contr = new ObjectsController();
-			this.setting = (Settings) contr.select(Settings.class, this.Id);
-			this.Name = setting.getName();
-			this.TheLastEntry = setting.getTheLastEntry();
+			setting = (Settings) contr.select(Settings.class, Id);
+			Name = setting.getName();
+			TheLastEntry = setting.getTheLastEntry();
 		}
 
 		// fill in fields
-		if (this.setting != null) {
-			this.Name = setting.getName();
-			this.TheLastEntry = setting.getTheLastEntry();
+		if (setting != null) {
+			Name = setting.getName();
+			TheLastEntry = setting.getTheLastEntry();
 			// load transponders and so on
 		}
 	}
@@ -125,24 +131,142 @@ public class SettingsFormController implements Serializable {
 	private Users currentUser;
 
 	public LoginBean getCurrentLogin() {
-		return this.CurrentLogin;
+		return CurrentLogin;
 	}
 
 	public void setCurrentLogin(LoginBean currentLogin) {
-		this.CurrentLogin = currentLogin;
+		CurrentLogin = currentLogin;
 	}
 
 	public void saveSetting() {
 		ObjectsController contr = new ObjectsController();
-		this.setting.setTheLastEntry(new java.sql.Timestamp(System
+		setting.setTheLastEntry(new java.sql.Timestamp(System
 				.currentTimeMillis()));
 
-		this.setting.setName(this.Name);
-		contr.saveOrUpdate(this.setting);
+		setting.setName(Name);
+		contr.saveOrUpdate(setting);
 
 		FacesMessage msg = new FacesMessage("Setting saved!");
 		msg.setSeverity(FacesMessage.SEVERITY_INFO);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
+
+	// http://stackoverflow.com/questions/21988598/how-to-get-selected-tablecell-in-javafx-tableview
+	// If you need data from multiple sources in single table, it is better to make a new class that aggregates all the data and use that as a TableView source.
+	public class SettingsConversionPresentation extends SettingsConversion {
+
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 7708887469121053073L;
+
+		private Polarization Polarization;
+
+		public SettingsConversionPresentation(Settings object) {
+			// TODO Auto-generated constructor stub
+			super.setparent_id(object);
+
+			// Note shouldn't be null
+			super.setNote("");
+		}
+
+		// we have to manually construct presentation class from super
+		public SettingsConversionPresentation(SettingsConversion superItem) {
+			super(superItem);
+			Carrier 		= superItem.getTransponder().getCarrier();
+			FEC 			= superItem.getTransponder().getFEC();
+			Polarization 	= superItem.getTransponder().getPolarization();
+			Satellite 		= superItem.getTransponder().getSatellite();
+			Speed 			= superItem.getTransponder().getSpeed();
+		}
+
+		public Polarization getPolarization() {
+			Transponders currentTransponder = super.getTransponder();
+			Polarization currentPolarization = null;
+
+			if (currentTransponder != null) {
+				currentPolarization = currentTransponder.getPolarization();
+			}
+			return currentPolarization;
+		}
+
+	 	public void setPolarization(Polarization Polarization) {
+			this.Polarization = Polarization;
+		}
+
+		private CarrierFrequency Carrier;
+
+		public CarrierFrequency getCarrier() {
+			Transponders currentTransponder = super.getTransponder();
+			CarrierFrequency currentCarrier = null;
+			if (currentTransponder != null) {
+				currentCarrier = currentTransponder.getCarrier();
+			}
+			return currentCarrier;
+		}
+
+	 	public void setCarrier(CarrierFrequency Carrier) {
+			this.Carrier = Carrier;
+		}
+
+		private long Speed;
+
+		public long getSpeed() {
+			Transponders currentTransponder = super.getTransponder();
+			long currentSpeed = 0;
+			if (currentTransponder != null) {
+				currentSpeed = currentTransponder.getSpeed();
+			}
+			return currentSpeed;
+		}
+
+	 	public void setSpeed(long Speed) {
+			this.Speed = Speed;
+		}
+
+		private Satellites Satellite;
+
+		public Satellites getSatellite() {
+			Transponders currentTransponder = super.getTransponder();
+			Satellites currentSatellite = null;
+			if (currentTransponder != null) {
+				currentSatellite = currentTransponder.getSatellite();
+			}
+			return currentSatellite;
+		}
+
+	 	public void setSatellite(Satellites Satellite) {
+			this.Satellite = Satellite;
+		}
+
+		private TypesOfFEC FEC;
+
+		public TypesOfFEC getFEC() {
+			Transponders currentTransponder = super.getTransponder();
+			TypesOfFEC currentFEC = null;
+			if (currentTransponder != null) {
+				currentFEC = currentTransponder.getFEC();
+			}
+			return currentFEC;
+		}
+
+	 	public void setFEC(TypesOfFEC FEC) {
+			this.FEC = FEC;
+		}
+
+	 	public SettingsConversionPresentation(SettingsConversionPresentation original, Settings parent) {
+	 		Carrier 			= original.Carrier;
+	 		FEC 				= original.FEC;
+	 		Polarization 		= original.Polarization;
+	 		Satellite 			= original.Satellite;
+	 		Speed 				= original.Speed;
+	 		this.setTransponder(original.getTransponder());
+	 		this.setparent_id(parent);
+	 		this.setNote(original.getNote());
+
+	 	}
+
+	}
+
 
 }

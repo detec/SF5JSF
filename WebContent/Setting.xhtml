@@ -15,6 +15,7 @@
     </f:metadata>
     
 	<ui:define name="content">
+	<h:form>
 	    <h:panelGrid columns="6">
 	     <h:outputText value="Name"></h:outputText>
 	     <h:inputText value="#{setting.name}" style="font-weight: bold; font-style: normal"></h:inputText>
@@ -31,16 +32,13 @@
 	    <h:panelGroup>
 	    	<h:outputText value="Transponders"></h:outputText>
 	    	<h:panelGroup>
-	    	<h:form>
+	    	
 				<h:commandButton value="Add"></h:commandButton>
 				<h:commandButton value="Up"></h:commandButton>
 				<h:commandButton value="Down"></h:commandButton>
-				</h:form>
-			
+						
 			</h:panelGroup>
-	    	
-	    	<h:form>
-	    	
+	    		    		    	
 			<h:dataTable border="1" id="SettingsConversion">
 				<h:column id="LineNo">
 					<f:facet name="header">
@@ -107,13 +105,11 @@
 
 					</h:column>
 			</h:dataTable>
-			</h:form>
-			
+					
 		</h:panelGroup>
-		<h:form>
-				<h:commandButton value="OK" action="#{setting.saveSetting()}"></h:commandButton>
-				<h:commandButton value="Cancel" action="cancel"></h:commandButton>
-				</h:form>
+			<h:commandButton value="OK" action="#{setting.saveSetting()}"></h:commandButton>
+			<h:commandButton value="Cancel" action="cancel"></h:commandButton>
+		</h:form>
 		
 	</ui:define>
 

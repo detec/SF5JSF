@@ -23,5 +23,7 @@
 			<attribute name="owner.project.facets" value="java"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Commons"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/H2"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
