@@ -20,7 +20,7 @@ public class ValueOfTheCarrierFrequency implements Serializable {
 	CarrierFrequency TypeOfCarrierFrequency;
 
 	public CarrierFrequency getTypeOfCarrierFrequency() {
-		return this.TypeOfCarrierFrequency;
+		return TypeOfCarrierFrequency;
 	}
 
 	public void setTypeOfCarrierFrequency(
@@ -35,7 +35,7 @@ public class ValueOfTheCarrierFrequency implements Serializable {
 	private long LowerThreshold;
 
 	public long getLowerThreshold() {
-		return this.LowerThreshold;
+		return LowerThreshold;
 	}
 
 	public void setLowerThreshold(long LowerThreshold) {
@@ -46,7 +46,7 @@ public class ValueOfTheCarrierFrequency implements Serializable {
 	private long UpperThreshold;
 
 	public long getUpperThreshold() {
-		return this.UpperThreshold;
+		return UpperThreshold;
 	}
 
 	public void setUpperThreshold(long UpperThreshold) {
