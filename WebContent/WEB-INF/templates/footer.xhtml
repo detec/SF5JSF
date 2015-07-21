@@ -9,6 +9,7 @@ xmlns:p="http://java.sun.com/jsf/html">
 <body>
 <p:form  rendered="#{not empty loginBean.user}">
 	<p:link value="Settings" outcome="SettingsList"/>
+	<p:link value="Transponders" outcome="transponders"/>
 	<p:commandLink value="Logout" action="#{loginBean.logout()}"/>
 	</p:form>
 </body>

@@ -18,7 +18,8 @@ public class TranspondersListController implements Serializable {
 	 */
 	private static final long serialVersionUID = -1000488396477162309L;
 
-	public List<Transponders> getTransponders() {
+	public List<Transponders> getTranspondersList() {
+
 		return (List<Transponders>) ObjectsListService
 				.ObjectsList(Transponders.class);
 	}
