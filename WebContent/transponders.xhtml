@@ -31,6 +31,11 @@
 
 	<ui:define name="content">
 	   <h:form  enctype="multipart/form-data">
+	   <h:outputText value="Filter by satellite" />
+	   <h:selectOneMenu value="#{transpondersListController.filterSatellite}" converter="#{transpondersConverter}" >
+		<f:selectItems value="#{transpondersListController.satellites}" var="sat" itemValue="#{sat.id}" itemLabel="#{sat.name}" />
+		</h:selectOneMenu>
+		<h:commandButton action="transponders" value="Apply filter" />
 	    <h:dataTable border="1" var = "s" value="#{transpondersListController.transpondersList}">
 	    	<h:column id="Frequency">
 			<f:facet name="header" >
