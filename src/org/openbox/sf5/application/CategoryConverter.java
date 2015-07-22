@@ -42,11 +42,25 @@ public class CategoryConverter implements Converter, Serializable {
 	public String getAsString(FacesContext fc, UIComponent uic, Object o) {
 		// This will return view-friendly output for the dropdown menu
 		// return ((Category) o).name();
-		if (o != null) {
-			return ((Satellites) o).toString();
+
+		if (o != null && o != new Long(0)) {
+			if (o instanceof Long) {
+				ObjectsController contr = new ObjectsController();
+				Satellites currentSat = (Satellites) contr.select(
+						Satellites.class, ((Long) o).longValue());
+				// return ((Satellites) o).toString();
+				return currentSat.toString();
+			}
+
+			if (o instanceof Satellites) {
+				return new Long(((Satellites) o).getId()).toString();
+			}
+
 		} else {
 			return "";
 		}
+
+		return "";
 
 	}
 }
