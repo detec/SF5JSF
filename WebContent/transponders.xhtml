@@ -32,8 +32,9 @@
 	<ui:define name="content">
 	  
 	   <h:outputText value="Filter by satellite" />
-	   <h:selectOneMenu value="#{transpondersListController.filterSatellite}" converter="#{transpondersConverter}">
-		<f:selectItems value="#{transpondersListController.satellites}" var="sat" itemValue="#{sat}" itemLabel="#{sat.name}" />
+	   <h:selectOneMenu value="#{loginBean.filterSatId}">
+	    <f:selectItem itemLabel="" itemValue="#{0}" noSelectionOption="true" itemDisabled="true"/>
+		<f:selectItems value="#{transpondersListController.satellites}"  var="sat" itemValue="#{sat.id}" itemLabel="#{sat.name}" />
 		<f:ajax render="tp_table"/>
 		</h:selectOneMenu>
 		

@@ -36,6 +36,8 @@ public class LoginBean implements Serializable {
 
 	private Users user;
 
+	private long filterSatId;
+
 	private Object CurrentObject;
 
 	public Object getCurrentObject() {
@@ -83,6 +85,14 @@ public class LoginBean implements Serializable {
 	public String getCurrentUserStringId() {
 		long id = user.getId();
 		return Long.toString(id);
+	}
+
+	public long getFilterSatId() {
+		return filterSatId;
+	}
+
+	public void setFilterSatId(long filterSatId) {
+		this.filterSatId = filterSatId;
 	}
 
 	public String doLogin() {
@@ -166,10 +176,11 @@ public class LoginBean implements Serializable {
 	public boolean userExists(String username) {
 
 		Criterion criterion = Restrictions.eq("Login", username);
-//		Session session = HibernateUtil.openSession();
-//		List<Users> rec = session.createCriteria(Users.class)
-//				.add(Restrictions.eq("Login", username)).list();
-		List<Users> rec = (List<Users>) ObjectsListService.ObjectsCriterionList(Users.class, criterion);
+		// Session session = HibernateUtil.openSession();
+		// List<Users> rec = session.createCriteria(Users.class)
+		// .add(Restrictions.eq("Login", username)).list();
+		List<Users> rec = (List<Users>) ObjectsListService
+				.ObjectsCriterionList(Users.class, criterion);
 		if (rec.isEmpty()) {
 			return false;
 		} else {
