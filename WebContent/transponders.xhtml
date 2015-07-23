@@ -30,12 +30,14 @@
 <ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
 
 	<ui:define name="content">
+	  <h:form id="TranspondersForm">
 	  
 	   <h:outputText value="Filter by satellite" />
-	   <h:selectOneMenu value="#{loginBean.filterSatId}">
+	   <h:selectOneMenu value="#{loginBean.filterSatId}" valueChangeListener= "#{transpondersListController.init()}">
 	    <f:selectItem itemLabel="" itemValue="#{0}" noSelectionOption="true" itemDisabled="true"/>
 		<f:selectItems value="#{transpondersListController.satellites}"  var="sat" itemValue="#{sat.id}" itemLabel="#{sat.name}" />
-		<f:ajax render="tp_table"/>
+		<f:ajax listener="#{transpondersListController.init()}" render="tp_table" />
+		
 		</h:selectOneMenu>
 		
 		
@@ -88,8 +90,8 @@
 		</f:facet>
 		<h:outputText value="#{s.satellite}" ></h:outputText>
 	</h:column>  	  	        
-	   </h:dataTable>
-
+	  </h:dataTable>
+</h:form>
 	</ui:define>
 </ui:composition>
 
