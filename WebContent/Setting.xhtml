@@ -15,7 +15,7 @@
     </f:metadata>
     
 	<ui:define name="content">
-	<h:form>
+	<h:form id="settingForm">
 	    <h:panelGrid columns="6">
 	     <h:outputText value="Name"></h:outputText>
 	     <h:inputText value="#{setting.name}" style="font-weight: bold; font-style: normal"></h:inputText>
@@ -33,13 +33,16 @@
 	    	<h:outputText value="Transponders"></h:outputText>
 	    	<h:panelGroup>
 	    	
-				<h:commandButton value="Add"></h:commandButton>
+				<h:commandButton value="Add">
+				<f:ajax render="settingForm:SettingsConversion" />
+				
+				</h:commandButton>
 				<h:commandButton value="Up"></h:commandButton>
 				<h:commandButton value="Down"></h:commandButton>
 						
 			</h:panelGroup>
 	    		    		    	
-			<h:dataTable border="1" id="SettingsConversion">
+			<h:dataTable border="1" id="SettingsConversion" value="#{setting.dataSettingsConversion}">
 				<h:column id="LineNo">
 					<f:facet name="header">
 						<h:outputText value="Line no."></h:outputText>

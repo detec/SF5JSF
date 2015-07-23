@@ -3,6 +3,7 @@ package org.openbox.sf5.application;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.faces.application.FacesMessage;
@@ -34,6 +35,17 @@ public class SettingsFormController implements Serializable {
 	// here we will receive parameter from page
 	private long Id;
 
+	public List<SettingsConversionPresentation> getDataSettingsConversion() {
+		return dataSettingsConversion;
+	}
+
+	public void setDataSettingsConversion(
+			List<SettingsConversionPresentation> dataSettingsConversion) {
+		this.dataSettingsConversion = dataSettingsConversion;
+	}
+
+	private List<SettingsConversionPresentation> dataSettingsConversion;
+
 	private String Name;
 
 	private Timestamp TheLastEntry;
@@ -59,8 +71,7 @@ public class SettingsFormController implements Serializable {
 	public Date getTheLastEntry() {
 		// return setting.getTheLastEntry();
 		// return this.TheLastEntry;
-		return TheLastEntry == null ? null : new Date(
-				TheLastEntry.getTime());
+		return TheLastEntry == null ? null : new Date(TheLastEntry.getTime());
 	}
 
 	public void setTheLastEntry() {
@@ -78,29 +89,16 @@ public class SettingsFormController implements Serializable {
 		Id = pId;
 	}
 
+	public void addRow() {
+
+	}
+
 	@PostConstruct
 	public void init() {
 		if (CurrentLogin == null) {
 			return;
 		}
 		currentUser = CurrentLogin.getUser();
-
-		// we have new idea how to create settings
-		// if (this.Id != 0) {
-		// ObjectsController contr = new ObjectsController();
-		// this.setting = (Settings) contr.select(Settings.class, this.Id);
-		// this.Name = setting.getName();
-		// this.TheLastEntry = setting.getTheLastEntry();
-		// }
-		//
-		// else {
-		//
-		// // setting == null) {
-		// setting = new Settings();
-		// setting.setUser(currentUser);
-		// // setting.setName("New setting");
-		// this.Name = "New setting";
-		// }
 
 		// Analyze if we have current object set in session bean
 		if (CurrentLogin.getCurrentObject() != null
@@ -152,7 +150,9 @@ public class SettingsFormController implements Serializable {
 	}
 
 	// http://stackoverflow.com/questions/21988598/how-to-get-selected-tablecell-in-javafx-tableview
-	// If you need data from multiple sources in single table, it is better to make a new class that aggregates all the data and use that as a TableView source.
+	// If you need data from multiple sources in single table, it is better to
+	// make a new class that aggregates all the data and use that as a TableView
+	// source.
 	public class SettingsConversionPresentation extends SettingsConversion {
 
 		/**
@@ -173,11 +173,11 @@ public class SettingsFormController implements Serializable {
 		// we have to manually construct presentation class from super
 		public SettingsConversionPresentation(SettingsConversion superItem) {
 			super(superItem);
-			Carrier 		= superItem.getTransponder().getCarrier();
-			FEC 			= superItem.getTransponder().getFEC();
-			Polarization 	= superItem.getTransponder().getPolarization();
-			Satellite 		= superItem.getTransponder().getSatellite();
-			Speed 			= superItem.getTransponder().getSpeed();
+			Carrier = superItem.getTransponder().getCarrier();
+			FEC = superItem.getTransponder().getFEC();
+			Polarization = superItem.getTransponder().getPolarization();
+			Satellite = superItem.getTransponder().getSatellite();
+			Speed = superItem.getTransponder().getSpeed();
 		}
 
 		public Polarization getPolarization() {
@@ -190,7 +190,7 @@ public class SettingsFormController implements Serializable {
 			return currentPolarization;
 		}
 
-	 	public void setPolarization(Polarization Polarization) {
+		public void setPolarization(Polarization Polarization) {
 			this.Polarization = Polarization;
 		}
 
@@ -205,7 +205,7 @@ public class SettingsFormController implements Serializable {
 			return currentCarrier;
 		}
 
-	 	public void setCarrier(CarrierFrequency Carrier) {
+		public void setCarrier(CarrierFrequency Carrier) {
 			this.Carrier = Carrier;
 		}
 
@@ -220,7 +220,7 @@ public class SettingsFormController implements Serializable {
 			return currentSpeed;
 		}
 
-	 	public void setSpeed(long Speed) {
+		public void setSpeed(long Speed) {
 			this.Speed = Speed;
 		}
 
@@ -235,7 +235,7 @@ public class SettingsFormController implements Serializable {
 			return currentSatellite;
 		}
 
-	 	public void setSatellite(Satellites Satellite) {
+		public void setSatellite(Satellites Satellite) {
 			this.Satellite = Satellite;
 		}
 
@@ -250,23 +250,23 @@ public class SettingsFormController implements Serializable {
 			return currentFEC;
 		}
 
-	 	public void setFEC(TypesOfFEC FEC) {
+		public void setFEC(TypesOfFEC FEC) {
 			this.FEC = FEC;
 		}
 
-	 	public SettingsConversionPresentation(SettingsConversionPresentation original, Settings parent) {
-	 		Carrier 			= original.Carrier;
-	 		FEC 				= original.FEC;
-	 		Polarization 		= original.Polarization;
-	 		Satellite 			= original.Satellite;
-	 		Speed 				= original.Speed;
-	 		this.setTransponder(original.getTransponder());
-	 		this.setparent_id(parent);
-	 		this.setNote(original.getNote());
+		public SettingsConversionPresentation(
+				SettingsConversionPresentation original, Settings parent) {
+			Carrier = original.Carrier;
+			FEC = original.FEC;
+			Polarization = original.Polarization;
+			Satellite = original.Satellite;
+			Speed = original.Speed;
+			this.setTransponder(original.getTransponder());
+			this.setparent_id(parent);
+			this.setNote(original.getNote());
 
-	 	}
+		}
 
 	}
-
 
 }
