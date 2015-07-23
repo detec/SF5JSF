@@ -10,10 +10,12 @@ import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.openbox.sf5.db.HibernateUtil;
 import org.openbox.sf5.db.Users;
 import org.openbox.sf5.service.ObjectsController;
+import org.openbox.sf5.service.ObjectsListService;
 
 @Named(value = "loginBean")
 @SessionScoped
@@ -55,7 +57,7 @@ public class LoginBean implements Serializable {
 	}
 
 	public void setFullName(String FullName) {
-		this.fullName = FullName;
+		fullName = FullName;
 	}
 
 	public void setName(final String name) {
@@ -86,7 +88,7 @@ public class LoginBean implements Serializable {
 	public String doLogin() {
 
 		// check if name is filled
-		if (this.name.equals("")) {
+		if (name.equals("")) {
 
 			// Bring the error message using the Faces Context
 			String errorMessage = "You should enter login!";
@@ -138,14 +140,14 @@ public class LoginBean implements Serializable {
 			// To to login page
 			return "/login.xhtml";
 		} else {
-			Users newUser = new Users(this.fullName, this.name);
+			Users newUser = new Users(fullName, name);
 
 			// Let's save user in database
 			ObjectsController contr = new ObjectsController();
 			contr.saveOrUpdate(newUser);
 
 			// set current user
-			this.user = newUser;
+			user = newUser;
 
 			return "/SettingsList.xhtml?faces-redirect=true";
 		}
@@ -153,19 +155,21 @@ public class LoginBean implements Serializable {
 	}
 
 	public String logout() {
-		this.loggedIn = false;
-		this.fullName = "";
-		this.name = "";
-		this.user = null;
+		loggedIn = false;
+		fullName = "";
+		name = "";
+		user = null;
 
 		return "login";
 	}
 
 	public boolean userExists(String username) {
 
-		Session session = HibernateUtil.openSession();
-		List<Users> rec = session.createCriteria(Users.class)
-				.add(Restrictions.eq("Login", username)).list();
+		Criterion criterion = Restrictions.eq("Login", username);
+//		Session session = HibernateUtil.openSession();
+//		List<Users> rec = session.createCriteria(Users.class)
+//				.add(Restrictions.eq("Login", username)).list();
+		List<Users> rec = (List<Users>) ObjectsListService.ObjectsCriterionList(Users.class, criterion);
 		if (rec.isEmpty()) {
 			return false;
 		} else {

@@ -23,6 +23,8 @@ public class TranspondersListController implements Serializable {
 
 	private Satellites filterSatellite;
 
+	private List<Transponders> TranspondersList;
+
 	public Satellites getFilterSatellite() {
 		return filterSatellite;
 	}
@@ -32,15 +34,20 @@ public class TranspondersListController implements Serializable {
 	}
 
 	public List<Transponders> getTranspondersList() {
-		if (this.filterSatellite != null) {
+		if (filterSatellite != null) {
 			Criterion criterion = Restrictions.eq("Satellite",
-					this.filterSatellite);
-			return (List<Transponders>) ObjectsListService
+					filterSatellite);
+			//return (List<Transponders>) ObjectsListService
+			TranspondersList = (List<Transponders>) ObjectsListService
 					.ObjectsCriterionList(Transponders.class, criterion);
 		} else {
-			return (List<Transponders>) ObjectsListService
+//			return (List<Transponders>) ObjectsListService
+//					.ObjectsList(Transponders.class);
+			TranspondersList = (List<Transponders>) ObjectsListService
 					.ObjectsList(Transponders.class);
 		}
+
+		return TranspondersList;
 	}
 
 	public List<Satellites> getSatellites() {
