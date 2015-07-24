@@ -38,6 +38,16 @@ public class TranspondersListController implements Serializable {
 	@Inject
 	private LoginBean loginBean;
 
+	public boolean isSelectionMode() {
+		return SelectionMode;
+	}
+
+	public void setSelectionMode(boolean selectionMode) {
+		SelectionMode = selectionMode;
+	}
+
+	private boolean SelectionMode = false;
+
 	public LoginBean getLoginBean() {
 		return loginBean;
 	}

@@ -42,6 +42,12 @@
 		
 		
 	    <h:dataTable border="1" var = "s" value="#{transpondersListController.transpondersList}" id = "tp_table">
+	   	<h:column id="">
+			<f:facet name="header" >
+			<h:outputText value="Check"></h:outputText>
+			</f:facet>
+		<h:selectBooleanCheckbox ></h:selectBooleanCheckbox>
+		</h:column>
 	    	<h:column id="Frequency">
 			<f:facet name="header" >
 			<h:outputText value="Frequency"></h:outputText>
