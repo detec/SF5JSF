@@ -33,8 +33,8 @@
 	    	<h:outputText value="Transponders"></h:outputText>
 	    	<h:panelGroup>
 	    	
-				<h:commandButton value="Add">
-				<f:ajax render="settingForm:SettingsConversion" />
+				<h:commandButton value="Add" action="#{setting.addRow()}">
+				<f:ajax execute="settingForm" render="settingForm:SettingsConversion" />
 				
 				</h:commandButton>
 				<h:commandButton value="Up"></h:commandButton>
@@ -42,70 +42,94 @@
 						
 			</h:panelGroup>
 	    		    		    	
-			<h:dataTable border="1" id="SettingsConversion" value="#{setting.dataSettingsConversion}">
+			<h:dataTable border="1" id="SettingsConversion" value="#{setting.dataSettingsConversion}" var = "dataSC">
 				<h:column id="LineNo">
 					<f:facet name="header">
 						<h:outputText value="Line no."></h:outputText>
 					</f:facet>
+					<h:outputText value="#{dataSC.lineNumber}"/>
 				</h:column>
 				<h:column id="Transponder">
 					<f:facet name="header">
 						<h:outputText value="Transponder"></h:outputText>
 					</f:facet>
-				</h:column>
+									
+					<h:outputText value="#{dataSC.transponder}" />
+					<h:button value="..." rendered="#{dataSC.editable}" style="float:right"></h:button>	
+					
+
+					</h:column>
 					<h:column id="Polarization">
 					<f:facet name="header">
 						<h:outputText value="Pol."></h:outputText>
 					</f:facet>
+					<h:outputText value="#{dataSC.polarization}"/>
 				</h:column>
 				<h:column id="Carrier">
 					<f:facet name="header">
 						<h:outputText value="Carrier"></h:outputText>
 					</f:facet>
+					<h:outputText value="#{dataSC.carrier}"/>
 				</h:column>
 				<h:column id="Speed">
 					<f:facet name="header">
 						<h:outputText value="Speed"></h:outputText>
 					</f:facet>
+					<h:outputText value="#{dataSC.speed}"/>
 				</h:column>
 				<h:column id="Satellite">
 					<f:facet name="header">
 						<h:outputText value="Satellite"></h:outputText>
 					</f:facet>
+					<h:outputText value="#{dataSC.satellite}"/>
 				</h:column>
 				<h:column id="FEC">
 					<f:facet name="header">
 						<h:outputText value="FEC"></h:outputText>
 					</f:facet>
+					<h:outputText value="#{dataSC.FEC}"/>
 				</h:column>
 				<h:column id="Satindex">
 					<f:facet name="header">
 						<h:outputText value="SatIdx"></h:outputText>
 					</f:facet>
+					<h:outputText value="#{dataSC.satindex}"/>
 				</h:column>
 				<h:column id="Tpindex">
 					<f:facet name="header">
 						<h:outputText value="TpIdx"></h:outputText>
 					</f:facet>
+					<h:outputText value="#{dataSC.tpindex}"/>
 				</h:column>
 				<h:column id="Intersection">
 					<f:facet name="header">
 						<h:outputText value="Int-tion #"></h:outputText>
 					</f:facet>
+					<h:outputText value="#{dataSC.theLineOfIntersection}"/>
 				</h:column>
 				<h:column id="Comment">
 					<f:facet name="header">
 						<h:outputText value="Comment"></h:outputText>
 					</f:facet>
+					<h:inputText value="#{dataSC.note}" rendered="#{dataSC.editable}" />
+					<h:inputText value="#{dataSC.note}" rendered="#{not dataSC.editable}" />
 				</h:column>
 				<h:column id="ActionColumn">
 					<f:facet name="header">
 						<h:outputText value="Actions"></h:outputText>
 					</f:facet>
-					<h:commandLink value="Edit" action="stub" rendered="true" />
-					<h:commandLink value="Remove" action="stub" rendered="true" />
-					<h:selectBooleanCheckbox></h:selectBooleanCheckbox>
-
+					<h:commandLink value="Edit" action="#{setting.setEditRow(dataSC)}" rendered="#{not dataSC.editable}" />
+					<h:commandLink value="Cancel" action="#{setting.setCancelEdit(dataSC)}" rendered="#{dataSC.editable}" />
+					<h:commandLink value="Remove" action="#{setting.removwRow(dataSC)}" rendered="true">
+						<f:ajax render="settingForm:SettingsConversion" />
+					</h:commandLink>
+					
+					</h:column>
+					<h:column id="Checked">
+					<f:facet name="header">
+						<h:outputText value="Check"></h:outputText>
+					</f:facet>					
+					<h:selectBooleanCheckbox value="#{dataSC.checked}" ></h:selectBooleanCheckbox>
 					</h:column>
 			</h:dataTable>
 					

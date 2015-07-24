@@ -2,12 +2,12 @@ package org.openbox.sf5.application;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -35,6 +35,16 @@ public class SettingsFormController implements Serializable {
 	// here we will receive parameter from page
 	private long Id;
 
+	private Users currentUser;
+
+	public Users getCurrentUser() {
+		return currentUser;
+	}
+
+	public void setCurrentUser(Users currentUser) {
+		this.currentUser = currentUser;
+	}
+
 	public List<SettingsConversionPresentation> getDataSettingsConversion() {
 		return dataSettingsConversion;
 	}
@@ -44,7 +54,7 @@ public class SettingsFormController implements Serializable {
 		this.dataSettingsConversion = dataSettingsConversion;
 	}
 
-	private List<SettingsConversionPresentation> dataSettingsConversion;
+	private List<SettingsConversionPresentation> dataSettingsConversion = new ArrayList<SettingsConversionPresentation>();
 
 	private String Name;
 
@@ -91,8 +101,78 @@ public class SettingsFormController implements Serializable {
 
 	public void addRow() {
 
+		// checking for empty transponders in the table
+		boolean hasEmptyTransponder = false;
+		for (SettingsConversionPresentation e : dataSettingsConversion) {
+			// when adding line we insert newTransponder.
+			if (e.getTransponder().getId() == 0) {
+				hasEmptyTransponder = true;
+			}
+		}
+
+		// quit if we have some empty transponder
+		if (hasEmptyTransponder) {
+			return;
+		}
+
+		addNewLine();
+
 	}
 
+	public void removwRow(SettingsConversionPresentation row) {
+		Long currentRowId = row.getId();
+
+		dataSettingsConversion.remove(row);
+
+		List<SettingsConversion> tpConversion = setting.getConversion();
+		ArrayList<SettingsConversion> deleteArray = new ArrayList<SettingsConversion>();
+
+		// define elements to be deleted
+		for (SettingsConversion e : tpConversion) {
+			if (e.getId() == currentRowId) {
+				deleteArray.add(e);
+			}
+		}
+
+		// iterate deleteArray to actually delete elements
+		for (SettingsConversion e : deleteArray) {
+			tpConversion.remove(e);
+		}
+		renumerateLines();
+
+		// save if row should be deleted from database.
+		if (deleteArray.size() > 0) {
+			ObjectsController contr = new ObjectsController();
+			contr.saveOrUpdate(setting);
+		}
+	}
+
+	public void renumerateLines() {
+
+		int i = 1;
+		for (SettingsConversionPresentation e : dataSettingsConversion) {
+			e.setLineNumber(i);
+			i++;
+		}
+	}
+
+	public void addNewLine() {
+		long newLine = new Long(dataSettingsConversion.size() + 1).longValue();
+
+		SettingsConversionPresentation newLineObject = new SettingsConversionPresentation(
+				setting);
+
+		newLineObject.setLineNumber(newLine);
+		newLineObject.setTransponder(new Transponders()); // to prevent null
+															// pointer Exception
+
+		newLineObject.editable = true;
+
+		dataSettingsConversion.add(newLineObject);
+
+	}
+
+	// this method seem to be called 2 times, first time nothing is initialized
 	@PostConstruct
 	public void init() {
 		if (CurrentLogin == null) {
@@ -104,29 +184,42 @@ public class SettingsFormController implements Serializable {
 		if (CurrentLogin.getCurrentObject() != null
 				&& CurrentLogin.getCurrentObject() instanceof Settings) {
 
-			setting = (Settings) CurrentLogin.getCurrentObject();
+			this.setting = (Settings) CurrentLogin.getCurrentObject();
 		}
 
 		// load passed settings id
 		if (Id != 0) {
 			ObjectsController contr = new ObjectsController();
-			setting = (Settings) contr.select(Settings.class, Id);
-			Name = setting.getName();
-			TheLastEntry = setting.getTheLastEntry();
+			this.setting = (Settings) contr.select(Settings.class, Id);
+			Name = this.setting.getName();
+			TheLastEntry = this.setting.getTheLastEntry();
 		}
 
 		// fill in fields
-		if (setting != null) {
+		if (this.setting != null) {
 			Name = setting.getName();
 			TheLastEntry = setting.getTheLastEntry();
 			// load transponders and so on
+
+			List<SettingsConversion> listRead = this.setting.getConversion();
+
+			// sort in ascending order
+			Collections
+					.sort(listRead, (b1, b2) -> (int) (b1.getLineNumber() - b2
+							.getLineNumber()));
+
+			for (SettingsConversion e : listRead) {
+				dataSettingsConversion
+						.add(new SettingsConversionPresentation(e));
+			}
 		}
+
 	}
 
 	@Inject
 	private LoginBean CurrentLogin;
 
-	private Users currentUser;
+	// private Users currentUser;
 
 	public LoginBean getCurrentLogin() {
 		return CurrentLogin;
@@ -136,17 +229,42 @@ public class SettingsFormController implements Serializable {
 		CurrentLogin = currentLogin;
 	}
 
+	public void setEditRow(SettingsConversionPresentation row) {
+		row.setEditable(true);
+	}
+
+	public void setCancelEdit(SettingsConversionPresentation row) {
+		row.setEditable(false);
+	}
+
 	public void saveSetting() {
 		ObjectsController contr = new ObjectsController();
 		setting.setTheLastEntry(new java.sql.Timestamp(System
 				.currentTimeMillis()));
 
 		setting.setName(Name);
+
+		// unload table with transponders.
+		setting.setConversion(unloadTableSettingsConversion());
 		contr.saveOrUpdate(setting);
 
-		FacesMessage msg = new FacesMessage("Setting saved!");
-		msg.setSeverity(FacesMessage.SEVERITY_INFO);
-		FacesContext.getCurrentInstance().addMessage(null, msg);
+		// FacesMessage msg = new FacesMessage("Setting saved!");
+		// msg.setSeverity(FacesMessage.SEVERITY_INFO);
+		// FacesContext.getCurrentInstance().addMessage(null, msg);
+	}
+
+	public List<SettingsConversion> unloadTableSettingsConversion() {
+
+		List<SettingsConversion> unloadSettingsConversion = new ArrayList<SettingsConversion>();
+		for (SettingsConversion e : dataSettingsConversion) {
+			// we need to check if transponder is null
+			if (e.getTransponder().getId() == 0) {
+				continue;
+			}
+			unloadSettingsConversion.add(e);
+		}
+
+		return unloadSettingsConversion;
 	}
 
 	// http://stackoverflow.com/questions/21988598/how-to-get-selected-tablecell-in-javafx-tableview
@@ -161,6 +279,26 @@ public class SettingsFormController implements Serializable {
 		private static final long serialVersionUID = 7708887469121053073L;
 
 		private Polarization Polarization;
+
+		private transient boolean editable;
+
+		private transient boolean checked;
+
+		public boolean isChecked() {
+			return checked;
+		}
+
+		public void setChecked(boolean checked) {
+			this.checked = checked;
+		}
+
+		public boolean isEditable() {
+			return editable;
+		}
+
+		public void setEditable(boolean editable) {
+			this.editable = editable;
+		}
 
 		public SettingsConversionPresentation(Settings object) {
 			// TODO Auto-generated constructor stub

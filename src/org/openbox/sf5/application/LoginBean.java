@@ -125,8 +125,13 @@ public class LoginBean implements Serializable {
 		else {
 			loggedIn = true;
 			Session session = HibernateUtil.openSession();
-			List<Users> rec = session.createCriteria(Users.class)
-					.add(Restrictions.eq("Login", name)).list();
+
+			Criterion criterion = Restrictions.eq("Login", name);
+
+			// List<Users> rec = session.createCriteria(Users.class)
+			// .add(Restrictions.eq("Login", name)).list();
+			List<Users> rec = (List<Users>) ObjectsListService
+					.ObjectsCriterionList(Users.class, criterion);
 			user = rec.get(0);
 
 			// set faces parameter
@@ -134,7 +139,7 @@ public class LoginBean implements Serializable {
 			// FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
 			// params.put("currentuserid", getCurrentUserStringId());
 
-			return "/SettingsList.xhtml?faces-redirect=true";
+			return "/SettingsList.xhtml";
 		}
 	}
 
