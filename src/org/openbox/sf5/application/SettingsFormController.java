@@ -99,7 +99,7 @@ public class SettingsFormController implements Serializable {
 		Id = pId;
 	}
 
-	public void addRow() {
+	public String gotoSelection() {
 
 		// checking for empty transponders in the table
 		boolean hasEmptyTransponder = false;
@@ -112,10 +112,14 @@ public class SettingsFormController implements Serializable {
 
 		// quit if we have some empty transponder
 		if (hasEmptyTransponder) {
-			return;
+			return "";
 		}
 
-		addNewLine();
+		// save setting as we open selection page
+		saveSetting();
+		this.CurrentLogin.setCurrentObject(setting);
+		return "transponders.xhtml";
+		// addNewLine();
 
 	}
 
@@ -248,9 +252,6 @@ public class SettingsFormController implements Serializable {
 		setting.setConversion(unloadTableSettingsConversion());
 		contr.saveOrUpdate(setting);
 
-		// FacesMessage msg = new FacesMessage("Setting saved!");
-		// msg.setSeverity(FacesMessage.SEVERITY_INFO);
-		// FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	public List<SettingsConversion> unloadTableSettingsConversion() {

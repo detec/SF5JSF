@@ -33,9 +33,10 @@
 	    	<h:outputText value="Transponders"></h:outputText>
 	    	<h:panelGroup>
 	    	
-				<h:commandButton value="Add" action="#{setting.addRow()}">
+				<h:commandButton value="Select transponders..." action="#{setting.gotoSelection()}">
 				<f:ajax execute="settingForm" render="settingForm:SettingsConversion" />
-				
+				 <f:param name="SelectionMode" value="#{true}" />
+				 <f:param name="SettingId" value="#{setting.id}" />
 				</h:commandButton>
 				<h:commandButton value="Up"></h:commandButton>
 				<h:commandButton value="Down"></h:commandButton>

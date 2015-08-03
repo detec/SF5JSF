@@ -1,6 +1,7 @@
 package org.openbox.sf5.db;
 
 import java.io.Serializable;
+import java.lang.reflect.Field;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -196,5 +197,37 @@ public class Transponders implements Serializable {
 			return false;
 		}
 
+	}
+
+	protected void setObjectFieldsFrom(Transponders origObj)
+			throws IllegalAccessException {
+		Field fields[];
+		Class curClass = origObj.getClass();
+
+		if (!curClass.isAssignableFrom(this.getClass())) {
+			throw new IllegalArgumentException(
+					"New object must be the same class or a subclass of original");
+		}
+
+		// Spin through all fields of the class & all its superclasses
+		do {
+			fields = curClass.getDeclaredFields();
+
+			for (int i = 0; i < fields.length; i++) {
+				if (fields[i].getName().equals("serialVersionUID")) {
+					continue;
+				}
+				fields[i].set(this, fields[i].get(origObj));
+			}
+			curClass = curClass.getSuperclass();
+		} while (curClass != null);
+	}
+
+	public Transponders(Transponders origObj) {
+		try {
+			setObjectFieldsFrom(origObj);
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
 	}
 }

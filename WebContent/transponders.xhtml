@@ -28,7 +28,11 @@
 
 
 <ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
-
+    <f:metadata>
+        <f:viewParam name="SelectionMode" value="#{transpondersListController.selectionMode}" />
+        <f:viewParam name="SettingId" value="#{transpondersListController.settingId}"/>
+        <f:event type="preRenderView" listener="#{transpondersListController.init()}" />
+    </f:metadata>
 	<ui:define name="content">
 	  <h:form id="TranspondersForm">
 	  
@@ -39,16 +43,17 @@
 		<f:ajax listener="#{transpondersListController.init()}" render="tp_table" />
 		
 		</h:selectOneMenu>
+		 <h:commandButton value="Select" rendered="#{transpondersListController.selectionMode}" action="#{transpondersListController.selectedTranspondersList}">
+		   </h:commandButton>
 		
-		
-	    <h:dataTable border="1" var = "s" value="#{transpondersListController.transpondersList}" id = "tp_table">
-	   	<h:column id="Check">
+	    <h:dataTable border="1" var = "s" value="#{transpondersListController.getTranspondersChoice()}" id = "tp_table">
+	   	<h:column id="Check"  rendered="#{transpondersListController.selectionMode}" >
 			<f:facet name="header" >
-			<h:outputText value="Check"></h:outputText>
+			<h:outputText value="Select"></h:outputText>
 			</f:facet>
-		<h:selectBooleanCheckbox ></h:selectBooleanCheckbox>
+		<h:selectBooleanCheckbox value="#{s.checked}"></h:selectBooleanCheckbox>
 		</h:column>
-	    	<h:column id="Frequency">
+	    <h:column id="Frequency">
 			<f:facet name="header" >
 			<h:outputText value="Frequency"></h:outputText>
 			</f:facet>
@@ -95,14 +100,8 @@
 			<h:outputText value="Satellite" ></h:outputText>
 		</f:facet>
 		<h:outputText value="#{s.satellite}" ></h:outputText>
-	</h:column>
-		<h:column id="id" render="false">
-		<f:facet name="header">
-			<h:outputText value="Id"></h:outputText>
-		</f:facet>
-		<h:outputText value="#{s.satellite}" ></h:outputText>
-	</h:column>  	  	        
-	  </h:dataTable>
+ 	</h:column>  	        
+	</h:dataTable>
 </h:form>
 	</ui:define>
 </ui:composition>

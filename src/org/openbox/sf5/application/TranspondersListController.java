@@ -1,6 +1,7 @@
 package org.openbox.sf5.application;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -35,7 +36,17 @@ public class TranspondersListController implements Serializable {
 		SelectionMode = selectionMode;
 	}
 
-	private boolean SelectionMode = false;
+	private boolean SelectionMode;
+
+	private long SettingId;
+
+	public long getSettingId() {
+		return SettingId;
+	}
+
+	public void setSettingId(long settingId) {
+		SettingId = settingId;
+	}
 
 	public LoginBean getLoginBean() {
 		return loginBean;
@@ -52,6 +63,28 @@ public class TranspondersListController implements Serializable {
 	}
 
 	private List<Transponders> TranspondersList;
+
+	private List<TransponderChoice> TransponderChoiceList = new ArrayList<TransponderChoice>();
+
+	private List<Transponders> selectedTranspondersList = new ArrayList<Transponders>();
+
+	public List<Transponders> getSelectedTranspondersList() {
+		return selectedTranspondersList;
+	}
+
+	public void setSelectedTranspondersList(
+			List<Transponders> selectedTranspondersList) {
+		this.selectedTranspondersList = selectedTranspondersList;
+	}
+
+	public List<TransponderChoice> getTransponderChoiceList() {
+		return TransponderChoiceList;
+	}
+
+	public void setTransponderChoiceList(
+			List<TransponderChoice> transponderChoiceList) {
+		TransponderChoiceList = transponderChoiceList;
+	}
 
 	public Satellites getFilterSatellite() {
 		return filterSatellite;
@@ -92,6 +125,54 @@ public class TranspondersListController implements Serializable {
 	public List<Satellites> getSatellites() {
 		return (List<Satellites>) ObjectsListService
 				.ObjectsList(Satellites.class);
+	}
+
+	public List<Transponders> getSelectedTransponders() {
+		this.selectedTranspondersList.clear();
+
+		for (TransponderChoice e : this.TransponderChoiceList) {
+			if (e.checked) {
+				this.selectedTranspondersList.add(e);
+			}
+		}
+
+		return this.selectedTranspondersList;
+	}
+
+	// in order to select transponders we should implement wrapper class to
+	// store 'check' property
+
+	public List<TransponderChoice> getTranspondersChoice() {
+
+		this.TransponderChoiceList.clear();
+
+		for (Transponders e : this.TranspondersList) {
+			this.TransponderChoiceList.add(new TransponderChoice(e));
+		}
+
+		return this.TransponderChoiceList;
+	}
+
+	public class TransponderChoice extends Transponders {
+
+		/**
+		 *
+		 */
+		private static final long serialVersionUID = 3262084796351763445L;
+		private boolean checked;
+
+		public boolean isChecked() {
+			return checked;
+		}
+
+		public void setChecked(boolean checked) {
+			this.checked = checked;
+		}
+
+		public TransponderChoice(Transponders transponder) {
+			super(transponder);
+			this.checked = false;
+		}
 	}
 
 }
