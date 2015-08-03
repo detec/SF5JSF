@@ -42,7 +42,7 @@
 		
 		
 	    <h:dataTable border="1" var = "s" value="#{transpondersListController.transpondersList}" id = "tp_table">
-	   	<h:column id="">
+	   	<h:column id="Check">
 			<f:facet name="header" >
 			<h:outputText value="Check"></h:outputText>
 			</f:facet>
@@ -93,6 +93,12 @@
 	<h:column id="Satellite">
 		<f:facet name="header">
 			<h:outputText value="Satellite" ></h:outputText>
+		</f:facet>
+		<h:outputText value="#{s.satellite}" ></h:outputText>
+	</h:column>
+		<h:column id="id" render="false">
+		<f:facet name="header">
+			<h:outputText value="Id"></h:outputText>
 		</f:facet>
 		<h:outputText value="#{s.satellite}" ></h:outputText>
 	</h:column>  	  	        

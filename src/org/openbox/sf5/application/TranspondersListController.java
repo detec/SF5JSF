@@ -24,17 +24,6 @@ public class TranspondersListController implements Serializable {
 	 */
 	private static final long serialVersionUID = -1000488396477162309L;
 
-	// @Inject
-	// private SatelliteInfo SatelliteInfo;
-
-	// public SatelliteInfo getSatelliteInfo() {
-	// return SatelliteInfo;
-	// }
-	//
-	// public void setSatelliteInfo(SatelliteInfo satelliteInfo) {
-	// SatelliteInfo = satelliteInfo;
-	// }
-
 	@Inject
 	private LoginBean loginBean;
 
@@ -75,10 +64,10 @@ public class TranspondersListController implements Serializable {
 	@PostConstruct
 	public void init() {
 
-		if (this.loginBean.getFilterSatId() != 0) {
+		if (loginBean.getFilterSatId() != 0) {
 			ObjectsController contr = new ObjectsController();
-			this.filterSatellite = ((Satellites) contr.select(Satellites.class,
-					this.loginBean.getFilterSatId()));
+			filterSatellite = ((Satellites) contr.select(Satellites.class,
+					loginBean.getFilterSatId()));
 
 		}
 
@@ -96,7 +85,6 @@ public class TranspondersListController implements Serializable {
 	}
 
 	public List<Transponders> getTranspondersList() {
-		// filterSatellite = SatelliteInfo.getSatellite();
 
 		return TranspondersList;
 	}
