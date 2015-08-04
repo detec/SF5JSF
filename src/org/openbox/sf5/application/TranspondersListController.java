@@ -127,7 +127,7 @@ public class TranspondersListController implements Serializable {
 				.ObjectsList(Satellites.class);
 	}
 
-	public void saveSelectedTransponders() {
+	public String saveSelectedTransponders() {
 		selectedTranspondersList.clear();
 
 		for (TransponderChoice e : TransponderChoiceList) {
@@ -137,6 +137,9 @@ public class TranspondersListController implements Serializable {
 		}
 
 		loginBean.setCurrentObject(selectedTranspondersList);
+
+		return "/Setting.xhtml?id=" + Long.toString(this.SettingId)
+				+ "&SelectionMode=" + Boolean.toString(this.SelectionMode);
 	}
 
 	// in order to select transponders we should implement wrapper class to

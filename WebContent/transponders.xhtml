@@ -40,16 +40,14 @@
 	  <h:form id="TranspondersForm">
 	  
 	   <h:outputText value="Filter by satellite" />
-	   <h:selectOneMenu value="#{loginBean.filterSatId}" valueChangeListener= "#{transpondersListController.init()}">
+	   <h:selectOneMenu value="#{loginBean.filterSatId}">
 	    <f:selectItem itemLabel="" itemValue="#{0}" noSelectionOption="true" itemDisabled="true"/>
 		<f:selectItems value="#{transpondersListController.satellites}"  var="sat" itemValue="#{sat.id}" itemLabel="#{sat.name}" />
 		<f:ajax listener="#{transpondersListController.init()}" render="tp_table" />
-		
 		</h:selectOneMenu>
-		 <h:commandButton value="Select" rendered="#{transpondersListController.selectionMode}" outcome="Setting" includeViewParams="true">
-		 <f:param name="id" value="#{transpondersListController.settingId}" />
-		 <f:ajax listener="#{transpondersListController.selectedTranspondersList}"/>
-		   </h:commandButton>
+		
+		 <h:commandButton value="Select" rendered="#{transpondersListController.selectionMode}" action="#{transpondersListController.saveSelectedTransponders()}">
+		 </h:commandButton>
 		
 	    <h:dataTable border="1" var = "s" value="#{transpondersListController.getTranspondersChoice()}" id = "tp_table">
 	   	<h:column id="Check"  rendered="#{transpondersListController.selectionMode}" >
@@ -108,7 +106,7 @@
  	</h:column>  	        
 	</h:dataTable>
 </h:form>
-	</ui:define>
+</ui:define>
 </ui:composition>
 
 

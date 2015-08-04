@@ -129,7 +129,6 @@ public class SettingsFormController implements Serializable {
 		saveSetting();
 		CurrentLogin.setCurrentObject(setting);
 		return "transponders.xhtml";
-		// addNewLine();
 
 	}
 
@@ -170,7 +169,7 @@ public class SettingsFormController implements Serializable {
 		}
 	}
 
-	public void addNewLine() {
+	public void addNewLine(Transponders trans) {
 		long newLine = new Long(dataSettingsConversion.size() + 1).longValue();
 
 		SettingsConversionPresentation newLineObject = new SettingsConversionPresentation(
@@ -217,15 +216,30 @@ public class SettingsFormController implements Serializable {
 
 			List<SettingsConversion> listRead = setting.getConversion();
 
-			// sort in ascending order
-			Collections
-					.sort(listRead, (b1, b2) -> (int) (b1.getLineNumber() - b2
-							.getLineNumber()));
+			// for new item it is null
+			if (listRead != null) {
+				// sort in ascending order
+				Collections.sort(listRead, (b1, b2) -> (int) (b1
+						.getLineNumber() - b2.getLineNumber()));
 
-			for (SettingsConversion e : listRead) {
-				dataSettingsConversion
-						.add(new SettingsConversionPresentation(e));
+				for (SettingsConversion e : listRead) {
+					dataSettingsConversion
+							.add(new SettingsConversionPresentation(e));
+				}
+
 			}
+
+			if (this.SelectionMode) {
+				List<Transponders> transList = (List<Transponders>) this.CurrentLogin
+						.getCurrentObject();
+				for (Transponders e : transList) {
+					addNewLine(e);
+				}
+
+				renumerateLines();
+
+			} // end check selection mode
+
 		}
 
 	}
