@@ -37,6 +37,16 @@ public class SettingsFormController implements Serializable {
 
 	private Users currentUser;
 
+	private boolean SelectionMode;
+
+	public boolean isSelectionMode() {
+		return SelectionMode;
+	}
+
+	public void setSelectionMode(boolean selectionMode) {
+		SelectionMode = selectionMode;
+	}
+
 	public Users getCurrentUser() {
 		return currentUser;
 	}
@@ -117,7 +127,7 @@ public class SettingsFormController implements Serializable {
 
 		// save setting as we open selection page
 		saveSetting();
-		this.CurrentLogin.setCurrentObject(setting);
+		CurrentLogin.setCurrentObject(setting);
 		return "transponders.xhtml";
 		// addNewLine();
 
@@ -188,24 +198,24 @@ public class SettingsFormController implements Serializable {
 		if (CurrentLogin.getCurrentObject() != null
 				&& CurrentLogin.getCurrentObject() instanceof Settings) {
 
-			this.setting = (Settings) CurrentLogin.getCurrentObject();
+			setting = (Settings) CurrentLogin.getCurrentObject();
 		}
 
 		// load passed settings id
 		if (Id != 0) {
 			ObjectsController contr = new ObjectsController();
-			this.setting = (Settings) contr.select(Settings.class, Id);
-			Name = this.setting.getName();
-			TheLastEntry = this.setting.getTheLastEntry();
+			setting = (Settings) contr.select(Settings.class, Id);
+			Name = setting.getName();
+			TheLastEntry = setting.getTheLastEntry();
 		}
 
 		// fill in fields
-		if (this.setting != null) {
+		if (setting != null) {
 			Name = setting.getName();
 			TheLastEntry = setting.getTheLastEntry();
 			// load transponders and so on
 
-			List<SettingsConversion> listRead = this.setting.getConversion();
+			List<SettingsConversion> listRead = setting.getConversion();
 
 			// sort in ascending order
 			Collections

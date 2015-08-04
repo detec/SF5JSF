@@ -127,16 +127,16 @@ public class TranspondersListController implements Serializable {
 				.ObjectsList(Satellites.class);
 	}
 
-	public List<Transponders> getSelectedTransponders() {
-		this.selectedTranspondersList.clear();
+	public void saveSelectedTransponders() {
+		selectedTranspondersList.clear();
 
-		for (TransponderChoice e : this.TransponderChoiceList) {
+		for (TransponderChoice e : TransponderChoiceList) {
 			if (e.checked) {
-				this.selectedTranspondersList.add(e);
+				selectedTranspondersList.add(e);
 			}
 		}
 
-		return this.selectedTranspondersList;
+		loginBean.setCurrentObject(selectedTranspondersList);
 	}
 
 	// in order to select transponders we should implement wrapper class to
@@ -144,13 +144,13 @@ public class TranspondersListController implements Serializable {
 
 	public List<TransponderChoice> getTranspondersChoice() {
 
-		this.TransponderChoiceList.clear();
+		TransponderChoiceList.clear();
 
-		for (Transponders e : this.TranspondersList) {
-			this.TransponderChoiceList.add(new TransponderChoice(e));
+		for (Transponders e : TranspondersList) {
+			TransponderChoiceList.add(new TransponderChoice(e));
 		}
 
-		return this.TransponderChoiceList;
+		return TransponderChoiceList;
 	}
 
 	public class TransponderChoice extends Transponders {
@@ -171,7 +171,7 @@ public class TranspondersListController implements Serializable {
 
 		public TransponderChoice(Transponders transponder) {
 			super(transponder);
-			this.checked = false;
+			checked = false;
 		}
 	}
 
