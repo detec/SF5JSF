@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.RequestScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -17,7 +17,7 @@ import org.openbox.sf5.service.ObjectsController;
 import org.openbox.sf5.service.ObjectsListService;
 
 @Named("transpondersListController")
-@RequestScoped
+@ViewScoped
 public class TranspondersListController implements Serializable {
 
 	/**
@@ -138,8 +138,10 @@ public class TranspondersListController implements Serializable {
 
 		loginBean.setCurrentObject(selectedTranspondersList);
 
-		return "/Setting.xhtml?id=" + Long.toString(this.SettingId)
-				+ "&SelectionMode=" + Boolean.toString(this.SelectionMode);
+		String addressString = "/Setting.xhtml?id=" + Long.toString(SettingId)
+				+ "&SelectionMode=" + Boolean.toString(SelectionMode);
+	//	String addressString = "/Setting.xhtml";
+		return addressString;
 	}
 
 	// in order to select transponders we should implement wrapper class to
