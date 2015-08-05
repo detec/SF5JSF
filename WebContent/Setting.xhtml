@@ -12,7 +12,8 @@
     <f:metadata>
         <f:viewParam name="id" value="#{setting.id}" />
         <f:viewParam name="SelectionMode" value="#{setting.selectionMode}" />
-        <f:event type="preRenderView" listener="#{setting.init()}" />
+        <f:viewAction action="#{setting.init()}"/>
+        
     </f:metadata>
     
 	<ui:define name="content">
@@ -40,6 +41,9 @@
 				</h:link>
 				<h:commandButton value="Up"></h:commandButton>
 				<h:commandButton value="Down"></h:commandButton>
+				
+				<h:commandButton value="Remove selected" action="#{setting.removeSelectedRows()}">
+				</h:commandButton>
 						
 			</h:panelGroup>
 	    		    		    	
@@ -121,14 +125,12 @@
 					</f:facet>
 					<h:commandLink value="Edit" action="#{setting.setEditRow(dataSC)}" rendered="#{not dataSC.editable}" />
 					<h:commandLink value="Cancel" action="#{setting.setCancelEdit(dataSC)}" rendered="#{dataSC.editable}" />
-					<h:commandLink value="Remove" action="#{setting.removwRow(dataSC)}" rendered="true">
-						<f:ajax render="settingForm:SettingsConversion" />
-					</h:commandLink>
+
 					
 					</h:column>
-					<h:column id="Checked">
+					<h:column id="Select">
 					<f:facet name="header">
-						<h:outputText value="Check"></h:outputText>
+						<h:outputText value="Select"></h:outputText>
 					</f:facet>					
 					<h:selectBooleanCheckbox value="#{dataSC.checked}" ></h:selectBooleanCheckbox>
 					</h:column>

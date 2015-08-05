@@ -9,10 +9,8 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.validation.constraints.NotNull;
 
-import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
-import org.openbox.sf5.db.HibernateUtil;
 import org.openbox.sf5.db.Users;
 import org.openbox.sf5.service.ObjectsController;
 import org.openbox.sf5.service.ObjectsListService;
@@ -100,15 +98,6 @@ public class LoginBean implements Serializable {
 		// check if name is filled
 		if (name.equals("")) {
 
-			// Bring the error message using the Faces Context
-			String errorMessage = "You should enter login!";
-
-			// Add View Faces Message
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, errorMessage, errorMessage);
-			// Add the message into context for a specific component
-			FacesContext.getCurrentInstance().addMessage("form:loginMessage",
-					message);
 		}
 
 		if (!userExists(name)) {
@@ -124,20 +113,10 @@ public class LoginBean implements Serializable {
 
 		else {
 			loggedIn = true;
-			Session session = HibernateUtil.openSession();
-
 			Criterion criterion = Restrictions.eq("Login", name);
-
-			// List<Users> rec = session.createCriteria(Users.class)
-			// .add(Restrictions.eq("Login", name)).list();
 			List<Users> rec = (List<Users>) ObjectsListService
 					.ObjectsCriterionList(Users.class, criterion);
 			user = rec.get(0);
-
-			// set faces parameter
-			// Map<String, String> params =
-			// FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-			// params.put("currentuserid", getCurrentUserStringId());
 
 			return "/SettingsList.xhtml";
 		}
@@ -181,9 +160,6 @@ public class LoginBean implements Serializable {
 	public boolean userExists(String username) {
 
 		Criterion criterion = Restrictions.eq("Login", username);
-		// Session session = HibernateUtil.openSession();
-		// List<Users> rec = session.createCriteria(Users.class)
-		// .add(Restrictions.eq("Login", username)).list();
 		List<Users> rec = (List<Users>) ObjectsListService
 				.ObjectsCriterionList(Users.class, criterion);
 		if (rec.isEmpty()) {

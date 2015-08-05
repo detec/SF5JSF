@@ -138,9 +138,15 @@ public class TranspondersListController implements Serializable {
 
 		loginBean.setCurrentObject(selectedTranspondersList);
 
-		String addressString = "/Setting.xhtml?id=" + Long.toString(SettingId)
-				+ "&SelectionMode=" + Boolean.toString(SelectionMode);
-	//	String addressString = "/Setting.xhtml";
+		String addressString = "/Setting.xhtml?faces-redirect=true&id="
+				+ Long.toString(SettingId) + "&SelectionMode="
+				+ Boolean.toString(SelectionMode);
+		// String addressString = "/1.xhtml";
+
+		// FacesMessage msg = new FacesMessage(addressString);
+		// msg.setSeverity(FacesMessage.SEVERITY_INFO);
+		// FacesContext.getCurrentInstance().addMessage(null, msg);
+
 		return addressString;
 	}
 

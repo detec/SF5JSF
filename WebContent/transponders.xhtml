@@ -32,7 +32,7 @@
     <f:metadata>
         <f:viewParam name="SelectionMode" value="#{transpondersListController.selectionMode}" />
         <f:viewParam name="SettingId" value="#{transpondersListController.settingId}"/>
-        <f:event type="preRenderView" listener="#{transpondersListController.init()}" />
+        <f:viewAction action="#{transpondersListController.init()}"/>
     </f:metadata>
     </ui:define>
     

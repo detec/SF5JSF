@@ -5,9 +5,10 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-import javax.annotation.PostConstruct;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -109,32 +110,9 @@ public class SettingsFormController implements Serializable {
 		Id = pId;
 	}
 
-	public String gotoSelection() {
-
-		// checking for empty transponders in the table
-		boolean hasEmptyTransponder = false;
-		for (SettingsConversionPresentation e : dataSettingsConversion) {
-			// when adding line we insert newTransponder.
-			if (e.getTransponder().getId() == 0) {
-				hasEmptyTransponder = true;
-			}
-		}
-
-		// quit if we have some empty transponder
-		if (hasEmptyTransponder) {
-			return "";
-		}
-
-		// save setting as we open selection page
-		saveSetting();
-		CurrentLogin.setCurrentObject(setting);
-		return "transponders.xhtml";
-
-	}
-
 	public void removwRow(SettingsConversionPresentation row) {
 		Long currentRowId = row.getId();
-
+		row.setNote("");
 		dataSettingsConversion.remove(row);
 
 		List<SettingsConversion> tpConversion = setting.getConversion();
@@ -160,6 +138,41 @@ public class SettingsFormController implements Serializable {
 		}
 	}
 
+	public void removeSelectedRows() {
+		List<SettingsConversionPresentation> toRemove = new ArrayList<SettingsConversionPresentation>();
+		Map<Long, SettingsConversionPresentation> tpMap = new HashMap<>();
+
+		for (SettingsConversionPresentation e : dataSettingsConversion) {
+			if (!e.checked) {
+				continue;
+			} else {
+				toRemove.add(e);
+				tpMap.put(new Long(e.getId()), e);
+			}
+
+		}
+
+		dataSettingsConversion.removeAll(toRemove);
+
+		List<SettingsConversion> tpConversion = setting.getConversion();
+		ArrayList<SettingsConversion> deleteArray = new ArrayList<SettingsConversion>();
+
+		// define elements to be deleted
+		for (SettingsConversion e : tpConversion) {
+			if (tpMap.get(new Long(e.getId())) != null) {
+				deleteArray.add(e);
+			}
+		}
+
+		tpConversion.removeAll(deleteArray);
+		renumerateLines();
+
+		if (deleteArray.size() > 0) {
+			ObjectsController contr = new ObjectsController();
+			contr.saveOrUpdate(setting);
+		}
+	}
+
 	public void renumerateLines() {
 
 		int i = 1;
@@ -176,9 +189,10 @@ public class SettingsFormController implements Serializable {
 				setting);
 
 		newLineObject.setLineNumber(newLine);
-		newLineObject.setTransponder(new Transponders()); // to prevent null
-															// pointer Exception
-
+		// newLineObject.setTransponder(new Transponders()); // to prevent null
+		// pointer Exception
+		newLineObject.setTransponder(trans);
+		newLineObject.setNote("");
 		newLineObject.editable = true;
 
 		dataSettingsConversion.add(newLineObject);
@@ -186,7 +200,7 @@ public class SettingsFormController implements Serializable {
 	}
 
 	// this method seem to be called 2 times, first time nothing is initialized
-	@PostConstruct
+	// @PostConstruct
 	public void init() {
 		if (CurrentLogin == null) {
 			return;
@@ -214,6 +228,7 @@ public class SettingsFormController implements Serializable {
 			TheLastEntry = setting.getTheLastEntry();
 			// load transponders and so on
 
+			dataSettingsConversion.clear();
 			List<SettingsConversion> listRead = setting.getConversion();
 
 			// for new item it is null
@@ -229,6 +244,8 @@ public class SettingsFormController implements Serializable {
 
 			}
 
+			renumerateLines();
+
 			if (this.SelectionMode) {
 				List<Transponders> transList = (List<Transponders>) this.CurrentLogin
 						.getCurrentObject();
@@ -237,6 +254,9 @@ public class SettingsFormController implements Serializable {
 				}
 
 				renumerateLines();
+				// clear result
+				this.SelectionMode = false;
+				transList.clear();
 
 			} // end check selection mode
 
@@ -272,6 +292,11 @@ public class SettingsFormController implements Serializable {
 
 		setting.setName(Name);
 
+		// remove editable mark
+		for (SettingsConversionPresentation e : dataSettingsConversion) {
+			e.editable = false;
+		}
+
 		// unload table with transponders.
 		setting.setConversion(unloadTableSettingsConversion());
 		contr.saveOrUpdate(setting);
@@ -287,6 +312,7 @@ public class SettingsFormController implements Serializable {
 				continue;
 			}
 			unloadSettingsConversion.add(e);
+
 		}
 
 		return unloadSettingsConversion;
