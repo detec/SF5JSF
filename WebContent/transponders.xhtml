@@ -32,6 +32,8 @@
     <f:metadata>
         <f:viewParam name="SelectionMode" value="#{transpondersListController.selectionMode}" />
         <f:viewParam name="SettingId" value="#{transpondersListController.settingId}"/>
+        <f:viewParam name="multiple" value="#{transpondersListController.multiple}" />
+        <f:viewParam name="scId" value="#{transpondersListController.scId}"/>
         <f:viewAction action="#{transpondersListController.init()}"/>
     </f:metadata>
     </ui:define>
@@ -41,7 +43,7 @@
 	  
 	   <h:outputText value="Filter by satellite" />
 	   <h:selectOneMenu value="#{loginBean.filterSatId}">
-	    <f:selectItem itemLabel="" itemValue="#{0}" noSelectionOption="true" itemDisabled="true"/>
+	    <f:selectItem itemLabel="" itemValue="#{0}" noSelectionOption="true" itemDisabled="false"/>
 		<f:selectItems value="#{transpondersListController.satellites}"  var="sat" itemValue="#{sat.id}" itemLabel="#{sat.name}" />
 		<f:ajax listener="#{transpondersListController.init()}" render="tp_table" />
 		</h:selectOneMenu>
@@ -54,9 +56,10 @@
 			<f:facet name="header" >
 			<h:outputText value="Select"></h:outputText>
 			</f:facet>
-		<h:selectBooleanCheckbox value="#{s.checked}">
-		<f:ajax listener="#{transpondersListController.processMultipleSingleSelection(s)}"></f:ajax>
+		<h:selectBooleanCheckbox value="#{s.checked}" rendered="#{transpondersListController.multiple}">
 		</h:selectBooleanCheckbox>
+		<h:commandButton value="OK" rendered="#{not transpondersListController.multiple}" action="#{transpondersListController.processMultipleSingleSelection(s)}">
+		</h:commandButton>
 		</h:column>
 	    <h:column id="Frequency">
 			<f:facet name="header" >

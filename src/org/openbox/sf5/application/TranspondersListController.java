@@ -40,6 +40,16 @@ public class TranspondersListController implements Serializable {
 
 	private boolean Multiple;
 
+	private long scId;
+
+	public long getScId() {
+		return scId;
+	}
+
+	public void setScId(long scId) {
+		this.scId = scId;
+	}
+
 	public boolean isMultiple() {
 		return Multiple;
 	}
@@ -150,8 +160,9 @@ public class TranspondersListController implements Serializable {
 
 		String addressString = "/Setting.xhtml?faces-redirect=true&id="
 				+ Long.toString(SettingId) + "&SelectionMode="
-				+ Boolean.toString(SelectionMode);
-		// String addressString = "/1.xhtml";
+				+ Boolean.toString(SelectionMode) + "&Multiple="
+				+ Boolean.toString(this.Multiple) + "&scId="
+				+ Long.toString(this.scId);
 
 		// FacesMessage msg = new FacesMessage(addressString);
 		// msg.setSeverity(FacesMessage.SEVERITY_INFO);
@@ -160,13 +171,46 @@ public class TranspondersListController implements Serializable {
 		return addressString;
 	}
 
-	public void processMultipleSingleSelection(TransponderChoice row) {
-		for (TransponderChoice e : TransponderChoiceList) {
-			// uncheck if it is not multiple
-			if (SelectionMode && !Multiple && !row.equals(e)) {
-				e.checked = false;
-			}
+	public String processMultipleSingleSelection(TransponderChoice row) {
+
+		// doesn't work as expected
+		if (SelectionMode && !Multiple) {
+
+			// for (TransponderChoice e : TransponderChoiceList) {
+			// // uncheck if it is not multiple
+			//
+			// if (row.getId() == e.getId()) {
+			//
+			// } else {
+			// e.checked = false;
+			// }
+			// }
+
+			// long quantity = TransponderChoiceList.stream()
+			// .filter(u -> u.getId() != row.getId() || u.checked).count();
+			//
+			// TransponderChoiceList.stream()
+			// .filter(u -> u.getId() != row.getId() || u.checked)
+			// .forEach(u -> u.checked = false);
+			//
+			// System.out.println(quantity);
+
+			// just add to selected transponders and quit.
+			selectedTranspondersList.clear();
+			selectedTranspondersList.add(row);
+
+			loginBean.setCurrentObject(selectedTranspondersList);
+
+			String addressString = "/Setting.xhtml?faces-redirect=true&id="
+					+ Long.toString(SettingId) + "&SelectionMode="
+					+ Boolean.toString(SelectionMode) + "&Multiple="
+					+ Boolean.toString(this.Multiple) + "&scId="
+					+ Long.toString(this.scId);
+			return addressString;
+
 		}
+
+		return "";
 	}
 
 	// in order to select transponders we should implement wrapper class to

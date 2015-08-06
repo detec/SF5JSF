@@ -40,6 +40,26 @@ public class SettingsFormController implements Serializable {
 
 	private boolean SelectionMode;
 
+	private boolean multiple;
+
+	private long scId;
+
+	public boolean isMultiple() {
+		return multiple;
+	}
+
+	public void setMultiple(boolean multiple) {
+		this.multiple = multiple;
+	}
+
+	public long getScId() {
+		return scId;
+	}
+
+	public void setScId(long scId) {
+		this.scId = scId;
+	}
+
 	public boolean isSelectionMode() {
 		return SelectionMode;
 	}
@@ -249,8 +269,24 @@ public class SettingsFormController implements Serializable {
 			if (this.SelectionMode) {
 				List<Transponders> transList = (List<Transponders>) this.CurrentLogin
 						.getCurrentObject();
-				for (Transponders e : transList) {
-					addNewLine(e);
+
+				if (this.multiple) {
+
+					for (Transponders e : transList) {
+						addNewLine(e);
+					}
+				}
+
+				else {
+					if (transList.size() > 0) {
+						// change transponder in the given settingsconversion
+						// line
+						dataSettingsConversion
+								.stream()
+								.filter(t -> t.getId() == this.scId)
+								.forEach(
+										t -> t.setTransponder(transList.get(0)));
+					}
 				}
 
 				renumerateLines();

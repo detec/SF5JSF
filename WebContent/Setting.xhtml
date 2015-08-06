@@ -12,6 +12,8 @@
     <f:metadata>
         <f:viewParam name="id" value="#{setting.id}" />
         <f:viewParam name="SelectionMode" value="#{setting.selectionMode}" />
+        <f:viewParam name="multiple" value="#{setting.multiple}" />
+        <f:viewParam name="scId" value="#{setting.scId}"/>
         <f:viewAction action="#{setting.init()}"/>
         
     </f:metadata>
@@ -38,6 +40,8 @@
 				<h:link value="Select transponders..." outcome="transponders" includeViewParams="true">
 				 <f:param name="SelectionMode" value="true" />
 				 <f:param name="SettingId" value="#{setting.id}" />
+				 <f:param name="multiple" value="true" />
+				 <f:param name="scId" value="0"/>
 				</h:link>
 				<h:commandButton value="Up"></h:commandButton>
 				<h:commandButton value="Down"></h:commandButton>
@@ -60,7 +64,12 @@
 					</f:facet>
 									
 					<h:outputText value="#{dataSC.transponder}" />
-					<h:button value="..." rendered="#{dataSC.editable}" style="float:right"></h:button>	
+					<h:link value="..." rendered="#{dataSC.editable}" style="float:right" outcome="transponders" includeViewParams="true">
+					<f:param name="SelectionMode" value="true" />
+				 	<f:param name="SettingId" value="#{setting.id}" />
+				 	<f:param name="multiple" value="false" />
+				 	<f:param name="scId" value="#{dataSC.id}" />
+					</h:link>	
 					
 
 					</h:column>
