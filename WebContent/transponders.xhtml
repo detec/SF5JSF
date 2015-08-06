@@ -54,7 +54,9 @@
 			<f:facet name="header" >
 			<h:outputText value="Select"></h:outputText>
 			</f:facet>
-		<h:selectBooleanCheckbox value="#{s.checked}"></h:selectBooleanCheckbox>
+		<h:selectBooleanCheckbox value="#{s.checked}">
+		<f:ajax listener="#{transpondersListController.processMultipleSingleSelection(s)}"></f:ajax>
+		</h:selectBooleanCheckbox>
 		</h:column>
 	    <h:column id="Frequency">
 			<f:facet name="header" >

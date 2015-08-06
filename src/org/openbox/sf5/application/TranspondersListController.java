@@ -38,6 +38,16 @@ public class TranspondersListController implements Serializable {
 
 	private boolean SelectionMode;
 
+	private boolean Multiple;
+
+	public boolean isMultiple() {
+		return Multiple;
+	}
+
+	public void setMultiple(boolean multiple) {
+		Multiple = multiple;
+	}
+
 	private long SettingId;
 
 	public long getSettingId() {
@@ -148,6 +158,15 @@ public class TranspondersListController implements Serializable {
 		// FacesContext.getCurrentInstance().addMessage(null, msg);
 
 		return addressString;
+	}
+
+	public void processMultipleSingleSelection(TransponderChoice row) {
+		for (TransponderChoice e : TransponderChoiceList) {
+			// uncheck if it is not multiple
+			if (SelectionMode && !Multiple && !row.equals(e)) {
+				e.checked = false;
+			}
+		}
 	}
 
 	// in order to select transponders we should implement wrapper class to

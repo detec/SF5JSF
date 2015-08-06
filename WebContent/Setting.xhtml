@@ -92,7 +92,7 @@
 					<f:facet name="header">
 						<h:outputText value="FEC"></h:outputText>
 					</f:facet>
-					<h:outputText value="#{dataSC.FEC}"/>
+					<h:outputText value="#{dataSC.FEC.toString()}"/>
 				</h:column>
 				<h:column id="Satindex">
 					<f:facet name="header">
@@ -117,7 +117,7 @@
 						<h:outputText value="Comment"></h:outputText>
 					</f:facet>
 					<h:inputText value="#{dataSC.note}" rendered="#{dataSC.editable}" />
-					<h:inputText value="#{dataSC.note}" rendered="#{not dataSC.editable}" />
+					<h:outputText value="#{dataSC.note}" rendered="#{not dataSC.editable}" />
 				</h:column>
 				<h:column id="ActionColumn">
 					<f:facet name="header">
