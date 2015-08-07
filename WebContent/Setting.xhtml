@@ -14,6 +14,7 @@
         <f:viewParam name="SelectionMode" value="#{setting.selectionMode}" />
         <f:viewParam name="multiple" value="#{setting.multiple}" />
         <f:viewParam name="scId" value="#{setting.scId}"/>
+        <f:viewParam name="settingId" value="#{transpondersListController.settingId}"/>
         <f:viewAction action="#{setting.init()}"/>
         
     </f:metadata>
@@ -37,17 +38,23 @@
 	    	<h:outputText value="Transponders"></h:outputText>
 	    	<h:panelGroup>
 	    	
-				<h:link value="Select transponders..." outcome="transponders" includeViewParams="true">
+				<h:commandButton value="Select transponders..." action="#{setting.goToSelectTransponders()}">
 				 <f:param name="SelectionMode" value="true" />
 				 <f:param name="SettingId" value="#{setting.id}" />
 				 <f:param name="multiple" value="true" />
 				 <f:param name="scId" value="0"/>
-				</h:link>
+				</h:commandButton>
 				<h:commandButton value="Up" action="#{setting.moveUp()}"></h:commandButton>
-				<h:commandButton value="Down"></h:commandButton>
+				<h:commandButton value="Down" action="#{setting.moveDown()}"></h:commandButton>
 				
 				<h:commandButton value="Remove selected" action="#{setting.removeSelectedRows()}">
 				</h:commandButton>
+				<h:link value="Select from other setting"  outcome="SettingsList">
+				 <f:param name="SelectionMode" value="true" />
+				 <f:param name="settingId" value="#{setting.id}" /> 
+				 
+				</h:link>
+				<h:commandButton value="Copy to setting" rendered="#{setting.selectionMode and setting.settingId != 0}"/>
 						
 			</h:panelGroup>
 	    		    		    	
@@ -147,7 +154,6 @@
 					
 		</h:panelGroup>
 			<h:commandButton value="OK" action="#{setting.saveSetting()}">
-			<f:ajax render="settingForm" />
 			</h:commandButton>
 			<h:commandButton value="Cancel" action="cancel"></h:commandButton>
 		</h:form>

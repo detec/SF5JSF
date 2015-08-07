@@ -8,21 +8,28 @@
 
 
 <ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
-
+    <f:metadata>
+         <f:viewParam name="SelectionMode" value="#{settingsController.selectionMode}" />
+         <f:viewParam name="settingId" value="#{settingsController.settingId}"/>
+     </f:metadata>
 	<ui:define name="content">
 	    <h:outputLabel value="Current login: #{loginBean.name}, #{loginBean.user.name}">
-	    
 	    </h:outputLabel>
+	    <br></br>
+	    <h:outputLabel value="Choose one setting to select transponders from" rendered="#{settingsController.selectionMode}"/>
+	    
 	    <h:form  enctype="multipart/form-data">
-	    <h:dataTable border="1" var = "s" value="#{settingsController.settingsbyUser}">
+	<h:dataTable border="1" var = "s" value="#{settingsController.settingsbyUser}">
+    
 	<h:column id="ID">
 		<f:facet name="header" >
 			<h:outputText value="ID"></h:outputText>
 			</f:facet>
 	<h:link value="#{s.id}" outcome="Setting">
 	 <f:param name="id" value="#{s.id}" />
-	 <f:param name="SelectionMode" value="false"/>
-	</h:link>
+	 <f:param name="SelectionMode" value="#{settingsController.selectionMode}"/>
+	 <f:param name="settingId" value="#{settingsController.settingId}"/>
+	 </h:link>
 	</h:column>
 	<h:column id="Name">
 		<f:facet name="header">
@@ -38,18 +45,18 @@
 		<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
 		</h:outputText>		
 	</h:column>
-	<h:column id="Remove">
+	<h:column id="Remove" rendered="#{not settingsController.selectionMode}">
 		<f:facet name="header" >
 			<h:outputText value="Delete"></h:outputText>
 			</f:facet>
-	<h:commandLink value="Delete" action="#{settingsController.removeSetting(s.id)}"/>
+	<h:commandLink value="Delete" action="#{settingsController.removeSetting(s.id)}" />
 	
 	</h:column>	
 </h:dataTable>
 </h:form>
 <h:form>
-	<h:commandLink value="Add setting..." action="#{settingsController.addSetting()}"></h:commandLink>
-	<h:link  value="Import transponders from file..." outcome="importtranspondersfile">
+	<h:commandLink value="Add setting..." action="#{settingsController.addSetting()}" rendered="#{not settingsController.selectionMode}"></h:commandLink>
+	<h:link  value="Import transponders from file..." outcome="importtranspondersfile" rendered="#{not settingsController.selectionMode}">
 		
 	</h:link>
 	

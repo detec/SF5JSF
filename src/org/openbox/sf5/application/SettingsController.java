@@ -36,6 +36,26 @@ public class SettingsController implements Serializable {
 
 	private Users currentUser;
 
+	private boolean SelectionMode;
+
+	private long settingId;
+
+	public long getSettingId() {
+		return this.settingId;
+	}
+
+	public void setSettingId(long settingId) {
+		this.settingId = settingId;
+	}
+
+	public boolean isSelectionMode() {
+		return SelectionMode;
+	}
+
+	public void setSelectionMode(boolean selectionMode) {
+		SelectionMode = selectionMode;
+	}
+
 	public LoginBean getCurrentLogin() {
 		return this.CurrentLogin;
 	}
@@ -90,7 +110,7 @@ public class SettingsController implements Serializable {
 		this.CurrentLogin.setCurrentObject(setting);
 
 		// redirect to settings page
-		return "Setting";
+		return "/Setting.xhtml?faces-redirect=true&SelectionMode=false&multiple=false";
 	}
 
 	public String removeSetting(long pId) {

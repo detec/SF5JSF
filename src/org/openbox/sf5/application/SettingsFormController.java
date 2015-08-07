@@ -45,6 +45,16 @@ public class SettingsFormController implements Serializable {
 
 	private long scId;
 
+	private long settingId;
+
+	public long getSettingId() {
+		return settingId;
+	}
+
+	public void setSettingId(long settingId) {
+		this.settingId = settingId;
+	}
+
 	public boolean isMultiple() {
 		return multiple;
 	}
@@ -101,19 +111,26 @@ public class SettingsFormController implements Serializable {
 	}
 
 	public String getName() {
-		// return setting.getName();
 		return Name;
 	}
 
 	public void setName(String pName) {
-		// setting.setName(pName);
 		Name = pName;
 	}
 
 	public Date getTheLastEntry() {
-		// return setting.getTheLastEntry();
-		// return this.TheLastEntry;
 		return TheLastEntry == null ? null : new Date(TheLastEntry.getTime());
+	}
+
+	public String selectFromOtherSetting() {
+		if (setting.getId() == 0) {
+			saveSetting();
+		}
+
+		String addressString = "/SettingsList.xhtml?faces-redirect=true&SelectionMode=true"
+				+ "&SettingId=" + Long.toString(this.setting.getId());
+
+		return addressString;
 	}
 
 	public void setTheLastEntry() {
@@ -129,6 +146,20 @@ public class SettingsFormController implements Serializable {
 	public void setId(long pId) {
 		// setting.setId(pId);
 		Id = pId;
+	}
+
+	public String goToSelectTransponders() {
+		// check if setting is new and save it
+		if (setting.getId() == 0) {
+			saveSetting();
+		}
+
+		String addressString = "/transponders.xhtml?faces-redirect=true&SelectionMode=true"
+				+ "&SettingId="
+				+ Long.toString(this.setting.getId())
+				+ "&multiple=true&scId=0";
+
+		return addressString;
 	}
 
 	public void removwRow(SettingsConversionPresentation row) {
@@ -196,18 +227,41 @@ public class SettingsFormController implements Serializable {
 
 	public void moveUp() {
 		List<SettingsConversionPresentation> selectedRows = new ArrayList<SettingsConversionPresentation>();
-		selectedRows = dataSettingsConversion.stream().filter(t -> t.checked).collect(Collectors.toList());
-		selectedRows.stream().forEach(t ->
-		{
+		selectedRows = dataSettingsConversion.stream().filter(t -> t.checked)
+				.collect(Collectors.toList());
+		selectedRows.stream().forEach(t -> {
 			int currentIndex = dataSettingsConversion.indexOf(t);
 			if (currentIndex > 0) {
 				dataSettingsConversion.add(currentIndex - 1, t);
-				dataSettingsConversion.remove(currentIndex + 1); // now it is 1 item larger
+				dataSettingsConversion.remove(currentIndex + 1); // now it is 1
+																	// item
+																	// larger
 			}
 		}
 
-				);
+		);
 
+		renumerateLines();
+	}
+
+	public void moveDown() {
+		List<SettingsConversionPresentation> selectedRows = new ArrayList<SettingsConversionPresentation>();
+		selectedRows = dataSettingsConversion.stream().filter(t -> t.checked)
+				.collect(Collectors.toList());
+		selectedRows.stream().forEach(
+				t -> {
+					int currentIndex = dataSettingsConversion.indexOf(t);
+					if (currentIndex < dataSettingsConversion.size() - 1) {
+						dataSettingsConversion.add(currentIndex + 1, t);
+						dataSettingsConversion.add(currentIndex,
+								dataSettingsConversion.get(currentIndex + 2));
+						// removing superfluous copies.
+						dataSettingsConversion.remove(currentIndex + 2);
+						dataSettingsConversion.remove(currentIndex + 2);
+					}
+
+				});
+		renumerateLines();
 	}
 
 	public void renumerateLines() {
@@ -283,7 +337,8 @@ public class SettingsFormController implements Serializable {
 
 			renumerateLines();
 
-			if (SelectionMode) {
+			// if we select from transponders
+			if (SelectionMode && this.settingId == 0) {
 				List<Transponders> transList = (List<Transponders>) CurrentLogin
 						.getCurrentObject();
 
@@ -310,6 +365,10 @@ public class SettingsFormController implements Serializable {
 
 			} // end check selection mode
 
+			// select from other setting
+			if (SelectionMode && this.settingId != 0) {
+
+			}
 		}
 
 	}
@@ -343,9 +402,7 @@ public class SettingsFormController implements Serializable {
 		setting.setName(Name);
 
 		// remove editable mark
-		for (SettingsConversionPresentation e : dataSettingsConversion) {
-			e.editable = false;
-		}
+		dataSettingsConversion.stream().forEach(t -> t.editable = false);
 
 		// unload table with transponders.
 		setting.setConversion(unloadTableSettingsConversion());
