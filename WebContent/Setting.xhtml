@@ -43,7 +43,7 @@
 				 <f:param name="multiple" value="true" />
 				 <f:param name="scId" value="0"/>
 				</h:link>
-				<h:commandButton value="Up"></h:commandButton>
+				<h:commandButton value="Up" action="#{setting.moveUp()}"></h:commandButton>
 				<h:commandButton value="Down"></h:commandButton>
 				
 				<h:commandButton value="Remove selected" action="#{setting.removeSelectedRows()}">
@@ -146,7 +146,9 @@
 			</h:dataTable>
 					
 		</h:panelGroup>
-			<h:commandButton value="OK" action="#{setting.saveSetting()}"></h:commandButton>
+			<h:commandButton value="OK" action="#{setting.saveSetting()}">
+			<f:ajax render="settingForm" />
+			</h:commandButton>
 			<h:commandButton value="Cancel" action="cancel"></h:commandButton>
 		</h:form>
 		

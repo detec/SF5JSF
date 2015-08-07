@@ -38,7 +38,7 @@ public class TranspondersListController implements Serializable {
 
 	private boolean SelectionMode;
 
-	private boolean Multiple;
+	private boolean multiple;
 
 	private long scId;
 
@@ -51,11 +51,11 @@ public class TranspondersListController implements Serializable {
 	}
 
 	public boolean isMultiple() {
-		return Multiple;
+		return multiple;
 	}
 
 	public void setMultiple(boolean multiple) {
-		Multiple = multiple;
+		this.multiple = multiple;
 	}
 
 	private long SettingId;
@@ -160,9 +160,9 @@ public class TranspondersListController implements Serializable {
 
 		String addressString = "/Setting.xhtml?faces-redirect=true&id="
 				+ Long.toString(SettingId) + "&SelectionMode="
-				+ Boolean.toString(SelectionMode) + "&Multiple="
-				+ Boolean.toString(this.Multiple) + "&scId="
-				+ Long.toString(this.scId);
+				+ Boolean.toString(SelectionMode) + "&multiple="
+				+ Boolean.toString(multiple) + "&scId="
+				+ Long.toString(scId);
 
 		// FacesMessage msg = new FacesMessage(addressString);
 		// msg.setSeverity(FacesMessage.SEVERITY_INFO);
@@ -174,7 +174,7 @@ public class TranspondersListController implements Serializable {
 	public String processMultipleSingleSelection(TransponderChoice row) {
 
 		// doesn't work as expected
-		if (SelectionMode && !Multiple) {
+		if (SelectionMode && !multiple) {
 
 			// for (TransponderChoice e : TransponderChoiceList) {
 			// // uncheck if it is not multiple
@@ -203,9 +203,9 @@ public class TranspondersListController implements Serializable {
 
 			String addressString = "/Setting.xhtml?faces-redirect=true&id="
 					+ Long.toString(SettingId) + "&SelectionMode="
-					+ Boolean.toString(SelectionMode) + "&Multiple="
-					+ Boolean.toString(this.Multiple) + "&scId="
-					+ Long.toString(this.scId);
+					+ Boolean.toString(SelectionMode) + "&multiple="
+					+ Boolean.toString(multiple) + "&scId="
+					+ Long.toString(scId);
 			return addressString;
 
 		}

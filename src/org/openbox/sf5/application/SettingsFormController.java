@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -193,6 +194,22 @@ public class SettingsFormController implements Serializable {
 		}
 	}
 
+	public void moveUp() {
+		List<SettingsConversionPresentation> selectedRows = new ArrayList<SettingsConversionPresentation>();
+		selectedRows = dataSettingsConversion.stream().filter(t -> t.checked).collect(Collectors.toList());
+		selectedRows.stream().forEach(t ->
+		{
+			int currentIndex = dataSettingsConversion.indexOf(t);
+			if (currentIndex > 0) {
+				dataSettingsConversion.add(currentIndex - 1, t);
+				dataSettingsConversion.remove(currentIndex + 1); // now it is 1 item larger
+			}
+		}
+
+				);
+
+	}
+
 	public void renumerateLines() {
 
 		int i = 1;
@@ -266,15 +283,12 @@ public class SettingsFormController implements Serializable {
 
 			renumerateLines();
 
-			if (this.SelectionMode) {
-				List<Transponders> transList = (List<Transponders>) this.CurrentLogin
+			if (SelectionMode) {
+				List<Transponders> transList = (List<Transponders>) CurrentLogin
 						.getCurrentObject();
 
-				if (this.multiple) {
-
-					for (Transponders e : transList) {
-						addNewLine(e);
-					}
+				if (multiple) {
+					transList.stream().forEach(t -> addNewLine(t));
 				}
 
 				else {
@@ -283,7 +297,7 @@ public class SettingsFormController implements Serializable {
 						// line
 						dataSettingsConversion
 								.stream()
-								.filter(t -> t.getId() == this.scId)
+								.filter(t -> t.getId() == scId)
 								.forEach(
 										t -> t.setTransponder(transList.get(0)));
 					}
@@ -291,7 +305,7 @@ public class SettingsFormController implements Serializable {
 
 				renumerateLines();
 				// clear result
-				this.SelectionMode = false;
+				SelectionMode = false;
 				transList.clear();
 
 			} // end check selection mode
