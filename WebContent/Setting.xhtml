@@ -14,7 +14,7 @@
         <f:viewParam name="SelectionMode" value="#{setting.selectionMode}" />
         <f:viewParam name="multiple" value="#{setting.multiple}" />
         <f:viewParam name="scId" value="#{setting.scId}"/>
-        <f:viewParam name="settingId" value="#{transpondersListController.settingId}"/>
+        <f:viewParam name="settingId" value="#{setting.settingId}"/>
         <f:viewAction action="#{setting.init()}"/>
         
     </f:metadata>
@@ -38,23 +38,23 @@
 	    	<h:outputText value="Transponders"></h:outputText>
 	    	<h:panelGroup>
 	    	
-				<h:commandButton value="Select transponders..." action="#{setting.goToSelectTransponders()}">
-				 <f:param name="SelectionMode" value="true" />
-				 <f:param name="SettingId" value="#{setting.id}" />
-				 <f:param name="multiple" value="true" />
-				 <f:param name="scId" value="0"/>
-				</h:commandButton>
+
 				<h:commandButton value="Up" action="#{setting.moveUp()}"></h:commandButton>
 				<h:commandButton value="Down" action="#{setting.moveDown()}"></h:commandButton>
 				
 				<h:commandButton value="Remove selected" action="#{setting.removeSelectedRows()}">
 				</h:commandButton>
-				<h:link value="Select from other setting"  outcome="SettingsList">
+				<h:commandButton value="Select transponders..." action="#{setting.goToSelectTransponders()}" rendered="#{not (setting.selectionMode and setting.settingId != 0)}">
+				 <f:param name="SelectionMode" value="true" />
+				 <f:param name="SettingId" value="#{setting.id}" />
+				 <f:param name="multiple" value="true" />
+				 <f:param name="scId" value="0"/>
+				</h:commandButton>
+				<h:commandButton value="Select from other setting"  action="#{setting.copyFromAnotherSetting()}" rendered="#{not (setting.selectionMode and setting.settingId != 0)}">
 				 <f:param name="SelectionMode" value="true" />
 				 <f:param name="settingId" value="#{setting.id}" /> 
-				 
-				</h:link>
-				<h:commandButton value="Copy to setting" rendered="#{setting.selectionMode and setting.settingId != 0}"/>
+				 </h:commandButton>
+				<h:commandButton value="Copy selected to setting" action="#{setting.copyToOtherSetting()}" rendered="#{setting.selectionMode and setting.settingId != 0}"/>
 						
 			</h:panelGroup>
 	    		    		    	
@@ -77,8 +77,6 @@
 				 	<f:param name="multiple" value="false" />
 				 	<f:param name="scId" value="#{dataSC.id}" />
 					</h:link>	
-					
-
 					</h:column>
 					<h:column id="Polarization">
 					<f:facet name="header">

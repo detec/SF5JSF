@@ -176,25 +176,6 @@ public class TranspondersListController implements Serializable {
 		// doesn't work as expected
 		if (SelectionMode && !multiple) {
 
-			// for (TransponderChoice e : TransponderChoiceList) {
-			// // uncheck if it is not multiple
-			//
-			// if (row.getId() == e.getId()) {
-			//
-			// } else {
-			// e.checked = false;
-			// }
-			// }
-
-			// long quantity = TransponderChoiceList.stream()
-			// .filter(u -> u.getId() != row.getId() || u.checked).count();
-			//
-			// TransponderChoiceList.stream()
-			// .filter(u -> u.getId() != row.getId() || u.checked)
-			// .forEach(u -> u.checked = false);
-			//
-			// System.out.println(quantity);
-
 			// just add to selected transponders and quit.
 			selectedTranspondersList.clear();
 			selectedTranspondersList.add(row);

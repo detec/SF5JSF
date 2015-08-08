@@ -37,6 +37,9 @@ public class SettingsFormController implements Serializable {
 	// here we will receive parameter from page
 	private long Id;
 
+	@Inject
+	private LoginBean loginBean;
+
 	private Users currentUser;
 
 	private boolean SelectionMode;
@@ -46,6 +49,17 @@ public class SettingsFormController implements Serializable {
 	private long scId;
 
 	private long settingId;
+
+	private List<SettingsConversionPresentation> selectedSCPRows = new ArrayList<SettingsConversionPresentation>();
+
+	public List<SettingsConversionPresentation> getSelectedSCPRows() {
+		return selectedSCPRows;
+	}
+
+	public void setSelectedSCPRows(
+			List<SettingsConversionPresentation> selectedSCPRows) {
+		this.selectedSCPRows = selectedSCPRows;
+	}
 
 	public long getSettingId() {
 		return settingId;
@@ -128,7 +142,7 @@ public class SettingsFormController implements Serializable {
 		}
 
 		String addressString = "/SettingsList.xhtml?faces-redirect=true&SelectionMode=true"
-				+ "&SettingId=" + Long.toString(this.setting.getId());
+				+ "&SettingId=" + Long.toString(setting.getId());
 
 		return addressString;
 	}
@@ -156,7 +170,7 @@ public class SettingsFormController implements Serializable {
 
 		String addressString = "/transponders.xhtml?faces-redirect=true&SelectionMode=true"
 				+ "&SettingId="
-				+ Long.toString(this.setting.getId())
+				+ Long.toString(setting.getId())
 				+ "&multiple=true&scId=0";
 
 		return addressString;
@@ -338,7 +352,7 @@ public class SettingsFormController implements Serializable {
 			renumerateLines();
 
 			// if we select from transponders
-			if (SelectionMode && this.settingId == 0) {
+			if (SelectionMode && settingId == 0) {
 				List<Transponders> transList = (List<Transponders>) CurrentLogin
 						.getCurrentObject();
 
@@ -366,11 +380,57 @@ public class SettingsFormController implements Serializable {
 			} // end check selection mode
 
 			// select from other setting
-			if (SelectionMode && this.settingId != 0) {
+			if (SelectionMode && settingId != 0
+					&& settingId == Id // we must be sure that all this happens in the starting srtting
+					) {
+				List<SettingsConversionPresentation> SCPList = (List<SettingsConversionPresentation>) CurrentLogin
+						.getCurrentObject();
 
+				// now clear old parent_id
+				SCPList.stream().forEach(t -> {
+					// we must try to clean all id reference to initial setting.
+					t.setparent_id(setting);
+					t.setId(0);
+					t.setLineNumber(0);
+				});
+
+				dataSettingsConversion.addAll(SCPList);
+
+				renumerateLines();
+				SelectionMode = false;
+				SCPList.clear();
 			}
 		}
 
+	}
+
+	public String copyToOtherSetting() {
+		selectedSCPRows.clear();
+		selectedSCPRows = dataSettingsConversion
+		.stream().filter(t -> t.checked).collect(Collectors.toList());
+
+		loginBean.setCurrentObject(selectedSCPRows);
+
+		String addressString = "/Setting.xhtml?faces-redirect=true&id="
+				+ Long.toString(settingId) + "&SelectionMode=true"
+				//+ Boolean.toString(SelectionMode)
+				+ "&multiple="
+				+ Boolean.toString(multiple) + "&scId="
+				+ Long.toString(scId) + "&settingId="
+				+ Long.toString(settingId);
+
+		return addressString;
+	}
+
+	public String copyFromAnotherSetting() {
+		if (setting.getId() == 0) {
+			saveSetting();
+		}
+
+		String addressString = "/SettingsList.xhtml?faces-redirect=true&SelectionMode=true&"
+				+ "settingId=" + Long.toString(setting.getId());
+
+		return addressString;
 	}
 
 	@Inject
