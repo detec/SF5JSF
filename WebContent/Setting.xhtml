@@ -34,12 +34,12 @@
 
 		</h:panelGrid>
 	    <h:panelGroup>
-	    	<h:outputText value="Transponders"></h:outputText>
+	    	<h:outputText value="Transponders table"></h:outputText>
 	    </h:panelGroup>
+	    <br></br>
 	    <h:panelGroup rendered="#{setting.show32error}">
 	    	<h:outputText value="Table Transponders must contain exactly 32 records!" style="color: #FF0000"></h:outputText>
-	    	<h:outputText value="Settings conversion XML unload success!" style="color: #008000"></h:outputText>
-	</h:panelGroup>
+	    </h:panelGroup>
 	<h:panelGroup>
 		<h:commandButton value="Up" action="#{setting.moveUp()}"></h:commandButton>
 		<h:commandButton value="Down" action="#{setting.moveDown()}"></h:commandButton>
@@ -51,14 +51,19 @@
 			 <f:param name="multiple" value="true" />
 			 <f:param name="scId" value="0"/>
 		</h:commandButton>
-		<h:commandButton value="Select from other setting"  action="#{setting.copyFromAnotherSetting()}" rendered="#{not (setting.selectionMode and setting.settingId != 0)}">
+		<h:commandButton value="Select from other setting..."  action="#{setting.copyFromAnotherSetting()}" rendered="#{not (setting.selectionMode and setting.settingId != 0)}">
 			 <f:param name="SelectionMode" value="true" />
 			 <f:param name="settingId" value="#{setting.id}" /> 
 		 </h:commandButton>
 		<h:commandButton value="Copy selected to setting" action="#{setting.copyToOtherSetting()}" rendered="#{setting.selectionMode and setting.settingId != 0}"/>
 	</h:panelGroup>
 	<h:panelGroup>
+	<br></br>
 	<h:commandButton value="Generate Sat/Tp structure" action="#{setting.generateSatTpStructure()}"></h:commandButton>
+	<h:commandButton value="Export to XML..." action="#{setting.exportToXML()}"></h:commandButton>
+	<h:link value="Print..."  outcome="SettingPrintFull">
+	<f:param name="id" value="#{setting.id}" /> 
+	</h:link>
 	</h:panelGroup>
 	    		    		    	
 	<h:dataTable border="1" id="SettingsConversion" value="#{setting.dataSettingsConversion}" var = "dataSC">

@@ -1,12 +1,12 @@
 package org.openbox.sf5.application;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileOutputStream;
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.io.OutputStream;
 import java.io.Serializable;
-import java.io.Writer;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -14,13 +14,13 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
 import org.openbox.sf5.common.XMLExporter;
@@ -79,7 +79,6 @@ public class SettingsFormController implements Serializable {
 	private long scId;
 
 	private long settingId;
-
 
 	private Part file;
 	private String fileContent;
@@ -186,65 +185,78 @@ public class SettingsFormController implements Serializable {
 		return TheLastEntry == null ? null : new Date(TheLastEntry.getTime());
 	}
 
-    public void exportToXML() {
+	public void exportToXML() {
 
-    	if (!check32Rows()) {
+		if (!check32Rows()) {
 			return;
 		}
 
-//		fileChooser.setTitle("Select output .xml file");
-//		fileChooser.getExtensionFilters().add(new ExtensionFilter("XML files (*.xml)", "*.xml"));
-//		File file = fileChooser.showSaveDialog(stage);
-//		if (file == null) {
-//			return;
-//		}
-//
-		String filePath = upload();
-		XMLExporter.exportSettingToXML(dataSettingsConversion, filePath);
+		// fileChooser.setTitle("Select output .xml file");
+		// fileChooser.getExtensionFilters().add(new
+		// ExtensionFilter("XML files (*.xml)", "*.xml"));
+		// File file = fileChooser.showSaveDialog(stage);
+		// if (file == null) {
+		// return;
+		// }
+		//
+		// String filePath = upload();
+		String filePath = XMLExporter
+				.exportSettingToXML(dataSettingsConversion);
 
-    }
-
-	public String upload() {
-		List<FacesMessage> msgs = new ArrayList<FacesMessage>();
-
-		try {
-			fileContent = new Scanner(file.getInputStream())
-					.useDelimiter("\\A").next();
-		} catch (IOException e) {
-
-			msgs.add(new FacesMessage("Error reading XML file! \n"
-					+ e.getLocalizedMessage()));
-			return "";
+		if (filePath == "") {
+			return;
 		}
 
+		// Get the FacesContext
+		FacesContext facesContext = FacesContext.getCurrentInstance();
+
+		// Get HTTP response
+		HttpServletResponse response = (HttpServletResponse) facesContext
+				.getExternalContext().getResponse();
+
+		// Set response headers
+		response.reset(); // Reset the response in the first place
+		response.setHeader("Content-Type", "text/xml"); // Set only the content
+														// type
+
+		// Open response output stream
 		try {
+			OutputStream responseOutputStream = response.getOutputStream();
 
-			// create a temp file
-			File temp = File.createTempFile("transponders", ".xml");
-			String absolutePath = temp.getAbsolutePath();
-			Writer out = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream(absolutePath), "UTF-8"));
+			FileInputStream inputStream = new FileInputStream(
+					new File(filePath));
+			// Read PDF contents and write them to the output
 
-			try {
-				out.write(fileContent);
+			byte[] bytesBuffer = new byte[2048];
+			int bytesRead;
+			while ((bytesRead = inputStream.read(bytesBuffer)) > 0) {
+				responseOutputStream.write(bytesBuffer, 0, bytesRead);
 			}
 
-			finally {
-				out.close();
-			}
+			// Make sure that everything is out
+			responseOutputStream.flush();
 
-			return absolutePath;
+			// Close both streams
+			inputStream.close();
+			responseOutputStream.close();
+
+			// JSF doc:
+			// Signal the JavaServer Faces implementation that the HTTP response
+			// for this request has already been generated
+			// (such as an HTTP redirect), and that the request processing
+			// lifecycle should be terminated
+			// as soon as the current phase is completed.
+			facesContext.responseComplete();
+
+			// clean temporary file
+			Files.deleteIfExists(Paths.get(filePath));
 
 		} catch (IOException e) {
-
-			msgs.add(new FacesMessage("Error saving file on server \n"
-					+ e.getLocalizedMessage()));
-			return "";
-
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 
 	}
-
 
 	public String selectFromOtherSetting() {
 		if (setting.getId() == 0) {
@@ -490,19 +502,24 @@ public class SettingsFormController implements Serializable {
 			} // end check selection mode
 
 			// select from other setting
-			if (SelectionMode && settingId != 0
-					&& settingId == Id // we must be sure that all this happens in the starting srtting
-					) {
+			if (SelectionMode && settingId != 0 && settingId == Id // we must be
+																	// sure that
+																	// all this
+																	// happens
+																	// in the
+																	// starting
+																	// srtting
+			) {
 				List<SettingsConversionPresentation> SCPList = (List<SettingsConversionPresentation>) CurrentLogin
 						.getCurrentObject();
 
 				// now clear old parent_id
 				SCPList.stream().forEach(t -> {
 					// we must try to clean all id reference to initial setting.
-					t.setparent_id(setting);
-					t.setId(0);
-					t.setLineNumber(0);
-				});
+						t.setparent_id(setting);
+						t.setId(0);
+						t.setLineNumber(0);
+					});
 
 				dataSettingsConversion.addAll(SCPList);
 
@@ -516,16 +533,16 @@ public class SettingsFormController implements Serializable {
 
 	public String copyToOtherSetting() {
 		selectedSCPRows.clear();
-		selectedSCPRows = dataSettingsConversion
-		.stream().filter(t -> t.checked).collect(Collectors.toList());
+		selectedSCPRows = dataSettingsConversion.stream()
+				.filter(t -> t.checked).collect(Collectors.toList());
 
 		loginBean.setCurrentObject(selectedSCPRows);
 
 		String addressString = "/Setting.xhtml?faces-redirect=true&id="
-				+ Long.toString(settingId) + "&SelectionMode=true"
-				//+ Boolean.toString(SelectionMode)
-				+ "&multiple="
-				+ Boolean.toString(multiple) + "&scId="
+				+ Long.toString(settingId)
+				+ "&SelectionMode=true"
+				// + Boolean.toString(SelectionMode)
+				+ "&multiple=" + Boolean.toString(multiple) + "&scId="
 				+ Long.toString(scId) + "&settingId="
 				+ Long.toString(settingId);
 
@@ -567,35 +584,35 @@ public class SettingsFormController implements Serializable {
 
 		if (dataSettingsConversion.size() != 32) {
 			show32error = true;
-    		return false;
-    	} else {
-    		show32error = false;
+			return false;
+		} else {
+			show32error = false;
 			return true;
 		}
 	}
 
-	   public void generateSatTpStructure() {
+	public void generateSatTpStructure() {
 
-	    	if (!check32Rows()) {
-				return;
+		if (!check32Rows()) {
+			return;
+		}
+
+		long sat = 1;
+		long currentCount = 0;
+		for (SettingsConversionPresentation e : dataSettingsConversion) {
+			currentCount++;
+			e.setSatindex(sat);
+			e.setTpindex(currentCount);
+			if (currentCount == 4) {
+				currentCount = 0;
+				sat++;
 			}
+		}
 
-	    	long sat = 1;
-	    	long currentCount = 0;
-	    	for (SettingsConversionPresentation e : dataSettingsConversion) {
-	    		currentCount ++;
-	    		e.setSatindex(sat);
-	    		e.setTpindex(currentCount);
-	    		if (currentCount == 4) {
-	    			currentCount = 0;
-	    			sat ++;
-	    		}
-	    	}
+		// save result
+		saveSetting();
 
-		    	// save result
-	    	saveSetting();
-
-	    }
+	}
 
 	public void saveSetting() {
 		ObjectsController contr = new ObjectsController();

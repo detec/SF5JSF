@@ -161,8 +161,10 @@ public class TranspondersListController implements Serializable {
 		String addressString = "/Setting.xhtml?faces-redirect=true&id="
 				+ Long.toString(SettingId) + "&SelectionMode="
 				+ Boolean.toString(SelectionMode) + "&multiple="
-				+ Boolean.toString(multiple) + "&scId="
-				+ Long.toString(scId);
+				+ Boolean.toString(multiple) + "&scId=" + Long.toString(scId);
+
+		// let's try to clear selected satellite
+		filterSatellite = null;
 
 		// FacesMessage msg = new FacesMessage(addressString);
 		// msg.setSeverity(FacesMessage.SEVERITY_INFO);
