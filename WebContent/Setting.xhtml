@@ -32,38 +32,41 @@
 	     	<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
 	     </h:outputLabel>
 
-
 		</h:panelGrid>
 	    <h:panelGroup>
 	    	<h:outputText value="Transponders"></h:outputText>
-	    	<h:panelGroup>
-	    	
-
-				<h:commandButton value="Up" action="#{setting.moveUp()}"></h:commandButton>
-				<h:commandButton value="Down" action="#{setting.moveDown()}"></h:commandButton>
-				
-				<h:commandButton value="Remove selected" action="#{setting.removeSelectedRows()}">
-				</h:commandButton>
-				<h:commandButton value="Select transponders..." action="#{setting.goToSelectTransponders()}" rendered="#{not (setting.selectionMode and setting.settingId != 0)}">
-				 <f:param name="SelectionMode" value="true" />
-				 <f:param name="SettingId" value="#{setting.id}" />
-				 <f:param name="multiple" value="true" />
-				 <f:param name="scId" value="0"/>
-				</h:commandButton>
-				<h:commandButton value="Select from other setting"  action="#{setting.copyFromAnotherSetting()}" rendered="#{not (setting.selectionMode and setting.settingId != 0)}">
-				 <f:param name="SelectionMode" value="true" />
-				 <f:param name="settingId" value="#{setting.id}" /> 
-				 </h:commandButton>
-				<h:commandButton value="Copy selected to setting" action="#{setting.copyToOtherSetting()}" rendered="#{setting.selectionMode and setting.settingId != 0}"/>
-						
-			</h:panelGroup>
+	    </h:panelGroup>
+	    <h:panelGroup rendered="#{setting.show32error}">
+	    	<h:outputText value="Table Transponders must contain exactly 32 records!" style="color: #FF0000"></h:outputText>
+	    	<h:outputText value="Settings conversion XML unload success!" style="color: #008000"></h:outputText>
+	</h:panelGroup>
+	<h:panelGroup>
+		<h:commandButton value="Up" action="#{setting.moveUp()}"></h:commandButton>
+		<h:commandButton value="Down" action="#{setting.moveDown()}"></h:commandButton>
+		<h:commandButton value="Remove selected" action="#{setting.removeSelectedRows()}">
+		</h:commandButton>
+		<h:commandButton value="Select transponders..." action="#{setting.goToSelectTransponders()}" rendered="#{not (setting.selectionMode and setting.settingId != 0)}">
+			 <f:param name="SelectionMode" value="true" />
+			 <f:param name="SettingId" value="#{setting.id}" />
+			 <f:param name="multiple" value="true" />
+			 <f:param name="scId" value="0"/>
+		</h:commandButton>
+		<h:commandButton value="Select from other setting"  action="#{setting.copyFromAnotherSetting()}" rendered="#{not (setting.selectionMode and setting.settingId != 0)}">
+			 <f:param name="SelectionMode" value="true" />
+			 <f:param name="settingId" value="#{setting.id}" /> 
+		 </h:commandButton>
+		<h:commandButton value="Copy selected to setting" action="#{setting.copyToOtherSetting()}" rendered="#{setting.selectionMode and setting.settingId != 0}"/>
+	</h:panelGroup>
+	<h:panelGroup>
+	<h:commandButton value="Generate Sat/Tp structure" action="#{setting.generateSatTpStructure()}"></h:commandButton>
+	</h:panelGroup>
 	    		    		    	
-			<h:dataTable border="1" id="SettingsConversion" value="#{setting.dataSettingsConversion}" var = "dataSC">
-				<h:column id="LineNo">
-					<f:facet name="header">
-						<h:outputText value="Line no."></h:outputText>
-					</f:facet>
-					<h:outputText value="#{dataSC.lineNumber}"/>
+	<h:dataTable border="1" id="SettingsConversion" value="#{setting.dataSettingsConversion}" var = "dataSC">
+		<h:column id="LineNo">
+		<f:facet name="header">
+		<h:outputText value="Line no."></h:outputText>
+		</f:facet>
+		<h:outputText value="#{dataSC.lineNumber}"/>
 				</h:column>
 				<h:column id="Transponder">
 					<f:facet name="header">
@@ -149,11 +152,11 @@
 					<h:selectBooleanCheckbox value="#{dataSC.checked}" ></h:selectBooleanCheckbox>
 					</h:column>
 			</h:dataTable>
-					
-		</h:panelGroup>
+			
 			<h:commandButton value="OK" action="#{setting.saveSetting()}">
 			</h:commandButton>
 			<h:commandButton value="Cancel" action="cancel"></h:commandButton>
+
 		</h:form>
 		
 	</ui:define>

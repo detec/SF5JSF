@@ -1,6 +1,12 @@
 package org.openbox.sf5.application;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.Serializable;
+import java.io.Writer;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,12 +14,16 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.Part;
 
+import org.openbox.sf5.common.XMLExporter;
 import org.openbox.sf5.db.CarrierFrequency;
 import org.openbox.sf5.db.Polarization;
 import org.openbox.sf5.db.Satellites;
@@ -44,11 +54,51 @@ public class SettingsFormController implements Serializable {
 
 	private boolean SelectionMode;
 
+	public boolean isShow32error() {
+		return show32error;
+	}
+
+	public void setShow32error(boolean show32error) {
+		this.show32error = show32error;
+	}
+
 	private boolean multiple;
+
+	private boolean show32error;
+
+	private boolean showXMLexportresult;
+
+	public boolean isShowXMLexportresult() {
+		return showXMLexportresult;
+	}
+
+	public void setShowXMLexportresult(boolean showXMLexportresult) {
+		this.showXMLexportresult = showXMLexportresult;
+	}
 
 	private long scId;
 
 	private long settingId;
+
+
+	private Part file;
+	private String fileContent;
+
+	public Part getFile() {
+		return file;
+	}
+
+	public void setFile(Part file) {
+		this.file = file;
+	}
+
+	public String getFileContent() {
+		return fileContent;
+	}
+
+	public void setFileContent(String fileContent) {
+		this.fileContent = fileContent;
+	}
 
 	private List<SettingsConversionPresentation> selectedSCPRows = new ArrayList<SettingsConversionPresentation>();
 
@@ -135,6 +185,66 @@ public class SettingsFormController implements Serializable {
 	public Date getTheLastEntry() {
 		return TheLastEntry == null ? null : new Date(TheLastEntry.getTime());
 	}
+
+    public void exportToXML() {
+
+    	if (!check32Rows()) {
+			return;
+		}
+
+//		fileChooser.setTitle("Select output .xml file");
+//		fileChooser.getExtensionFilters().add(new ExtensionFilter("XML files (*.xml)", "*.xml"));
+//		File file = fileChooser.showSaveDialog(stage);
+//		if (file == null) {
+//			return;
+//		}
+//
+		String filePath = upload();
+		XMLExporter.exportSettingToXML(dataSettingsConversion, filePath);
+
+    }
+
+	public String upload() {
+		List<FacesMessage> msgs = new ArrayList<FacesMessage>();
+
+		try {
+			fileContent = new Scanner(file.getInputStream())
+					.useDelimiter("\\A").next();
+		} catch (IOException e) {
+
+			msgs.add(new FacesMessage("Error reading XML file! \n"
+					+ e.getLocalizedMessage()));
+			return "";
+		}
+
+		try {
+
+			// create a temp file
+			File temp = File.createTempFile("transponders", ".xml");
+			String absolutePath = temp.getAbsolutePath();
+			Writer out = new BufferedWriter(new OutputStreamWriter(
+					new FileOutputStream(absolutePath), "UTF-8"));
+
+			try {
+				out.write(fileContent);
+			}
+
+			finally {
+				out.close();
+			}
+
+			return absolutePath;
+
+		} catch (IOException e) {
+
+			msgs.add(new FacesMessage("Error saving file on server \n"
+					+ e.getLocalizedMessage()));
+			return "";
+
+		}
+
+	}
+
 
 	public String selectFromOtherSetting() {
 		if (setting.getId() == 0) {
@@ -423,9 +533,8 @@ public class SettingsFormController implements Serializable {
 	}
 
 	public String copyFromAnotherSetting() {
-		if (setting.getId() == 0) {
-			saveSetting();
-		}
+		// we should save in all cases because we leave this page
+		saveSetting();
 
 		String addressString = "/SettingsList.xhtml?faces-redirect=true&SelectionMode=true&"
 				+ "settingId=" + Long.toString(setting.getId());
@@ -453,6 +562,40 @@ public class SettingsFormController implements Serializable {
 	public void setCancelEdit(SettingsConversionPresentation row) {
 		row.setEditable(false);
 	}
+
+	public boolean check32Rows() {
+
+		if (dataSettingsConversion.size() != 32) {
+			show32error = true;
+    		return false;
+    	} else {
+    		show32error = false;
+			return true;
+		}
+	}
+
+	   public void generateSatTpStructure() {
+
+	    	if (!check32Rows()) {
+				return;
+			}
+
+	    	long sat = 1;
+	    	long currentCount = 0;
+	    	for (SettingsConversionPresentation e : dataSettingsConversion) {
+	    		currentCount ++;
+	    		e.setSatindex(sat);
+	    		e.setTpindex(currentCount);
+	    		if (currentCount == 4) {
+	    			currentCount = 0;
+	    			sat ++;
+	    		}
+	    	}
+
+		    	// save result
+	    	saveSetting();
+
+	    }
 
 	public void saveSetting() {
 		ObjectsController contr = new ObjectsController();
