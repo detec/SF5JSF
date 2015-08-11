@@ -33,6 +33,7 @@
 	     </h:outputLabel>
 
 		</h:panelGrid>
+		<h:messages id="messages" errorClass="err" warnClass="warn" infoClass="info" style="color: #FF8080" showDetail="false" showSummary="true"/>
 	    <h:panelGroup>
 	    	<h:outputText value="Transponders table"></h:outputText>
 	    </h:panelGroup>
@@ -61,6 +62,7 @@
 	<br></br>
 	<h:commandButton value="Generate Sat/Tp structure" action="#{setting.generateSatTpStructure()}"></h:commandButton>
 	<h:commandButton value="Export to XML..." action="#{setting.exportToXML()}"></h:commandButton>
+	<h:commandButton value="Calculate intersections..." action="#{setting.checkIntersection()}"></h:commandButton>
 	<h:link value="Print..."  outcome="SettingPrintFull">
 	<f:param name="id" value="#{setting.id}" /> 
 	</h:link>

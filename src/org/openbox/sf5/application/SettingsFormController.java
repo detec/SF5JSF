@@ -7,6 +7,7 @@ import java.io.OutputStream;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -23,6 +25,7 @@ import javax.inject.Named;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
 
+import org.openbox.sf5.common.Intersections;
 import org.openbox.sf5.common.XMLExporter;
 import org.openbox.sf5.db.CarrierFrequency;
 import org.openbox.sf5.db.Polarization;
@@ -324,6 +327,24 @@ public class SettingsFormController implements Serializable {
 			ObjectsController contr = new ObjectsController();
 			contr.saveOrUpdate(setting);
 		}
+	}
+
+	public void checkIntersection() throws SQLException {
+		// let's clear all old intersections and save setting.
+		dataSettingsConversion.stream().forEach(
+				t -> t.setTheLineOfIntersection(0));
+		saveSetting();
+
+		int rows = Intersections.checkIntersection(dataSettingsConversion,
+				setting);
+
+		String mesString = "Unique problem lines: " + String.valueOf(rows);
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+				mesString, null);
+
+		// Add the message into context for a specific component
+		FacesContext.getCurrentInstance().addMessage("messages", message);
+
 	}
 
 	public void removeSelectedRows() {
