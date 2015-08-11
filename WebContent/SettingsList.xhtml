@@ -35,7 +35,11 @@
 		<f:facet name="header">
 			<h:outputText value="Name" ></h:outputText>
 		</f:facet>
-		<h:outputText value="#{s.name}" ></h:outputText>
+	 <h:link value="#{s.name}" outcome="Setting">
+	 <f:param name="id" value="#{s.id}" />
+	 <f:param name="SelectionMode" value="#{settingsController.selectionMode}"/>
+	 <f:param name="settingId" value="#{settingsController.settingId}"/>
+	 </h:link>
 	</h:column>
 	<h:column id="LastUpdate">
 		<f:facet name="header">

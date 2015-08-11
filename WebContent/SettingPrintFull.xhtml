@@ -4,5 +4,54 @@
       xmlns:f="http://java.sun.com/jsf/core"
       xmlns:h="http://java.sun.com/jsf/html"> 
 
+    <f:metadata>
+        <f:viewParam name="id" value="#{setting.id}" />
+        <f:viewParam name="SelectionMode" value="#{setting.selectionMode}" />
+        <f:viewParam name="multiple" value="#{setting.multiple}" />
+        <f:viewParam name="scId" value="#{setting.scId}"/>
+        <f:viewParam name="settingId" value="#{setting.settingId}"/>
+        <f:viewAction action="#{setting.init()}"/>
+        
+    </f:metadata>
+
  <h:outputText value="#{setting.name}" style="font-weight: bold; font-style: normal"></h:outputText>
+ 
+  <h:panelGrid columns="4">
+  <h:outputText value="ID #{setting.id}"></h:outputText>
+  <h:outputText value="Print date: "></h:outputText>
+  <h:outputText value="#{session.lastAccessedTime}" style="font-weight: bold">
+      <f:convertDateTime pattern="dd.MM.yyyy hh:mm" type="date" />
+</h:outputText>
+  
+  </h:panelGrid>
+     
+   <h:dataTable border="1" id="SettingsConversion" value="#{setting.dataSettingsConversion}" var = "dataSC">
+   	<h:column id="SatNo">
+		<f:facet name="header">
+		<h:outputText value=""></h:outputText>
+		</f:facet>
+		<h:outputText value="#{dataSC.satindex}"/>
+	</h:column>
+   	<h:column id="LineNo">
+		<f:facet name="header">
+		<h:outputText value="#"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{dataSC.lineNumber}"/>
+	</h:column>	
+   	<h:column id="TpIdx">
+		<f:facet name="header">
+		<h:outputText value="Trans. #"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{dataSC.tpindex}"/>
+	</h:column>
+   	<h:column id="Freq">
+		<f:facet name="header">
+		<h:outputText value="Trans. freq"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{dataSC.transponder}"/>
+	</h:column>			
+   </h:dataTable>
+   
+  
+  
 </html>
