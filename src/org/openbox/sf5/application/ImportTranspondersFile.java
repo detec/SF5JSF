@@ -41,8 +41,9 @@ public class ImportTranspondersFile implements Serializable {
 					.useDelimiter("\\A").next();
 		} catch (IOException e) {
 
-			msgs.add(new FacesMessage("Error reading XML file! \n"
-					+ e.getLocalizedMessage()));
+			msgs.add(new FacesMessage(FacesMessage.SEVERITY_ERROR
+			, "Error reading XML file!"
+					, e.getLocalizedMessage()));
 			return;
 		}
 
@@ -63,7 +64,19 @@ public class ImportTranspondersFile implements Serializable {
 			}
 
 			// calling reader class
-			new IniReader(absolutePath);
+			IniReader getResult = new IniReader(absolutePath);
+			if (getResult.isResult()) {
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
+						"INI import result", "Import success!");
+				FacesContext.getCurrentInstance().addMessage("messages", message);
+			}
+
+			else {
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,
+						"INI import result", "Import failure!");
+				FacesContext.getCurrentInstance().addMessage("messages", message);
+			}
+
 
 		} catch (IOException e) {
 

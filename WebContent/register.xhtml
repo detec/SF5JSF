@@ -18,7 +18,8 @@
 		<h:inputText value="#{loginBean.fullName}"></h:inputText>
 	</h:panelGrid>
 	<h:commandButton value="Submit" action="#{loginBean.doRegister}"></h:commandButton>
-	</h:form>   
+	</h:form>  
+	<h:messages id="messages" errorClass="err" warnClass="warn" infoClass="info" style="color: #FF8080" showDetail="true" showSummary="true"/> 
 	</ui:define>
 
 </ui:composition>

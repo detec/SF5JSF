@@ -50,6 +50,7 @@
 		
 		 <h:commandButton value="Select" rendered="#{transpondersListController.selectionMode}" action="#{transpondersListController.saveSelectedTransponders()}">
 		 </h:commandButton>
+		<h:messages id="messages" errorClass="err" warnClass="warn" infoClass="info" style="color: #FF8080" showDetail="true" showSummary="true"/>
 		
 	    <h:dataTable border="1" var = "s" value="#{transpondersListController.getTranspondersChoice()}" id = "tp_table">
 	   	<h:column id="Check"  rendered="#{transpondersListController.selectionMode}" >

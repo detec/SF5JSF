@@ -33,14 +33,12 @@
 	     </h:outputLabel>
 
 		</h:panelGrid>
-		<h:messages id="messages" errorClass="err" warnClass="warn" infoClass="info" style="color: #FF8080" showDetail="false" showSummary="true"/>
+		<h:messages id="messages" errorClass="err" warnClass="warn" infoClass="info" style="color: #FF8080" showDetail="true" showSummary="true"/>
 	    <h:panelGroup>
 	    	<h:outputText value="Transponders table"></h:outputText>
 	    </h:panelGroup>
 	    <br></br>
-	    <h:panelGroup rendered="#{setting.show32error}">
-	    	<h:outputText value="Table Transponders must contain exactly 32 records!" style="color: #FF0000"></h:outputText>
-	    </h:panelGroup>
+
 	<h:panelGroup>
 		<h:commandButton value="Up" action="#{setting.moveUp()}"></h:commandButton>
 		<h:commandButton value="Down" action="#{setting.moveDown()}"></h:commandButton>

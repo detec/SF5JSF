@@ -46,6 +46,16 @@ public class IniReader implements Serializable {
 	private static Pattern pattern;
 	private static Matcher matcher;
 
+	private boolean result = false;
+
+	public boolean isResult() {
+		return result;
+	}
+
+	public void setResult(boolean result) {
+		this.result = result;
+	}
+
 	public IniReader(String filepath) throws FileNotFoundException {
 
 		new TableFiller();
@@ -93,6 +103,8 @@ public class IniReader implements Serializable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		result = true;
 	}
 
 	private void readSatData(BufferedReader br) throws IOException {

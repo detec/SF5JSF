@@ -17,7 +17,7 @@
 	    </h:outputLabel>
 	    <br></br>
 	    <h:outputLabel value="Choose one setting to select transponders from" rendered="#{settingsController.selectionMode}"/>
-	    
+	    <h:messages id="messages" errorClass="err" warnClass="warn" infoClass="info" style="color: #FF8080" showDetail="true" showSummary="true"/>
 	    <h:form  enctype="multipart/form-data">
 	<h:dataTable border="1" var = "s" value="#{settingsController.settingsbyUser}">
     

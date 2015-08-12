@@ -194,16 +194,7 @@ public class SettingsFormController implements Serializable {
 			return;
 		}
 
-		// fileChooser.setTitle("Select output .xml file");
-		// fileChooser.getExtensionFilters().add(new
-		// ExtensionFilter("XML files (*.xml)", "*.xml"));
-		// File file = fileChooser.showSaveDialog(stage);
-		// if (file == null) {
-		// return;
-		// }
-		//
-		// String filePath = upload();
-		String filePath = XMLExporter
+	String filePath = XMLExporter
 				.exportSettingToXML(dataSettingsConversion);
 
 		if (filePath == "") {
@@ -604,10 +595,15 @@ public class SettingsFormController implements Serializable {
 	public boolean check32Rows() {
 
 		if (dataSettingsConversion.size() != 32) {
-			show32error = true;
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
+					"Error!", "Table Transponders must contain exactly 32 records!");
+
+			// Add the message into context for a specific component
+			FacesContext.getCurrentInstance().addMessage("messages", message);
+
 			return false;
 		} else {
-			show32error = false;
+
 			return true;
 		}
 	}

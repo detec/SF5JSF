@@ -17,6 +17,8 @@
     <f:ajax execute="file" render="@all"/>
   </h:commandButton>
   <br/>
+  <h:messages id="messages" errorClass="err" warnClass="warn" infoClass="info" style="color: #FF8080" showDetail="true" showSummary="true"/>
+  <br></br>
   <h:inputTextarea value="#{importFile.fileContent}"
       readonly="true" cols="60" rows="20"/>
 
