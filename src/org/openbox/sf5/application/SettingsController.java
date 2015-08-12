@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -35,6 +37,26 @@ public class SettingsController implements Serializable {
 	private LoginBean CurrentLogin;
 
 	private Users currentUser;
+
+	private boolean showRemovalConfirmation;
+
+	private Settings currentSetting;
+
+	public Settings getCurrentSetting() {
+		return currentSetting;
+	}
+
+	public void setCurrentSetting(Settings currentSetting) {
+		this.currentSetting = currentSetting;
+	}
+
+	public boolean isShowRemovalConfirmation() {
+		return showRemovalConfirmation;
+	}
+
+	public void setShowRemovalConfirmation(boolean showRemovalConfirmation) {
+		this.showRemovalConfirmation = showRemovalConfirmation;
+	}
 
 	private boolean SelectionMode;
 
@@ -83,6 +105,17 @@ public class SettingsController implements Serializable {
 
 	}
 
+	public String startRemovalOfSetting(Settings pSetting) {
+		this.showRemovalConfirmation = true;
+		this.currentSetting = pSetting;
+		return "";
+	}
+
+	public void cancelRemoval() {
+		this.showRemovalConfirmation = false;
+		this.currentSetting = null;
+	}
+
 	public List<Settings> getSettingsbyUser() {
 		List<Settings> settingsList = new ArrayList<Settings>();
 
@@ -90,10 +123,6 @@ public class SettingsController implements Serializable {
 		if (currentUser == null) {
 			return settingsList;
 		}
-
-		// Session session = HibernateUtil.openSession();
-		// settingsList = session.createCriteria(Settings.class)
-		// .add(Restrictions.eq("User", currentUser)).list();
 
 		Criterion criterion = Restrictions.eq("User", currentUser);
 		settingsList = (List<Settings>) ObjectsListService
@@ -113,9 +142,31 @@ public class SettingsController implements Serializable {
 		return "/Setting.xhtml?faces-redirect=true&SelectionMode=false&multiple=false";
 	}
 
-	public String removeSetting(long pId) {
-		ObjectsController contr = new ObjectsController();
-		contr.remove(Settings.class, pId);
+	public String removeSetting() {
+
+		if (this.currentSetting != null) {
+			ObjectsController contr = new ObjectsController();
+			contr.remove(Settings.class, this.currentSetting.getId());
+
+			String mesString = "Setting remove success!";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,
+					"Setting removal", mesString);
+
+			// Add the message into context for a specific component
+			FacesContext.getCurrentInstance().addMessage("messages", message);
+		} else {
+
+			String mesString = "No current setting set - nothing removed!";
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,
+					"Setting removal", mesString);
+
+			// Add the message into context for a specific component
+			FacesContext.getCurrentInstance().addMessage("messages", message);
+		}
+
+		this.showRemovalConfirmation = false;
+		this.currentSetting = null;
+
 		return "";
 	}
 

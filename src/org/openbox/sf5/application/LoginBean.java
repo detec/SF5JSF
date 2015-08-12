@@ -26,10 +26,10 @@ public class LoginBean implements Serializable {
 
 	}
 
-	@NotNull(message = "Please enter login")
+	@NotNull(message = "Please enter login!")
 	private String name;
 
-	@NotNull(message = "Please enter your full name")
+	@NotNull(message = "Please enter your full name!")
 	private String fullName;
 
 	private Users user;
@@ -156,6 +156,19 @@ public class LoginBean implements Serializable {
 
 		return "login";
 	}
+
+	// public String doRegister() {
+	// String retAddress = "";
+	//
+	// if (!this.name.isEmpty()) {
+	// // check if this user is already registered.
+	// if (userExists(this.name)) {
+	//
+	// }
+	// }
+	//
+	// return retAddress;
+	// }
 
 	public boolean userExists(String username) {
 

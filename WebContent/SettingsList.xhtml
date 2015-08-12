@@ -53,17 +53,28 @@
 		<f:facet name="header" >
 			<h:outputText value="Delete"></h:outputText>
 			</f:facet>
-	<h:commandLink value="Delete" action="#{settingsController.removeSetting(s.id)}" />
+	<h:commandLink value="Delete" action="#{settingsController.startRemovalOfSetting(s)}"> 
+	
+	</h:commandLink>
 	
 	</h:column>	
 </h:dataTable>
+
 </h:form>
 <h:form>
 	<h:commandLink value="Add setting..." action="#{settingsController.addSetting()}" rendered="#{not settingsController.selectionMode}"></h:commandLink>
 	<h:link  value="Import transponders from file..." outcome="importtranspondersfile" rendered="#{not settingsController.selectionMode}">
-		
-	</h:link>
-	
+	</h:link> 
+	<h:panelGrid border="1" columns="1" rendered="#{settingsController.showRemovalConfirmation}">
+	<h:panelGrid border="0" columns="2" rendered="#{settingsController.showRemovalConfirmation}">
+		<h:outputText id="confirmationDialogue" value="Are you sure you want to remove setting "></h:outputText>
+		<h:outputText value="#{settingsController.currentSetting.name}?" style="font-weight: bold"></h:outputText>
+	</h:panelGrid>
+	<h:panelGrid border="0" columns="2"  rendered="#{settingsController.showRemovalConfirmation}">
+	<h:commandButton value="Yes" action="#{settingsController.removeSetting()}"></h:commandButton>
+	<h:commandButton value="Cancel" action="#{settingsController.cancelRemoval()}"></h:commandButton>
+	</h:panelGrid>
+	</h:panelGrid>
 </h:form>
 </ui:define>
 

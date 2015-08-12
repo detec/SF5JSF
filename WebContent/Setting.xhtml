@@ -21,14 +21,14 @@
     
 	<ui:define name="content">
 	<h:form id="settingForm">
-	    <h:panelGrid columns="6">
+	    <h:panelGrid columns="6" id="upperFields">
 	     <h:outputText value="Name"></h:outputText>
-	     <h:inputText value="#{setting.name}" style="font-weight: bold; font-style: normal"></h:inputText>
+	     <h:inputText value="#{setting.setting.name}" style="font-weight: bold; font-style: normal"></h:inputText>
 			
 		<h:outputText value="ID"></h:outputText>
-	     <h:outputLabel value="#{setting.id}" style="font-weight: bold"></h:outputLabel>
+	     <h:outputLabel value="#{setting.setting.id}" style="font-weight: bold"></h:outputLabel>
 	     <h:outputText value="Last update date"></h:outputText>
-	     <h:outputLabel style="font-weight: bold" value="#{setting.theLastEntry}">
+	     <h:outputLabel style="font-weight: bold" value="#{setting.setting.theLastEntry}">
 	     	<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
 	     </h:outputLabel>
 
@@ -158,7 +158,7 @@
 					</h:column>
 			</h:dataTable>
 			
-			<h:commandButton value="OK" action="#{setting.saveSetting()}">
+			<h:commandButton value="OK" action="#{setting.saveSettingWrapper()}" >
 			</h:commandButton>
 			<h:commandButton value="Cancel" action="cancel"></h:commandButton>
 

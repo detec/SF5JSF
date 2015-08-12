@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <PROCESS model-entity="JSFProcess">
- <PROCESS-ITEM NAME="rules:#login.xhtml" PATH="/login.xhtml"
-  SHAPE="32,17,0,0" model-entity="JSFProcessGroup">
-  <PROCESS-ITEM ID="rules:#login.xhtml:0" NAME="item"
-   PATH="/login.xhtml" model-entity="JSFProcessItem">
-   <PROCESS-ITEM-OUTPUT ID="register::#register.xhtml" NAME="output"
-    PATH="/register.xhtml" TARGET="rules:#register.xhtml"
-    TITLE="register" model-entity="JSFProcessItemOutput"/>
-  </PROCESS-ITEM>
- </PROCESS-ITEM>
  <PROCESS-ITEM NAME="rules:#SettingsList.xhtml"
   PATH="/SettingsList.xhtml" SHAPE="32,129,0,0" model-entity="JSFProcessGroup">
   <PROCESS-ITEM ID="rules:#SettingsList.xhtml:0" NAME="item"
@@ -27,6 +18,4 @@
     TITLE="cancel" model-entity="JSFProcessItemOutput"/>
   </PROCESS-ITEM>
  </PROCESS-ITEM>
- <PROCESS-ITEM NAME="rules:#register.xhtml" PATH="/register.xhtml"
-  SHAPE="240,33,0,0" model-entity="JSFProcessGroup"/>
 </PROCESS>

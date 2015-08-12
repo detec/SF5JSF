@@ -8,10 +8,8 @@ import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -164,9 +162,9 @@ public class SettingsFormController implements Serializable {
 
 	private List<SettingsConversionPresentation> dataSettingsConversion = new ArrayList<SettingsConversionPresentation>();
 
-	private String Name;
+	// private String Name;
 
-	private Timestamp TheLastEntry;
+	// private Timestamp TheLastEntry;
 
 	public Settings getSetting() {
 		return setting;
@@ -176,17 +174,17 @@ public class SettingsFormController implements Serializable {
 		this.setting = setting;
 	}
 
-	public String getName() {
-		return Name;
-	}
+	// public String getName() {
+	// return Name;
+	// }
+	//
+	// public void setName(String pName) {
+	// Name = pName;
+	// }
 
-	public void setName(String pName) {
-		Name = pName;
-	}
-
-	public Date getTheLastEntry() {
-		return TheLastEntry == null ? null : new Date(TheLastEntry.getTime());
-	}
+	// public Date getTheLastEntry() {
+	// return TheLastEntry == null ? null : new Date(TheLastEntry.getTime());
+	// }
 
 	public void exportToXML() {
 
@@ -194,7 +192,7 @@ public class SettingsFormController implements Serializable {
 			return;
 		}
 
-	String filePath = XMLExporter
+		String filePath = XMLExporter
 				.exportSettingToXML(dataSettingsConversion);
 
 		if (filePath == "") {
@@ -331,7 +329,7 @@ public class SettingsFormController implements Serializable {
 
 		String mesString = "Unique problem lines: " + String.valueOf(rows);
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-				mesString, null);
+				"Intersections calculation result", mesString);
 
 		// Add the message into context for a specific component
 		FacesContext.getCurrentInstance().addMessage("messages", message);
@@ -415,10 +413,18 @@ public class SettingsFormController implements Serializable {
 	public void renumerateLines() {
 
 		int i = 1;
+
 		for (SettingsConversionPresentation e : dataSettingsConversion) {
 			e.setLineNumber(i);
 			i++;
 		}
+
+		// cannot use stream API because of i variable problem
+		// dataSettingsConversion.stream().forEach(t -> {
+		//
+		// t.setLineNumber(i);
+		// i++;
+		// });
 	}
 
 	public void addNewLine(Transponders trans) {
@@ -457,14 +463,15 @@ public class SettingsFormController implements Serializable {
 		if (Id != 0) {
 			ObjectsController contr = new ObjectsController();
 			setting = (Settings) contr.select(Settings.class, Id);
-			Name = setting.getName();
-			TheLastEntry = setting.getTheLastEntry();
+			// Name = setting.getName();
+			// TheLastEntry = setting.getTheLastEntry();
 		}
 
 		// fill in fields
 		if (setting != null) {
-			Name = setting.getName();
-			TheLastEntry = setting.getTheLastEntry();
+			// Name = setting.getName();
+			// TheLastEntry = setting.getTheLastEntry();
+
 			// load transponders and so on
 
 			dataSettingsConversion.clear();
@@ -595,8 +602,9 @@ public class SettingsFormController implements Serializable {
 	public boolean check32Rows() {
 
 		if (dataSettingsConversion.size() != 32) {
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR,
-					"Error!", "Table Transponders must contain exactly 32 records!");
+			FacesMessage message = new FacesMessage(
+					FacesMessage.SEVERITY_ERROR, "Error!",
+					"Table Transponders must contain exactly 32 records!");
 
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("messages", message);
@@ -636,7 +644,7 @@ public class SettingsFormController implements Serializable {
 		setting.setTheLastEntry(new java.sql.Timestamp(System
 				.currentTimeMillis()));
 
-		setting.setName(Name);
+		// setting.setName(Name);
 
 		// remove editable mark
 		dataSettingsConversion.stream().forEach(t -> t.editable = false);
@@ -645,6 +653,14 @@ public class SettingsFormController implements Serializable {
 		setting.setConversion(unloadTableSettingsConversion());
 		contr.saveOrUpdate(setting);
 
+	}
+
+	public String saveSettingWrapper() {
+		saveSetting();
+		// corrected mistake with backbean fields.
+		// trying to refresh form elements.
+		// init(); // this refreshes last update component.
+		return "";
 	}
 
 	public List<SettingsConversion> unloadTableSettingsConversion() {
