@@ -1,0 +1,120 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      
+   		<f:loadBundle basename="resources" var="msg" />
+		<head>
+		<title><ui:insert name="pageTitle">Transponders list</ui:insert></title>
+		<style type="text/css">
+			body {
+				  font-family: Verdana, Arial, Helvetica, sans-serif;
+				  font-size: 14px;
+			}
+			.header {
+				  font-family: Verdana, Arial, Helvetica, sans-serif;
+				  font-size: 18px;
+			}
+			.bottom {
+				  font-family: Verdana, Arial, Helvetica, sans-serif;
+				  font-size: 9px;
+				  text-align: center;
+				  vertical-align: middle;
+				  color: #8E969D;
+			}
+		</style>
+		</head>
+
+
+<ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
+<ui:define name="metadata">
+    <f:metadata>
+        <f:viewParam name="SelectionMode" value="#{transpondersListController.selectionMode}" />
+        <f:viewParam name="SettingId" value="#{transpondersListController.settingId}"/>
+        <f:viewParam name="multiple" value="#{transpondersListController.multiple}" />
+        <f:viewParam name="scId" value="#{transpondersListController.scId}"/>
+        <f:viewAction action="#{transpondersListController.init()}"/>
+    </f:metadata>
+    </ui:define>
+    
+	<ui:define name="content">
+	  <h:form id="TranspondersForm">
+	  
+	   <h:outputText value="Filter by satellite" />
+	   <h:selectOneMenu value="#{loginBean.filterSatId}">
+	    <f:selectItem itemLabel="" itemValue="#{0}" noSelectionOption="true" itemDisabled="false"/>
+		<f:selectItems value="#{transpondersListController.satellites}"  var="sat" itemValue="#{sat.id}" itemLabel="#{sat.name}" />
+		<f:ajax listener="#{transpondersListController.init()}" render="tp_table" />
+		</h:selectOneMenu>
+		
+		 <h:commandButton value="Select" rendered="#{transpondersListController.selectionMode}" action="#{transpondersListController.saveSelectedTransponders()}">
+		 </h:commandButton>
+		<h:messages id="messages" errorClass="err" warnClass="warn" infoClass="info" style="color: #FF8080" showDetail="true" showSummary="true"/>
+		
+	    <h:dataTable border="1" var = "s" value="#{transpondersListController.getTranspondersChoice()}" id = "tp_table">
+	   	<h:column id="Check"  rendered="#{transpondersListController.selectionMode}" >
+			<f:facet name="header" >
+			<h:outputText value="Select"></h:outputText>
+			</f:facet>
+		<h:selectBooleanCheckbox value="#{s.checked}" rendered="#{transpondersListController.multiple}">
+		</h:selectBooleanCheckbox>
+		<h:commandButton value="OK" rendered="#{not transpondersListController.multiple}" action="#{transpondersListController.processMultipleSingleSelection(s)}">
+		</h:commandButton>
+		</h:column>
+	    <h:column id="Frequency">
+			<f:facet name="header" >
+			<h:outputText value="Frequency"></h:outputText>
+			</f:facet>
+		<h:outputText value="#{s.frequency}" ></h:outputText>
+		</h:column>
+		<h:column id="Speed">
+		<f:facet name="header">
+			<h:outputText value="Speed" ></h:outputText>
+		</f:facet>
+		<h:outputText value="#{s.speed}" ></h:outputText>
+	</h:column>
+	<h:column id="Polarization">
+		<f:facet name="header">
+			<h:outputText value="Pol." ></h:outputText>
+		</f:facet>
+		<h:outputText value="#{s.polarization}" ></h:outputText>
+	</h:column>
+	<h:column id="FEC">
+		<f:facet name="header">
+			<h:outputText value="FEC" ></h:outputText>
+		</f:facet>
+		<h:outputText value="#{s.FEC.toString()}" ></h:outputText>
+	</h:column>
+	<h:column id="Carrier">
+		<f:facet name="header">
+			<h:outputText value="Carrier" ></h:outputText>
+		</f:facet>
+		<h:outputText value="#{s.carrier.toString()}" ></h:outputText>
+	</h:column>
+	<h:column id="DVBVersion">
+		<f:facet name="header">
+			<h:outputText value="DVB ver." ></h:outputText>
+		</f:facet>
+		<h:outputText value="#{s.versionOfTheDVB.toString()}" ></h:outputText>
+	</h:column>
+	<h:column id="DVBRange">
+		<f:facet name="header">
+			<h:outputText value="DVB range" ></h:outputText>
+		</f:facet>
+		<h:outputText value="#{s.rangeOfDVB}" ></h:outputText>
+	</h:column>  
+	<h:column id="Satellite">
+		<f:facet name="header">
+			<h:outputText value="Satellite" ></h:outputText>
+		</f:facet>
+		<h:outputText value="#{s.satellite}" ></h:outputText>
+ 	</h:column>  	        
+	</h:dataTable>
+</h:form>
+</ui:define>
+</ui:composition>
+
+
+		
+</html>

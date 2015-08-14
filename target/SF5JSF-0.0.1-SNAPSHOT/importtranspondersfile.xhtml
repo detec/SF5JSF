@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
+
+	<ui:define name="content">
+	<h:form id="form" enctype="multipart/form-data">
+	
+	 <h:inputFile id="file" value="#{importFile.file}" validator="#{importFile.validateFile}"/>
+	 
+	 <h:commandButton value="Upload transponders file..."
+      action="#{importFile.upload()}">
+    <f:ajax execute="file" render="@all"/>
+  </h:commandButton>
+  <br/>
+  <h:messages id="messages" errorClass="err" warnClass="warn" infoClass="info" style="color: #FF8080" showDetail="true" showSummary="true"/>
+  <br></br>
+  <h:inputTextarea value="#{importFile.fileContent}"
+      readonly="true" cols="60" rows="20"/>
+
+	</h:form>
+
+	</ui:define>
+	</ui:composition>
+
+</html>
