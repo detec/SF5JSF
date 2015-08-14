@@ -1,0 +1,171 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:fmt="http://java.sun.com/jsp/jstl/fmt"
+	xmlns:f="http://java.sun.com/jsf/core">
+
+<ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
+    <f:metadata>
+        <f:viewParam name="id" value="#{setting.id}" />
+        <f:viewParam name="SelectionMode" value="#{setting.selectionMode}" />
+        <f:viewParam name="multiple" value="#{setting.multiple}" />
+        <f:viewParam name="scId" value="#{setting.scId}"/>
+        <f:viewParam name="settingId" value="#{setting.settingId}"/>
+        <f:viewAction action="#{setting.init()}"/>
+        
+    </f:metadata>
+    
+	<ui:define name="content">
+	<h:form id="settingForm">
+	    <h:panelGrid columns="6" id="upperFields">
+	     <h:outputText value="Name"></h:outputText>
+	     <h:inputText value="#{setting.setting.name}" style="font-weight: bold; font-style: normal"></h:inputText>
+			
+		<h:outputText value="ID"></h:outputText>
+	     <h:outputLabel value="#{setting.setting.id}" style="font-weight: bold"></h:outputLabel>
+	     <h:outputText value="Last update date"></h:outputText>
+	     <h:outputLabel style="font-weight: bold" value="#{setting.setting.theLastEntry}">
+	     	<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+	     </h:outputLabel>
+
+		</h:panelGrid>
+		<h:messages id="messages" errorClass="err" warnClass="warn" infoClass="info" style="color: #FF8080" showDetail="true" showSummary="true"/>
+	    <h:panelGroup>
+	    	<h:outputText value="Transponders table"></h:outputText>
+	    </h:panelGroup>
+	    <br></br>
+
+	<h:panelGroup>
+		<h:commandButton value="Up" action="#{setting.moveUp()}"></h:commandButton>
+		<h:commandButton value="Down" action="#{setting.moveDown()}"></h:commandButton>
+		<h:commandButton value="Remove selected" action="#{setting.removeSelectedRows()}">
+		</h:commandButton>
+		<h:commandButton value="Select transponders..." action="#{setting.goToSelectTransponders()}" rendered="#{not (setting.selectionMode and setting.settingId != 0)}">
+			 <f:param name="SelectionMode" value="true" />
+			 <f:param name="SettingId" value="#{setting.id}" />
+			 <f:param name="multiple" value="true" />
+			 <f:param name="scId" value="0"/>
+		</h:commandButton>
+		<h:commandButton value="Select from other setting..."  action="#{setting.copyFromAnotherSetting()}" rendered="#{not (setting.selectionMode and setting.settingId != 0)}">
+			 <f:param name="SelectionMode" value="true" />
+			 <f:param name="settingId" value="#{setting.id}" /> 
+		 </h:commandButton>
+		<h:commandButton value="Copy selected to setting" action="#{setting.copyToOtherSetting()}" rendered="#{setting.selectionMode and setting.settingId != 0}"/>
+	</h:panelGroup>
+	<h:panelGroup>
+	<br></br>
+	<h:commandButton value="Generate Sat/Tp structure" action="#{setting.generateSatTpStructure()}"></h:commandButton>
+	<h:commandButton value="Export to XML..." action="#{setting.exportToXML()}"></h:commandButton>
+	<h:commandButton value="Calculate intersections..." action="#{setting.checkIntersection()}"></h:commandButton>
+	<h:link value="Print..."  outcome="SettingPrintFull">
+	<f:param name="id" value="#{setting.id}" /> 
+	</h:link>
+	</h:panelGroup>
+	    		    		    	
+	<h:dataTable border="1" id="SettingsConversion" value="#{setting.dataSettingsConversion}" var = "dataSC">
+		<h:column id="LineNo">
+		<f:facet name="header">
+		<h:outputText value="Line no."></h:outputText>
+		</f:facet>
+		<h:outputText value="#{dataSC.lineNumber}"/>
+				</h:column>
+				<h:column id="Transponder">
+					<f:facet name="header">
+						<h:outputText value="Transponder"></h:outputText>
+					</f:facet>
+									
+					<h:outputText value="#{dataSC.transponder}" />
+					<h:link value="..." rendered="#{dataSC.editable}" style="float:right" outcome="transponders" includeViewParams="true">
+					<f:param name="SelectionMode" value="true" />
+				 	<f:param name="SettingId" value="#{setting.id}" />
+				 	<f:param name="multiple" value="false" />
+				 	<f:param name="scId" value="#{dataSC.id}" />
+					</h:link>	
+					</h:column>
+					<h:column id="Polarization">
+					<f:facet name="header">
+						<h:outputText value="Pol."></h:outputText>
+					</f:facet>
+					<h:outputText value="#{dataSC.polarization}"/>
+				</h:column>
+				<h:column id="Carrier">
+					<f:facet name="header">
+						<h:outputText value="Carrier"></h:outputText>
+					</f:facet>
+					<h:outputText value="#{dataSC.carrier}"/>
+				</h:column>
+				<h:column id="Speed">
+					<f:facet name="header">
+						<h:outputText value="Speed"></h:outputText>
+					</f:facet>
+					<h:outputText value="#{dataSC.speed}"/>
+				</h:column>
+				<h:column id="Satellite">
+					<f:facet name="header">
+						<h:outputText value="Satellite"></h:outputText>
+					</f:facet>
+					<h:outputText value="#{dataSC.satellite}"/>
+				</h:column>
+				<h:column id="FEC">
+					<f:facet name="header">
+						<h:outputText value="FEC"></h:outputText>
+					</f:facet>
+					<h:outputText value="#{dataSC.FEC.toString()}"/>
+				</h:column>
+				<h:column id="Satindex">
+					<f:facet name="header">
+						<h:outputText value="SatIdx"></h:outputText>
+					</f:facet>
+					<h:outputText value="#{dataSC.satindex}"/>
+				</h:column>
+				<h:column id="Tpindex">
+					<f:facet name="header">
+						<h:outputText value="TpIdx"></h:outputText>
+					</f:facet>
+					<h:outputText value="#{dataSC.tpindex}"/>
+				</h:column>
+				<h:column id="Intersection">
+					<f:facet name="header">
+						<h:outputText value="Int-tion #"></h:outputText>
+					</f:facet>
+					<h:outputText value="#{dataSC.theLineOfIntersection}"/>
+				</h:column>
+				<h:column id="Comment">
+					<f:facet name="header">
+						<h:outputText value="Comment"></h:outputText>
+					</f:facet>
+					<h:inputText value="#{dataSC.note}" rendered="#{dataSC.editable}" />
+					<h:outputText value="#{dataSC.note}" rendered="#{not dataSC.editable}" />
+				</h:column>
+				<h:column id="ActionColumn">
+					<f:facet name="header">
+						<h:outputText value="Actions"></h:outputText>
+					</f:facet>
+					<h:commandLink value="Edit" action="#{setting.setEditRow(dataSC)}" rendered="#{not dataSC.editable}" />
+					<h:commandLink value="Cancel" action="#{setting.setCancelEdit(dataSC)}" rendered="#{dataSC.editable}" />
+
+					
+					</h:column>
+					<h:column id="Select">
+					<f:facet name="header">
+						<h:outputText value="Select"></h:outputText>
+					</f:facet>					
+					<h:selectBooleanCheckbox value="#{dataSC.checked}" ></h:selectBooleanCheckbox>
+					</h:column>
+			</h:dataTable>
+			
+			<h:commandButton value="OK" action="#{setting.saveSettingWrapper()}" >
+			</h:commandButton>
+			<h:commandButton value="Cancel" action="cancel"></h:commandButton>
+
+		</h:form>
+		
+	</ui:define>
+
+</ui:composition>
+
+</html>

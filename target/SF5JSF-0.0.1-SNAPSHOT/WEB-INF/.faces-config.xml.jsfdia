@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PROCESS model-entity="JSFProcess">
+ <PROCESS-ITEM NAME="rules:#SettingsList.xhtml"
+  PATH="/SettingsList.xhtml" SHAPE="32,129,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#SettingsList.xhtml:0" NAME="item"
+   PATH="/SettingsList.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="newSetting::#Setting.xhtml" NAME="output"
+    PATH="/Setting.xhtml" TARGET="rules:#Setting.xhtml"
+    TITLE="newSetting" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+ <PROCESS-ITEM NAME="rules:#Setting.xhtml" PATH="/Setting.xhtml"
+  SHAPE="240,145,0,0" model-entity="JSFProcessGroup">
+  <PROCESS-ITEM ID="rules:#Setting.xhtml:0" NAME="item"
+   PATH="/Setting.xhtml" model-entity="JSFProcessItem">
+   <PROCESS-ITEM-OUTPUT ID="cancel::#SettingsList.xhtml" NAME="output"
+    PATH="/SettingsList.xhtml" TARGET="rules:#SettingsList.xhtml"
+    TITLE="cancel" model-entity="JSFProcessItemOutput"/>
+  </PROCESS-ITEM>
+ </PROCESS-ITEM>
+</PROCESS>

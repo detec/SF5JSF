@@ -1,0 +1,84 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:h="http://java.sun.com/jsf/html"> 
+
+    <f:metadata>
+        <f:viewParam name="id" value="#{setting.id}" />
+        <f:viewParam name="SelectionMode" value="#{setting.selectionMode}" />
+        <f:viewParam name="multiple" value="#{setting.multiple}" />
+        <f:viewParam name="scId" value="#{setting.scId}"/>
+        <f:viewParam name="settingId" value="#{setting.settingId}"/>
+        <f:viewAction action="#{setting.init()}"/>
+        
+    </f:metadata>
+
+ <h:outputText value="#{setting.name}" style="font-weight: bold; font-style: normal"></h:outputText>
+ 
+  <h:panelGrid columns="4">
+  <h:outputText value="ID #{setting.id}"></h:outputText>
+  <h:outputText value="Print date: "></h:outputText>
+  <h:outputText value="#{session.lastAccessedTime}" style="font-weight: bold">
+      <f:convertDateTime pattern="dd.MM.yyyy hh:mm" type="date" />
+</h:outputText>
+  
+  </h:panelGrid>
+     
+   <h:dataTable border="1" id="SettingsConversion" value="#{setting.dataSettingsConversion}" var = "dataSC">
+   	<h:column id="SatNo">
+		<f:facet name="header">
+		<h:outputText value=""></h:outputText>
+		</f:facet>
+		<h:outputText value="#{dataSC.satindex}" rendered="#{dataSC.lineNumber == ((dataSC.satindex - 1) * 4 + 1)}" style="font-weight: bold"/>
+	</h:column>
+   	<h:column id="LineNo">
+		<f:facet name="header">
+		<h:outputText value="#"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{dataSC.lineNumber}"/>
+	</h:column>	
+   	<h:column id="TpIdx">
+		<f:facet name="header">
+		<h:outputText value="Trans. #"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{dataSC.tpindex}"/>
+	</h:column>
+   	<h:column id="Freq">
+		<f:facet name="header">
+		<h:outputText value="Trans. freq"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{dataSC.transponder}"/>
+	</h:column>
+	<h:column id="Satellite">
+		<f:facet name="header">
+		<h:outputText value="Satellite"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{dataSC.satellite}"/>
+	</h:column>
+	<h:column id="Polarization">
+		<f:facet name="header">
+		<h:outputText value="Pol."></h:outputText>
+		</f:facet>
+		<h:outputText value="#{dataSC.polarization}"/>
+	</h:column>
+	<h:column id="Speed">
+		<f:facet name="header">
+		<h:outputText value="Speed"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{dataSC.speed}"/>
+	</h:column>
+	<h:column id="FEC">
+		<f:facet name="header">
+		<h:outputText value="FEC"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{dataSC.FEC.toString()}"/>
+	</h:column>
+	<h:column id="Note">
+		<f:facet name="header">
+		<h:outputText value="Note"></h:outputText>
+		</f:facet>
+		<h:outputText value="#{dataSC.note}"/>
+	</h:column>															
+   </h:dataTable>
+</html>
