@@ -1,0 +1,90 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>SF5JSF</groupId>
+  <artifactId>SF5JSF</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>war</packaging>
+  <name>Openbox SF5 settings editor</name>
+  <description>Openbox SF5 settings editor JSF</description>
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <resources>
+      <resource>
+        <directory>src</directory>
+        <excludes>
+          <exclude>**/*.java</exclude>
+        </excludes>
+      </resource>
+    </resources>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.1</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+      <plugin>
+        <artifactId>maven-war-plugin</artifactId>
+        <version>2.4</version>
+        <configuration>
+          <warSourceDirectory>WebContent</warSourceDirectory>
+          <failOnMissingWebXml>false</failOnMissingWebXml>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+   <profiles>
+    <profile>
+        <id>test</id> 
+        <properties>
+            <db.jdbcUrl>jdbc:h2:tcp://localhost/~/sf5jsftest</db.jdbcUrl>
+        </properties>
+    </profile>
+    <profile>
+        <id>prod</id>
+        <properties>
+            <db.jdbcUrl>jdbc:h2:tcp://localhost/~/sf5jsf</db.jdbcUrl>
+        </properties>
+    </profile>
+</profiles> 
+  <dependencies>
+  	<dependency>
+  		<groupId>javax.enterprise</groupId>
+  		<artifactId>cdi-api</artifactId>
+  		<version>2.0-EDR1</version>
+  	</dependency>
+  <dependency>
+    <groupId>javax.servlet</groupId>
+    <artifactId>javax.servlet-api</artifactId>
+    <version>3.0.1</version>
+    <scope>provided</scope>
+</dependency>	
+ <dependency>
+	<groupId>com.h2database</groupId>
+	<artifactId>h2</artifactId>
+	<version>1.4.187</version>
+</dependency>
+<dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate-core</artifactId>
+	<version>4.3.10.Final</version>
+</dependency>
+ <dependency>
+	<groupId>javax.inject</groupId>
+	<artifactId>javax.inject</artifactId>
+	<version>1</version>
+</dependency> 	
+<dependency>
+	<groupId>javax.validation</groupId>
+	<artifactId>validation-api</artifactId>
+	<version>1.1.0.Final</version>
+</dependency>
+<dependency>
+	<groupId>javax.faces</groupId>
+	<artifactId>javax.faces-api</artifactId>
+	<version>2.2</version>
+</dependency>
+  </dependencies>
+</project>
