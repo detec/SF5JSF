@@ -1,4 +1,4 @@
-﻿package org.openbox.sf5.db;
+package org.openbox.sf5.db;
 
 import java.io.Serializable;
 

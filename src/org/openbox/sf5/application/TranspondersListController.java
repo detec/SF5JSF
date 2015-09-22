@@ -143,6 +143,7 @@ public class TranspondersListController implements Serializable {
 	}
 
 	public List<Satellites> getSatellites() {
+
 		return (List<Satellites>) ObjectsListService
 				.ObjectsList(Satellites.class);
 	}
@@ -165,10 +166,6 @@ public class TranspondersListController implements Serializable {
 
 		// let's try to clear selected satellite
 		filterSatellite = null;
-
-		// FacesMessage msg = new FacesMessage(addressString);
-		// msg.setSeverity(FacesMessage.SEVERITY_INFO);
-		// FacesContext.getCurrentInstance().addMessage(null, msg);
 
 		return addressString;
 	}
