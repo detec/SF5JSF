@@ -21,7 +21,7 @@
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.1</version>
+        <version>3.3</version>
         <configuration>
           <source>1.8</source>
           <target>1.8</target>
@@ -33,7 +33,6 @@
         <configuration>
           <warSourceDirectory>WebContent</warSourceDirectory>
           <failOnMissingWebXml>false</failOnMissingWebXml>
-<<<<<<< HEAD
 		<packagingExcludes>WEB-INF/web.xml</packagingExcludes>
         <warName>${rp.build.warname}</warName>
 		<webResources>
@@ -46,8 +45,6 @@
                 </includes>
             </resource>
         </webResources>
-=======
->>>>>>> origin/master
         </configuration>
       </plugin>
     </plugins>
