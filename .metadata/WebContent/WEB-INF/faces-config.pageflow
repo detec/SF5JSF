@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14364644007590" configfile="/SF5JSF/WebContent/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="SettingsList.xhtml" x="156" y="24" id="pf14364661690693" referenceLink="//@navigationRule.2/@navigationCase.0/@toViewId|" outlinks="pf14367800883590" inlinks="pf14367950808492" path="/SettingsList.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="login.xhtml" id="pf14367784973293" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf14367784973294" path="/login.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="register.xhtml" x="48" y="144" id="pf14367784973295" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf14367784973294" path="/register.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="Setting.xhtml" x="252" y="168" id="pf14367800883591" referenceLink="//@navigationRule.2/@fromViewId|" outlinks="pf14367950808492" inlinks="pf14367800883590" path="/Setting.xhtml"/>
-  <links id="pf14367784973294" target="pf14367784973295" source="pf14367784973293" outcome="register"/>
-  <links id="pf14367800883590" target="pf14367800883591" source="pf14364661690693" outcome="newSetting"/>
-  <links id="pf14367950808492" target="pf14364661690693" source="pf14367800883591" outcome="cancel"/>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14437239734320" configfile="/SF5JSF/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="SettingsList.xhtml" x="338" y="178" id="pf14437239945371" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" outlinks="pf14437239945372" inlinks="pf14437239945373" path="/SettingsList.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="Setting.xhtml" x="122" y="178" id="pf14437239945374" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf14437239945373" inlinks="pf14437239945372" path="/Setting.xhtml"/>
+  <links id="pf14437239945372" target="pf14437239945374" source="pf14437239945371" outcome="newSetting"/>
+  <links id="pf14437239945373" target="pf14437239945371" source="pf14437239945374" outcome="cancel"/>
 </pageflow:Pageflow>

@@ -6,6 +6,9 @@
   <packaging>war</packaging>
   <name>Openbox SF5 settings editor</name>
   <description>Openbox SF5 settings editor JSF</description>
+    <properties>
+  		<mojarra-version>2.2.12</mojarra-version>
+	</properties>	
   <build>
     <sourceDirectory>src</sourceDirectory>
     <resources>
@@ -33,7 +36,6 @@
         <configuration>
           <warSourceDirectory>WebContent</warSourceDirectory>
           <failOnMissingWebXml>false</failOnMissingWebXml>
-<<<<<<< HEAD
 		<packagingExcludes>WEB-INF/web.xml</packagingExcludes>
         <warName>${rp.build.warname}</warName>
 		<webResources>
@@ -46,9 +48,20 @@
                 </includes>
             </resource>
         </webResources>
-=======
->>>>>>> origin/master
         </configuration>
+      </plugin>
+      <plugin>
+       	<groupId>org.apache.tomcat.maven</groupId>
+       	<artifactId>tomcat7-maven-plugin</artifactId>
+       	<version>2.2</version>
+       	<configuration>
+        		<url>http://localhost:8080/manager/text</url>
+        		<server>TomcatServer</server>
+        		<username>admin</username>
+        		<password>admin</password>
+        		<warFile>${project.build.directory}/${rp.build.warname}.war</warFile>
+        		<update>true</update>
+       	</configuration>
       </plugin>
     </plugins>
   </build>
@@ -57,12 +70,14 @@
         <id>test</id> 
         <properties>
             <db.jdbcUrl>jdbc:h2:tcp://localhost/~/sf5jsftest</db.jdbcUrl>
+            <rp.build.warname>SF5JSF-test</rp.build.warname>
         </properties>
     </profile>
     <profile>
         <id>prod</id>
         <properties>
             <db.jdbcUrl>jdbc:h2:tcp://localhost/~/sf5jsf</db.jdbcUrl>
+            <rp.build.warname>SF5JSF</rp.build.warname>
         </properties>
     </profile>
 </profiles> 
@@ -71,13 +86,15 @@
   		<groupId>javax.enterprise</groupId>
   		<artifactId>cdi-api</artifactId>
   		<version>2.0-EDR1</version>
+  		<scope>provided</scope>
   	</dependency>
-  <dependency>
-    <groupId>javax.servlet</groupId>
-    <artifactId>javax.servlet-api</artifactId>
-    <version>3.0.1</version>
-    <scope>provided</scope>
-</dependency>	
+<dependency>
+	<groupId>javax.servlet</groupId>
+	<artifactId>javax.servlet-api</artifactId>
+	<version>3.1.0</version>
+	<scope>provided</scope>
+</dependency>
+	
  <dependency>
 	<groupId>com.h2database</groupId>
 	<artifactId>h2</artifactId>
@@ -88,25 +105,31 @@
 	<artifactId>hibernate-core</artifactId>
 	<version>4.3.10.Final</version>
 </dependency>
- <dependency>
-	<groupId>javax.inject</groupId>
-	<artifactId>javax.inject</artifactId>
-	<version>1</version>
-</dependency> 	
+<!--  <dependency> -->
+<!-- 	<groupId>javax.inject</groupId> -->
+<!-- 	<artifactId>javax.inject</artifactId> -->
+<!-- 	<version>1</version> -->
+<!-- </dependency> 	 -->
 <dependency>
 	<groupId>javax.validation</groupId>
 	<artifactId>validation-api</artifactId>
 	<version>1.1.0.Final</version>
 </dependency>
-<dependency>
-	<groupId>javax.faces</groupId>
-	<artifactId>javax.faces-api</artifactId>
-	<version>2.2</version>
-</dependency>
-<dependency>
-	<groupId>javax.servlet</groupId>
-	<artifactId>javax.servlet-api</artifactId>
-	<version>3.1.0</version>
-</dependency>
-  </dependencies>
+<!-- <dependency> -->
+<!-- 	<groupId>javax.faces</groupId> -->
+<!-- 	<artifactId>javax.faces-api</artifactId> -->
+<!-- 	<version>2.2</version> -->
+<!-- </dependency> -->
+
+<!-- 	<dependency> -->
+<!-- 		<groupId>com.sun.faces</groupId> -->
+<!-- 		<artifactId>jsf-impl</artifactId> -->
+<!-- 		<version>${mojarra-version}</version> -->
+<!-- 	</dependency> -->
+<!-- 	<dependency> -->
+<!-- 		<groupId>com.sun.faces</groupId> -->
+<!-- 		<artifactId>jsf-api</artifactId> -->
+<!-- 		<version>${mojarra-version}</version> -->
+<!-- 	</dependency> -->
+ </dependencies>
 </project>
