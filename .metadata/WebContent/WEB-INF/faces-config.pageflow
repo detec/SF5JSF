@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf14437239734320" configfile="/SF5JSF/WebContent/WEB-INF/faces-config.xml">
-  <nodes xsi:type="pageflow:PFPage" name="SettingsList.xhtml" x="338" y="178" id="pf14437239945371" referenceLink="//@navigationRule.1/@navigationCase.0/@toViewId|" outlinks="pf14437239945372" inlinks="pf14437239945373" path="/SettingsList.xhtml"/>
-  <nodes xsi:type="pageflow:PFPage" name="Setting.xhtml" x="122" y="178" id="pf14437239945374" referenceLink="//@navigationRule.1/@fromViewId|" outlinks="pf14437239945373" inlinks="pf14437239945372" path="/Setting.xhtml"/>
-  <links id="pf14437239945372" target="pf14437239945374" source="pf14437239945371" outcome="newSetting"/>
-  <links id="pf14437239945373" target="pf14437239945371" source="pf14437239945374" outcome="cancel"/>
-</pageflow:Pageflow>

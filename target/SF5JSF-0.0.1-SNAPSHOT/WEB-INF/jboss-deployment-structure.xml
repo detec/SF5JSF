@@ -1,9 +1,0 @@
-<jboss-deployment-structure>
- <deployment>
-<exclusions>
-<!-- Exclude container version of hibernate. By default its version 4, we want 
-bundled version to load -->
-<module name="org.hibernate" slot="main" />
-</exclusions>
- </deployment>
-</jboss-deployment-structure>
