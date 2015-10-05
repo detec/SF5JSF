@@ -26,7 +26,7 @@ public class LoginBean implements Serializable {
 
 	}
 
-	@NotNull(message = "Please enter login!")
+	@NotNull(message = "Please enter username for sign-in or registration!!")
 	private String name;
 
 	@NotNull(message = "Please enter your full name!")
@@ -102,8 +102,7 @@ public class LoginBean implements Serializable {
 
 		if (!userExists(name)) {
 			// Set login ERROR
-			FacesMessage msg = new FacesMessage("Login error!",
-					"User not found in database: " + name);
+			FacesMessage msg = new FacesMessage("Login error!", "User not found in database: " + name);
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 
@@ -114,8 +113,7 @@ public class LoginBean implements Serializable {
 		else {
 			loggedIn = true;
 			Criterion criterion = Restrictions.eq("Login", name);
-			List<Users> rec = (List<Users>) ObjectsListService
-					.ObjectsCriterionList(Users.class, criterion);
+			List<Users> rec = (List<Users>) ObjectsListService.ObjectsCriterionList(Users.class, criterion);
 			user = rec.get(0);
 
 			return "/SettingsList.xhtml";
@@ -126,8 +124,7 @@ public class LoginBean implements Serializable {
 
 		if (userExists(name)) {
 			FacesMessage msg = new FacesMessage("Registration error!",
-					"This login has already been registered in database: "
-							+ name);
+					"This login has already been registered in database: " + name);
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 
@@ -157,24 +154,15 @@ public class LoginBean implements Serializable {
 		return "login";
 	}
 
-	// public String doRegister() {
-	// String retAddress = "";
-	//
-	// if (!this.name.isEmpty()) {
-	// // check if this user is already registered.
-	// if (userExists(this.name)) {
-	//
-	// }
-	// }
-	//
-	// return retAddress;
-	// }
+	public String goToRegister() {
+
+		return "/register.xhtml?faces-redirect=true";
+	}
 
 	public boolean userExists(String username) {
 
 		Criterion criterion = Restrictions.eq("Login", username);
-		List<Users> rec = (List<Users>) ObjectsListService
-				.ObjectsCriterionList(Users.class, criterion);
+		List<Users> rec = (List<Users>) ObjectsListService.ObjectsCriterionList(Users.class, criterion);
 		if (rec.isEmpty()) {
 			return false;
 		} else {

@@ -20,9 +20,8 @@
                 
             </h:panelGrid>
             <h:commandButton value="Login" action="#{loginBean.doLogin}">
-  
-            </h:commandButton>
-			<h:commandButton value="Register" action="#{loginBean.doRegister()}"></h:commandButton>
+              </h:commandButton>
+			<h:commandButton value="Register" action="#{loginBean.goToRegister}"></h:commandButton>
 		</h:form>
 <h:messages id="messages" errorClass="err" warnClass="warn" infoClass="info" style="color: #FF8080" showDetail="true" showSummary="true" layout="table"/>
 	</ui:define>

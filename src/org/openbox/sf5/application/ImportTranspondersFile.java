@@ -37,13 +37,10 @@ public class ImportTranspondersFile implements Serializable {
 		List<FacesMessage> msgs = new ArrayList<FacesMessage>();
 
 		try {
-			fileContent = new Scanner(file.getInputStream())
-					.useDelimiter("\\A").next();
+			fileContent = new Scanner(file.getInputStream()).useDelimiter("\\A").next();
 		} catch (IOException e) {
 
-			msgs.add(new FacesMessage(FacesMessage.SEVERITY_ERROR
-			, "Error reading XML file!"
-					, e.getLocalizedMessage()));
+			msgs.add(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error reading XML file!", e.getLocalizedMessage()));
 			return;
 		}
 
@@ -52,8 +49,7 @@ public class ImportTranspondersFile implements Serializable {
 			// create a temp file
 			File temp = File.createTempFile("transponders", ".xml");
 			String absolutePath = temp.getAbsolutePath();
-			Writer out = new BufferedWriter(new OutputStreamWriter(
-					new FileOutputStream(absolutePath), "UTF-8"));
+			Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(absolutePath), "UTF-8"));
 
 			try {
 				out.write(fileContent);
@@ -66,22 +62,20 @@ public class ImportTranspondersFile implements Serializable {
 			// calling reader class
 			IniReader getResult = new IniReader(absolutePath);
 			if (getResult.isResult()) {
-				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-						"INI import result", "Import success!");
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "INI import result",
+						"Import success!");
 				FacesContext.getCurrentInstance().addMessage("messages", message);
 			}
 
 			else {
-				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,
-						"INI import result", "Import failure!");
+				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "INI import result",
+						"Import failure!");
 				FacesContext.getCurrentInstance().addMessage("messages", message);
 			}
 
-
 		} catch (IOException e) {
 
-			msgs.add(new FacesMessage("Error saving file on server \n"
-					+ e.getLocalizedMessage()));
+			msgs.add(new FacesMessage("Error saving file on server \n" + e.getLocalizedMessage()));
 			return;
 
 		}
