@@ -282,7 +282,7 @@ public class IniReader implements Serializable {
 						// .setResultTransformer(Transformers.aliasToBean(Transponders.class))
 						.list();
 
-				Transponders newTrans = new Transponders(Name, Frequency,
+				Transponders newTrans = new Transponders(Frequency,
 						aPolarization, FEC, carrierEnum, Speed, DVBStandard,
 						rangeEnum, sat);
 
@@ -304,7 +304,6 @@ public class IniReader implements Serializable {
 						selectedTrans.setCarrier(carrierEnum);
 						selectedTrans.setFEC(FEC);
 						selectedTrans.setFrequency(Frequency);
-						selectedTrans.setName(Name);
 						selectedTrans.setPolarization(aPolarization);
 						selectedTrans.setRangeOfDVB(rangeEnum);
 						selectedTrans.setSatellite(sat);

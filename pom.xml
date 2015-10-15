@@ -1,87 +1,98 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>SF5JSF</groupId>
-  <artifactId>SF5JSF</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
-  <name>Openbox SF5 settings editor</name>
-  <description>Openbox SF5 settings editor JSF</description>
-    <properties>
+<modelVersion>4.0.0</modelVersion>
+<groupId>SF5JSF</groupId>
+<artifactId>SF5JSF</artifactId>
+<version>0.0.1-SNAPSHOT</version>
+<packaging>war</packaging>
+<name>Openbox SF5 settings editor</name>
+<description>Openbox SF5 settings editor JSF</description>
+<properties>
   		<mojarra-version>2.2.12</mojarra-version>
-	</properties>	
-  <build>
-    <sourceDirectory>src</sourceDirectory> <!-- This excludes webapp resources from copying to classes! -->
-    <resources>
-      <resource>
-        <directory>src/main/java</directory>
-        <excludes>
-          <exclude>**/*.java</exclude> <!-- This excludes webapp resources from copying to classes! -->
-          <!-- exclude default, unchanged hibernate.cfg.xml -->
-          <exclude>**/hibernate.cfg.xml</exclude>
-        </excludes>
-      </resource>
-    </resources>
-    <plugins>
-      <plugin>
-        <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.3</version>
-        <configuration>
-          <source>1.8</source>
-          <target>1.8</target>
-        </configuration>
-      </plugin>
-     <plugin>
-        <artifactId>maven-war-plugin</artifactId>
-        <version>2.6</version>
-        <configuration>
-          <warSourceDirectory>src/main/webapp</warSourceDirectory>
-          <failOnMissingWebXml>false</failOnMissingWebXml>
-		<packagingExcludes>WEB-INF/web.xml</packagingExcludes>
+  		<spring.version>4.2.1.RELEASE</spring.version>
+</properties>	
+  	<build>
+    	<sourceDirectory>src</sourceDirectory> <!-- This excludes webapp resources from copying to classes! -->
+    		<resources>
+      			<resource>
+        			<directory>src/main/java</directory>
+        			<excludes>
+          			<exclude>**/*.java</exclude> <!-- This excludes webapp resources from copying to classes! -->
+          			<!-- exclude default, unchanged hibernate.cfg.xml -->
+          			<exclude>**/hibernate.cfg.xml</exclude>
+        			</excludes>
+      			</resource>
+    		</resources>
+    	<plugins>
+		<plugin>
+        	<artifactId>maven-compiler-plugin</artifactId>
+        	<version>3.3</version>
+        	<configuration>
+          	<source>1.8</source>
+          	<target>1.8</target>
+        	</configuration>
+		</plugin>
+		<plugin>
+        	<artifactId>maven-war-plugin</artifactId>
+        	<version>2.6</version>
+        	<configuration>
+          	<warSourceDirectory>src/main/webapp</warSourceDirectory>
+          	<failOnMissingWebXml>false</failOnMissingWebXml>
+			<packagingExcludes>WEB-INF/web.xml</packagingExcludes>
 <!-- 		<packagingExcludes>**/webapp</packagingExcludes>  -->
-		<warName>${rp.build.warname}</warName>
-		<webResources>
-			<resource>
+			<warName>${rp.build.warname}</warName>
+			<webResources>
+				<resource>
                 <filtering>true</filtering> <!-- THIS IS IMPORTANT! It tells maven to replace your variables with the properties values -->
                 <directory>src/main/java</directory>
                 <targetPath>WEB-INF/classes/</targetPath>
                 <includes>
                 <include>**/hibernate.cfg.xml</include> <!-- the path to hibernate.cfg.xml -->
                 </includes>
-            </resource>
-        </webResources>
-        </configuration>
-      </plugin>
-      <plugin>
-       	<groupId>org.apache.tomcat.maven</groupId>
-       	<artifactId>tomcat7-maven-plugin</artifactId>
-       	<version>2.2</version>
-       	<configuration>
+            	</resource>
+        	</webResources>
+        	</configuration>
+      	</plugin>
+		<plugin>
+       		<groupId>org.apache.tomcat.maven</groupId>
+       		<artifactId>tomcat7-maven-plugin</artifactId>
+       		<version>2.2</version>
+       		<configuration>
         		<url>http://localhost:8080/manager/text</url>
         		<server>TomcatServer</server>
         		<username>admin</username>
         		<password>admin</password>
         		<warFile>${project.build.directory}/${rp.build.warname}.war</warFile>
         		<update>true</update>
-       	</configuration>
-      </plugin>
-    </plugins>
-  </build>
-   <profiles>
-    <profile>
-        <id>test</id> 
-        <properties>
-            <db.jdbcUrl>jdbc:h2:tcp://localhost/~/sf5jsftest</db.jdbcUrl>
-            <rp.build.warname>SF5JSF-test</rp.build.warname>
-        </properties>
-    </profile>
-    <profile>
-        <id>prod</id>
-        <properties>
-            <db.jdbcUrl>jdbc:h2:tcp://localhost/~/sf5jsf</db.jdbcUrl>
-            <rp.build.warname>SF5JSF</rp.build.warname>
-        </properties>
-    </profile>
-</profiles> 
+       		</configuration>
+    	</plugin>
+		<plugin>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-surefire-plugin</artifactId>
+			<version>2.18.1</version>
+			<configuration>
+			<includes>
+				<include>**/*Tests.java</include>
+			</includes>
+		</configuration>
+		</plugin>
+	</plugins>
+	</build>
+		<profiles>
+    		<profile>
+        		<id>test</id> 
+        		<properties>
+            		<db.jdbcUrl>jdbc:h2:tcp://localhost/~/sf5jsftest</db.jdbcUrl>
+            		<rp.build.warname>SF5JSF-test</rp.build.warname>
+        		</properties>
+    		</profile>
+    		<profile>
+        		<id>prod</id>
+        		<properties>
+            		<db.jdbcUrl>jdbc:h2:tcp://localhost/~/sf5jsf</db.jdbcUrl>
+            		<rp.build.warname>SF5JSF</rp.build.warname>
+        		</properties>
+    		</profile>
+		</profiles> 
   <dependencies>
   	<dependency>
   		<groupId>javax.enterprise</groupId>
@@ -116,6 +127,11 @@
 	<artifactId>validation-api</artifactId>
 	<version>1.1.0.Final</version>
 </dependency>
+<dependency>
+	<groupId>org.hibernate</groupId>
+	<artifactId>hibernate-validator</artifactId>
+	<version>5.2.1.Final</version>
+</dependency>
 	
 	<!-- JSF implementation: Mojarra org.glassfish - is the one at org.glassfish and it is working! -->
 	
@@ -126,6 +142,21 @@
 	 <scope>provided</scope>
 </dependency>
 
-
+<!-- Testing -->
+<dependency>
+	<groupId>junit</groupId>
+	<artifactId>junit</artifactId>
+	<version>4.12</version>
+</dependency>
+<dependency>
+	<groupId>org.assertj</groupId>
+	<artifactId>assertj-core</artifactId>
+	<version>3.2.0</version>
+</dependency>
+<dependency>
+	<groupId>org.springframework</groupId>
+	<artifactId>spring-context</artifactId>
+	<version>${spring.version}</version>
+</dependency>
  </dependencies>
 </project>

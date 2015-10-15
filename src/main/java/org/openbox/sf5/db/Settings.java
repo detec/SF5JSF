@@ -12,12 +12,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name = "Settings")
@@ -35,6 +38,7 @@ public class Settings implements Serializable {
 	private long id;
 
 	@Column(name = "Name", unique = false, nullable = false, length = 50)
+	@NotEmpty
 	private String Name;
 
 	public void setName(String Name) {
@@ -82,7 +86,9 @@ public class Settings implements Serializable {
 	}
 
 	// @ManyToAny(metaColumn = @Column)
+	@ManyToOne
 	@JoinColumn(name = "User", unique = false, nullable = false)
+	@NotNull
 	private Users User;
 
 	public Users getUser() {
@@ -119,8 +125,7 @@ public class Settings implements Serializable {
 		this.Satellites = Satellites;
 	}
 
-	public Settings(String Name, String PropsFile, Timestamp lastEntry,
-			Users User, List<SettingsConversion> Conversion,
+	public Settings(String Name, String PropsFile, Timestamp lastEntry, Users User, List<SettingsConversion> Conversion,
 			List<SettingsSatellites> Satellites) {
 
 		this.Name = Name;
@@ -148,10 +153,8 @@ public class Settings implements Serializable {
 			return false;
 		}
 		Settings otherSettings = (Settings) other;
-		if (otherSettings.Name.equals(this.Name)
-				&& otherSettings.PropsFile.equals(this.PropsFile)
-				&& otherSettings.TheLastEntry == this.TheLastEntry
-				&& otherSettings.User.equals(this.User)
+		if (otherSettings.Name.equals(this.Name) && otherSettings.PropsFile.equals(this.PropsFile)
+				&& otherSettings.TheLastEntry == this.TheLastEntry && otherSettings.User.equals(this.User)
 				&& otherSettings.Conversion.equals(this.Conversion)
 				&& otherSettings.Satellites.equals(this.Satellites)) {
 			return true;
