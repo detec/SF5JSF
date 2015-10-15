@@ -10,12 +10,12 @@
   		<mojarra-version>2.2.12</mojarra-version>
 	</properties>	
   <build>
-    <sourceDirectory>src</sourceDirectory>
+    <sourceDirectory>src</sourceDirectory> <!-- This excludes webapp resources from copying to classes! -->
     <resources>
       <resource>
-        <directory>src</directory>
+        <directory>src/main/java</directory>
         <excludes>
-          <exclude>**/*.java</exclude>
+          <exclude>**/*.java</exclude> <!-- This excludes webapp resources from copying to classes! -->
           <!-- exclude default, unchanged hibernate.cfg.xml -->
           <exclude>**/hibernate.cfg.xml</exclude>
         </excludes>
@@ -37,11 +37,12 @@
           <warSourceDirectory>src/main/webapp</warSourceDirectory>
           <failOnMissingWebXml>false</failOnMissingWebXml>
 		<packagingExcludes>WEB-INF/web.xml</packagingExcludes>
-        <warName>${rp.build.warname}</warName>
+<!-- 		<packagingExcludes>**/webapp</packagingExcludes>  -->
+		<warName>${rp.build.warname}</warName>
 		<webResources>
 			<resource>
                 <filtering>true</filtering> <!-- THIS IS IMPORTANT! It tells maven to replace your variables with the properties values -->
-                <directory>src</directory>
+                <directory>src/main/java</directory>
                 <targetPath>WEB-INF/classes/</targetPath>
                 <includes>
                 <include>**/hibernate.cfg.xml</include> <!-- the path to hibernate.cfg.xml -->
