@@ -9,6 +9,7 @@
 <properties>
   		<mojarra-version>2.2.12</mojarra-version>
   		<spring.version>4.2.1.RELEASE</spring.version>
+  		<hibernate.version>4.3.11.Final</hibernate.version>
 </properties>	
   	<build>
     	<sourceDirectory>src</sourceDirectory> <!-- This excludes webapp resources from copying to classes! -->
@@ -115,7 +116,7 @@
 <dependency>
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-core</artifactId>
-	<version>4.3.10.Final</version>
+	<version>${hibernate.version}</version>
 </dependency>
 <!--  <dependency> -->
 <!-- 	<groupId>javax.inject</groupId> -->
@@ -157,6 +158,11 @@
 	<groupId>org.springframework</groupId>
 	<artifactId>spring-context</artifactId>
 	<version>${spring.version}</version>
+</dependency>
+<dependency>
+   	<groupId>org.springframework</groupId>
+   	<artifactId>spring-tx</artifactId>
+   	<version>${spring.version}</version>
 </dependency>
  </dependencies>
 </project>

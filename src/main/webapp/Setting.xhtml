@@ -21,9 +21,13 @@
     
 	<ui:define name="content">
 	<h:form id="settingForm">
+	
+	<f:validateBean validationGroups="javax.validation.groups.Default">
 	    <h:panelGrid columns="6" id="upperFields">
 	     <h:outputText value="Name"></h:outputText>
-	     <h:inputText value="#{setting.setting.name}" style="font-weight: bold; font-style: normal"></h:inputText>
+	     <h:inputText value="#{setting.setting.name}" style="font-weight: bold; font-style: normal">
+	     <f:validateBean disabled="false"/>
+	     </h:inputText>
 			
 		<h:outputText value="ID"></h:outputText>
 	     <h:outputLabel value="#{setting.setting.id}" style="font-weight: bold"></h:outputLabel>
@@ -161,6 +165,7 @@
 			<h:commandButton value="OK" action="#{setting.saveSettingWrapper()}" >
 			</h:commandButton>
 			<h:commandButton value="Cancel" action="cancel"></h:commandButton>
+		</f:validateBean>
 
 		</h:form>
 		
