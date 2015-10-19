@@ -7,6 +7,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
 
 import org.hibernate.criterion.Criterion;
@@ -116,6 +117,9 @@ public class LoginBean implements Serializable {
 			List<Users> rec = (List<Users>) ObjectsListService.ObjectsCriterionList(Users.class, criterion);
 			user = rec.get(0);
 
+			HttpSession session = SessionBean.getSession();
+			session.setAttribute("username", name);
+
 			return "/SettingsList.xhtml";
 		}
 	}
@@ -150,6 +154,9 @@ public class LoginBean implements Serializable {
 		fullName = "";
 		name = "";
 		user = null;
+
+		HttpSession session = SessionBean.getSession();
+		session.invalidate();
 
 		return "login";
 	}

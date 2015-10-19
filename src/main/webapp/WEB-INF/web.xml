@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
-  <display-name>SF5JSF</display-name>
+	<display-name>SF5JSF</display-name>
+	<!-- Adding filter -->
+	<filter>
+		<filter-name>AuthFilter</filter-name>
+		<filter-class>org.openbox.sf5.application.AuthorizationFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>AuthFilter</filter-name>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+	
   <welcome-file-list>
    <welcome-file>login.xhtml</welcome-file>
   </welcome-file-list>
