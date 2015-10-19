@@ -20,14 +20,12 @@ import org.springframework.transaction.annotation.Transactional;
 
 public class AbstractServiceTests {
 
-	protected ObjectsController contr = new ObjectsController();
-
 	@Test
 	@Transactional
 	public void shouldInsertSatellite() {
 
 		Satellites newSat = getNewSatellite();
-		contr.saveOrUpdate(newSat);
+		ObjectsController.saveOrUpdate(newSat);
 		assertThat(newSat.getId()).isNotEqualTo(0);
 	}
 
@@ -35,7 +33,7 @@ public class AbstractServiceTests {
 	@Transactional
 	public void shouldInsertTransponder() {
 		Transponders trans = getNewTransponder();
-		contr.saveOrUpdate(trans);
+		ObjectsController.saveOrUpdate(trans);
 		assertThat(trans.getId()).isNotEqualTo(0);
 
 	}
@@ -44,7 +42,7 @@ public class AbstractServiceTests {
 	@Transactional
 	public void shouldInsertSetting() {
 		Settings setting = getNewSetting();
-		contr.saveOrUpdate(setting);
+		ObjectsController.saveOrUpdate(setting);
 		assertThat(setting.getId()).isNotEqualTo(0);
 	}
 
@@ -57,7 +55,7 @@ public class AbstractServiceTests {
 
 	private Transponders getNewTransponder() {
 		Satellites newSat = getNewSatellite();
-		contr.saveOrUpdate(newSat);
+		ObjectsController.saveOrUpdate(newSat);
 
 		Transponders trans = new Transponders();
 		trans.setCarrier(CarrierFrequency.Top);
@@ -75,7 +73,7 @@ public class AbstractServiceTests {
 	private SettingsConversion getNewSettingsConversionLine() {
 		Transponders trans = getNewTransponder();
 		trans.setSpeed(10500);
-		contr.saveOrUpdate(trans);
+		ObjectsController.saveOrUpdate(trans);
 
 		SettingsConversion sc = new SettingsConversion();
 		sc.setLineNumber(1);
@@ -99,7 +97,7 @@ public class AbstractServiceTests {
 
 	private Settings getNewSetting() {
 		Users user = getNewUser();
-		contr.saveOrUpdate(user);
+		ObjectsController.saveOrUpdate(user);
 
 		Settings setting = new Settings();
 		setting.setName("Test");
