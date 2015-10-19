@@ -48,6 +48,16 @@ public class SettingsFormController implements Serializable {
 	// here we will receive parameter from page
 	private long Id;
 
+	private String name;
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
 	@Inject
 	private LoginBean loginBean;
 
@@ -82,6 +92,10 @@ public class SettingsFormController implements Serializable {
 	private long settingId;
 
 	private Part file;
+
+	// @Inject
+	// private transient ObjectsController contr;
+
 	private String fileContent;
 
 	public Part getFile() {
@@ -106,8 +120,7 @@ public class SettingsFormController implements Serializable {
 		return selectedSCPRows;
 	}
 
-	public void setSelectedSCPRows(
-			List<SettingsConversionPresentation> selectedSCPRows) {
+	public void setSelectedSCPRows(List<SettingsConversionPresentation> selectedSCPRows) {
 		this.selectedSCPRows = selectedSCPRows;
 	}
 
@@ -155,16 +168,11 @@ public class SettingsFormController implements Serializable {
 		return dataSettingsConversion;
 	}
 
-	public void setDataSettingsConversion(
-			List<SettingsConversionPresentation> dataSettingsConversion) {
+	public void setDataSettingsConversion(List<SettingsConversionPresentation> dataSettingsConversion) {
 		this.dataSettingsConversion = dataSettingsConversion;
 	}
 
 	private List<SettingsConversionPresentation> dataSettingsConversion = new ArrayList<SettingsConversionPresentation>();
-
-	// private String Name;
-
-	// private Timestamp TheLastEntry;
 
 	public Settings getSetting() {
 		return setting;
@@ -174,26 +182,15 @@ public class SettingsFormController implements Serializable {
 		this.setting = setting;
 	}
 
-	// public String getName() {
-	// return Name;
-	// }
-	//
-	// public void setName(String pName) {
-	// Name = pName;
-	// }
-
-	// public Date getTheLastEntry() {
-	// return TheLastEntry == null ? null : new Date(TheLastEntry.getTime());
-	// }
-
 	public void exportToXML() {
 
 		if (!check32Rows()) {
 			return;
 		}
 
-		String filePath = XMLExporter
-				.exportSettingToXML(dataSettingsConversion);
+		// in case someone forgot to generate it
+		generateSatTpStructure();
+		String filePath = XMLExporter.exportSettingToXML(dataSettingsConversion);
 
 		if (filePath == "") {
 			return;
@@ -203,8 +200,7 @@ public class SettingsFormController implements Serializable {
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 
 		// Get HTTP response
-		HttpServletResponse response = (HttpServletResponse) facesContext
-				.getExternalContext().getResponse();
+		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
 
 		// Set response headers
 		response.reset(); // Reset the response in the first place
@@ -215,8 +211,7 @@ public class SettingsFormController implements Serializable {
 		try {
 			OutputStream responseOutputStream = response.getOutputStream();
 
-			FileInputStream inputStream = new FileInputStream(
-					new File(filePath));
+			FileInputStream inputStream = new FileInputStream(new File(filePath));
 			// Read PDF contents and write them to the output
 
 			byte[] bytesBuffer = new byte[2048];
@@ -255,15 +250,14 @@ public class SettingsFormController implements Serializable {
 			saveSetting();
 		}
 
-		String addressString = "/SettingsList.xhtml?faces-redirect=true&SelectionMode=true"
-				+ "&SettingId=" + Long.toString(setting.getId());
+		String addressString = "/SettingsList.xhtml?faces-redirect=true&SelectionMode=true" + "&SettingId="
+				+ Long.toString(setting.getId());
 
 		return addressString;
 	}
 
 	public void setTheLastEntry() {
-		setting.setTheLastEntry(new java.sql.Timestamp(System
-				.currentTimeMillis()));
+		setting.setTheLastEntry(new java.sql.Timestamp(System.currentTimeMillis()));
 	}
 
 	public long getId() {
@@ -282,10 +276,8 @@ public class SettingsFormController implements Serializable {
 			saveSetting();
 		}
 
-		String addressString = "/transponders.xhtml?faces-redirect=true&SelectionMode=true"
-				+ "&SettingId="
-				+ Long.toString(setting.getId())
-				+ "&multiple=true&scId=0";
+		String addressString = "/transponders.xhtml?faces-redirect=true&SelectionMode=true" + "&SettingId="
+				+ Long.toString(setting.getId()) + "&multiple=true&scId=0";
 
 		return addressString;
 	}
@@ -313,23 +305,20 @@ public class SettingsFormController implements Serializable {
 
 		// save if row should be deleted from database.
 		if (deleteArray.size() > 0) {
-			ObjectsController contr = new ObjectsController();
-			contr.saveOrUpdate(setting);
+			ObjectsController.saveOrUpdate(setting);
 		}
 	}
 
 	public void checkIntersection() throws SQLException {
 		// let's clear all old intersections and save setting.
-		dataSettingsConversion.stream().forEach(
-				t -> t.setTheLineOfIntersection(0));
+		dataSettingsConversion.stream().forEach(t -> t.setTheLineOfIntersection(0));
 		saveSetting();
 
-		int rows = Intersections.checkIntersection(dataSettingsConversion,
-				setting);
+		int rows = Intersections.checkIntersection(dataSettingsConversion, setting);
 
 		String mesString = "Unique problem lines: " + String.valueOf(rows);
-		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO,
-				"Intersections calculation result", mesString);
+		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Intersections calculation result",
+				mesString);
 
 		// Add the message into context for a specific component
 		FacesContext.getCurrentInstance().addMessage("messages", message);
@@ -366,15 +355,13 @@ public class SettingsFormController implements Serializable {
 		renumerateLines();
 
 		if (deleteArray.size() > 0) {
-			ObjectsController contr = new ObjectsController();
-			contr.saveOrUpdate(setting);
+			ObjectsController.saveOrUpdate(setting);
 		}
 	}
 
 	public void moveUp() {
 		List<SettingsConversionPresentation> selectedRows = new ArrayList<SettingsConversionPresentation>();
-		selectedRows = dataSettingsConversion.stream().filter(t -> t.checked)
-				.collect(Collectors.toList());
+		selectedRows = dataSettingsConversion.stream().filter(t -> t.checked).collect(Collectors.toList());
 		selectedRows.stream().forEach(t -> {
 			int currentIndex = dataSettingsConversion.indexOf(t);
 			if (currentIndex > 0) {
@@ -392,21 +379,18 @@ public class SettingsFormController implements Serializable {
 
 	public void moveDown() {
 		List<SettingsConversionPresentation> selectedRows = new ArrayList<SettingsConversionPresentation>();
-		selectedRows = dataSettingsConversion.stream().filter(t -> t.checked)
-				.collect(Collectors.toList());
-		selectedRows.stream().forEach(
-				t -> {
-					int currentIndex = dataSettingsConversion.indexOf(t);
-					if (currentIndex < dataSettingsConversion.size() - 1) {
-						dataSettingsConversion.add(currentIndex + 1, t);
-						dataSettingsConversion.add(currentIndex,
-								dataSettingsConversion.get(currentIndex + 2));
-						// removing superfluous copies.
-						dataSettingsConversion.remove(currentIndex + 2);
-						dataSettingsConversion.remove(currentIndex + 2);
-					}
+		selectedRows = dataSettingsConversion.stream().filter(t -> t.checked).collect(Collectors.toList());
+		selectedRows.stream().forEach(t -> {
+			int currentIndex = dataSettingsConversion.indexOf(t);
+			if (currentIndex < dataSettingsConversion.size() - 1) {
+				dataSettingsConversion.add(currentIndex + 1, t);
+				dataSettingsConversion.add(currentIndex, dataSettingsConversion.get(currentIndex + 2));
+				// removing superfluous copies.
+				dataSettingsConversion.remove(currentIndex + 2);
+				dataSettingsConversion.remove(currentIndex + 2);
+			}
 
-				});
+		});
 		renumerateLines();
 	}
 
@@ -430,8 +414,7 @@ public class SettingsFormController implements Serializable {
 	public void addNewLine(Transponders trans) {
 		long newLine = new Long(dataSettingsConversion.size() + 1).longValue();
 
-		SettingsConversionPresentation newLineObject = new SettingsConversionPresentation(
-				setting);
+		SettingsConversionPresentation newLineObject = new SettingsConversionPresentation(setting);
 
 		newLineObject.setLineNumber(newLine);
 		// newLineObject.setTransponder(new Transponders()); // to prevent null
@@ -453,16 +436,15 @@ public class SettingsFormController implements Serializable {
 		currentUser = CurrentLogin.getUser();
 
 		// Analyze if we have current object set in session bean
-		if (CurrentLogin.getCurrentObject() != null
-				&& CurrentLogin.getCurrentObject() instanceof Settings) {
+		if (CurrentLogin.getCurrentObject() != null && CurrentLogin.getCurrentObject() instanceof Settings) {
 
 			setting = (Settings) CurrentLogin.getCurrentObject();
 		}
 
 		// load passed settings id
 		if (Id != 0) {
-			ObjectsController contr = new ObjectsController();
-			setting = (Settings) contr.select(Settings.class, Id);
+			// ObjectsController contr = new ObjectsController();
+			setting = (Settings) ObjectsController.select(Settings.class, Id);
 			// Name = setting.getName();
 			// TheLastEntry = setting.getTheLastEntry();
 		}
@@ -480,12 +462,10 @@ public class SettingsFormController implements Serializable {
 			// for new item it is null
 			if (listRead != null) {
 				// sort in ascending order
-				Collections.sort(listRead, (b1, b2) -> (int) (b1
-						.getLineNumber() - b2.getLineNumber()));
+				Collections.sort(listRead, (b1, b2) -> (int) (b1.getLineNumber() - b2.getLineNumber()));
 
 				for (SettingsConversion e : listRead) {
-					dataSettingsConversion
-							.add(new SettingsConversionPresentation(e));
+					dataSettingsConversion.add(new SettingsConversionPresentation(e));
 				}
 
 			}
@@ -494,8 +474,7 @@ public class SettingsFormController implements Serializable {
 
 			// if we select from transponders
 			if (SelectionMode && settingId == 0) {
-				List<Transponders> transList = (List<Transponders>) CurrentLogin
-						.getCurrentObject();
+				List<Transponders> transList = (List<Transponders>) CurrentLogin.getCurrentObject();
 
 				if (multiple) {
 					transList.stream().forEach(t -> addNewLine(t));
@@ -505,11 +484,8 @@ public class SettingsFormController implements Serializable {
 					if (transList.size() > 0) {
 						// change transponder in the given settingsconversion
 						// line
-						dataSettingsConversion
-								.stream()
-								.filter(t -> t.getId() == scId)
-								.forEach(
-										t -> t.setTransponder(transList.get(0)));
+						dataSettingsConversion.stream().filter(t -> t.getId() == scId)
+								.forEach(t -> t.setTransponder(transList.get(0)));
 					}
 				}
 
@@ -535,10 +511,10 @@ public class SettingsFormController implements Serializable {
 				// now clear old parent_id
 				SCPList.stream().forEach(t -> {
 					// we must try to clean all id reference to initial setting.
-						t.setparent_id(setting);
-						t.setId(0);
-						t.setLineNumber(0);
-					});
+					t.setparent_id(setting);
+					t.setId(0);
+					t.setLineNumber(0);
+				});
 
 				dataSettingsConversion.addAll(SCPList);
 
@@ -552,17 +528,14 @@ public class SettingsFormController implements Serializable {
 
 	public String copyToOtherSetting() {
 		selectedSCPRows.clear();
-		selectedSCPRows = dataSettingsConversion.stream()
-				.filter(t -> t.checked).collect(Collectors.toList());
+		selectedSCPRows = dataSettingsConversion.stream().filter(t -> t.checked).collect(Collectors.toList());
 
 		loginBean.setCurrentObject(selectedSCPRows);
 
-		String addressString = "/Setting.xhtml?faces-redirect=true&id="
-				+ Long.toString(settingId)
+		String addressString = "/Setting.xhtml?faces-redirect=true&id=" + Long.toString(settingId)
 				+ "&SelectionMode=true"
 				// + Boolean.toString(SelectionMode)
-				+ "&multiple=" + Boolean.toString(multiple) + "&scId="
-				+ Long.toString(scId) + "&settingId="
+				+ "&multiple=" + Boolean.toString(multiple) + "&scId=" + Long.toString(scId) + "&settingId="
 				+ Long.toString(settingId);
 
 		return addressString;
@@ -572,8 +545,8 @@ public class SettingsFormController implements Serializable {
 		// we should save in all cases because we leave this page
 		saveSetting();
 
-		String addressString = "/SettingsList.xhtml?faces-redirect=true&SelectionMode=true&"
-				+ "settingId=" + Long.toString(setting.getId());
+		String addressString = "/SettingsList.xhtml?faces-redirect=true&SelectionMode=true&" + "settingId="
+				+ Long.toString(setting.getId());
 
 		return addressString;
 	}
@@ -602,8 +575,7 @@ public class SettingsFormController implements Serializable {
 	public boolean check32Rows() {
 
 		if (dataSettingsConversion.size() != 32) {
-			FacesMessage message = new FacesMessage(
-					FacesMessage.SEVERITY_ERROR, "Error!",
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error!",
 					"Table Transponders must contain exactly 32 records!");
 
 			// Add the message into context for a specific component
@@ -640,9 +612,8 @@ public class SettingsFormController implements Serializable {
 	}
 
 	public void saveSetting() {
-		ObjectsController contr = new ObjectsController();
-		setting.setTheLastEntry(new java.sql.Timestamp(System
-				.currentTimeMillis()));
+		// ObjectsController contr = new ObjectsController();
+		setting.setTheLastEntry(new java.sql.Timestamp(System.currentTimeMillis()));
 
 		// setting.setName(Name);
 
@@ -651,7 +622,7 @@ public class SettingsFormController implements Serializable {
 
 		// unload table with transponders.
 		setting.setConversion(unloadTableSettingsConversion());
-		contr.saveOrUpdate(setting);
+		ObjectsController.saveOrUpdate(setting);
 
 	}
 
@@ -803,8 +774,7 @@ public class SettingsFormController implements Serializable {
 			this.FEC = FEC;
 		}
 
-		public SettingsConversionPresentation(
-				SettingsConversionPresentation original, Settings parent) {
+		public SettingsConversionPresentation(SettingsConversionPresentation original, Settings parent) {
 			Carrier = original.Carrier;
 			FEC = original.FEC;
 			Polarization = original.Polarization;

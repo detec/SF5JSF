@@ -92,8 +92,7 @@ public class TranspondersListController implements Serializable {
 		return selectedTranspondersList;
 	}
 
-	public void setSelectedTranspondersList(
-			List<Transponders> selectedTranspondersList) {
+	public void setSelectedTranspondersList(List<Transponders> selectedTranspondersList) {
 		this.selectedTranspondersList = selectedTranspondersList;
 	}
 
@@ -101,8 +100,7 @@ public class TranspondersListController implements Serializable {
 		return TransponderChoiceList;
 	}
 
-	public void setTransponderChoiceList(
-			List<TransponderChoice> transponderChoiceList) {
+	public void setTransponderChoiceList(List<TransponderChoice> transponderChoiceList) {
 		TransponderChoiceList = transponderChoiceList;
 	}
 
@@ -118,22 +116,19 @@ public class TranspondersListController implements Serializable {
 	public void init() {
 
 		if (loginBean.getFilterSatId() != 0) {
-			ObjectsController contr = new ObjectsController();
-			filterSatellite = ((Satellites) contr.select(Satellites.class,
-					loginBean.getFilterSatId()));
+			filterSatellite = ((Satellites) ObjectsController.select(Satellites.class, loginBean.getFilterSatId()));
 
 		}
 
 		if (filterSatellite != null) {
 			Criterion criterion = Restrictions.eq("Satellite", filterSatellite);
 			// return (List<Transponders>) ObjectsListService
-			TranspondersList = (List<Transponders>) ObjectsListService
-					.ObjectsCriterionList(Transponders.class, criterion);
+			TranspondersList = (List<Transponders>) ObjectsListService.ObjectsCriterionList(Transponders.class,
+					criterion);
 		} else {
 			// return (List<Transponders>) ObjectsListService
 			// .ObjectsList(Transponders.class);
-			TranspondersList = (List<Transponders>) ObjectsListService
-					.ObjectsList(Transponders.class);
+			TranspondersList = (List<Transponders>) ObjectsListService.ObjectsList(Transponders.class);
 		}
 	}
 
@@ -144,8 +139,7 @@ public class TranspondersListController implements Serializable {
 
 	public List<Satellites> getSatellites() {
 
-		return (List<Satellites>) ObjectsListService
-				.ObjectsList(Satellites.class);
+		return (List<Satellites>) ObjectsListService.ObjectsList(Satellites.class);
 	}
 
 	public String saveSelectedTransponders() {
@@ -159,10 +153,9 @@ public class TranspondersListController implements Serializable {
 
 		loginBean.setCurrentObject(selectedTranspondersList);
 
-		String addressString = "/Setting.xhtml?faces-redirect=true&id="
-				+ Long.toString(SettingId) + "&SelectionMode="
-				+ Boolean.toString(SelectionMode) + "&multiple="
-				+ Boolean.toString(multiple) + "&scId=" + Long.toString(scId);
+		String addressString = "/Setting.xhtml?faces-redirect=true&id=" + Long.toString(SettingId) + "&SelectionMode="
+				+ Boolean.toString(SelectionMode) + "&multiple=" + Boolean.toString(multiple) + "&scId="
+				+ Long.toString(scId);
 
 		// let's try to clear selected satellite
 		filterSatellite = null;
@@ -181,11 +174,9 @@ public class TranspondersListController implements Serializable {
 
 			loginBean.setCurrentObject(selectedTranspondersList);
 
-			String addressString = "/Setting.xhtml?faces-redirect=true&id="
-					+ Long.toString(SettingId) + "&SelectionMode="
-					+ Boolean.toString(SelectionMode) + "&multiple="
-					+ Boolean.toString(multiple) + "&scId="
-					+ Long.toString(scId);
+			String addressString = "/Setting.xhtml?faces-redirect=true&id=" + Long.toString(SettingId)
+					+ "&SelectionMode=" + Boolean.toString(SelectionMode) + "&multiple=" + Boolean.toString(multiple)
+					+ "&scId=" + Long.toString(scId);
 			return addressString;
 
 		}

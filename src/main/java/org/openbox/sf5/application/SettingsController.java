@@ -18,7 +18,7 @@ import org.openbox.sf5.db.Users;
 import org.openbox.sf5.service.ObjectsController;
 import org.openbox.sf5.service.ObjectsListService;
 
-@Named(value = "settingsController")
+@Named("settingsController")
 @ViewScoped
 public class SettingsController implements Serializable {
 
@@ -32,7 +32,6 @@ public class SettingsController implements Serializable {
 
 	}
 
-	// @ManagedProperty(value="#{loginBean}")
 	@Inject
 	private LoginBean CurrentLogin;
 
@@ -125,8 +124,7 @@ public class SettingsController implements Serializable {
 		}
 
 		Criterion criterion = Restrictions.eq("User", currentUser);
-		settingsList = (List<Settings>) ObjectsListService
-				.ObjectsCriterionList(Settings.class, criterion);
+		settingsList = (List<Settings>) ObjectsListService.ObjectsCriterionList(Settings.class, criterion);
 		return settingsList;
 	}
 
@@ -145,20 +143,18 @@ public class SettingsController implements Serializable {
 	public String removeSetting() {
 
 		if (this.currentSetting != null) {
-			ObjectsController contr = new ObjectsController();
+			// ObjectsController contr = new ObjectsController();
 			contr.remove(Settings.class, this.currentSetting.getId());
 
 			String mesString = "Setting remove success!";
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,
-					"Setting removal", mesString);
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Setting removal", mesString);
 
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("messages", message);
 		} else {
 
 			String mesString = "No current setting set - nothing removed!";
-			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN,
-					"Setting removal", mesString);
+			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Setting removal", mesString);
 
 			// Add the message into context for a specific component
 			FacesContext.getCurrentInstance().addMessage("messages", message);
@@ -170,4 +166,6 @@ public class SettingsController implements Serializable {
 		return "";
 	}
 
+	@Inject
+	private transient ObjectsController contr;
 }
