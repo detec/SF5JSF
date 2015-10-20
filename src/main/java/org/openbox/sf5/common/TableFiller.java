@@ -14,11 +14,10 @@ import org.openbox.sf5.db.TheDVBRangeValues;
 import org.openbox.sf5.db.ValueOfTheCarrierFrequency;
 import org.openbox.sf5.service.ObjectsController;
 
+//@Singleton
+//@Startup
 public final class TableFiller implements Serializable {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 8464537239822198552L;
 
 	public TableFiller() {

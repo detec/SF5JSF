@@ -58,7 +58,7 @@ public class IniReader implements Serializable {
 
 	public IniReader(String filepath) throws FileNotFoundException {
 
-		new TableFiller();
+		//new TableFiller();
 
 		// Open the file
 		FileInputStream fstream = new FileInputStream(filepath);

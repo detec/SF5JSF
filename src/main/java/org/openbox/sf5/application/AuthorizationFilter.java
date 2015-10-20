@@ -42,9 +42,10 @@ public class AuthorizationFilter implements Filter {
 
 		// Let's split conditions into separate parts
 		boolean itIsLoginpage = (reqURI.indexOf("/login.xhtml") >= 0);
+		boolean itIsregsterPage = (reqURI.indexOf("/register.xhtml") >= 0);
 		boolean therIsUsername = (ses != null && ses.getAttribute("username") != null);
 
-		if (itIsLoginpage || therIsUsername) {
+		if (itIsLoginpage || therIsUsername || itIsregsterPage) {
 
 			chain.doFilter(request, response);
 		} else {
