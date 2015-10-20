@@ -33,22 +33,24 @@ public class AuthorizationFilter implements Filter {
 	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
-		try {
 
-			HttpServletRequest reqt = (HttpServletRequest) request;
-			HttpServletResponse resp = (HttpServletResponse) response;
-			HttpSession ses = reqt.getSession(false);
+		HttpServletRequest reqt = (HttpServletRequest) request;
+		HttpServletResponse resp = (HttpServletResponse) response;
+		HttpSession ses = reqt.getSession(false);
 
-			String reqURI = reqt.getRequestURI();
-			if (reqURI.indexOf("/login.xhtml") >= 0 || (ses != null && ses.getAttribute("username") != null)
-					|| reqURI.indexOf("/") >= 0 || reqURI.contains("javax.faces.resource")) {
-				chain.doFilter(request, response);
-			} else {
-				resp.sendRedirect(reqt.getContextPath() + "/login.xhtml");
-			}
-		} catch (Exception e) {
-			System.out.println(e.getMessage());
+		String reqURI = reqt.getRequestURI();
+
+		// Let's split conditions into separate parts
+		boolean itIsLoginpage = (reqURI.indexOf("/login.xhtml") >= 0);
+		boolean therIsUsername = (ses != null && ses.getAttribute("username") != null);
+
+		if (itIsLoginpage || therIsUsername) {
+
+			chain.doFilter(request, response);
+		} else {
+			resp.sendRedirect(reqt.getContextPath() + "/login.xhtml");
 		}
+
 	}
 
 }

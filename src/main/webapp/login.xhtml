@@ -9,16 +9,15 @@
 <ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
 
 	<ui:define name="content">
-	    <h:form id="form">
+	    <h:form id="Loginform">
 	   
             <h:panelGrid columns="2">
                 <h:outputText value="*Login"></h:outputText>
-                <h:inputText value="#{loginBean.name}">
-                 <h:message for="loginMessage" errorClass="err" warnClass="warn" infoClass="info" showDetail="false"></h:message>
-                </h:inputText>
-                
-                
+                <h:inputText name="j_username" value="#{loginBean.name}" id="j_username"></h:inputText>
+                <h:message for="j_username" errorClass="err" warnClass="warn" infoClass="info" showDetail="false"></h:message>
             </h:panelGrid>
+            <h:inputHidden name="j_password" value="null"/>
+            
             <h:commandButton value="Login" action="#{loginBean.doLogin}">
               </h:commandButton>
 			<h:commandButton value="Register" action="#{loginBean.goToRegister}"></h:commandButton>
