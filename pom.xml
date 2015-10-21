@@ -161,15 +161,5 @@
 	<artifactId>assertj-core</artifactId>
 	<version>3.2.0</version>
 </dependency>
-<dependency>
-	<groupId>org.springframework</groupId>
-	<artifactId>spring-context</artifactId>
-	<version>${spring.version}</version>
-</dependency>
-<dependency>
-   	<groupId>org.springframework</groupId>
-   	<artifactId>spring-tx</artifactId>
-   	<version>${spring.version}</version>
-</dependency>
  </dependencies>
 </project>

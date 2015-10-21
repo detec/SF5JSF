@@ -7,17 +7,22 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
 import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
+// Using Hibernate Validator instead of Spring
 public class ValidatorTests {
 
-	private Validator createValidator() {
-		LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
-		localValidatorFactoryBean.afterPropertiesSet();
-		return localValidatorFactoryBean;
+	private static Validator validator;
+
+	@BeforeClass
+	public static void setUp() {
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		validator = factory.getValidator();
 	}
 
 	@Test
@@ -26,7 +31,6 @@ public class ValidatorTests {
 		Settings setting = new Settings();
 		setting.setName("");
 
-		Validator validator = createValidator();
 		Set<ConstraintViolation<Settings>> constraintViolations = validator.validate(setting);
 		assertThat(constraintViolations.size()).isEqualTo(2);
 

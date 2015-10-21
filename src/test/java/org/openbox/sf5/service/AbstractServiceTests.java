@@ -5,6 +5,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.junit.Test;
 import org.openbox.sf5.db.CarrierFrequency;
 import org.openbox.sf5.db.DVBStandards;
@@ -16,7 +18,6 @@ import org.openbox.sf5.db.SettingsConversion;
 import org.openbox.sf5.db.Transponders;
 import org.openbox.sf5.db.TypesOfFEC;
 import org.openbox.sf5.db.Users;
-import org.springframework.transaction.annotation.Transactional;
 
 public class AbstractServiceTests {
 
