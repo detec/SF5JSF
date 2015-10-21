@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
+
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.openbox.sf5.db.CarrierFrequency;
@@ -14,9 +17,9 @@ import org.openbox.sf5.db.TheDVBRangeValues;
 import org.openbox.sf5.db.ValueOfTheCarrierFrequency;
 import org.openbox.sf5.service.ObjectsController;
 
-//@Singleton
-//@Startup
-public final class TableFiller implements Serializable {
+@Named
+@ApplicationScoped
+public class TableFiller implements Serializable {
 
 	private static final long serialVersionUID = 8464537239822198552L;
 

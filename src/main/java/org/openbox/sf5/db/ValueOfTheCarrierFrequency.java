@@ -11,6 +11,36 @@ import javax.persistence.Table;
 @Table(name = "ValueOfTheCarrierFrequency")
 public class ValueOfTheCarrierFrequency implements Serializable {
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((Polarization == null) ? 0 : Polarization.hashCode());
+		result = prime * result + ((TypeOfCarrierFrequency == null) ? 0 : TypeOfCarrierFrequency.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null) {
+			return false;
+		}
+		if (getClass() != obj.getClass()) {
+			return false;
+		}
+		ValueOfTheCarrierFrequency other = (ValueOfTheCarrierFrequency) obj;
+		if (Polarization != other.Polarization) {
+			return false;
+		}
+		if (TypeOfCarrierFrequency != other.TypeOfCarrierFrequency) {
+			return false;
+		}
+		return true;
+	}
+
 	/**
 	 *
 	 */
@@ -23,8 +53,7 @@ public class ValueOfTheCarrierFrequency implements Serializable {
 		return TypeOfCarrierFrequency;
 	}
 
-	public void setTypeOfCarrierFrequency(
-			CarrierFrequency TypeOfCarrierFrequency) {
+	public void setTypeOfCarrierFrequency(CarrierFrequency TypeOfCarrierFrequency) {
 		this.TypeOfCarrierFrequency = TypeOfCarrierFrequency;
 	}
 
@@ -53,9 +82,8 @@ public class ValueOfTheCarrierFrequency implements Serializable {
 		this.UpperThreshold = UpperThreshold;
 	}
 
-	public ValueOfTheCarrierFrequency(CarrierFrequency TypeOfCarrierFrequency,
-			KindsOfPolarization Polarization, long LowerThreshold,
-			long UpperThreshold) {
+	public ValueOfTheCarrierFrequency(CarrierFrequency TypeOfCarrierFrequency, KindsOfPolarization Polarization,
+			long LowerThreshold, long UpperThreshold) {
 
 		this.TypeOfCarrierFrequency = TypeOfCarrierFrequency;
 		this.Polarization = Polarization;
