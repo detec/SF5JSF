@@ -15,9 +15,9 @@
     	<sourceDirectory>src</sourceDirectory> <!-- This excludes webapp resources from copying to classes! -->
     		<resources>
       			<resource>
-        			<directory>src/main/java</directory>
+        			<directory>src/main/java</directory> <!-- This excludes webapp resources from copying to classes! -->
         			<excludes>
-          			<exclude>**/*.java</exclude> <!-- This excludes webapp resources from copying to classes! -->
+          			<exclude>**/*.java</exclude> 
           			<!-- exclude default, unchanged hibernate.cfg.xml -->
           			<exclude>**/hibernate.cfg.xml</exclude>
         			</excludes>
