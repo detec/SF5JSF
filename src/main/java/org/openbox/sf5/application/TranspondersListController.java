@@ -20,9 +20,6 @@ import org.openbox.sf5.service.ObjectsListService;
 @ViewScoped
 public class TranspondersListController implements Serializable {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = -1000488396477162309L;
 
 	@Inject

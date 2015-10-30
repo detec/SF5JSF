@@ -8,11 +8,10 @@
 <description>Openbox SF5 settings editor JSF</description>
 <properties>
   		<mojarra-version>2.2.12</mojarra-version>
-  		<spring.version>4.2.1.RELEASE</spring.version>
   		<hibernate.version>4.3.11.Final</hibernate.version>
 </properties>	
   	<build>
-    	<sourceDirectory>src</sourceDirectory> <!-- This excludes webapp resources from copying to classes! -->
+<!--     	<sourceDirectory>src</sourceDirectory> This excludes webapp resources from copying to classes! -->
     		<resources>
       			<resource>
         			<directory>src/main/java</directory> <!-- This excludes webapp resources from copying to classes! -->
@@ -134,6 +133,38 @@
 	<version>3.2</version>
 	<scope>provided</scope>
 </dependency>
+<!-- JSON services support -->
+<dependency>
+	<groupId>javax.json</groupId>
+	<artifactId>javax.json-api</artifactId>
+	<version>1.0</version>
+	<scope>provided</scope>
+</dependency>
+<dependency>
+	<groupId>asm</groupId>
+	<artifactId>asm</artifactId>
+	<version>3.3.1</version>
+</dependency>
+<dependency>
+	<groupId>org.json</groupId>
+	<artifactId>json</artifactId>
+	<version>20140107</version>
+</dependency>
+<dependency>
+	<groupId>com.sun.jersey</groupId>
+	<artifactId>jersey-bundle</artifactId>
+	<version>1.19</version>
+</dependency>
+<dependency>
+	<groupId>com.sun.jersey</groupId>
+	<artifactId>jersey-server</artifactId>
+	<version>1.19</version>
+</dependency>
+<dependency>
+	<groupId>com.sun.jersey</groupId>
+	<artifactId>jersey-core</artifactId>
+	<version>1.19</version>
+</dependency>
 
 <dependency>
 	<groupId>org.hibernate</groupId>
@@ -147,7 +178,7 @@
 	<groupId>org.glassfish</groupId>
 	<artifactId>javax.faces</artifactId>
 	<version>${mojarra-version}</version>
-	 <scope>provided</scope>
+	 <scope>runtime</scope>
 </dependency>
 
 <!-- Testing -->
