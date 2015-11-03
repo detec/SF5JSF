@@ -1,14 +1,18 @@
 package org.openbox.sf5.dao;
 
+import javax.inject.Inject;
+
 import org.hibernate.Session;
-import org.openbox.sf5.db.HibernateUtil;
+import org.openbox.sf5.db.ConnectionManager;
 
 public class DAOImpl implements DAO {
 
 	@Override
 	public void add(Object obj) {
-		// TODO Auto-generated method stub
-		Session s = HibernateUtil.openSession();
+		// Session s = HibernateUtil.openSession();
+
+		Session s = cm.getSessionFactroy().openSession();
+
 		s.beginTransaction();
 		s.save(obj);
 		s.getTransaction().commit();
@@ -18,9 +22,9 @@ public class DAOImpl implements DAO {
 
 	@Override
 	public void remove(Class<?> clazz, long id) {
-		// TODO Auto-generated method stub
+		// Session s = HibernateUtil.openSession();
 
-		Session s = HibernateUtil.openSession();
+		Session s = cm.getSessionFactroy().openSession();
 		s.beginTransaction();
 		Object c = s.get(clazz, id);
 		s.delete(c);
@@ -30,8 +34,9 @@ public class DAOImpl implements DAO {
 
 	@Override
 	public void update(Object obj) {
-		// TODO Auto-generated method stub
-		Session s = HibernateUtil.openSession();
+		// Session s = HibernateUtil.openSession();
+
+		Session s = cm.getSessionFactroy().openSession();
 		s.beginTransaction();
 		s.update(obj);
 		s.getTransaction().commit();
@@ -40,7 +45,9 @@ public class DAOImpl implements DAO {
 
 	@Override
 	public Object select(Class<?> clazz, long id) {
-		Session s = HibernateUtil.openSession();
+		// Session s = HibernateUtil.openSession();
+
+		Session s = cm.getSessionFactroy().openSession();
 		s.beginTransaction();
 		Object obj = s.get(clazz, id);
 		s.close();
@@ -49,10 +56,15 @@ public class DAOImpl implements DAO {
 
 	@Override
 	public void saveOrUpdate(Object obj) {
-		Session s = HibernateUtil.openSession();
+		// Session s = HibernateUtil.openSession();
+
+		Session s = cm.getSessionFactroy().openSession();
 		s.beginTransaction();
 		s.saveOrUpdate(obj);
 		s.getTransaction().commit();
 		s.close();
 	}
+
+	@Inject
+	private ConnectionManager cm;
 }
