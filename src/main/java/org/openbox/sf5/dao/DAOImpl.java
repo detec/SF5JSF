@@ -1,11 +1,19 @@
 package org.openbox.sf5.dao;
 
+import java.io.Serializable;
+
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 import org.hibernate.Session;
 import org.openbox.sf5.db.ConnectionManager;
 
-public class DAOImpl implements DAO {
+@Named
+@SessionScoped
+public class DAOImpl implements DAO, Serializable {
+
+	private static final long serialVersionUID = 4283051495842205423L;
 
 	@Override
 	public void add(Object obj) {

@@ -1,29 +1,38 @@
 package org.openbox.sf5.service;
 
-public class ObjectsController {
+import java.io.Serializable;
 
-	private static ObjectService Service = new ObjectServiceImpl();
-	// private ObservableList<Transponders> List =
-	// FXCollections.observableArrayList();
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 
-	public static void add(Object obj) {
+@Named
+@SessionScoped
+public class ObjectsController implements Serializable {
+
+	private static final long serialVersionUID = 3569160314988465165L;
+
+	public void add(Object obj) {
 		Service.add(obj);
 	}
 
-	public static void update(Object obj) {
+	public void update(Object obj) {
 		Service.update(obj);
 	}
 
-	public static void remove(Class<?> clazz, long id) {
+	public void remove(Class<?> clazz, long id) {
 		Service.remove(clazz, id);
 	}
 
-	public static void saveOrUpdate(Object obj) {
+	public void saveOrUpdate(Object obj) {
 		Service.saveOrUpdate(obj);
 	}
 
-	public static Object select(Class<?> clazz, long id) {
+	public Object select(Class<?> clazz, long id) {
 		return Service.select(clazz, id);
 	}
+
+	@Inject
+	private ObjectService Service;
 
 }

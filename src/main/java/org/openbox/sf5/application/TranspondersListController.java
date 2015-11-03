@@ -113,7 +113,7 @@ public class TranspondersListController implements Serializable {
 	public void init() {
 
 		if (loginBean.getFilterSatId() != 0) {
-			filterSatellite = ((Satellites) ObjectsController.select(Satellites.class, loginBean.getFilterSatId()));
+			filterSatellite = ((Satellites) contr.select(Satellites.class, loginBean.getFilterSatId()));
 
 		}
 
@@ -180,6 +180,9 @@ public class TranspondersListController implements Serializable {
 
 		return "";
 	}
+
+	@Inject
+	private ObjectsController contr;
 
 	// in order to select transponders we should implement wrapper class to
 	// store 'check' property

@@ -6,6 +6,7 @@ import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import javax.validation.constraints.NotNull;
@@ -139,7 +140,7 @@ public class LoginBean implements Serializable {
 
 			// Let's save user in database
 			// ObjectsController contr = new ObjectsController();
-			ObjectsController.saveOrUpdate(newUser);
+			contr.saveOrUpdate(newUser);
 
 			// set current user
 			user = newUser;
@@ -178,7 +179,7 @@ public class LoginBean implements Serializable {
 
 	}
 
-	// @Inject
-	// private transient ObjectsController contr;
+	@Inject
+	private ObjectsController contr;
 
 }

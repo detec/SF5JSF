@@ -39,9 +39,6 @@ import org.openbox.sf5.service.ObjectsController;
 @ViewScoped
 public class SettingsFormController implements Serializable {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = -4706281624885080396L;
 	private Settings setting;
 
@@ -305,7 +302,7 @@ public class SettingsFormController implements Serializable {
 
 		// save if row should be deleted from database.
 		if (deleteArray.size() > 0) {
-			ObjectsController.saveOrUpdate(setting);
+			contr.saveOrUpdate(setting);
 		}
 	}
 
@@ -355,7 +352,7 @@ public class SettingsFormController implements Serializable {
 		renumerateLines();
 
 		if (deleteArray.size() > 0) {
-			ObjectsController.saveOrUpdate(setting);
+			contr.saveOrUpdate(setting);
 		}
 	}
 
@@ -444,7 +441,7 @@ public class SettingsFormController implements Serializable {
 		// load passed settings id
 		if (Id != 0) {
 			// ObjectsController contr = new ObjectsController();
-			setting = (Settings) ObjectsController.select(Settings.class, Id);
+			setting = (Settings) contr.select(Settings.class, Id);
 			// Name = setting.getName();
 			// TheLastEntry = setting.getTheLastEntry();
 		}
@@ -622,7 +619,7 @@ public class SettingsFormController implements Serializable {
 
 		// unload table with transponders.
 		setting.setConversion(unloadTableSettingsConversion());
-		ObjectsController.saveOrUpdate(setting);
+		contr.saveOrUpdate(setting);
 
 	}
 
@@ -649,15 +646,16 @@ public class SettingsFormController implements Serializable {
 		return unloadSettingsConversion;
 	}
 
+
+	@Inject
+	private ObjectsController contr;
+
 	// http://stackoverflow.com/questions/21988598/how-to-get-selected-tablecell-in-javafx-tableview
 	// If you need data from multiple sources in single table, it is better to
 	// make a new class that aggregates all the data and use that as a TableView
 	// source.
 	public class SettingsConversionPresentation extends SettingsConversion {
 
-		/**
-		 *
-		 */
 		private static final long serialVersionUID = 7708887469121053073L;
 
 		private Polarization Polarization;
@@ -689,6 +687,7 @@ public class SettingsFormController implements Serializable {
 			// Note shouldn't be null
 			super.setNote("");
 		}
+
 
 		// we have to manually construct presentation class from super
 		public SettingsConversionPresentation(SettingsConversion superItem) {

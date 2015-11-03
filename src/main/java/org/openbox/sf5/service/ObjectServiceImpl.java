@@ -1,11 +1,19 @@
 package org.openbox.sf5.service;
 
+import java.io.Serializable;
+
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
+
 import org.openbox.sf5.dao.DAO;
-import org.openbox.sf5.dao.DAOImpl;
 
-public class ObjectServiceImpl implements ObjectService {
+@Named
+@SessionScoped
+public class ObjectServiceImpl implements ObjectService, Serializable {
 
-	private DAO DAO = new DAOImpl();
+	private static final long serialVersionUID = 4462873069745434522L;
+	//private DAO DAO = new DAOImpl();
 
 	@Override
 	public void add(Object obj) {
@@ -34,5 +42,8 @@ public class ObjectServiceImpl implements ObjectService {
 	public void saveOrUpdate(Object obj) {
 		DAO.saveOrUpdate(obj);
 	}
+
+	@Inject
+	private DAO DAO;
 
 }

@@ -13,6 +13,8 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.inject.Inject;
+
 //import org.apache.commons.lang3.text.StrBuilder;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -35,9 +37,9 @@ import org.openbox.sf5.service.ObjectsController;
 
 public class IniReader implements Serializable {
 
-	/**
-	 *
-	 */
+	@Inject
+	private ObjectsController contr;
+
 	private static final long serialVersionUID = -1699774508872380035L;
 
 	private Satellites sat;
@@ -130,10 +132,10 @@ public class IniReader implements Serializable {
 			sat = new Satellites(satName);
 
 			// saving satellite
-			ObjectsController.saveOrUpdate(sat);
+			contr.saveOrUpdate(sat);
 		} else {
 			// get sat
-			sat = (Satellites) ObjectsController.select(Satellites.class, rs.get(0));
+			sat = (Satellites) contr.select(Satellites.class, rs.get(0));
 		}
 
 	}
@@ -268,13 +270,13 @@ public class IniReader implements Serializable {
 						rangeEnum, sat);
 
 				if (transIdList.isEmpty()) {
-					ObjectsController.saveOrUpdate(newTrans);
+					contr.saveOrUpdate(newTrans);
 				}
 
 				else {
 
 					long transId = ((BigInteger) transIdList.get(0)).longValue();
-					selectedTrans = (Transponders) ObjectsController.select(Transponders.class, transId);
+					selectedTrans = (Transponders) contr.select(Transponders.class, transId);
 
 					// check if this trans changed to newly read trans
 					if (!selectedTrans.equals(newTrans)) {
@@ -288,7 +290,7 @@ public class IniReader implements Serializable {
 						selectedTrans.setSatellite(sat);
 						selectedTrans.setSpeed(Speed);
 						selectedTrans.setVersionOfTheDVB(DVBStandard);
-						ObjectsController.update(selectedTrans);
+						contr.update(selectedTrans);
 					}
 
 				}

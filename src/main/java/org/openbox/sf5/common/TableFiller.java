@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.hibernate.Session;
@@ -20,7 +21,8 @@ import org.openbox.sf5.service.ObjectsController;
 @Named
 @ApplicationScoped
 public class TableFiller implements Serializable {
-
+	@Inject
+	private ObjectsController contr;
 	private static final long serialVersionUID = 8464537239822198552L;
 
 	public TableFiller() {
@@ -54,7 +56,7 @@ public class TableFiller implements Serializable {
 
 				}
 
-				ObjectsController.add(newRecord);
+				contr.add(newRecord);
 			}
 
 		}
@@ -68,7 +70,7 @@ public class TableFiller implements Serializable {
 				.add(Restrictions.eq("Polarization", KindsOfPolarization.Pie)).list();
 		if (rec.isEmpty()) {
 			value = new ValueOfTheCarrierFrequency(CarrierFrequency.Lower, KindsOfPolarization.Pie, 10700, 11699);
-			ObjectsController.add(value);
+			contr.add(value);
 		}
 
 		rec = session.createCriteria(ValueOfTheCarrierFrequency.class)
@@ -77,7 +79,7 @@ public class TableFiller implements Serializable {
 
 		if (rec.isEmpty()) {
 			value = new ValueOfTheCarrierFrequency(CarrierFrequency.Lower, KindsOfPolarization.Linear, 10700, 11699);
-			ObjectsController.add(value);
+			contr.add(value);
 		}
 
 		rec = session.createCriteria(ValueOfTheCarrierFrequency.class)
@@ -86,7 +88,7 @@ public class TableFiller implements Serializable {
 
 		if (rec.isEmpty()) {
 			value = new ValueOfTheCarrierFrequency(CarrierFrequency.Top, KindsOfPolarization.Linear, 11700, 12750);
-			ObjectsController.add(value);
+			contr.add(value);
 		}
 
 		rec = session.createCriteria(ValueOfTheCarrierFrequency.class)
@@ -95,7 +97,7 @@ public class TableFiller implements Serializable {
 
 		if (rec.isEmpty()) {
 			value = new ValueOfTheCarrierFrequency(CarrierFrequency.CRange, KindsOfPolarization.Linear, 3400, 4200);
-			ObjectsController.add(value);
+			contr.add(value);
 
 		}
 
@@ -105,7 +107,7 @@ public class TableFiller implements Serializable {
 
 		if (rec.isEmpty()) {
 			value = new ValueOfTheCarrierFrequency(CarrierFrequency.TopPie, KindsOfPolarization.Pie, 11700, 12750);
-			ObjectsController.add(value);
+			contr.add(value);
 
 		}
 
