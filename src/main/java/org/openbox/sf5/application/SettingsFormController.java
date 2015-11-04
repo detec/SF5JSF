@@ -42,6 +42,9 @@ public class SettingsFormController implements Serializable {
 	private static final long serialVersionUID = -4706281624885080396L;
 	private Settings setting;
 
+	@Inject
+	private Intersections intersections;
+
 	// here we will receive parameter from page
 	private long Id;
 
@@ -311,7 +314,7 @@ public class SettingsFormController implements Serializable {
 		dataSettingsConversion.stream().forEach(t -> t.setTheLineOfIntersection(0));
 		saveSetting();
 
-		int rows = Intersections.checkIntersection(dataSettingsConversion, setting);
+		int rows = intersections.checkIntersection(dataSettingsConversion, setting);
 
 		String mesString = "Unique problem lines: " + String.valueOf(rows);
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Intersections calculation result",
@@ -646,7 +649,6 @@ public class SettingsFormController implements Serializable {
 		return unloadSettingsConversion;
 	}
 
-
 	@Inject
 	private ObjectsController contr;
 
@@ -687,7 +689,6 @@ public class SettingsFormController implements Serializable {
 			// Note shouldn't be null
 			super.setNote("");
 		}
-
 
 		// we have to manually construct presentation class from super
 		public SettingsConversionPresentation(SettingsConversion superItem) {

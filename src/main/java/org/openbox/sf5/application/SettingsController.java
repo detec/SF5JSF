@@ -22,9 +22,6 @@ import org.openbox.sf5.service.ObjectsListService;
 @ViewScoped
 public class SettingsController implements Serializable {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 7396280960466432737L;
 
 	// let's place default constructor
@@ -124,7 +121,7 @@ public class SettingsController implements Serializable {
 		}
 
 		Criterion criterion = Restrictions.eq("User", currentUser);
-		settingsList = (List<Settings>) ObjectsListService.ObjectsCriterionList(Settings.class, criterion);
+		settingsList = (List<Settings>) listService.ObjectsCriterionList(Settings.class, criterion);
 		return settingsList;
 	}
 
@@ -168,4 +165,7 @@ public class SettingsController implements Serializable {
 
 	@Inject
 	private transient ObjectsController contr;
+
+	@Inject
+	private ObjectsListService listService;
 }

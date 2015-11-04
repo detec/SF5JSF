@@ -13,7 +13,6 @@ import org.openbox.sf5.dao.DAO;
 public class ObjectServiceImpl implements ObjectService, Serializable {
 
 	private static final long serialVersionUID = 4462873069745434522L;
-	//private DAO DAO = new DAOImpl();
 
 	@Override
 	public void add(Object obj) {

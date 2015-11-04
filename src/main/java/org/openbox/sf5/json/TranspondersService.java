@@ -1,8 +1,12 @@
 package org.openbox.sf5.json;
 
+import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.util.List;
 
+import javax.enterprise.context.SessionScoped;
+import javax.inject.Inject;
+import javax.inject.Named;
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
@@ -15,13 +19,17 @@ import org.json.JSONException;
 import org.openbox.sf5.db.Transponders;
 import org.openbox.sf5.service.ObjectsListService;
 
+@Named
+@SessionScoped
 @Path("/transponders")
-public class TranspondersService {
+public class TranspondersService implements Serializable {
+
+	private static final long serialVersionUID = 330376972384785311L;
 
 	@GET
 	@Produces("application/json")
 	public Response getTransponders() throws JSONException {
-		List<Transponders> transList = (List<Transponders>) ObjectsListService.ObjectsList(Transponders.class);
+		List<Transponders> transList = (List<Transponders>) listService.ObjectsList(Transponders.class);
 
 		Field fields[];
 		fields = Transponders.class.getDeclaredFields();
@@ -29,28 +37,30 @@ public class TranspondersService {
 		JsonObjectBuilder listObject = Json.createObjectBuilder();
 		JsonArrayBuilder arrayOfTransponders = Json.createArrayBuilder();
 		transList.stream().forEach(t -> {
-			 JsonObjectBuilder trans = Json.createObjectBuilder();
-			 // use reflection
-			//arrayOfTransponders.add(arg0)
-			 for (int i = 0; i < fields.length; i++) {
-				 String fieldName = fields[i].getName();
-					if (fieldName.equals("serialVersionUID")) {
-						continue;
-					}
-				 try {
+			JsonObjectBuilder trans = Json.createObjectBuilder();
+			// use reflection
+			// arrayOfTransponders.add(arg0)
+			for (int i = 0; i < fields.length; i++) {
+				String fieldName = fields[i].getName();
+				if (fieldName.equals("serialVersionUID")) {
+					continue;
+				}
+				try {
 					trans.add(fieldName, fields[i].get(t).toString());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			 }
+			}
 		});
 		listObject.add("transponders", arrayOfTransponders);
 
 		String result = listObject.toString();
 		return Response.status(200).entity(result).build();
 
-
 	}
+
+	@Inject
+	private ObjectsListService listService;
 
 }

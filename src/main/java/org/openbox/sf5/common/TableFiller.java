@@ -11,7 +11,7 @@ import javax.inject.Named;
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.openbox.sf5.db.CarrierFrequency;
-import org.openbox.sf5.db.HibernateUtil;
+import org.openbox.sf5.db.ConnectionManager;
 import org.openbox.sf5.db.KindsOfPolarization;
 import org.openbox.sf5.db.RangesOfDVB;
 import org.openbox.sf5.db.TheDVBRangeValues;
@@ -23,6 +23,10 @@ import org.openbox.sf5.service.ObjectsController;
 public class TableFiller implements Serializable {
 	@Inject
 	private ObjectsController contr;
+
+	@Inject
+	private ConnectionManager cm;
+
 	private static final long serialVersionUID = 8464537239822198552L;
 
 	public TableFiller() {
@@ -33,6 +37,8 @@ public class TableFiller implements Serializable {
 
 		TheDVBRangeValues newRecord = null;
 
+		Session session = cm.getSessionFactroy().openSession();
+
 		for (RangesOfDVB e : list) {
 
 			// TheDVBRangeValues record = (TheDVBRangeValues)
@@ -40,7 +46,9 @@ public class TableFiller implements Serializable {
 			// List<Book>
 			// book=(List<Book>)session.createCriteria(Book.class).createAlias("student",
 			// "st").add(Restrictions.eq("st.name", "Maxim")).list();
-			Session session = HibernateUtil.openSession();
+
+			// Session s = HibernateUtil.openSession();
+
 			List<TheDVBRangeValues> rec = session.createCriteria(TheDVBRangeValues.class)
 					.add(Restrictions.eq("RangeOfDVB", e)).list();
 
@@ -61,7 +69,7 @@ public class TableFiller implements Serializable {
 
 		}
 
-		Session session = HibernateUtil.openSession();
+		// Session session = HibernateUtil.openSession();
 		ValueOfTheCarrierFrequency value = null;
 		List<ValueOfTheCarrierFrequency> rec = null;
 
@@ -110,6 +118,8 @@ public class TableFiller implements Serializable {
 			contr.add(value);
 
 		}
+
+		session.close();
 
 	}
 }

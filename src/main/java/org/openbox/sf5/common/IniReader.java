@@ -24,8 +24,8 @@ import org.hibernate.type.EnumType;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeResolver;
 import org.openbox.sf5.db.CarrierFrequency;
+import org.openbox.sf5.db.ConnectionManager;
 import org.openbox.sf5.db.DVBStandards;
-import org.openbox.sf5.db.HibernateUtil;
 import org.openbox.sf5.db.Polarization;
 import org.openbox.sf5.db.RangesOfDVB;
 import org.openbox.sf5.db.Satellites;
@@ -39,6 +39,9 @@ public class IniReader implements Serializable {
 
 	@Inject
 	private ObjectsController contr;
+
+	@Inject
+	private ConnectionManager cm;
 
 	private static final long serialVersionUID = -1699774508872380035L;
 
@@ -60,7 +63,7 @@ public class IniReader implements Serializable {
 
 	public IniReader(String filepath) throws FileNotFoundException {
 
-		//new TableFiller();
+		// new TableFiller();
 
 		// Open the file
 		FileInputStream fstream = new FileInputStream(filepath);
@@ -122,7 +125,10 @@ public class IniReader implements Serializable {
 		String satName = satline.substring(2); // 2 characters
 
 		String hql = "select id from Satellites where name = :name";
-		Session s = HibernateUtil.openSession();
+		// Session s = HibernateUtil.openSession();
+
+		Session s = cm.getSessionFactroy().openSession();
+
 		Query query = s.createQuery(hql);
 		query.setParameter("name", satName);
 		ArrayList<Long> rs = (ArrayList<Long>) query.list();
@@ -214,13 +220,15 @@ public class IniReader implements Serializable {
 				Type myEnumType = new TypeLocatorImpl(new TypeResolver()).custom(EnumType.class, params);
 
 				String sqltext = "SELECT RangeOfDVB FROM TheDVBRangeValues where :Frequency between LowerThreshold and UpperThreshold";
-				Session session = HibernateUtil.openSession();
+				// Session s = HibernateUtil.openSession();
+
+				Session session = cm.getSessionFactroy().openSession();
+
 				List<TheDVBRangeValues> range = session.createSQLQuery(sqltext)
 						// .addScalar("RangeOfDVB",
 						// Hibernate.custom(org.hibernate.type.EnumType.class,
 						// params))
 						.addScalar("RangeOfDVB", myEnumType).setParameter("Frequency", Frequency)
-						// .setResultTransformer(Transformers.aliasToBean(RangesOfDVB.class)).list();
 						.setResultTransformer(Transformers.aliasToBean(TheDVBRangeValues.class)).list();
 
 				if (!range.isEmpty()) {
@@ -242,11 +250,14 @@ public class IniReader implements Serializable {
 				sqltext = "SELECT TypeOfCarrierFrequency FROM ValueOfTheCarrierFrequency "
 						+ "where (:Frequency between LowerThreshold and UpperThreshold) "
 						+ "and (Polarization = :KindOfPolarization)";
-				session = HibernateUtil.openSession();
+
+				// Session s = HibernateUtil.openSession();
+
+				session = cm.getSessionFactroy().openSession();
+
 				List<ValueOfTheCarrierFrequency> carrierList = session.createSQLQuery(sqltext)
 						.addScalar("TypeOfCarrierFrequency", myEnumType).setParameter("Frequency", Frequency)
 						.setParameter("KindOfPolarization", Polarization.getPolarizationKind(aPolarization).ordinal())
-						// .setResultTransformer(Transformers.aliasToBean(CarrierFrequency.class)).list();
 						.setResultTransformer(Transformers.aliasToBean(ValueOfTheCarrierFrequency.class)).list();
 
 				if (!carrierList.isEmpty()) {
@@ -294,7 +305,10 @@ public class IniReader implements Serializable {
 					}
 
 				}
+
+				session.close();
 			}
+
 		}
 	}
 }

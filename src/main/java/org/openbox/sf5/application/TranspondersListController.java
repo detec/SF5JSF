@@ -120,12 +120,11 @@ public class TranspondersListController implements Serializable {
 		if (filterSatellite != null) {
 			Criterion criterion = Restrictions.eq("Satellite", filterSatellite);
 			// return (List<Transponders>) ObjectsListService
-			TranspondersList = (List<Transponders>) ObjectsListService.ObjectsCriterionList(Transponders.class,
-					criterion);
+			TranspondersList = (List<Transponders>) listService.ObjectsCriterionList(Transponders.class, criterion);
 		} else {
 			// return (List<Transponders>) ObjectsListService
 			// .ObjectsList(Transponders.class);
-			TranspondersList = (List<Transponders>) ObjectsListService.ObjectsList(Transponders.class);
+			TranspondersList = (List<Transponders>) listService.ObjectsList(Transponders.class);
 		}
 	}
 
@@ -136,7 +135,7 @@ public class TranspondersListController implements Serializable {
 
 	public List<Satellites> getSatellites() {
 
-		return (List<Satellites>) ObjectsListService.ObjectsList(Satellites.class);
+		return (List<Satellites>) listService.ObjectsList(Satellites.class);
 	}
 
 	public String saveSelectedTransponders() {
@@ -183,6 +182,9 @@ public class TranspondersListController implements Serializable {
 
 	@Inject
 	private ObjectsController contr;
+
+	@Inject
+	private ObjectsListService listService;
 
 	// in order to select transponders we should implement wrapper class to
 	// store 'check' property

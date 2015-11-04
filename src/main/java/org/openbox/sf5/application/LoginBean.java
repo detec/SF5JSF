@@ -115,7 +115,7 @@ public class LoginBean implements Serializable {
 		else {
 			loggedIn = true;
 			Criterion criterion = Restrictions.eq("Login", name);
-			List<Users> rec = (List<Users>) ObjectsListService.ObjectsCriterionList(Users.class, criterion);
+			List<Users> rec = (List<Users>) listService.ObjectsCriterionList(Users.class, criterion);
 			user = rec.get(0);
 
 			HttpSession session = SessionBean.getSession();
@@ -170,7 +170,7 @@ public class LoginBean implements Serializable {
 	public boolean userExists(String username) {
 
 		Criterion criterion = Restrictions.eq("Login", username);
-		List<Users> rec = (List<Users>) ObjectsListService.ObjectsCriterionList(Users.class, criterion);
+		List<Users> rec = (List<Users>) listService.ObjectsCriterionList(Users.class, criterion);
 		if (rec.isEmpty()) {
 			return false;
 		} else {
@@ -181,5 +181,8 @@ public class LoginBean implements Serializable {
 
 	@Inject
 	private ObjectsController contr;
+
+	@Inject
+	private ObjectsListService listService;
 
 }
