@@ -31,6 +31,10 @@ public class TableFiller implements Serializable {
 
 	public TableFiller() {
 
+	}
+
+	public void init() {
+
 		List<RangesOfDVB> list = new ArrayList<RangesOfDVB>();
 		list.add(RangesOfDVB.C);
 		list.add(RangesOfDVB.Ku);
