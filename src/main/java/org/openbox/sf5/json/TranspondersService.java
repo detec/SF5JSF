@@ -29,6 +29,7 @@ public class TranspondersService implements Serializable {
 	@GET
 	@Produces("application/json")
 	public Response getTransponders() {
+
 		List<Transponders> transList = (List<Transponders>) listService.ObjectsList(Transponders.class);
 
 		Field fields[];
@@ -41,14 +42,17 @@ public class TranspondersService implements Serializable {
 			// use reflection
 			// arrayOfTransponders.add(arg0)
 			for (int i = 0; i < fields.length; i++) {
+
+
 				String fieldName = fields[i].getName();
 				if (fieldName.equals("serialVersionUID")) {
 					continue;
 				}
 				try {
+					fields[i].setAccessible(true);
 					String strValue = fields[i].get(t).toString();
 					trans.add(fieldName, strValue);
-					System.out.println(strValue);
+					//System.out.println(strValue);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
