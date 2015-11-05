@@ -8,6 +8,7 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
@@ -15,20 +16,19 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import org.json.JSONException;
 import org.openbox.sf5.db.Transponders;
 import org.openbox.sf5.service.ObjectsListService;
 
 @Named
 @SessionScoped
-@Path("/transponders")
+@Path("transponders")
 public class TranspondersService implements Serializable {
 
 	private static final long serialVersionUID = 330376972384785311L;
 
 	@GET
 	@Produces("application/json")
-	public Response getTransponders() throws JSONException {
+	public Response getTransponders() {
 		List<Transponders> transList = (List<Transponders>) listService.ObjectsList(Transponders.class);
 
 		Field fields[];
@@ -46,16 +46,25 @@ public class TranspondersService implements Serializable {
 					continue;
 				}
 				try {
-					trans.add(fieldName, fields[i].get(t).toString());
+					String strValue = fields[i].get(t).toString();
+					trans.add(fieldName, strValue);
+					System.out.println(strValue);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+
+				arrayOfTransponders.add(trans);
 			}
 		});
 		listObject.add("transponders", arrayOfTransponders);
 
-		String result = listObject.toString();
+		// String result = listObject.;
+		// JsonObject JObject = listObject.build();
+		// String result = JObject.toString();
+
+		JsonArray JObject = arrayOfTransponders.build();
+		String result = JObject.toString();
 		return Response.status(200).entity(result).build();
 
 	}

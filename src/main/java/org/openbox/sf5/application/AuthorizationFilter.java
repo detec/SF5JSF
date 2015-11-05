@@ -45,7 +45,9 @@ public class AuthorizationFilter implements Filter {
 		boolean itIsregsterPage = (reqURI.indexOf("/register.xhtml") >= 0);
 		boolean therIsUsername = (ses != null && ses.getAttribute("username") != null);
 
-		if (itIsLoginpage || therIsUsername || itIsregsterPage) {
+		boolean itIsJsonPath = (reqURI.indexOf("/json/") >= 0);
+
+		if (itIsLoginpage || therIsUsername || itIsregsterPage || itIsJsonPath) {
 
 			chain.doFilter(request, response);
 		} else {
