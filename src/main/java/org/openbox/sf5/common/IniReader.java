@@ -2,7 +2,6 @@ package org.openbox.sf5.common;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.Serializable;
@@ -13,7 +12,9 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
+import javax.inject.Named;
 
 //import org.apache.commons.lang3.text.StrBuilder;
 import org.hibernate.Query;
@@ -35,35 +36,20 @@ import org.openbox.sf5.db.TypesOfFEC;
 import org.openbox.sf5.db.ValueOfTheCarrierFrequency;
 import org.openbox.sf5.service.ObjectsController;
 
+@Named("IniReader")
+@SessionScoped
 public class IniReader implements Serializable {
 
-	@Inject
-	private ObjectsController contr;
-
-	@Inject
-	private ConnectionManager cm;
-
-	private static final long serialVersionUID = -1699774508872380035L;
-
-	private Satellites sat;
-
-	final String REGEX = "(\\d{1,3})=(\\d{5}),(H|V|L|R),(\\d{4,5}),(\\d{2}),(DVB-S|S2),(QPSK|8PSK)(\\sACM)?";
-	private static Pattern pattern;
-	private static Matcher matcher;
-
-	private boolean result = false;
-
-	public boolean isResult() {
-		return result;
+	public IniReader(String filepath) {
+		this.filepath = filepath;
 	}
 
-	public void setResult(boolean result) {
-		this.result = result;
+	// for injection we need empty constructor
+	public IniReader() {
+
 	}
 
-	public IniReader(String filepath) throws FileNotFoundException {
-
-		// new TableFiller();
+	public void readData() throws IOException {
 
 		// Open the file
 		FileInputStream fstream = new FileInputStream(filepath);
@@ -74,24 +60,20 @@ public class IniReader implements Serializable {
 		// (\d{1,3})=(\d{5}),(H|V|L|R),(\d{4,5}),(\d{2,3}),(DVB-S|S2),(QPSK|8PSK)(\sACM)?
 
 		// Read File Line By Line
-		try {
-			while ((strLine = br.readLine()) != null) {
 
-				// Print the content on the console
-				// System.out.println (strLine);
+		while ((strLine = br.readLine()) != null) {
 
-				if (strLine.equals("[SATTYPE]")) {
-					readSatData(br);
-				}
+			// Print the content on the console
+			// System.out.println (strLine);
 
-				if (strLine.equals("[DVB]")) {
-					readTransponderData(br);
-				}
-
+			if (strLine.equals("[SATTYPE]")) {
+				readSatData(br);
 			}
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+
+			if (strLine.equals("[DVB]")) {
+				readTransponderData(br);
+			}
+
 		}
 
 		// System.out.println("Done!");
@@ -102,12 +84,8 @@ public class IniReader implements Serializable {
 		// alert.showAndWait();
 
 		// Close the input stream
-		try {
-			br.close();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
+		br.close();
 
 		result = true;
 	}
@@ -310,5 +288,39 @@ public class IniReader implements Serializable {
 			}
 
 		}
+	}
+
+	@Inject
+	private ObjectsController contr;
+
+	@Inject
+	private ConnectionManager cm;
+
+	private static final long serialVersionUID = -1699774508872380035L;
+
+	private Satellites sat;
+
+	final String REGEX = "(\\d{1,3})=(\\d{5}),(H|V|L|R),(\\d{4,5}),(\\d{2}),(DVB-S|S2),(QPSK|8PSK)(\\sACM)?";
+	private static Pattern pattern;
+	private static Matcher matcher;
+
+	private boolean result = false;
+
+	private String filepath;
+
+	public String getFilepath() {
+		return filepath;
+	}
+
+	public void setFilepath(String filepath) {
+		this.filepath = filepath;
+	}
+
+	public boolean isResult() {
+		return result;
+	}
+
+	public void setResult(boolean result) {
+		this.result = result;
 	}
 }

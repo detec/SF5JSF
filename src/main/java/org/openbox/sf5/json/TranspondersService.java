@@ -43,7 +43,6 @@ public class TranspondersService implements Serializable {
 			// arrayOfTransponders.add(arg0)
 			for (int i = 0; i < fields.length; i++) {
 
-
 				String fieldName = fields[i].getName();
 				if (fieldName.equals("serialVersionUID")) {
 					continue;
@@ -52,7 +51,7 @@ public class TranspondersService implements Serializable {
 					fields[i].setAccessible(true);
 					String strValue = fields[i].get(t).toString();
 					trans.add(fieldName, strValue);
-					//System.out.println(strValue);
+					System.out.println(strValue);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

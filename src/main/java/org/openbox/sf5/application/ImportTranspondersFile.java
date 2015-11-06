@@ -16,6 +16,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
+import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.Part;
 
@@ -25,9 +26,6 @@ import org.openbox.sf5.common.IniReader;
 @ViewScoped
 public class ImportTranspondersFile implements Serializable {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 6409041462672614971L;
 
 	private Part file;
@@ -37,7 +35,11 @@ public class ImportTranspondersFile implements Serializable {
 		List<FacesMessage> msgs = new ArrayList<FacesMessage>();
 
 		try {
-			fileContent = new Scanner(file.getInputStream()).useDelimiter("\\A").next();
+			Scanner scanner = new Scanner(file.getInputStream());
+			scanner.useDelimiter("\\A");
+
+			fileContent = scanner.next();
+			scanner.close();
 		} catch (IOException e) {
 
 			msgs.add(new FacesMessage(FacesMessage.SEVERITY_ERROR, "Error reading XML file!", e.getLocalizedMessage()));
@@ -60,8 +62,11 @@ public class ImportTranspondersFile implements Serializable {
 			}
 
 			// calling reader class
-			IniReader getResult = new IniReader(absolutePath);
-			if (getResult.isResult()) {
+			// IniReader getResult = new IniReader(absolutePath);
+			// we use injection
+			iniReader.setFilepath(absolutePath);
+			iniReader.readData(); // doing import
+			if (iniReader.isResult()) {
 				FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "INI import result",
 						"Import success!");
 				FacesContext.getCurrentInstance().addMessage("messages", message);
@@ -92,11 +97,7 @@ public class ImportTranspondersFile implements Serializable {
 
 	public void validateFile(FacesContext ctx, UIComponent comp, Object value) {
 		List<FacesMessage> msgs = new ArrayList<FacesMessage>();
-		Part file = (Part) value;
 
-		// if (!"text/xml".equals(file.getContentType())) {
-		// msgs.add(new FacesMessage("Not an xml file!"));
-		// }
 		if (!msgs.isEmpty()) {
 			throw new ValidatorException(msgs);
 		}
@@ -109,5 +110,8 @@ public class ImportTranspondersFile implements Serializable {
 	public void setFileContent(String fileContent) {
 		this.fileContent = fileContent;
 	}
+
+	@Inject
+	private IniReader iniReader;
 
 }
