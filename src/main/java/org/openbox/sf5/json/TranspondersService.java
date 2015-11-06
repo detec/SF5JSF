@@ -8,8 +8,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.json.Json;
-import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
+import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -47,27 +47,29 @@ public class TranspondersService implements Serializable {
 				if (fieldName.equals("serialVersionUID")) {
 					continue;
 				}
+
+				fields[i].setAccessible(true);
+				String strValue;
 				try {
-					fields[i].setAccessible(true);
-					String strValue = fields[i].get(t).toString();
+					strValue = fields[i].get(t).toString();
 					trans.add(fieldName, strValue);
-					System.out.println(strValue);
+
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
+			} // end of loop
 
-				arrayOfTransponders.add(trans);
-			}
+			arrayOfTransponders.add(trans);
 		});
+
 		listObject.add("transponders", arrayOfTransponders);
 
-		// String result = listObject.;
-		// JsonObject JObject = listObject.build();
-		// String result = JObject.toString();
-
-		JsonArray JObject = arrayOfTransponders.build();
+		JsonObject JObject = listObject.build();
 		String result = JObject.toString();
+
+		// JsonArray JObject = arrayOfTransponders.build();
+		// String result = JObject.toString();
 		return Response.status(200).entity(result).build();
 
 	}
