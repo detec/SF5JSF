@@ -13,6 +13,16 @@ import org.openbox.sf5.db.ConnectionManager;
 @SessionScoped
 public class DAOImpl implements DAO, Serializable {
 
+	@Override
+	public ConnectionManager getCm() {
+		return cm;
+	}
+
+	@Override
+	public void setCm(ConnectionManager cm) {
+		this.cm = cm;
+	}
+
 	private static final long serialVersionUID = 4283051495842205423L;
 
 	@Override

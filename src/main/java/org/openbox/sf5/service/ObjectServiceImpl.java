@@ -27,6 +27,16 @@ public class ObjectServiceImpl implements ObjectService, Serializable {
 	}
 
 	@Override
+	public DAO getDAO() {
+		return DAO;
+	}
+
+	@Override
+	public void setDAO(DAO dAO) {
+		DAO = dAO;
+	}
+
+	@Override
 	public void update(Object obj) {
 		// TODO Auto-generated method stub
 		DAO.update(obj);

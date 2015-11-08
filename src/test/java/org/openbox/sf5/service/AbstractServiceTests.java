@@ -7,8 +7,12 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.junit.Before;
 import org.junit.Test;
+import org.openbox.sf5.dao.DAO;
+import org.openbox.sf5.dao.DAOImpl;
 import org.openbox.sf5.db.CarrierFrequency;
+import org.openbox.sf5.db.ConnectionManager;
 import org.openbox.sf5.db.DVBStandards;
 import org.openbox.sf5.db.Polarization;
 import org.openbox.sf5.db.RangesOfDVB;
@@ -21,12 +25,34 @@ import org.openbox.sf5.db.Users;
 
 public class AbstractServiceTests {
 
+	private ConnectionManager cm;
+
+	private DAO DAO;
+
+	private ObjectService service;
+
+	private ObjectsController contr;
+
+	@Before
+	public void setUp() {
+		cm = new ConnectionManager();
+
+		DAO = new DAOImpl();
+		DAO.setCm(cm);
+
+		service = new ObjectServiceImpl();
+		service.setDAO(DAO);
+
+		contr = new ObjectsController();
+		contr.setService(service);
+	}
+
 	@Test
 	@Transactional
 	public void shouldInsertSatellite() {
 
 		Satellites newSat = getNewSatellite();
-		ObjectsController.saveOrUpdate(newSat);
+		contr.saveOrUpdate(newSat);
 		assertThat(newSat.getId()).isNotEqualTo(0);
 	}
 
@@ -34,7 +60,7 @@ public class AbstractServiceTests {
 	@Transactional
 	public void shouldInsertTransponder() {
 		Transponders trans = getNewTransponder();
-		ObjectsController.saveOrUpdate(trans);
+		contr.saveOrUpdate(trans);
 		assertThat(trans.getId()).isNotEqualTo(0);
 
 	}
@@ -43,7 +69,7 @@ public class AbstractServiceTests {
 	@Transactional
 	public void shouldInsertSetting() {
 		Settings setting = getNewSetting();
-		ObjectsController.saveOrUpdate(setting);
+		contr.saveOrUpdate(setting);
 		assertThat(setting.getId()).isNotEqualTo(0);
 	}
 
@@ -56,7 +82,7 @@ public class AbstractServiceTests {
 
 	private Transponders getNewTransponder() {
 		Satellites newSat = getNewSatellite();
-		ObjectsController.saveOrUpdate(newSat);
+		contr.saveOrUpdate(newSat);
 
 		Transponders trans = new Transponders();
 		trans.setCarrier(CarrierFrequency.Top);
@@ -74,7 +100,7 @@ public class AbstractServiceTests {
 	private SettingsConversion getNewSettingsConversionLine() {
 		Transponders trans = getNewTransponder();
 		trans.setSpeed(10500);
-		ObjectsController.saveOrUpdate(trans);
+		contr.saveOrUpdate(trans);
 
 		SettingsConversion sc = new SettingsConversion();
 		sc.setLineNumber(1);
@@ -98,7 +124,7 @@ public class AbstractServiceTests {
 
 	private Settings getNewSetting() {
 		Users user = getNewUser();
-		ObjectsController.saveOrUpdate(user);
+		contr.saveOrUpdate(user);
 
 		Settings setting = new Settings();
 		setting.setName("Test");

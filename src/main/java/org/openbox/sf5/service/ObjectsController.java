@@ -10,6 +10,14 @@ import javax.inject.Named;
 @SessionScoped
 public class ObjectsController implements Serializable {
 
+	public ObjectService getService() {
+		return Service;
+	}
+
+	public void setService(ObjectService service) {
+		Service = service;
+	}
+
 	private static final long serialVersionUID = 3569160314988465165L;
 
 	public void add(Object obj) {
