@@ -55,19 +55,6 @@
         	</configuration>
       	</plugin>
 		<plugin>
-       		<groupId>org.apache.tomcat.maven</groupId>
-       		<artifactId>tomcat7-maven-plugin</artifactId>
-       		<version>2.2</version>
-       		<configuration>
-        		<url>http://localhost:8080/manager/text</url>
-        		<server>TomcatServer</server>
-        		<username>admin</username>
-        		<password>admin</password>
-        		<warFile>${project.build.directory}/${rp.build.warname}.war</warFile>
-        		<update>true</update>
-       		</configuration>
-    	</plugin>
-		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-surefire-plugin</artifactId>
 			<version>2.18.1</version>
@@ -108,11 +95,17 @@
 	<version>3.1.0</version>
 	<scope>provided</scope>
 </dependency>
-	
- <dependency>
+<dependency>
 	<groupId>com.h2database</groupId>
 	<artifactId>h2</artifactId>
 	<version>1.4.187</version>
+</dependency>
+<!-- This is needed to run Hibernate validator -->
+<dependency>
+	<groupId>org.glassfish.web</groupId>
+	<artifactId>el-impl</artifactId>
+	<version>2.2</version>
+	<scope>test</scope>
 </dependency>
 <dependency>
 	<groupId>org.glassfish.main.common</groupId>
@@ -192,7 +185,7 @@
 	<groupId>org.glassfish</groupId>
 	<artifactId>javax.faces</artifactId>
 	<version>${mojarra-version}</version>
-	 <scope>runtime</scope>
+	 <scope>provided</scope>
 </dependency>
 <!-- Omnifaces added to use ViewScoped injection -->
 <!-- <dependency> -->

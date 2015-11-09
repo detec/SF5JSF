@@ -31,7 +31,11 @@ public class ValidatorTests {
 	@Test
 	public void shouldNotValidateWhenFieldsEmpty() {
 
-/*		Settings setting = new Settings();
+		HashMap<String, String> valuesmap = new HashMap<String, String>();
+		valuesmap.put("User", "may not be null");
+		valuesmap.put("Name", "may not be empty");
+
+		Settings setting = new Settings();
 		setting.setName("");
 
 		Set<ConstraintViolation<Settings>> constraintViolations = validator.validate(setting);
@@ -40,13 +44,19 @@ public class ValidatorTests {
 		Iterator<ConstraintViolation<Settings>> settingIterator = constraintViolations.iterator();
 
 		// check user
-		ConstraintViolation<Settings> violation = settingIterator.next();
-		assertThat(violation.getPropertyPath().toString()).isEqualTo("User");
-		assertThat(violation.getMessage()).isEqualTo("may not be null");
+//		ConstraintViolation<Settings> violation = settingIterator.next();
+//		assertThat(violation.getPropertyPath().toString()).isEqualTo("User");
+//		assertThat(violation.getMessage()).isEqualTo("may not be null");
+//
+//		violation = settingIterator.next();
+//		assertThat(violation.getPropertyPath().toString()).isEqualTo("Name");
+//		assertThat(violation.getMessage()).isEqualTo("may not be empty");
 
-		violation = settingIterator.next();
-		assertThat(violation.getPropertyPath().toString()).isEqualTo("Name");
-		assertThat(violation.getMessage()).isEqualTo("may not be empty");*/
+		while (settingIterator.hasNext()) {
+			ConstraintViolation<Settings> settingViolation = settingIterator.next();
+			String propertyPath = settingViolation.getPropertyPath().toString();
+			assertThat(valuesmap.get(propertyPath).equals(settingViolation.getMessage()));
+		}
 
 		Transponders trans = new Transponders();
 
@@ -59,7 +69,7 @@ public class ValidatorTests {
 
 		Iterator<ConstraintViolation<Transponders>> iterator = trsnapondersConstraintViolations.iterator();
 
-		HashMap<String, String> valuesmap = new HashMap<String, String>();
+
 		valuesmap.put("RangeOfDVB", "may not be null");
 		valuesmap.put("Carrier", "may not be null");
 		valuesmap.put("Satellite", "may not be null");
