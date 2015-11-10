@@ -27,11 +27,20 @@
   
   	<servlet>
 		<servlet-name>Jersey Web Application</servlet-name>
+<!-- 	This is Jersey 1	
 		<servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
-		<!-- http://stackoverflow.com/questions/4412147/the-resourceconfig-instance-does-not-contain-any-root-resource-classes/9093134#9093134 -->
+		http://stackoverflow.com/questions/4412147/the-resourceconfig-instance-does-not-contain-any-root-resource-classes/9093134#9093134
 		<init-param>
   			<param-name>com.sun.jersey.config.property.packages</param-name>
   			<param-value>org.openbox.sf5.json</param-value>
+		</init-param> -->
+		
+		<!-- This is for 2.x container -->
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+		<!--  		https://jersey.java.net/documentation/latest/deployment.html#environmenmt.appmodel  --> 
+		<init-param>
+    		<param-name>jersey.config.server.provider.packages</param-name>
+    		<param-value>org.openbox.sf5.json</param-value>
 		</init-param>
 		
 		<load-on-startup>2</load-on-startup>

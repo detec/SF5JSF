@@ -95,6 +95,13 @@
 	<version>3.1.0</version>
 	<scope>provided</scope>
 </dependency>
+<!--  or we get package javax.ws.rs does not exist -->
+<dependency>
+    <groupId>javax</groupId>
+    <artifactId>javaee-web-api</artifactId>
+    <version>7.0</version>
+    <scope>provided</scope>
+</dependency>
 <dependency>
 	<groupId>com.h2database</groupId>
 	<artifactId>h2</artifactId>
@@ -147,31 +154,35 @@
     <version>1.0.4</version>
  	<scope>provided</scope>
 </dependency>
-<dependency>
-	<groupId>asm</groupId>
-	<artifactId>asm</artifactId>
-	<version>3.3.1</version>
-</dependency>
+<!-- <dependency> -->
+<!-- 	<groupId>asm</groupId> -->
+<!-- 	<artifactId>asm</artifactId> -->
+<!-- 	<version>3.3.1</version> -->
+<!-- 	<scope>provided</scope> -->
+<!-- </dependency> -->
 <!-- <dependency> -->
 <!-- 	<groupId>org.json</groupId> -->
 <!-- 	<artifactId>json</artifactId> -->
 <!-- 	<version>20140107</version> -->
 <!-- </dependency> -->
-<dependency>
-	<groupId>com.sun.jersey</groupId>
-	<artifactId>jersey-bundle</artifactId>
-	<version>1.19</version>
-</dependency>
-<dependency>
-	<groupId>com.sun.jersey</groupId>
-	<artifactId>jersey-server</artifactId>
-	<version>1.19</version>
-</dependency>
-<dependency>
-	<groupId>com.sun.jersey</groupId>
-	<artifactId>jersey-core</artifactId>
-	<version>1.19</version>
-</dependency>
+<!-- <dependency> -->
+<!-- 	<groupId>com.sun.jersey</groupId> -->
+<!-- 	<artifactId>jersey-bundle</artifactId> -->
+<!-- 	<version>1.19</version> -->
+<!-- 	<scope>provided</scope> -->
+<!-- </dependency> -->
+<!-- <dependency> -->
+<!-- 	<groupId>com.sun.jersey</groupId> -->
+<!-- 	<artifactId>jersey-server</artifactId> -->
+<!-- 	<version>1.19</version> -->
+<!-- 	<scope>provided</scope> -->
+<!-- </dependency> -->
+<!-- <dependency> -->
+<!-- 	<groupId>com.sun.jersey</groupId> -->
+<!-- 	<artifactId>jersey-core</artifactId> -->
+<!-- 	<version>1.19</version> -->
+<!-- 	<scope>provided</scope> -->
+<!-- </dependency> -->
 
 <dependency>
 	<groupId>org.hibernate</groupId>
