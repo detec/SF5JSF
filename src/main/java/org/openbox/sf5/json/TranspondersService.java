@@ -1,7 +1,7 @@
 package org.openbox.sf5.json;
 
 import java.io.Serializable;
-import java.lang.reflect.Field;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
@@ -36,6 +36,93 @@ public class TranspondersService implements Serializable {
 	// different types of params
 	// https://www-01.ibm.com/support/knowledgecenter/SS7K4U_8.5.5/com.ibm.websphere.base.doc/ae/twbs_jaxrs_defresource_parmexchdata.html
 
+	@GET
+	@Produces("application/json")
+	@Path("filter/{fieldName}/{typeValue}")
+	public Response getTranspondersByArbitraryFilter(@PathParam("type") String fieldName,
+			@PathParam("typeValue") String typeValue) {
+
+		Response returnResponse = null;
+		Criterion criterion = null;
+
+		// We have the following situation
+		// 1. Field name is of primitive type. Then we use simple Criterion.
+		// 2. Field is enum. Then it should be String representation of an enum.
+		// 3. Field is String.
+		// 4. Filed is entity class, retrieved from database. Then we select
+		// object by id, that came as typeValue.
+
+		Class<?> fieldClazz = JsonObjectFiller.getFieldClass(Transponders.class, fieldName);
+		// check if this field has some class, not null
+		if (fieldClazz == null) {
+			// Return not found error
+			return Response.status(404).build();
+		}
+
+		boolean isPrimitive = false;
+		try {
+			// This is only long type, as String is not primitive
+			isPrimitive = Transponders.class.getField(fieldName).getType().isPrimitive();
+			// {
+			// criterion = Restrictions.eq(fieldName,
+			// Long.parseLong(typeValue));
+			// }
+
+		} catch (NoSuchFieldException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// check that it is an enum
+		if (Enum.class.isAssignableFrom(fieldClazz)) {
+			// must select from HashMap where key is String representation of
+			// enum
+			// TypesOfFEC array[] = org.openbox.sf5.db.TypesOfFEC.values();
+			// List<TypesOfFEC> FECList = Arrays.asList(array);
+			// HashMap<String, TypesOfFEC> hm = new HashMap<>();
+			// FECList.stream().forEach(t -> hm.putIfAbsent(t.toString(), t));
+			//
+			// setValue(hm.get(text));
+
+			// fieldClazz. array[] = fieldClazz.values();
+
+			// http://stackoverflow.com/questions/1626901/java-enums-list-enumerated-values-from-a-class-extends-enum
+			List<?> enumList = JsonObjectFiller.enum2list((Class<? extends Enum>) fieldClazz);
+			HashMap<String, Object> hm = new HashMap<>();
+			enumList.stream().forEach(t -> hm.put(t.toString(), t));
+
+			// now get enum value by string representation
+			criterion = Restrictions.eq(fieldName, hm.get(typeValue));
+
+		} else if (isPrimitive) {
+			criterion = Restrictions.eq(fieldName, Long.parseLong(typeValue));
+		}
+
+		else if (fieldClazz == String.class) {
+			// we build rather primitive criterion
+			criterion = Restrictions.eq(fieldName, typeValue);
+		}
+
+		else {
+			// it is a usual class
+			Class<?> filterObject = (Class<?>) contr.select(fieldClazz, Long.parseLong(typeValue));
+			criterion = Restrictions.eq(fieldName, filterObject);
+		}
+		// o.getClass().getField("fieldName").getType().isPrimitive(); for
+		// primitives
+
+		// fieldClazz filterSatellite = (fieldClazz)
+		// contr.select(Satellites.class, typeValue);
+
+		List<Transponders> transList = (List<Transponders>) listService.ObjectsCriterionList(Transponders.class,
+				criterion);
+
+		String result = getJsonFromTranspondersList(transList);
+		returnResponse = Response.status(200).entity(result).build();
+
+		return returnResponse;
+	}
+
 	// http://localhost:8080/SF5JSF-test/json/transponders/filter/id/56
 	@GET
 	@Produces("application/json")
@@ -43,7 +130,8 @@ public class TranspondersService implements Serializable {
 	public Response getTransponderById(@PathParam("transponderId") long tpId) {
 		Transponders transponder = (Transponders) contr.select(Transponders.class, tpId);
 
-		//JsonObjectBuilder transJOB = getJsonObjectBuilderFromTransponder(transponder);
+		// JsonObjectBuilder transJOB =
+		// getJsonObjectBuilderFromTransponder(transponder);
 		JsonObjectBuilder transJOB;
 		String result = "";
 		try {
@@ -89,42 +177,22 @@ public class TranspondersService implements Serializable {
 
 	}
 
-	private JsonObjectBuilder getJsonObjectBuilderFromTransponder(Transponders transponder) {
-		Field fields[];
-		fields = Transponders.class.getDeclaredFields();
-
-		JsonObjectBuilder trans = Json.createObjectBuilder();
-		// use reflection
-		// arrayOfTransponders.add(arg0)
-		for (int i = 0; i < fields.length; i++) {
-
-			String fieldName = fields[i].getName();
-			if (fieldName.equals("serialVersionUID")) {
-				continue;
-			}
-
-			fields[i].setAccessible(true);
-			String strValue;
-			try {
-				strValue = fields[i].get(transponder).toString();
-				trans.add(fieldName, strValue);
-
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		} // end of loop
-
-		return trans;
-	}
-
 	private String getJsonFromTranspondersList(List<Transponders> transList) {
 
 		JsonObjectBuilder listObject = Json.createObjectBuilder();
 		JsonArrayBuilder arrayOfTransponders = Json.createArrayBuilder();
 		transList.stream().forEach(t -> {
-			JsonObjectBuilder trans = getJsonObjectBuilderFromTransponder(t);
-			arrayOfTransponders.add(trans);
+
+			// JsonObjectBuilder trans = getJsonObjectBuilderFromTransponder(t);
+
+			try {
+				JsonObjectBuilder trans = JsonObjectFiller.getJsonObjectBuilderFromClassInstance(t);
+				arrayOfTransponders.add(trans);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
 		});
 
 		listObject.add("transponders", arrayOfTransponders);
