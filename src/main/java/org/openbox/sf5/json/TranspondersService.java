@@ -36,9 +36,14 @@ public class TranspondersService implements Serializable {
 	// different types of params
 	// https://www-01.ibm.com/support/knowledgecenter/SS7K4U_8.5.5/com.ibm.websphere.base.doc/ae/twbs_jaxrs_defresource_parmexchdata.html
 
+	// Good combined params example
+	// http://www.mkyong.com/webservices/jax-rs/jax-rs-matrixparam-example/
+
+	// http://localhost:8080/SF5JSF-test/json/transponders/filter/Speed/27500
 	@GET
 	@Produces("application/json")
-	@Path("filter/{fieldName}/{typeValue}")
+	//@Path("filter/any")
+	@Path("filter/{type}/{typeValue}")
 	public Response getTranspondersByArbitraryFilter(@PathParam("type") String fieldName,
 			@PathParam("typeValue") String typeValue) {
 
@@ -59,22 +64,26 @@ public class TranspondersService implements Serializable {
 			return Response.status(404).build();
 		}
 
-		boolean isPrimitive = false;
-		try {
-			// This is only long type, as String is not primitive
-			isPrimitive = Transponders.class.getField(fieldName).getType().isPrimitive();
-			// {
-			// criterion = Restrictions.eq(fieldName,
-			// Long.parseLong(typeValue));
-			// }
+//		boolean isPrimitive = false;
+//		try {
+//			// This is only long type, as String is not primitive
+//			isPrimitive = Transponders.class.getField(fieldName).getType().isPrimitive();
+//			// {
+//			// criterion = Restrictions.eq(fieldName,
+//			// Long.parseLong(typeValue));
+//			// }
+//
+//		} catch (NoSuchFieldException | SecurityException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 
-		} catch (NoSuchFieldException | SecurityException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		else if (fieldClazz.isPrimitive()) {
+			criterion = Restrictions.eq(fieldName, Long.parseLong(typeValue));
 		}
 
 		// check that it is an enum
-		if (Enum.class.isAssignableFrom(fieldClazz)) {
+		else if (Enum.class.isAssignableFrom(fieldClazz)) {
 			// must select from HashMap where key is String representation of
 			// enum
 			// TypesOfFEC array[] = org.openbox.sf5.db.TypesOfFEC.values();
@@ -93,10 +102,10 @@ public class TranspondersService implements Serializable {
 
 			// now get enum value by string representation
 			criterion = Restrictions.eq(fieldName, hm.get(typeValue));
-
-		} else if (isPrimitive) {
-			criterion = Restrictions.eq(fieldName, Long.parseLong(typeValue));
 		}
+//		} else if (isPrimitive) {
+//			criterion = Restrictions.eq(fieldName, Long.parseLong(typeValue));
+//		}
 
 		else if (fieldClazz == String.class) {
 			// we build rather primitive criterion

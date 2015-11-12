@@ -48,7 +48,7 @@ public class JsonObjectFiller {
 
 		// find field with the given name and return its class
 		fieldList.stream().filter(t -> t.getName().equals(fieldName)).forEach(t -> {
-			classList.add((Class<T>) t.getClass());
+			classList.add((Class<T>) t.getType());
 		});
 
 		if (classList.size() == 1) {
