@@ -1,14 +1,11 @@
 package org.openbox.sf5.json;
 
 import java.io.Serializable;
-import java.util.HashMap;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
@@ -42,70 +39,25 @@ public class TranspondersService implements Serializable {
 	// http://localhost:8080/SF5JSF-test/json/transponders/filter/Speed/27500
 	@GET
 	@Produces("application/json")
-	// @Path("filter/any")
 	@Path("filter/{type}/{typeValue}")
 	public Response getTranspondersByArbitraryFilter(@PathParam("type") String fieldName,
 			@PathParam("typeValue") String typeValue) {
 
 		Response returnResponse = null;
-		Criterion criterion = null;
 
-		// We have the following situation
-		// 1. Field name is of primitive type. Then we use simple Criterion.
-		// 2. Field is enum. Then it should be String representation of an enum.
-		// 3. Field is String.
-		// 4. Filed is entity class, retrieved from database. Then we select
-		// object by id, that came as typeValue.
+		Criterion criterion = JsonObjectFiller.getCriterionByClassFieldAndStringValue(Transponders.class, fieldName,
+				typeValue, contr);
 
-		Class<?> fieldClazz = JsonObjectFiller.getFieldClass(Transponders.class, fieldName);
-		// check if this field has some class, not null
-		if (fieldClazz == null) {
-			// Return not found error
+		if (criterion == null) {
 			return Response.status(404).build();
 		}
-
-		else if (fieldClazz.isPrimitive()) {
-			criterion = Restrictions.eq(fieldName, Long.parseLong(typeValue));
-		}
-
-		// check that it is an enum
-		else if (Enum.class.isAssignableFrom(fieldClazz)) {
-			// must select from HashMap where key is String representation of
-			// enum
-
-			// http://stackoverflow.com/questions/1626901/java-enums-list-enumerated-values-from-a-class-extends-enum
-			List<?> enumList = JsonObjectFiller.enum2list((Class<? extends Enum>) fieldClazz);
-			HashMap<String, Object> hm = new HashMap<>();
-			enumList.stream().forEach(t -> hm.put(t.toString(), t));
-
-			// now get enum value by string representation
-			criterion = Restrictions.eq(fieldName, hm.get(typeValue));
-		}
-		// } else if (isPrimitive) {
-		// criterion = Restrictions.eq(fieldName, Long.parseLong(typeValue));
-		// }
-
-		else if (fieldClazz == String.class) {
-			// we build rather primitive criterion
-			criterion = Restrictions.eq(fieldName, typeValue);
-		}
-
-		else {
-			// it is a usual class
-			Object filterObject = contr.select(fieldClazz, Long.parseLong(typeValue));
-			criterion = Restrictions.eq(fieldName, filterObject);
-
-		}
-		// o.getClass().getField("fieldName").getType().isPrimitive(); for
-		// primitives
-
-		// fieldClazz filterSatellite = (fieldClazz)
-		// contr.select(Satellites.class, typeValue);
 
 		List<Transponders> transList = (List<Transponders>) listService.ObjectsCriterionList(Transponders.class,
 				criterion);
 
-		String result = getJsonFromTranspondersList(transList);
+		// String result = getJsonFromTranspondersList(transList);
+		String result = JsonObjectFiller.getJsonFromObjectsList(transList);
+
 		returnResponse = Response.status(200).entity(result).build();
 
 		return returnResponse;
@@ -148,7 +100,9 @@ public class TranspondersService implements Serializable {
 		List<Transponders> transList = (List<Transponders>) listService.ObjectsCriterionList(Transponders.class,
 				criterion);
 
-		String result = getJsonFromTranspondersList(transList);
+		// String result = getJsonFromTranspondersList(transList);
+
+		String result = JsonObjectFiller.getJsonFromObjectsList(transList);
 		return Response.status(200).entity(result).build();
 	}
 
@@ -160,35 +114,39 @@ public class TranspondersService implements Serializable {
 
 		List<Transponders> transList = (List<Transponders>) listService.ObjectsList(Transponders.class);
 
-		String result = getJsonFromTranspondersList(transList);
+		// String result = getJsonFromTranspondersList(transList);
+
+		String result = JsonObjectFiller.getJsonFromObjectsList(transList);
 		return Response.status(200).entity(result).build();
 
 	}
 
-	private String getJsonFromTranspondersList(List<Transponders> transList) {
-
-		JsonObjectBuilder listObject = Json.createObjectBuilder();
-		JsonArrayBuilder arrayOfTransponders = Json.createArrayBuilder();
-		transList.stream().forEach(t -> {
-
-			// JsonObjectBuilder trans = getJsonObjectBuilderFromTransponder(t);
-
-			try {
-				JsonObjectBuilder trans = JsonObjectFiller.getJsonObjectBuilderFromClassInstance(t);
-				arrayOfTransponders.add(trans);
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		});
-
-		listObject.add("transponders", arrayOfTransponders);
-
-		JsonObject JObject = listObject.build();
-		String result = JObject.toString();
-		return result;
-	}
+	// private String getJsonFromTranspondersList(List<Transponders> transList)
+	// {
+	//
+	// JsonObjectBuilder listObject = Json.createObjectBuilder();
+	// JsonArrayBuilder arrayOfTransponders = Json.createArrayBuilder();
+	// transList.stream().forEach(t -> {
+	//
+	// // JsonObjectBuilder trans = getJsonObjectBuilderFromTransponder(t);
+	//
+	// try {
+	// JsonObjectBuilder trans =
+	// JsonObjectFiller.getJsonObjectBuilderFromClassInstance(t);
+	// arrayOfTransponders.add(trans);
+	// } catch (Exception e) {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	//
+	// });
+	//
+	// listObject.add("transponders", arrayOfTransponders);
+	//
+	// JsonObject JObject = listObject.build();
+	// String result = JObject.toString();
+	// return result;
+	// }
 
 	@Inject
 	private ObjectsListService listService;
