@@ -42,7 +42,7 @@ public class TranspondersService implements Serializable {
 	// http://localhost:8080/SF5JSF-test/json/transponders/filter/Speed/27500
 	@GET
 	@Produces("application/json")
-	//@Path("filter/any")
+	// @Path("filter/any")
 	@Path("filter/{type}/{typeValue}")
 	public Response getTranspondersByArbitraryFilter(@PathParam("type") String fieldName,
 			@PathParam("typeValue") String typeValue) {
@@ -64,20 +64,6 @@ public class TranspondersService implements Serializable {
 			return Response.status(404).build();
 		}
 
-//		boolean isPrimitive = false;
-//		try {
-//			// This is only long type, as String is not primitive
-//			isPrimitive = Transponders.class.getField(fieldName).getType().isPrimitive();
-//			// {
-//			// criterion = Restrictions.eq(fieldName,
-//			// Long.parseLong(typeValue));
-//			// }
-//
-//		} catch (NoSuchFieldException | SecurityException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-
 		else if (fieldClazz.isPrimitive()) {
 			criterion = Restrictions.eq(fieldName, Long.parseLong(typeValue));
 		}
@@ -86,14 +72,6 @@ public class TranspondersService implements Serializable {
 		else if (Enum.class.isAssignableFrom(fieldClazz)) {
 			// must select from HashMap where key is String representation of
 			// enum
-			// TypesOfFEC array[] = org.openbox.sf5.db.TypesOfFEC.values();
-			// List<TypesOfFEC> FECList = Arrays.asList(array);
-			// HashMap<String, TypesOfFEC> hm = new HashMap<>();
-			// FECList.stream().forEach(t -> hm.putIfAbsent(t.toString(), t));
-			//
-			// setValue(hm.get(text));
-
-			// fieldClazz. array[] = fieldClazz.values();
 
 			// http://stackoverflow.com/questions/1626901/java-enums-list-enumerated-values-from-a-class-extends-enum
 			List<?> enumList = JsonObjectFiller.enum2list((Class<? extends Enum>) fieldClazz);
@@ -103,9 +81,9 @@ public class TranspondersService implements Serializable {
 			// now get enum value by string representation
 			criterion = Restrictions.eq(fieldName, hm.get(typeValue));
 		}
-//		} else if (isPrimitive) {
-//			criterion = Restrictions.eq(fieldName, Long.parseLong(typeValue));
-//		}
+		// } else if (isPrimitive) {
+		// criterion = Restrictions.eq(fieldName, Long.parseLong(typeValue));
+		// }
 
 		else if (fieldClazz == String.class) {
 			// we build rather primitive criterion
@@ -114,8 +92,9 @@ public class TranspondersService implements Serializable {
 
 		else {
 			// it is a usual class
-			Class<?> filterObject = (Class<?>) contr.select(fieldClazz, Long.parseLong(typeValue));
+			Object filterObject = contr.select(fieldClazz, Long.parseLong(typeValue));
 			criterion = Restrictions.eq(fieldName, filterObject);
+
 		}
 		// o.getClass().getField("fieldName").getType().isPrimitive(); for
 		// primitives
