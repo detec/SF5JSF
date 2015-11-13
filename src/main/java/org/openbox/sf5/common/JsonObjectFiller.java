@@ -10,11 +10,13 @@ import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.ws.rs.core.Response;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.openbox.sf5.service.ObjectsController;
 
+// This class is intended for static functions that convert DB objects into JSON.
 public class JsonObjectFiller {
 
 	public static <T> JsonObjectBuilder getJsonObjectBuilderFromClassInstance(T object)
@@ -41,6 +43,26 @@ public class JsonObjectFiller {
 		} // end of loop
 
 		return JOB;
+	}
+
+	public static <T extends Object> Response buildResponseByTypeAndId(ObjectsController contr, long Id,
+			Class<T> type) {
+
+		T DBobject = (T) contr.select(type, Id);
+
+		JsonObjectBuilder transJOB;
+		String result = "";
+		try {
+			transJOB = JsonObjectFiller.getJsonObjectBuilderFromClassInstance(DBobject);
+
+			JsonObject JObject = transJOB.build();
+			result = JObject.toString();
+		} catch (IllegalArgumentException | IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return Response.status(200).entity(result).build();
 	}
 
 	// This method returns class from the field name
@@ -88,20 +110,19 @@ public class JsonObjectFiller {
 		// http://stackoverflow.com/questions/2390662/java-how-do-i-get-a-class-literal-from-a-generic-type
 		// Type typeOfListOfFoo = new TypeToken<List<Foo>>(){}.getType()
 
-//		Type typeOfListOfFoo = new TypeToken<List<T>>() {
-//		}.getType();
+		// Type typeOfListOfFoo = new TypeToken<List<T>>() {
+		// }.getType();
 
 		// putting class name, Transponders, Satellites etc.
-		//listObject.add(typeOfListOfFoo.getTypeName(), arrayOfObjects);
+		// listObject.add(typeOfListOfFoo.getTypeName(), arrayOfObjects);
 
-	//	Type typeOfListOfFoo = new TypeToken<objList.>(){}.getType();
+		// Type typeOfListOfFoo = new TypeToken<objList.>(){}.getType();
 
 		// quick solution
 		String arrayName = "";
 		if (objList.size() > 0) {
 			arrayName = objList.get(0).getClass().getSimpleName();
-		}
-		else {
+		} else {
 			arrayName = "empty";
 		}
 

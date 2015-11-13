@@ -6,8 +6,6 @@ import java.util.List;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
 import javax.ws.rs.GET;
 import javax.ws.rs.MatrixParam;
 import javax.ws.rs.Path;
@@ -55,7 +53,6 @@ public class TranspondersService implements Serializable {
 		List<Transponders> transList = (List<Transponders>) listService.ObjectsCriterionList(Transponders.class,
 				criterion);
 
-		// String result = getJsonFromTranspondersList(transList);
 		String result = JsonObjectFiller.getJsonFromObjectsList(transList);
 
 		returnResponse = Response.status(200).entity(result).build();
@@ -68,24 +65,7 @@ public class TranspondersService implements Serializable {
 	@Produces("application/json")
 	@Path("filter/id/{transponderId}")
 	public Response getTransponderById(@PathParam("transponderId") long tpId) {
-		Transponders transponder = (Transponders) contr.select(Transponders.class, tpId);
-
-		// JsonObjectBuilder transJOB =
-		// getJsonObjectBuilderFromTransponder(transponder);
-		JsonObjectBuilder transJOB;
-		String result = "";
-		try {
-			transJOB = JsonObjectFiller.getJsonObjectBuilderFromClassInstance(transponder);
-
-			JsonObject JObject = transJOB.build();
-			result = JObject.toString();
-		} catch (IllegalArgumentException | IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return Response.status(200).entity(result).build();
-
+		return JsonObjectFiller.buildResponseByTypeAndId(contr, tpId, Transponders.class);
 	}
 
 	// http://localhost:8080/SF5JSF-test/json/transponders/filter;satId=1
@@ -120,33 +100,6 @@ public class TranspondersService implements Serializable {
 		return Response.status(200).entity(result).build();
 
 	}
-
-	// private String getJsonFromTranspondersList(List<Transponders> transList)
-	// {
-	//
-	// JsonObjectBuilder listObject = Json.createObjectBuilder();
-	// JsonArrayBuilder arrayOfTransponders = Json.createArrayBuilder();
-	// transList.stream().forEach(t -> {
-	//
-	// // JsonObjectBuilder trans = getJsonObjectBuilderFromTransponder(t);
-	//
-	// try {
-	// JsonObjectBuilder trans =
-	// JsonObjectFiller.getJsonObjectBuilderFromClassInstance(t);
-	// arrayOfTransponders.add(trans);
-	// } catch (Exception e) {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	//
-	// });
-	//
-	// listObject.add("transponders", arrayOfTransponders);
-	//
-	// JsonObject JObject = listObject.build();
-	// String result = JObject.toString();
-	// return result;
-	// }
 
 	@Inject
 	private ObjectsListService listService;

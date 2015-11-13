@@ -45,14 +45,6 @@ public class TableFiller implements Serializable {
 
 		for (RangesOfDVB e : list) {
 
-			// TheDVBRangeValues record = (TheDVBRangeValues)
-			// service.select("db.TheDVBRangeValues", e);
-			// List<Book>
-			// book=(List<Book>)session.createCriteria(Book.class).createAlias("student",
-			// "st").add(Restrictions.eq("st.name", "Maxim")).list();
-
-			// Session s = HibernateUtil.openSession();
-
 			List<TheDVBRangeValues> rec = session.createCriteria(TheDVBRangeValues.class)
 					.add(Restrictions.eq("RangeOfDVB", e)).list();
 

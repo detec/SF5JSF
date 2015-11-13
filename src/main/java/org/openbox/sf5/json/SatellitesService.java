@@ -40,14 +40,19 @@ public class SatellitesService implements Serializable {
 
 		List<Satellites> satList = (List<Satellites>) listService.ObjectsCriterionList(Satellites.class, criterion);
 
-		// String result = getJsonFromTranspondersList(transList);
-		// String result = JsonObjectFiller.getJsonFromObjectsList(transList);
 		String result = JsonObjectFiller.getJsonFromObjectsList(satList);
 
 		returnResponse = Response.status(200).entity(result).build();
 
 		return returnResponse;
 
+	}
+
+	@GET
+	@Produces("application/json")
+	@Path("filter/id/{satelliteId}")
+	public Response getSatelliteById(@PathParam("satelliteId") long satId) {
+		return JsonObjectFiller.buildResponseByTypeAndId(contr, satId, Satellites.class);
 	}
 
 	private static final long serialVersionUID = 5840312078955871320L;
