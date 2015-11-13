@@ -1,7 +1,6 @@
 package org.openbox.sf5.common;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -15,8 +14,6 @@ import javax.json.JsonObjectBuilder;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.openbox.sf5.service.ObjectsController;
-
-import com.google.gson.reflect.TypeToken;
 
 public class JsonObjectFiller {
 
@@ -91,11 +88,24 @@ public class JsonObjectFiller {
 		// http://stackoverflow.com/questions/2390662/java-how-do-i-get-a-class-literal-from-a-generic-type
 		// Type typeOfListOfFoo = new TypeToken<List<Foo>>(){}.getType()
 
-		Type typeOfListOfFoo = new TypeToken<List<T>>() {
-		}.getType();
+//		Type typeOfListOfFoo = new TypeToken<List<T>>() {
+//		}.getType();
 
 		// putting class name, Transponders, Satellites etc.
-		listObject.add(typeOfListOfFoo.getClass().getName(), arrayOfObjects);
+		//listObject.add(typeOfListOfFoo.getTypeName(), arrayOfObjects);
+
+	//	Type typeOfListOfFoo = new TypeToken<objList.>(){}.getType();
+
+		// quick solution
+		String arrayName = "";
+		if (objList.size() > 0) {
+			arrayName = objList.get(0).getClass().getSimpleName();
+		}
+		else {
+			arrayName = "empty";
+		}
+
+		listObject.add(arrayName, arrayOfObjects);
 
 		JsonObject JObject = listObject.build();
 		String result = JObject.toString();

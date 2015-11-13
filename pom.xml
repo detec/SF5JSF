@@ -126,16 +126,6 @@
 	<version>${hibernate.version}</version>
 </dependency>
 <dependency>
-	<groupId>com.google.code.gson</groupId>
-	<artifactId>gson</artifactId>
-	<version>2.4</version>
-</dependency>
-<!--  <dependency> -->
-<!-- 	<groupId>javax.inject</groupId> -->
-<!-- 	<artifactId>javax.inject</artifactId> -->
-<!-- 	<version>1</version> -->
-<!-- </dependency> 	 -->
-<dependency>
 	<groupId>javax.validation</groupId>
 	<artifactId>validation-api</artifactId>
 	<version>1.1.0.Final</version>
@@ -146,70 +136,24 @@
 	<version>3.2</version>
 	<scope>provided</scope>
 </dependency>
-<!-- JSON services support -->
-<!-- <dependency> -->
-<!-- 	<groupId>javax.json</groupId> -->
-<!-- 	<artifactId>javax.json-api</artifactId> -->
-<!-- 	<version>1.0</version> -->
-<!-- 	<scope>provided</scope> -->
-<!-- </dependency> -->
 <dependency>
     <groupId>org.glassfish</groupId>
     <artifactId>javax.json</artifactId>
     <version>1.0.4</version>
  	<scope>provided</scope>
 </dependency>
-<!-- <dependency> -->
-<!-- 	<groupId>asm</groupId> -->
-<!-- 	<artifactId>asm</artifactId> -->
-<!-- 	<version>3.3.1</version> -->
-<!-- 	<scope>provided</scope> -->
-<!-- </dependency> -->
-<!-- <dependency> -->
-<!-- 	<groupId>org.json</groupId> -->
-<!-- 	<artifactId>json</artifactId> -->
-<!-- 	<version>20140107</version> -->
-<!-- </dependency> -->
-<!-- <dependency> -->
-<!-- 	<groupId>com.sun.jersey</groupId> -->
-<!-- 	<artifactId>jersey-bundle</artifactId> -->
-<!-- 	<version>1.19</version> -->
-<!-- 	<scope>provided</scope> -->
-<!-- </dependency> -->
-<!-- <dependency> -->
-<!-- 	<groupId>com.sun.jersey</groupId> -->
-<!-- 	<artifactId>jersey-server</artifactId> -->
-<!-- 	<version>1.19</version> -->
-<!-- 	<scope>provided</scope> -->
-<!-- </dependency> -->
-<!-- <dependency> -->
-<!-- 	<groupId>com.sun.jersey</groupId> -->
-<!-- 	<artifactId>jersey-core</artifactId> -->
-<!-- 	<version>1.19</version> -->
-<!-- 	<scope>provided</scope> -->
-<!-- </dependency> -->
-
 <dependency>
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-validator</artifactId>
 	<version>5.2.1.Final</version>
 </dependency>
-	
-	<!-- JSF implementation: Mojarra org.glassfish - is the one at org.glassfish and it is working! -->
-	
+<!-- JSF implementation: Mojarra org.glassfish - is the one at org.glassfish and it is working! -->
 <dependency>
 	<groupId>org.glassfish</groupId>
 	<artifactId>javax.faces</artifactId>
 	<version>${mojarra-version}</version>
 	 <scope>provided</scope>
 </dependency>
-<!-- Omnifaces added to use ViewScoped injection -->
-<!-- <dependency> -->
-<!-- 	<groupId>org.omnifaces</groupId> -->
-<!-- 	<artifactId>omnifaces</artifactId> -->
-<!-- 	<version>2.1</version> -->
-<!-- </dependency> -->
-
 
 <!-- Testing -->
 <dependency>
