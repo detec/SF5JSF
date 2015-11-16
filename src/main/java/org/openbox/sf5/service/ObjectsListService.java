@@ -14,6 +14,14 @@ import org.openbox.sf5.dao.DAOList;
 @SessionScoped
 public class ObjectsListService implements Serializable {
 
+	public DAOList getDao() {
+		return dao;
+	}
+
+	public void setDao(DAOList dao) {
+		this.dao = dao;
+	}
+
 	private static final long serialVersionUID = -3631362805987631432L;
 
 	public List<?> ObjectsList(Class<?> clazz) {

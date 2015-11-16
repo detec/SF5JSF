@@ -36,6 +36,16 @@ public class DAOListImpl implements DAOList, Serializable {
 	}
 
 	@Override
+	public ConnectionManager getCm() {
+		return cm;
+	}
+
+	@Override
+	public void setCm(ConnectionManager cm) {
+		this.cm = cm;
+	}
+
+	@Override
 	public List<?> restrictionList(Class<?> clazz, Criterion criterion) {
 		// Session s = HibernateUtil.openSession();
 

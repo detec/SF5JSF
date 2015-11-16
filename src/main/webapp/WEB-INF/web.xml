@@ -27,7 +27,7 @@
 
 		<!-- This is for 2.x container
   		https://jersey.java.net/documentation/latest/deployment.html#environmenmt.appmodel -->
-  	<servlet>
+<!--   	<servlet>
 		<servlet-name>Jersey Web Application</servlet-name>
 	
 
@@ -47,7 +47,7 @@
 	<servlet-mapping>
 		<servlet-name>Jersey Web Application</servlet-name>
 		<url-pattern>/json/*</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping> -->
   
   
   

@@ -1,13 +1,16 @@
 package org.openbox.sf5.json;
 
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.json.Json;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonWriter;
 import javax.ws.rs.GET;
 import javax.ws.rs.MatrixParam;
 import javax.ws.rs.Path;
@@ -15,14 +18,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.hibernate.Criteria;
 import org.hibernate.Session;
+import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
-import org.hibernate.criterion.SimpleExpression;
 import org.openbox.sf5.common.JsonObjectFiller;
 import org.openbox.sf5.db.ConnectionManager;
 import org.openbox.sf5.db.Settings;
-import org.openbox.sf5.db.Users;
 import org.openbox.sf5.service.ObjectsController;
 import org.openbox.sf5.service.ObjectsListService;
 
@@ -30,37 +33,49 @@ import org.openbox.sf5.service.ObjectsListService;
 
 @Named
 @SessionScoped
-@Path("usrsettings/")
+@Path("usersettings/")
 public class SettingsService implements Serializable {
 
+	// http://localhost:8080/SF5JSF-test/json/usersettings/filter/Name/First;login=admin
 	@GET
 	@Produces("application/json")
-	@Path("filter")
-	public Response testSettings() {
-		Response returnResponse = Response.status(200).entity("Ok").build();
+	@Path("filter/{type}/{typeValue}")
+	public Response getSettingsByArbitraryFilter(@PathParam("type") String fieldName,
+			@PathParam("typeValue") String typeValue, @MatrixParam("login") String login) {
+
+		// building user criterion
+		Criterion userCriterion = JsonObjectFiller.getUserCriterion(login, listService, contr, Settings.class);
+		if (userCriterion == null) {
+			return Response.status(404).build();
+		}
+
+		// building arbitrary criterion
+		Criterion arbitraryCriterion = JsonObjectFiller.getCriterionByClassFieldAndStringValue(Settings.class,
+				fieldName, typeValue, contr);
+
+		if (arbitraryCriterion == null) {
+			return Response.status(404).build();
+		}
+
+		Session session = cm.getSessionFactroy().openSession();
+		Criteria criteria = session.createCriteria(Settings.class).add(userCriterion).add(arbitraryCriterion);
+		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
+
+		List<Settings> records = criteria.list();
+
+		String result = JsonObjectFiller.getJsonFromObjectsList(records);
+		Response returnResponse = Response.status(200).entity(result).build();
+
 		return returnResponse;
 
 	}
 
-	// something is wrong with this URI
 	@GET
 	@Produces("application/json")
 	@Path("filter/id/{settingId}")
 	public Response getSettingById(@PathParam("settingId") long settingId, @MatrixParam("login") String login) {
 
-		// Find out user id.
-		SimpleExpression criterion = Restrictions.eq("Login", login);
-		List<Users> usersList = (List<Users>) listService.ObjectsCriterionList(Users.class, criterion);
-
-		if (usersList.size() == 0) {
-			return Response.status(404).build();
-		}
-
-		String userIdToString = Long.toString(usersList.get(0).getId());
-
-		// Let's filter by userId and settings id
-		Criterion userCriterion = JsonObjectFiller.getCriterionByClassFieldAndStringValue(Settings.class, "User",
-				userIdToString, contr);
+		Criterion userCriterion = JsonObjectFiller.getUserCriterion(login, listService, contr, Settings.class);
 		if (userCriterion == null) {
 			return Response.status(404).build();
 		}
@@ -88,7 +103,13 @@ public class SettingsService implements Serializable {
 			transJOB = JsonObjectFiller.getJsonObjectBuilderFromClassInstance(settingsObject);
 
 			JsonObject JObject = transJOB.build();
-			result = JObject.toString();
+
+			StringWriter sw = new StringWriter();
+			try (JsonWriter writer = Json.createWriter(sw)) {
+				writer.writeObject(JObject);
+			}
+			result = sw.toString();
+
 		} catch (IllegalArgumentException | IllegalAccessException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

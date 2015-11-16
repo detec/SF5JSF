@@ -45,7 +45,7 @@ public class Users implements Serializable {
 
 	@Override
 	public String toString() {
-		return Name;
+		return this.Login;
 	}
 
 	@Column(name = "Login", unique = false, nullable = false, length = 12)
@@ -82,8 +82,7 @@ public class Users implements Serializable {
 			return false;
 		}
 		Users otherUsers = (Users) other;
-		if (otherUsers.Name.equals(this.Name)
-				&& otherUsers.Login.equals(this.Login)) {
+		if (otherUsers.Name.equals(this.Name) && otherUsers.Login.equals(this.Login)) {
 			return true;
 		} else {
 			return false;

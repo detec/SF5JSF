@@ -1,25 +1,63 @@
 package org.openbox.sf5.common;
 
+import java.io.StringWriter;
 import java.lang.reflect.Field;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 import javax.json.Json;
+import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonValue;
+import javax.json.JsonWriter;
+import javax.json.JsonWriterFactory;
+import javax.json.stream.JsonGenerator;
 import javax.ws.rs.core.Response;
 
+import org.hibernate.collection.internal.PersistentList;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.criterion.SimpleExpression;
+import org.openbox.sf5.db.Users;
 import org.openbox.sf5.service.ObjectsController;
+import org.openbox.sf5.service.ObjectsListService;
 
 // This class is intended for static functions that convert DB objects into JSON.
 public class JsonObjectFiller {
 
-	public static <T> JsonObjectBuilder getJsonObjectBuilderFromClassInstance(T object)
+	public static <T> Criterion getUserCriterion(String login, ObjectsListService listService, ObjectsController contr,
+			Class<T> type) {
+		// Find out user id.
+		SimpleExpression criterion = null;
+		Criterion userCriterion = null;
+
+		criterion = Restrictions.eq("Login", login);
+		List<Users> usersList = (List<Users>) listService.ObjectsCriterionList(Users.class, criterion);
+
+		if (usersList.size() == 0) {
+			return criterion;
+		}
+
+		String userIdToString = Long.toString(usersList.get(0).getId());
+
+		// Let's filter by userId and settings id
+		userCriterion = JsonObjectFiller.getCriterionByClassFieldAndStringValue(type, "User", userIdToString, contr);
+
+		return userCriterion;
+
+	}
+
+	// seems to be the first correct implementation for hibernate mapping
+	// projects using 1C mapping tool.
+	public static <T, L> JsonObjectBuilder getJsonObjectBuilderFromClassInstance(T object)
 			throws IllegalArgumentException, IllegalAccessException {
 		Field fields[];
 		fields = object.getClass().getDeclaredFields();
@@ -35,10 +73,53 @@ public class JsonObjectFiller {
 			}
 
 			fields[i].setAccessible(true);
-			String strValue;
 
-			strValue = fields[i].get(object).toString();
-			JOB.add(fieldName, strValue);
+			// http://stackoverflow.com/questions/21120999/representing-null-in-json
+
+			// here we need to check if a field is a PersistentList.
+			if (fields[i].get(object) instanceof PersistentList) {
+				// here we should serialize content of the list
+				List<L> persistentList = (List<L>) fields[i].get(object);
+
+				// String strValue = getJsonFromObjectsList(persistentList);
+
+				JOB.add(fieldName, getJsonArray(persistentList));
+
+			} else {
+				if (fields[i].get(object) != null) {
+
+					// checking if field is boolean
+					if (fields[i].getType().equals(boolean.class)) {
+						JsonValue strValue = ((boolean) fields[i].get(object) == true) ? JsonValue.TRUE
+								: JsonValue.FALSE;
+						JOB.add(fieldName, strValue);
+					}
+
+					// checking if it is Date class
+					else if (fields[i].getType().equals(Timestamp.class)) {
+						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+						formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+						String strValue = formatter.format(fields[i].get(object));
+						JOB.add(fieldName, strValue);
+					}
+
+					// writing as JsonNumber
+					else if (fields[i].getType().equals(long.class)) {
+						long strValue = (long) fields[i].get(object);
+						JOB.add(fieldName, strValue);
+					}
+
+					// other classes
+					else {
+						String strValue = fields[i].get(object).toString();
+						JOB.add(fieldName, strValue);
+					}
+
+				} else {
+					JsonValue strValue = JsonValue.NULL;
+					JOB.add(fieldName, strValue);
+				}
+			}
 
 		} // end of loop
 
@@ -89,11 +170,7 @@ public class JsonObjectFiller {
 		return clazz;
 	}
 
-	// ? extends Object
-
-	public static <T> String getJsonFromObjectsList(List<T> objList) {
-
-		JsonObjectBuilder listObject = Json.createObjectBuilder();
+	public static <T> JsonArray getJsonArray(List<T> objList) {
 		JsonArrayBuilder arrayOfObjects = Json.createArrayBuilder();
 		objList.stream().forEach(t -> {
 
@@ -107,30 +184,29 @@ public class JsonObjectFiller {
 
 		});
 
-		// http://stackoverflow.com/questions/2390662/java-how-do-i-get-a-class-literal-from-a-generic-type
-		// Type typeOfListOfFoo = new TypeToken<List<Foo>>(){}.getType()
+		JsonArray JObject = arrayOfObjects.build();
+		return JObject;
+	}
 
-		// Type typeOfListOfFoo = new TypeToken<List<T>>() {
-		// }.getType();
+	public static <T> String getJsonFromObjectsList(List<T> objList) {
+		JsonArray JObject = getJsonArray(objList);
 
-		// putting class name, Transponders, Satellites etc.
-		// listObject.add(typeOfListOfFoo.getTypeName(), arrayOfObjects);
+		// JSON pretty formatting - Taken from:
+		// glassfish4\docs\javaee-tutorial\examples\web\jsonp\jsonpmodel\src\main\java\javaeetutorial
+		// \jsonpmodel\ObjectModelBean.java
+		// http://stackoverflow.com/questions/23007567/java-json-pretty-print-javax-json
+		Map<String, Boolean> config = new HashMap<>();
+		config.put(JsonGenerator.PRETTY_PRINTING, true);
+		JsonWriterFactory factory = Json.createWriterFactory(config);
 
-		// Type typeOfListOfFoo = new TypeToken<objList.>(){}.getType();
-
-		// quick solution
-		String arrayName = "";
-		if (objList.size() > 0) {
-			arrayName = objList.get(0).getClass().getSimpleName();
-		} else {
-			arrayName = "empty";
+		// http://blog.eisele.net/2013/02/test-driving-java-api-for-processing.html
+		StringWriter sw = new StringWriter();
+		try (JsonWriter jw = factory.createWriter(sw)) {
+			jw.writeArray(JObject);
 		}
 
-		listObject.add(arrayName, arrayOfObjects);
+		return sw.toString();
 
-		JsonObject JObject = listObject.build();
-		String result = JObject.toString();
-		return result;
 	}
 
 	@SuppressWarnings("rawtypes")
