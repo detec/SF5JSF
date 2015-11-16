@@ -30,9 +30,19 @@ import org.openbox.sf5.service.ObjectsListService;
 
 @Named
 @SessionScoped
-@Path("usersettings/")
+@Path("usrsettings/")
 public class SettingsService implements Serializable {
 
+	@GET
+	@Produces("application/json")
+	@Path("filter")
+	public Response testSettings() {
+		Response returnResponse = Response.status(200).entity("Ok").build();
+		return returnResponse;
+
+	}
+
+	// something is wrong with this URI
 	@GET
 	@Produces("application/json")
 	@Path("filter/id/{settingId}")
