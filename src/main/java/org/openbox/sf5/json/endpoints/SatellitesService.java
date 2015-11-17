@@ -20,6 +20,22 @@ import org.openbox.sf5.json.service.SatellitesJsonizer;
 @Path("satellites/")
 public class SatellitesService implements Serializable {
 
+	// http://localhost:8080/SF5JSF-test/json/satellites/all/
+	@GET
+	@Produces("application/json")
+	@Path("all/")
+	public Response getAllSatellites() {
+		Response returnResponse = null;
+
+		String result = jsonizer.getSatellitesList();
+		if (result.isEmpty()) {
+			return Response.status(404).build();
+		} else {
+			returnResponse = Response.status(200).entity(result).build();
+		}
+		return returnResponse;
+	}
+
 	@GET
 	@Produces("application/json")
 	@Path("filter/{type}/{typeValue}")
@@ -31,8 +47,7 @@ public class SatellitesService implements Serializable {
 		String result = jsonizer.getSatellitesByArbitraryFilter(fieldName, typeValue);
 		if (result.isEmpty()) {
 			return Response.status(404).build();
-		}
-		else {
+		} else {
 			returnResponse = Response.status(200).entity(result).build();
 		}
 		return returnResponse;
@@ -43,13 +58,13 @@ public class SatellitesService implements Serializable {
 	@Produces("application/json")
 	@Path("filter/id/{satelliteId}")
 	public Response getSatelliteById(@PathParam("satelliteId") long satId) {
-		//return JsonObjectFiller.buildResponseByTypeAndId(contr, satId, Satellites.class);
+		// return JsonObjectFiller.buildResponseByTypeAndId(contr, satId,
+		// Satellites.class);
 		Response returnResponse = null;
 		String result = commonJsonizer.buildJsonStringByTypeAndId(satId, Satellites.class);
 		if (result.isEmpty()) {
 			return Response.status(404).build();
-		}
-		else {
+		} else {
 			returnResponse = Response.status(200).entity(result).build();
 		}
 		return returnResponse;
@@ -79,7 +94,5 @@ public class SatellitesService implements Serializable {
 	public void setJsonizer(SatellitesJsonizer jsonizer) {
 		this.jsonizer = jsonizer;
 	}
-
-
 
 }

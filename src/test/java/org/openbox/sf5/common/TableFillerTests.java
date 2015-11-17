@@ -8,6 +8,8 @@ import javax.transaction.Transactional;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.openbox.sf5.dao.DAO;
 import org.openbox.sf5.dao.DAOImpl;
 import org.openbox.sf5.dao.DAOListImpl;
@@ -18,7 +20,8 @@ import org.openbox.sf5.service.ObjectServiceImpl;
 import org.openbox.sf5.service.ObjectsController;
 import org.openbox.sf5.service.ObjectsListService;
 
-public class TableFillerTest {
+@RunWith(JUnit4.class)
+public class TableFillerTests {
 
 	private ConnectionManager cm;
 

@@ -15,7 +15,14 @@ import org.openbox.sf5.service.ObjectsListService;
 
 @Named
 @SessionScoped
-public class SatellitesJsonizer  implements Serializable {
+public class SatellitesJsonizer implements Serializable {
+
+	public String getSatellitesList() {
+		List<Satellites> satList = (List<Satellites>) listService.ObjectsList(Satellites.class);
+		String result = JsonObjectFiller.getJsonFromObjectsList(satList);
+
+		return result;
+	}
 
 	public String getSatellitesByArbitraryFilter(String fieldName, String typeValue) {
 		String returnString = "";
@@ -31,17 +38,13 @@ public class SatellitesJsonizer  implements Serializable {
 		return returnString;
 	}
 
-
-
 	public CriterionService getCriterionService() {
 		return criterionService;
 	}
 
-
 	public void setCriterionService(CriterionService criterionService) {
 		this.criterionService = criterionService;
 	}
-
 
 	@Inject
 	private ObjectsListService listService;
@@ -50,15 +53,11 @@ public class SatellitesJsonizer  implements Serializable {
 		return listService;
 	}
 
-
-
 	public void setListService(ObjectsListService listService) {
 		this.listService = listService;
 	}
 
-
 	private static final long serialVersionUID = 3401682206534536724L;
-
 
 	@Inject
 	private CriterionService criterionService;

@@ -20,10 +20,9 @@ import org.openbox.sf5.service.ObjectsController;
 
 @Named
 @SessionScoped
-public class CommonJsonizer  implements Serializable {
+public class CommonJsonizer implements Serializable {
 
-	public <T extends Object> String buildJsonStringByTypeAndId(long Id,
-			Class<T> type) {
+	public <T extends Object> String buildJsonStringByTypeAndId(long Id, Class<T> type) {
 		String result = "";
 
 		T DBobject = (T) contr.select(type, Id);
@@ -56,20 +55,34 @@ public class CommonJsonizer  implements Serializable {
 		return result;
 	}
 
+	public String JSonObjectBuilderToString(JsonObjectBuilder transJOB) {
+		String returnString = "";
+
+		JsonObject JObject = transJOB.build();
+
+		Map<String, Boolean> config = new HashMap<>();
+		config.put(JsonGenerator.PRETTY_PRINTING, true);
+		JsonWriterFactory factory = Json.createWriterFactory(config);
+
+		// http://blog.eisele.net/2013/02/test-driving-java-api-for-processing.html
+		StringWriter sw = new StringWriter();
+		try (JsonWriter jw = factory.createWriter(sw)) {
+			jw.writeObject(JObject);
+		}
+
+		returnString = sw.toString();
+
+		return returnString;
+	}
+
 	private static final long serialVersionUID = -6703918663028892352L;
-
-
 
 	@Inject
 	private ObjectsController contr;
 
-
-
 	public ObjectsController getContr() {
 		return contr;
 	}
-
-
 
 	public void setContr(ObjectsController contr) {
 		this.contr = contr;
