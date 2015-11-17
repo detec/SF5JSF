@@ -19,7 +19,7 @@ import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 public class SettingsServiceTests {
 
 	@Test
-	public void shouldGetSettingById(long settingId, String login) {
+	public void shouldGetSettingById() {
 		WebTarget target = null;
 		Response response = null;
 		Client client = createClient();
@@ -31,7 +31,7 @@ public class SettingsServiceTests {
 	}
 
 	@Test
-	public void shouldGetSettingsByArbitraryFilter(String fieldName, String typeValue, String login) {
+	public void shouldGetSettingsByArbitraryFilter() {
 		WebTarget target = null;
 		Response response = null;
 		Client client = createClient();
