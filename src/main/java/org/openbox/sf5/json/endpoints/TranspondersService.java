@@ -1,4 +1,4 @@
-package org.openbox.sf5.json;
+package org.openbox.sf5.json.endpoints;
 
 import java.io.Serializable;
 import java.util.List;
@@ -18,6 +18,8 @@ import org.hibernate.criterion.Restrictions;
 import org.openbox.sf5.common.JsonObjectFiller;
 import org.openbox.sf5.db.Satellites;
 import org.openbox.sf5.db.Transponders;
+import org.openbox.sf5.json.service.CommonJsonizer;
+import org.openbox.sf5.service.CriterionService;
 import org.openbox.sf5.service.ObjectsController;
 import org.openbox.sf5.service.ObjectsListService;
 
@@ -43,8 +45,8 @@ public class TranspondersService implements Serializable {
 
 		Response returnResponse = null;
 
-		Criterion criterion = JsonObjectFiller.getCriterionByClassFieldAndStringValue(Transponders.class, fieldName,
-				typeValue, contr);
+		Criterion criterion = criterionService.getCriterionByClassFieldAndStringValue(Transponders.class, fieldName,
+				typeValue);
 
 		if (criterion == null) {
 			return Response.status(404).build();
@@ -65,7 +67,17 @@ public class TranspondersService implements Serializable {
 	@Produces("application/json")
 	@Path("filter/id/{transponderId}")
 	public Response getTransponderById(@PathParam("transponderId") long tpId) {
-		return JsonObjectFiller.buildResponseByTypeAndId(contr, tpId, Transponders.class);
+		//return JsonObjectFiller.buildResponseByTypeAndId(contr, tpId, Transponders.class);
+
+		Response returnResponse = null;
+		String result = commonJsonizer.buildJsonStringByTypeAndId(tpId, Transponders.class);
+		if (result.isEmpty()) {
+			return Response.status(404).build();
+		}
+		else {
+			returnResponse = Response.status(200).entity(result).build();
+		}
+		return returnResponse;
 	}
 
 	// http://localhost:8080/SF5JSF-test/json/transponders/filter;satId=1
@@ -107,4 +119,41 @@ public class TranspondersService implements Serializable {
 	@Inject
 	private ObjectsController contr;
 
+	@Inject
+	private CriterionService criterionService;
+
+	public ObjectsListService getListService() {
+		return listService;
+	}
+
+	public void setListService(ObjectsListService listService) {
+		this.listService = listService;
+	}
+
+	public ObjectsController getContr() {
+		return contr;
+	}
+
+	public void setContr(ObjectsController contr) {
+		this.contr = contr;
+	}
+
+	public CriterionService getCriterionService() {
+		return criterionService;
+	}
+
+	public void setCriterionService(CriterionService criterionService) {
+		this.criterionService = criterionService;
+	}
+
+	@Inject
+	private CommonJsonizer commonJsonizer;
+
+	public CommonJsonizer getCommonJsonizer() {
+		return commonJsonizer;
+	}
+
+	public void setCommonJsonizer(CommonJsonizer commonJsonizer) {
+		this.commonJsonizer = commonJsonizer;
+	}
 }

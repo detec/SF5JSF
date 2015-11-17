@@ -58,6 +58,8 @@ public class TableFillerTest {
 	public void shouldFillTablesByTableFiller() {
 
 		TableFiller tf = new TableFiller();
+		tf.setCm(cm);
+		tf.setContr(contr);
 		tf.init();
 
 		// there should be 2 records in THEDVBRANGEVALUES

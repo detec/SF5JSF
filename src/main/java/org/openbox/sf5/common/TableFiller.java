@@ -33,6 +33,22 @@ public class TableFiller implements Serializable {
 
 	}
 
+	public ObjectsController getContr() {
+		return contr;
+	}
+
+	public void setContr(ObjectsController contr) {
+		this.contr = contr;
+	}
+
+	public ConnectionManager getCm() {
+		return cm;
+	}
+
+	public void setCm(ConnectionManager cm) {
+		this.cm = cm;
+	}
+
 	public void init() {
 
 		List<RangesOfDVB> list = new ArrayList<RangesOfDVB>();
