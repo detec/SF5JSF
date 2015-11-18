@@ -9,22 +9,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "Satellites")
 public class Satellites implements Serializable {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = -2077586473579019427L;
-
-	public long getSerialVersionUID() {
-		return serialVersionUID;
-	}
-
-	public void setSerialVersionUID(long ver) {
-
-	}
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -32,12 +23,13 @@ public class Satellites implements Serializable {
 	private long id;
 
 	@Column(name = "Name", unique = false, nullable = false, length = 50)
+	@JsonProperty("Name")
 	private String Name;
 
 	@Override
 	public String toString() {
 
-		return this.Name;
+		return Name;
 	}
 
 	public void setName(String Name) {
@@ -45,12 +37,12 @@ public class Satellites implements Serializable {
 	}
 
 	public String getName() {
-		return this.Name;
+		return Name;
 	}
 
 	public long getId() {
 
-		return this.id;
+		return id;
 	}
 
 	public void setId(long id) {
