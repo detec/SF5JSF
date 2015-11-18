@@ -4,15 +4,15 @@ import org.openbox.sf5.db.ConnectionManager;
 
 public interface DAO {
 
-	public void add(Object obj);
+	public <T> void add(T obj);
 
-	public void remove(Class<?> clazz, long id);
+	public <T> void remove(Class<T> type, long id);
 
-	public void update(Object obj);
+	public <T> void update(T obj);
 
-	public Object select(Class<?> clazz, long id);
+	public <T> Object select(Class<T> type, long id);
 
-	public void saveOrUpdate(Object obj);
+	public <T> void saveOrUpdate(T obj);
 
 	public ConnectionManager getCm();
 

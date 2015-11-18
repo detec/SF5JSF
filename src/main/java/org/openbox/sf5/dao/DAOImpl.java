@@ -26,9 +26,7 @@ public class DAOImpl implements DAO, Serializable {
 	private static final long serialVersionUID = 4283051495842205423L;
 
 	@Override
-	public void add(Object obj) {
-		// Session s = HibernateUtil.openSession();
-
+	public <T> void add(T obj) {
 		Session s = cm.getSessionFactroy().openSession();
 
 		s.beginTransaction();
@@ -39,20 +37,19 @@ public class DAOImpl implements DAO, Serializable {
 	}
 
 	@Override
-	public void remove(Class<?> clazz, long id) {
-		// Session s = HibernateUtil.openSession();
+	public <T> void remove(Class<T> type, long id) {
 
 		Session s = cm.getSessionFactroy().openSession();
 		s.beginTransaction();
-		Object c = s.get(clazz, id);
+		@SuppressWarnings("unchecked")
+		T c = (T) s.get(type, id);
 		s.delete(c);
 		s.getTransaction().commit();
 		s.close();
 	}
 
 	@Override
-	public void update(Object obj) {
-		// Session s = HibernateUtil.openSession();
+	public <T> void update(T obj) {
 
 		Session s = cm.getSessionFactroy().openSession();
 		s.beginTransaction();
@@ -62,19 +59,18 @@ public class DAOImpl implements DAO, Serializable {
 	}
 
 	@Override
-	public Object select(Class<?> clazz, long id) {
-		// Session s = HibernateUtil.openSession();
+	public <T> T select(Class<T> type, long id) {
 
 		Session s = cm.getSessionFactroy().openSession();
 		s.beginTransaction();
-		Object obj = s.get(clazz, id);
+		@SuppressWarnings("unchecked")
+		T obj = (T) s.get(type, id);
 		s.close();
 		return obj;
 	}
 
 	@Override
-	public void saveOrUpdate(Object obj) {
-		// Session s = HibernateUtil.openSession();
+	public <T> void saveOrUpdate(T obj) {
 
 		Session s = cm.getSessionFactroy().openSession();
 		s.beginTransaction();

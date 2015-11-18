@@ -14,23 +14,10 @@ import org.hibernate.cfg.Configuration;
 @ApplicationScoped
 public class ConnectionManager implements Serializable {
 
-	// public Connection getDBConnection() throws SQLException {
-	// Connection con = null;
-	// if (DataSource != null) {
-	// con = DataSource.getConnection();
-	//
-	// DatabaseMetaData dbmd = con.getMetaData();
-	// if
-	// (dbmd.supportsTransactionIsolationLevel(Connection.TRANSACTION_SERIALIZABLE))
-	// {
-	// con.setTransactionIsolation(Connection.TRANSACTION_SERIALIZABLE);
-	// }
-	// } else {
-	// throw new SQLException("Datasource from Glassfish application server
-	// returned as null!");
-	// }
-	// return con;
-	// }
+	public void disableLogsWhenTesting() {
+		java.util.logging.Logger.getLogger("org.hibernate").setLevel(java.util.logging.Level.OFF);
+
+	}
 
 	public SessionFactory getSessionFactroy() {
 		SessionFactory sessionFactoryVariable = null;
@@ -59,9 +46,6 @@ public class ConnectionManager implements Serializable {
 
 		return sessionFactoryVariable;
 	}
-
-	// @Resource(name = "H2")
-	// private com.sun.appserv.jdbc.DataSource DataSource;
 
 	private static final long serialVersionUID = -393036417948357440L;
 

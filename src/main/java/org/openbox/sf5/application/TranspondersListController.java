@@ -120,11 +120,10 @@ public class TranspondersListController implements Serializable {
 		if (filterSatellite != null) {
 			Criterion criterion = Restrictions.eq("Satellite", filterSatellite);
 			// return (List<Transponders>) ObjectsListService
-			TranspondersList = (List<Transponders>) listService.ObjectsCriterionList(Transponders.class, criterion);
+			TranspondersList = listService.ObjectsCriterionList(Transponders.class, criterion);
 		} else {
-			// return (List<Transponders>) ObjectsListService
-			// .ObjectsList(Transponders.class);
-			TranspondersList = (List<Transponders>) listService.ObjectsList(Transponders.class);
+
+			TranspondersList = listService.ObjectsList(Transponders.class);
 		}
 	}
 
@@ -135,7 +134,7 @@ public class TranspondersListController implements Serializable {
 
 	public List<Satellites> getSatellites() {
 
-		return (List<Satellites>) listService.ObjectsList(Satellites.class);
+		return listService.ObjectsList(Satellites.class);
 	}
 
 	public String saveSelectedTransponders() {
@@ -202,9 +201,6 @@ public class TranspondersListController implements Serializable {
 
 	public class TransponderChoice extends Transponders {
 
-		/**
-		 *
-		 */
 		private static final long serialVersionUID = 3262084796351763445L;
 		private boolean checked;
 

@@ -49,6 +49,22 @@ public class IniReader implements Serializable {
 
 	}
 
+	public ObjectsController getContr() {
+		return contr;
+	}
+
+	public void setContr(ObjectsController contr) {
+		this.contr = contr;
+	}
+
+	public ConnectionManager getCm() {
+		return cm;
+	}
+
+	public void setCm(ConnectionManager cm) {
+		this.cm = cm;
+	}
+
 	public void readData() throws IOException {
 
 		// Open the file
@@ -153,7 +169,7 @@ public class IniReader implements Serializable {
 				count++;
 
 				// name will be transponder number in
-				String Name = matcher.group(1);
+				// String Name = matcher.group(1);
 
 				// let's check, that it isn't Multistream
 				String Multistream = matcher.group(8);
@@ -202,11 +218,8 @@ public class IniReader implements Serializable {
 
 				Session session = cm.getSessionFactroy().openSession();
 
-				List<TheDVBRangeValues> range = session.createSQLQuery(sqltext)
-						// .addScalar("RangeOfDVB",
-						// Hibernate.custom(org.hibernate.type.EnumType.class,
-						// params))
-						.addScalar("RangeOfDVB", myEnumType).setParameter("Frequency", Frequency)
+				List<TheDVBRangeValues> range = session.createSQLQuery(sqltext).addScalar("RangeOfDVB", myEnumType)
+						.setParameter("Frequency", Frequency)
 						.setResultTransformer(Transformers.aliasToBean(TheDVBRangeValues.class)).list();
 
 				if (!range.isEmpty()) {

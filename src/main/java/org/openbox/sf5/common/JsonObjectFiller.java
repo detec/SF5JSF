@@ -25,8 +25,6 @@ import org.hibernate.collection.internal.PersistentList;
 // This class is intended for static functions that convert DB objects into JSON.
 public class JsonObjectFiller {
 
-
-
 	// seems to be the first correct implementation for hibernate mapping
 	// projects using 1C mapping tool.
 	public static <T, L> JsonObjectBuilder getJsonObjectBuilderFromClassInstance(T object)
@@ -51,6 +49,7 @@ public class JsonObjectFiller {
 			// here we need to check if a field is a PersistentList.
 			if (fields[i].get(object) instanceof PersistentList) {
 				// here we should serialize content of the list
+				@SuppressWarnings("unchecked")
 				List<L> persistentList = (List<L>) fields[i].get(object);
 
 				// String strValue = getJsonFromObjectsList(persistentList);
@@ -97,26 +96,6 @@ public class JsonObjectFiller {
 
 		return JOB;
 	}
-
-//	public static <T extends Object> Response buildResponseByTypeAndId(ObjectsController contr, long Id,
-//			Class<T> type) {
-//
-//		T DBobject = (T) contr.select(type, Id);
-//
-//		JsonObjectBuilder transJOB;
-//		String result = "";
-//		try {
-//			transJOB = JsonObjectFiller.getJsonObjectBuilderFromClassInstance(DBobject);
-//
-//			JsonObject JObject = transJOB.build();
-//			result = JObject.toString();
-//		} catch (IllegalArgumentException | IllegalAccessException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//
-//		return Response.status(200).entity(result).build();
-//	}
 
 	// This method returns class from the field name
 	@SuppressWarnings("unchecked")
@@ -180,7 +159,5 @@ public class JsonObjectFiller {
 		return sw.toString();
 
 	}
-
-
 
 }

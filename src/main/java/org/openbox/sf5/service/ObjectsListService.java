@@ -14,6 +14,17 @@ import org.openbox.sf5.dao.DAOList;
 @SessionScoped
 public class ObjectsListService implements Serializable {
 
+	public <T> List<T> ObjectsList(Class<T> type) {
+		return dao.list(type);
+	}
+
+	public <T> List<T> ObjectsCriterionList(Class<T> type, Criterion criterion) {
+		return dao.restrictionList(type, criterion);
+	}
+
+	@Inject
+	private DAOList dao;
+
 	public DAOList getDao() {
 		return dao;
 	}
@@ -23,17 +34,4 @@ public class ObjectsListService implements Serializable {
 	}
 
 	private static final long serialVersionUID = -3631362805987631432L;
-
-	public List<?> ObjectsList(Class<?> clazz) {
-
-		return dao.list(clazz);
-
-	}
-
-	public List<?> ObjectsCriterionList(Class<?> clazz, Criterion criterion) {
-		return dao.restrictionList(clazz, criterion);
-	}
-
-	@Inject
-	private DAOList dao;
 }

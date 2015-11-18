@@ -71,8 +71,6 @@ public class Intersections implements Serializable {
 			}
 		};
 
-		// Session s = HibernateUtil.openSession();
-
 		Session session = cm.getSessionFactroy().openSession();
 
 		ResultSet rs = null;
@@ -92,7 +90,8 @@ public class Intersections implements Serializable {
 
 			long IntersectionValue = rs.getLong("TheLineOfIntersection");
 
-			System.out.println("table index " + rowIndex + " query row " + rs.getRow());
+			// System.out.println("table index " + rowIndex + " query row " +
+			// rs.getRow());
 
 			sc.setTheLineOfIntersection(IntersectionValue + 1);
 			if (IntersectionValue > 0) {
@@ -102,7 +101,6 @@ public class Intersections implements Serializable {
 		}
 
 		rs.close();
-		// return rsRows;
 
 		// remove duplicates
 		Set<Integer> hs = new HashSet<>();

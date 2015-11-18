@@ -49,7 +49,7 @@ public class ImportTranspondersFile implements Serializable {
 		try {
 
 			// create a temp file
-			File temp = File.createTempFile("transponders", ".xml");
+			File temp = File.createTempFile("transponders", ".txt");
 			String absolutePath = temp.getAbsolutePath();
 			Writer out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(absolutePath), "UTF-8"));
 

@@ -7,9 +7,9 @@ import org.openbox.sf5.db.ConnectionManager;
 
 public interface DAOList {
 
-	public List<?> list(Class<?> clazz);
+	public <T> List<T> list(Class<T> type);
 
-	public List<?> restrictionList(Class<?> clazz, Criterion criterion);
+	public <T> List<T> restrictionList(Class<T> type, Criterion criterion);
 
 	public ConnectionManager getCm();
 

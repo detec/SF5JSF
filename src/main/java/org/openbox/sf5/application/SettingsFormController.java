@@ -93,9 +93,6 @@ public class SettingsFormController implements Serializable {
 
 	private Part file;
 
-	// @Inject
-	// private transient ObjectsController contr;
-
 	private String fileContent;
 
 	public Part getFile() {

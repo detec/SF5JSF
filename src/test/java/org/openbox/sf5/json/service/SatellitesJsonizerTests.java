@@ -3,6 +3,7 @@ package org.openbox.sf5.json.service;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,41 +13,70 @@ import org.openbox.sf5.db.Satellites;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 @RunWith(JUnit4.class)
 public class SatellitesJsonizerTests extends AbstractJsonizerTest {
 
 	@Test
+	public void shouldGetSatellitesByArbitraryFilter() throws JsonParseException, JsonMappingException, IOException {
+		String result = satellitesJsonizer.getSatellitesByArbitraryFilter("Name", "test2");
+
+		List<Satellites> satList = mapper.readValue(result,
+				mapper.getTypeFactory().constructCollectionType(List.class, Satellites.class));
+
+		assertEquals(1, satList.size());
+	}
+
+	@Test
 	public void shouldGetSatelliteById() throws JsonParseException, JsonMappingException, IOException {
-		Satellites sat = new Satellites();
-		 sat.setName("test");
-		 contr.saveOrUpdate(sat); // as it is saved it should have id 1.
 
-		 String result = commonJsonizer.buildJsonStringByTypeAndId(1, Satellites.class);
+		String result = commonJsonizer.buildJsonStringByTypeAndId(1, Satellites.class);
 
-		 ObjectMapper mapper = new ObjectMapper();
-		 Satellites readSat = mapper.readValue(result, Satellites.class);
+		Satellites readSat = mapper.readValue(result, Satellites.class);
 
-		 assertEquals(1, readSat.getId());
-		 assertEquals("test", readSat.getName());
+		assertEquals(1, readSat.getId());
+		assertEquals("test1", readSat.getName());
 
 	}
 
+	@Test
+	public void shouldGetSatellitesList() throws JsonParseException, JsonMappingException, IOException {
+		// create 2 satellites. This is the first test that is run.
+		create2Satellites();
 
-	 private SatellitesJsonizer satellitesJsonizer;
+		String result = satellitesJsonizer.getSatellitesList();
 
+		// http://www.leveluplunch.com/java/examples/convert-json-array-to-arraylist-of-objects-jackson/
+		List<Satellites> satList = mapper.readValue(result,
+				mapper.getTypeFactory().constructCollectionType(List.class, Satellites.class));
 
+		assertEquals(2, satList.size());
+	}
+
+	// for reading Json
+
+	private SatellitesJsonizer satellitesJsonizer;
+
+	private void create2Satellites() {
+		for (int i = 1; i < 3; i++) {
+
+			Satellites sat = new Satellites();
+			sat.setName("test" + Integer.toString(i));
+			contr.saveOrUpdate(sat);
+		}
+	}
+
+	// this method is run every time the test launches
 	@Before
 	public void setUp() {
 
-		JsonizerTestSetup.setUp(cm, DAO, DAOList, service, contr, criterionService, listService, commonJsonizer);
+		super.setUpAbstract();
+		// JsonizerTestSetup.setUp(cm, DAO, DAOList, service, contr,
+		// criterionService, listService, commonJsonizer);
 		satellitesJsonizer = new SatellitesJsonizer();
 		satellitesJsonizer.setCriterionService(criterionService);
 		satellitesJsonizer.setListService(listService);
 
-
 	}
-
 
 }

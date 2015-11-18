@@ -20,16 +20,16 @@ public class DAOListImpl implements DAOList, Serializable {
 
 	private static final long serialVersionUID = -4127115450739908412L;
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<?> list(Class<?> clazz) {
+	public <T> List<T> list(Class<T> type) {
 
-		List<?> list = new ArrayList<>();
-		// Session s = HibernateUtil.openSession();
+		List<T> list = new ArrayList<>();
 
 		Session s = cm.getSessionFactroy().openSession();
 
 		s.beginTransaction();
-		list = s.createQuery("from " + clazz.getName()).list();
+		list = s.createQuery("from " + type.getName()).list();
 		s.getTransaction().commit();
 		s.close();
 		return list;
@@ -45,12 +45,12 @@ public class DAOListImpl implements DAOList, Serializable {
 		this.cm = cm;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
-	public List<?> restrictionList(Class<?> clazz, Criterion criterion) {
-		// Session s = HibernateUtil.openSession();
+	public <T> List<T> restrictionList(Class<T> type, Criterion criterion) {
 
 		Session session = cm.getSessionFactroy().openSession();
-		Criteria criteria = session.createCriteria(clazz).add(criterion);
+		Criteria criteria = session.createCriteria(type).add(criterion);
 		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY); // kill
 																					// duplicates
 		return criteria.list();

@@ -8,9 +8,16 @@
   <property name="hibernate.connection.username">sa</property>
   <property name="hibernate.connection.password"/>
   <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
-  <property name="show_sql">true</property>
+  <!-- In unit tests we suppose that everything is correct with the schema -->
+  <property name="show_sql">false</property>
+  <property name="generate_statistics">false</property>
+  <property name="use_sql_comments">false</property>
+  <!-- Shutting down logs doesn't work -->
+  
   <property name="hibernate.current_session_context_class">org.hibernate.context.internal.ThreadLocalSessionContext</property>
   <property name="hibernate.hbm2ddl.auto">update</property>
+  
+  
   <mapping class="org.openbox.sf5.db.Settings"/>
   <mapping class="org.openbox.sf5.db.Satellites"/>
   <mapping class="org.openbox.sf5.db.Transponders"/>

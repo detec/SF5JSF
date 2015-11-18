@@ -9,10 +9,7 @@ import javax.transaction.Transactional;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openbox.sf5.dao.DAO;
-import org.openbox.sf5.dao.DAOImpl;
 import org.openbox.sf5.db.CarrierFrequency;
-import org.openbox.sf5.db.ConnectionManager;
 import org.openbox.sf5.db.DVBStandards;
 import org.openbox.sf5.db.Polarization;
 import org.openbox.sf5.db.RangesOfDVB;
@@ -22,29 +19,13 @@ import org.openbox.sf5.db.SettingsConversion;
 import org.openbox.sf5.db.Transponders;
 import org.openbox.sf5.db.TypesOfFEC;
 import org.openbox.sf5.db.Users;
+import org.openbox.sf5.json.service.AbstractJsonizerTest;
 
-public class AbstractServiceTests {
-
-	private ConnectionManager cm;
-
-	private DAO DAO;
-
-	private ObjectService service;
-
-	private ObjectsController contr;
+public class BasicDatabaseIOTests extends AbstractJsonizerTest {
 
 	@Before
 	public void setUp() {
-		cm = new ConnectionManager();
-
-		DAO = new DAOImpl();
-		DAO.setCm(cm);
-
-		service = new ObjectServiceImpl();
-		service.setDAO(DAO);
-
-		contr = new ObjectsController();
-		contr.setService(service);
+		super.setUpAbstract();
 	}
 
 	@Test

@@ -121,7 +121,7 @@ public class SettingsController implements Serializable {
 		}
 
 		Criterion criterion = Restrictions.eq("User", currentUser);
-		settingsList = (List<Settings>) listService.ObjectsCriterionList(Settings.class, criterion);
+		settingsList = listService.ObjectsCriterionList(Settings.class, criterion);
 		return settingsList;
 	}
 
@@ -140,7 +140,7 @@ public class SettingsController implements Serializable {
 	public String removeSetting() {
 
 		if (this.currentSetting != null) {
-			// ObjectsController contr = new ObjectsController();
+
 			contr.remove(Settings.class, this.currentSetting.getId());
 
 			String mesString = "Setting remove success!";
