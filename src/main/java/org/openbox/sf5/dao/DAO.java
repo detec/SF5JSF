@@ -1,18 +1,19 @@
 package org.openbox.sf5.dao;
 
 import org.openbox.sf5.db.ConnectionManager;
+import org.openbox.sf5.model.AbstractDbEntity;
 
 public interface DAO {
 
-	public <T> void add(T obj);
+	public <T extends AbstractDbEntity> void add(T obj);
 
-	public <T> void remove(Class<T> type, long id);
+	public <T extends AbstractDbEntity> void remove(Class<T> type, long id);
 
-	public <T> void update(T obj);
+	public <T extends AbstractDbEntity> void update(T obj);
 
-	public <T> Object select(Class<T> type, long id);
+	public <T extends AbstractDbEntity> Object select(Class<T> type, long id);
 
-	public <T> void saveOrUpdate(T obj);
+	public <T extends AbstractDbEntity> void saveOrUpdate(T obj);
 
 	public ConnectionManager getCm();
 

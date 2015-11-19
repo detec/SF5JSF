@@ -19,8 +19,8 @@ import org.hibernate.Session;
 import org.hibernate.jdbc.ReturningWork;
 import org.openbox.sf5.application.SettingsFormController.SettingsConversionPresentation;
 import org.openbox.sf5.db.ConnectionManager;
-import org.openbox.sf5.db.Settings;
-import org.openbox.sf5.db.SettingsConversion;
+import org.openbox.sf5.model.Settings;
+import org.openbox.sf5.model.SettingsConversion;
 
 @Named
 @SessionScoped

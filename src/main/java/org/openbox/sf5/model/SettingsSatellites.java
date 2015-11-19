@@ -1,4 +1,4 @@
-package org.openbox.sf5.db;
+package org.openbox.sf5.model;
 
 import java.io.Serializable;
 
@@ -13,17 +13,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "SettingsSatellites")
-public class SettingsSatellites implements Serializable {
+public class SettingsSatellites extends AbstractDbEntity implements Serializable {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = -2945693668519991789L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	// @SequenceGenerator(name = "my_entity_seq_gen", sequenceName =
-	// "catalog_seq")
+
 	private long id;
 
 	public long getId() {
@@ -78,8 +74,7 @@ public class SettingsSatellites implements Serializable {
 		this.LineNumber = LineNumber;
 	}
 
-	public SettingsSatellites(Settings parent_id, long LineNumber,
-			Satellites Satellite) {
+	public SettingsSatellites(Settings parent_id, long LineNumber, Satellites Satellite) {
 
 		this.parent_id = parent_id;
 		this.LineNumber = LineNumber;

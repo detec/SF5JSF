@@ -24,16 +24,16 @@ import org.hibernate.transform.Transformers;
 import org.hibernate.type.EnumType;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeResolver;
-import org.openbox.sf5.db.CarrierFrequency;
 import org.openbox.sf5.db.ConnectionManager;
-import org.openbox.sf5.db.DVBStandards;
-import org.openbox.sf5.db.Polarization;
-import org.openbox.sf5.db.RangesOfDVB;
-import org.openbox.sf5.db.Satellites;
-import org.openbox.sf5.db.TheDVBRangeValues;
-import org.openbox.sf5.db.Transponders;
-import org.openbox.sf5.db.TypesOfFEC;
-import org.openbox.sf5.db.ValueOfTheCarrierFrequency;
+import org.openbox.sf5.model.CarrierFrequency;
+import org.openbox.sf5.model.DVBStandards;
+import org.openbox.sf5.model.Polarization;
+import org.openbox.sf5.model.RangesOfDVB;
+import org.openbox.sf5.model.Satellites;
+import org.openbox.sf5.model.TheDVBRangeValues;
+import org.openbox.sf5.model.Transponders;
+import org.openbox.sf5.model.TypesOfFEC;
+import org.openbox.sf5.model.ValueOfTheCarrierFrequency;
 import org.openbox.sf5.service.ObjectsController;
 
 @Named("IniReader")
@@ -91,15 +91,6 @@ public class IniReader implements Serializable {
 			}
 
 		}
-
-		// System.out.println("Done!");
-		// Alert alert = new Alert(AlertType.INFORMATION);
-		// alert.setTitle("Information");
-		// alert.setHeaderText("INI import result");
-		// alert.setContentText("Import success!");
-		// alert.showAndWait();
-
-		// Close the input stream
 
 		br.close();
 
@@ -204,7 +195,7 @@ public class IniReader implements Serializable {
 				// define range
 
 				Properties params = new Properties();
-				params.put("enumClass", "org.openbox.sf5.db.RangesOfDVB");
+				params.put("enumClass", "org.openbox.sf5.model.RangesOfDVB");
 				params.put("type",
 						"12"); /*
 								 * type 12 instructs to use the String
@@ -229,7 +220,7 @@ public class IniReader implements Serializable {
 
 				// get carrier frequency
 				params = new Properties();
-				params.put("enumClass", "org.openbox.sf5.db.CarrierFrequency");
+				params.put("enumClass", "org.openbox.sf5.model.CarrierFrequency");
 				params.put("type",
 						"12"); /*
 								 * type 12 instructs to use the String

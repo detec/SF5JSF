@@ -11,8 +11,8 @@ import javax.inject.Named;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
-import org.openbox.sf5.db.Satellites;
-import org.openbox.sf5.db.Transponders;
+import org.openbox.sf5.model.Satellites;
+import org.openbox.sf5.model.Transponders;
 import org.openbox.sf5.service.ObjectsController;
 import org.openbox.sf5.service.ObjectsListService;
 

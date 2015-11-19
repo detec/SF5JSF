@@ -10,8 +10,8 @@ import javax.inject.Named;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.openbox.sf5.common.JsonObjectFiller;
-import org.openbox.sf5.db.Satellites;
-import org.openbox.sf5.db.Transponders;
+import org.openbox.sf5.model.Satellites;
+import org.openbox.sf5.model.Transponders;
 import org.openbox.sf5.service.CriterionService;
 import org.openbox.sf5.service.ObjectsController;
 import org.openbox.sf5.service.ObjectsListService;
@@ -29,8 +29,7 @@ public class TranspondersJsonizer implements Serializable {
 			return returnString;
 		}
 
-		List<Transponders> transList = (List<Transponders>) listService.ObjectsCriterionList(Transponders.class,
-				criterion);
+		List<Transponders> transList = listService.ObjectsCriterionList(Transponders.class, criterion);
 
 		returnString = JsonObjectFiller.getJsonFromObjectsList(transList);
 
@@ -41,15 +40,14 @@ public class TranspondersJsonizer implements Serializable {
 	public String getTranspondersBySatelliteId(long satId) {
 		String returnString = "";
 
-		Satellites filterSatellite = (Satellites) contr.select(Satellites.class, satId);
+		Satellites filterSatellite = contr.select(Satellites.class, satId);
 		if (filterSatellite == null) {
 			return returnString;
 		}
 
 		Criterion criterion = Restrictions.eq("Satellite", filterSatellite);
 
-		List<Transponders> transList = (List<Transponders>) listService.ObjectsCriterionList(Transponders.class,
-				criterion);
+		List<Transponders> transList = listService.ObjectsCriterionList(Transponders.class, criterion);
 
 		returnString = JsonObjectFiller.getJsonFromObjectsList(transList);
 
@@ -58,7 +56,7 @@ public class TranspondersJsonizer implements Serializable {
 	}
 
 	public String getTransponders() {
-		List<Transponders> transList = (List<Transponders>) listService.ObjectsList(Transponders.class);
+		List<Transponders> transList = listService.ObjectsList(Transponders.class);
 
 		String result = JsonObjectFiller.getJsonFromObjectsList(transList);
 

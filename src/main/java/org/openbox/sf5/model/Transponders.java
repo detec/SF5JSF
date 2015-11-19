@@ -1,4 +1,4 @@
-package org.openbox.sf5.db;
+package org.openbox.sf5.model;
 
 import java.io.Serializable;
 import java.lang.reflect.Field;
@@ -20,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "Transponders")
-public class Transponders implements Serializable {
+public class Transponders extends AbstractDbEntity implements Serializable {
 
 	private static final long serialVersionUID = -3945460836260580586L;
 

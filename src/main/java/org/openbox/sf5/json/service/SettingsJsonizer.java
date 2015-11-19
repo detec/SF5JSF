@@ -15,7 +15,7 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.openbox.sf5.common.JsonObjectFiller;
 import org.openbox.sf5.db.ConnectionManager;
-import org.openbox.sf5.db.Settings;
+import org.openbox.sf5.model.Settings;
 import org.openbox.sf5.service.CriterionService;
 import org.openbox.sf5.service.ObjectsListService;
 
@@ -46,6 +46,21 @@ public class SettingsJsonizer implements Serializable {
 		List<Settings> records = criteria.list();
 
 		returnString = JsonObjectFiller.getJsonFromObjectsList(records);
+
+		return returnString;
+	}
+
+	public String getSettingsByUserLogin(String login) {
+		String returnString = "";
+
+		Criterion userCriterion = criterionService.getUserCriterion(login, Settings.class);
+		if (userCriterion == null) {
+			return returnString;
+		}
+
+		List<Settings> settList = listService.ObjectsCriterionList(Settings.class, userCriterion);
+
+		returnString = JsonObjectFiller.getJsonFromObjectsList(settList);
 
 		return returnString;
 	}
@@ -82,20 +97,6 @@ public class SettingsJsonizer implements Serializable {
 			return returnString;
 		}
 
-		// JsonObject JObject = transJOB.build();
-		//
-		// Map<String, Boolean> config = new HashMap<>();
-		// config.put(JsonGenerator.PRETTY_PRINTING, true);
-		// JsonWriterFactory factory = Json.createWriterFactory(config);
-		//
-		// //
-		// http://blog.eisele.net/2013/02/test-driving-java-api-for-processing.html
-		// StringWriter sw = new StringWriter();
-		// try (JsonWriter jw = factory.createWriter(sw)) {
-		// jw.writeObject(JObject);
-		// }
-		//
-		// returnString = sw.toString();
 		returnString = commonJsonizer.JSonObjectBuilderToString(transJOB);
 
 		return returnString;

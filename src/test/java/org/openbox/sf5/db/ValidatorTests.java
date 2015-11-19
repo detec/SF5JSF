@@ -15,6 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.openbox.sf5.model.Settings;
+import org.openbox.sf5.model.Transponders;
 
 // Using Hibernate Validator instead of Spring
 @RunWith(JUnit4.class)

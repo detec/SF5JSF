@@ -10,8 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.openbox.sf5.db.TheDVBRangeValues;
 import org.openbox.sf5.json.service.AbstractJsonizerTest;
+import org.openbox.sf5.model.TheDVBRangeValues;
 
 @RunWith(JUnit4.class)
 public class TableFillerTests extends AbstractJsonizerTest {

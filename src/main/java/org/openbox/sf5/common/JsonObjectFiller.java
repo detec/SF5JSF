@@ -21,6 +21,7 @@ import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
 
 import org.hibernate.collection.internal.PersistentList;
+import org.openbox.sf5.model.AbstractDbEntity;
 
 // This class is intended for static functions that convert DB objects into JSON.
 public class JsonObjectFiller {
@@ -99,7 +100,7 @@ public class JsonObjectFiller {
 
 	// This method returns class from the field name
 	@SuppressWarnings("unchecked")
-	public static <T extends Object> Class<?> getFieldClass(Class<T> type, String fieldName) {
+	public static <T extends AbstractDbEntity> Class<?> getFieldClass(Class<T> type, String fieldName) {
 		Field fields[];
 		fields = type.getDeclaredFields();
 

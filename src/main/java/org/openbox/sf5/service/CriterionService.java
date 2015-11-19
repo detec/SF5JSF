@@ -13,14 +13,15 @@ import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.criterion.SimpleExpression;
 import org.openbox.sf5.common.JsonObjectFiller;
-import org.openbox.sf5.db.Users;
+import org.openbox.sf5.model.AbstractDbEntity;
+import org.openbox.sf5.model.Users;
 
 @Named
 @SessionScoped
-public class CriterionService implements Serializable  {
+public class CriterionService implements Serializable {
 
-	public <T> Criterion getCriterionByClassFieldAndStringValue(Class<T> type, String fieldName,
-			String typeValue) {
+	public <T extends AbstractDbEntity> Criterion getCriterionByClassFieldAndStringValue(Class<T> type,
+			String fieldName, String typeValue) {
 		Criterion criterion = null;
 
 		// We have the following situation
@@ -62,7 +63,7 @@ public class CriterionService implements Serializable  {
 
 		else {
 			// it is a usual class
-			Object filterObject = contr.select(fieldClazz, Long.parseLong(typeValue));
+			T filterObject = contr.select((Class<T>) fieldClazz, Long.parseLong(typeValue));
 			criterion = Restrictions.eq(fieldName, filterObject);
 
 		}
@@ -70,13 +71,13 @@ public class CriterionService implements Serializable  {
 		return criterion;
 	}
 
-	public <T> Criterion getUserCriterion(String login, Class<T> type) {
+	public <T extends AbstractDbEntity> Criterion getUserCriterion(String login, Class<T> type) {
 		// Find out user id.
 		SimpleExpression criterion = null;
 		Criterion userCriterion = null;
 
 		criterion = Restrictions.eq("Login", login);
-		List<Users> usersList = (List<Users>) listService.ObjectsCriterionList(Users.class, criterion);
+		List<Users> usersList = listService.ObjectsCriterionList(Users.class, criterion);
 
 		if (usersList.size() == 0) {
 			return criterion;
@@ -96,7 +97,6 @@ public class CriterionService implements Serializable  {
 		return Arrays.asList(cls.getEnumConstants());
 	}
 
-
 	public ObjectsController getContr() {
 		return contr;
 	}
@@ -105,8 +105,8 @@ public class CriterionService implements Serializable  {
 		this.contr = contr;
 	}
 
-
 	private static final long serialVersionUID = -2669096886833468746L;
+
 	@Inject
 	private ObjectsController contr;
 

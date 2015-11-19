@@ -1,4 +1,4 @@
-package org.openbox.sf5.db;
+package org.openbox.sf5.model;
 
 import java.io.Serializable;
 
@@ -9,7 +9,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "TheDVBRangeValues")
-public class TheDVBRangeValues implements Serializable {
+public class TheDVBRangeValues extends AbstractDbEntity implements Serializable {
 
 	@Override
 	public int hashCode() {

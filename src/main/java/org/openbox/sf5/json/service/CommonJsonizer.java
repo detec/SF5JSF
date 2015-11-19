@@ -16,13 +16,14 @@ import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
 
 import org.openbox.sf5.common.JsonObjectFiller;
+import org.openbox.sf5.model.AbstractDbEntity;
 import org.openbox.sf5.service.ObjectsController;
 
 @Named
 @SessionScoped
 public class CommonJsonizer implements Serializable {
 
-	public <T extends Object> String buildJsonStringByTypeAndId(long Id, Class<T> type) {
+	public <T extends AbstractDbEntity> String buildJsonStringByTypeAndId(long Id, Class<T> type) {
 		String result = "";
 
 		T DBobject = (T) contr.select(type, Id);

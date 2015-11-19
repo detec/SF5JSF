@@ -1,7 +1,6 @@
-package org.openbox.sf5.db;
+package org.openbox.sf5.model;
 
-
-	public enum Polarization{
+public enum Polarization{
 
 H("H"), L("L"), R("R"), V("V");
 

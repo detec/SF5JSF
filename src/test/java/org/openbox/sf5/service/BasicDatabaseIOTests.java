@@ -9,17 +9,17 @@ import javax.transaction.Transactional;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.openbox.sf5.db.CarrierFrequency;
-import org.openbox.sf5.db.DVBStandards;
-import org.openbox.sf5.db.Polarization;
-import org.openbox.sf5.db.RangesOfDVB;
-import org.openbox.sf5.db.Satellites;
-import org.openbox.sf5.db.Settings;
-import org.openbox.sf5.db.SettingsConversion;
-import org.openbox.sf5.db.Transponders;
-import org.openbox.sf5.db.TypesOfFEC;
-import org.openbox.sf5.db.Users;
 import org.openbox.sf5.json.service.AbstractJsonizerTest;
+import org.openbox.sf5.model.CarrierFrequency;
+import org.openbox.sf5.model.DVBStandards;
+import org.openbox.sf5.model.Polarization;
+import org.openbox.sf5.model.RangesOfDVB;
+import org.openbox.sf5.model.Satellites;
+import org.openbox.sf5.model.Settings;
+import org.openbox.sf5.model.SettingsConversion;
+import org.openbox.sf5.model.Transponders;
+import org.openbox.sf5.model.TypesOfFEC;
+import org.openbox.sf5.model.Users;
 
 public class BasicDatabaseIOTests extends AbstractJsonizerTest {
 

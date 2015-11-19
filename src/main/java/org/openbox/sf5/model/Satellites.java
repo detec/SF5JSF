@@ -1,4 +1,4 @@
-package org.openbox.sf5.db;
+package org.openbox.sf5.model;
 
 import java.io.Serializable;
 
@@ -13,13 +13,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "Satellites")
-public class Satellites implements Serializable {
+public class Satellites extends AbstractDbEntity implements Serializable {
 
 	private static final long serialVersionUID = -2077586473579019427L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	// @SequenceGenerator(sequenceName = "catalog_seq")
 	private long id;
 
 	@Column(name = "Name", unique = false, nullable = false, length = 50)

@@ -8,15 +8,14 @@ import javax.inject.Named;
 
 import org.hibernate.Session;
 import org.openbox.sf5.db.ConnectionManager;
+import org.openbox.sf5.model.AbstractDbEntity;
 
 @Named
 @SessionScoped
 public class DAOImpl implements DAO, Serializable {
 
-
-
 	@Override
-	public <T> void add(T obj) {
+	public <T extends AbstractDbEntity> void add(T obj) {
 		Session s = cm.getSessionFactroy().openSession();
 
 		s.beginTransaction();
@@ -27,7 +26,7 @@ public class DAOImpl implements DAO, Serializable {
 	}
 
 	@Override
-	public <T> void remove(Class<T> type, long id) {
+	public <T extends AbstractDbEntity> void remove(Class<T> type, long id) {
 
 		Session s = cm.getSessionFactroy().openSession();
 		s.beginTransaction();
@@ -39,7 +38,7 @@ public class DAOImpl implements DAO, Serializable {
 	}
 
 	@Override
-	public <T> void update(T obj) {
+	public <T extends AbstractDbEntity> void update(T obj) {
 
 		Session s = cm.getSessionFactroy().openSession();
 		s.beginTransaction();
@@ -49,7 +48,7 @@ public class DAOImpl implements DAO, Serializable {
 	}
 
 	@Override
-	public <T> T select(Class<T> type, long id) {
+	public <T extends AbstractDbEntity> T select(Class<T> type, long id) {
 
 		Session s = cm.getSessionFactroy().openSession();
 		s.beginTransaction();
@@ -60,7 +59,7 @@ public class DAOImpl implements DAO, Serializable {
 	}
 
 	@Override
-	public <T> void saveOrUpdate(T obj) {
+	public <T extends AbstractDbEntity> void saveOrUpdate(T obj) {
 
 		Session s = cm.getSessionFactroy().openSession();
 		s.beginTransaction();

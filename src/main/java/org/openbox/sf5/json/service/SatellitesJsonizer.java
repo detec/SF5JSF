@@ -9,7 +9,7 @@ import javax.inject.Named;
 
 import org.hibernate.criterion.Criterion;
 import org.openbox.sf5.common.JsonObjectFiller;
-import org.openbox.sf5.db.Satellites;
+import org.openbox.sf5.model.Satellites;
 import org.openbox.sf5.service.CriterionService;
 import org.openbox.sf5.service.ObjectsListService;
 

@@ -16,7 +16,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.openbox.sf5.common.IniReader;
 import org.openbox.sf5.common.TableFillerTests;
-import org.openbox.sf5.db.Transponders;
+import org.openbox.sf5.model.Transponders;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;

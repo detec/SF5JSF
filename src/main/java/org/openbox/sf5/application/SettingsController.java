@@ -13,8 +13,8 @@ import javax.inject.Named;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
-import org.openbox.sf5.db.Settings;
-import org.openbox.sf5.db.Users;
+import org.openbox.sf5.model.Settings;
+import org.openbox.sf5.model.Users;
 import org.openbox.sf5.service.ObjectsController;
 import org.openbox.sf5.service.ObjectsListService;
 

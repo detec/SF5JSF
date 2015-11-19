@@ -10,12 +10,12 @@ import javax.inject.Named;
 
 import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
-import org.openbox.sf5.db.CarrierFrequency;
 import org.openbox.sf5.db.ConnectionManager;
-import org.openbox.sf5.db.KindsOfPolarization;
-import org.openbox.sf5.db.RangesOfDVB;
-import org.openbox.sf5.db.TheDVBRangeValues;
-import org.openbox.sf5.db.ValueOfTheCarrierFrequency;
+import org.openbox.sf5.model.CarrierFrequency;
+import org.openbox.sf5.model.KindsOfPolarization;
+import org.openbox.sf5.model.RangesOfDVB;
+import org.openbox.sf5.model.TheDVBRangeValues;
+import org.openbox.sf5.model.ValueOfTheCarrierFrequency;
 import org.openbox.sf5.service.ObjectsController;
 
 @Named

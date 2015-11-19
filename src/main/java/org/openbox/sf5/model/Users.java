@@ -1,4 +1,4 @@
-package org.openbox.sf5.db;
+package org.openbox.sf5.model;
 
 import java.io.Serializable;
 
@@ -11,16 +11,11 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "Users")
-public class Users implements Serializable {
+public class Users extends AbstractDbEntity implements Serializable {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	// @SequenceGenerator(name = "my_entity_seq_gen", sequenceName =
-	// "catalog_seq")
 	private long id;
 
 	public long getId() {

@@ -12,9 +12,9 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import org.openbox.sf5.db.Transponders;
 import org.openbox.sf5.json.service.CommonJsonizer;
 import org.openbox.sf5.json.service.TranspondersJsonizer;
+import org.openbox.sf5.model.Transponders;
 
 @Named
 @SessionScoped

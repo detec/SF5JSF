@@ -1,4 +1,4 @@
-package org.openbox.sf5.db;
+package org.openbox.sf5.model;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -24,17 +24,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 @Entity
 @Table(name = "Settings")
-public class Settings implements Serializable {
+public class Settings extends AbstractDbEntity implements Serializable {
 
-	/**
-	 *
-	 */
 	private static final long serialVersionUID = 7055744176770843683L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	// @SequenceGenerator(name = "my_entity_seq_gen", sequenceName =
-	// "catalog_seq")
 	private long id;
 
 	@Column(name = "Name", unique = false, nullable = false, length = 50)

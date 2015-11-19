@@ -25,14 +25,14 @@ import javax.servlet.http.Part;
 
 import org.openbox.sf5.common.Intersections;
 import org.openbox.sf5.common.XMLExporter;
-import org.openbox.sf5.db.CarrierFrequency;
-import org.openbox.sf5.db.Polarization;
-import org.openbox.sf5.db.Satellites;
-import org.openbox.sf5.db.Settings;
-import org.openbox.sf5.db.SettingsConversion;
-import org.openbox.sf5.db.Transponders;
-import org.openbox.sf5.db.TypesOfFEC;
-import org.openbox.sf5.db.Users;
+import org.openbox.sf5.model.CarrierFrequency;
+import org.openbox.sf5.model.Polarization;
+import org.openbox.sf5.model.Satellites;
+import org.openbox.sf5.model.Settings;
+import org.openbox.sf5.model.SettingsConversion;
+import org.openbox.sf5.model.Transponders;
+import org.openbox.sf5.model.TypesOfFEC;
+import org.openbox.sf5.model.Users;
 import org.openbox.sf5.service.ObjectsController;
 
 @Named(value = "setting")

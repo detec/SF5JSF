@@ -8,6 +8,7 @@ import javax.ws.rs.core.Application;
 import org.openbox.sf5.json.endpoints.SatellitesService;
 import org.openbox.sf5.json.endpoints.SettingsService;
 import org.openbox.sf5.json.endpoints.TranspondersService;
+import org.openbox.sf5.json.endpoints.UsersService;
 
 @ApplicationPath("/json/")
 public class ApplicationConfig extends Application {
@@ -18,6 +19,7 @@ public class ApplicationConfig extends Application {
 		resources.add(SatellitesService.class);
 		resources.add(SettingsService.class);
 		resources.add(TranspondersService.class);
+		resources.add(UsersService.class);
 		return resources;
 	}
 
