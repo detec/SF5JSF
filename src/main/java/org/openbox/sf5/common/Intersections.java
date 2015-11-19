@@ -65,6 +65,9 @@ public class Intersections implements Serializable {
 				} catch (SQLException e) {
 					throw e;
 				} finally {
+					preparedStatement.close();
+					resultSet.close();
+					connection.close();
 
 				}
 

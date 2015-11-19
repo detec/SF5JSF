@@ -113,13 +113,12 @@ public class TranspondersListController implements Serializable {
 	public void init() {
 
 		if (loginBean.getFilterSatId() != 0) {
-			filterSatellite = ((Satellites) contr.select(Satellites.class, loginBean.getFilterSatId()));
+			filterSatellite = contr.select(Satellites.class, loginBean.getFilterSatId());
 
 		}
 
 		if (filterSatellite != null) {
 			Criterion criterion = Restrictions.eq("Satellite", filterSatellite);
-			// return (List<Transponders>) ObjectsListService
 			TranspondersList = listService.ObjectsCriterionList(Transponders.class, criterion);
 		} else {
 

@@ -440,16 +440,11 @@ public class SettingsFormController implements Serializable {
 
 		// load passed settings id
 		if (Id != 0) {
-			// ObjectsController contr = new ObjectsController();
-			setting = (Settings) contr.select(Settings.class, Id);
-			// Name = setting.getName();
-			// TheLastEntry = setting.getTheLastEntry();
+			setting = contr.select(Settings.class, Id);
 		}
 
 		// fill in fields
 		if (setting != null) {
-			// Name = setting.getName();
-			// TheLastEntry = setting.getTheLastEntry();
 
 			// load transponders and so on
 
@@ -550,8 +545,6 @@ public class SettingsFormController implements Serializable {
 
 	@Inject
 	private LoginBean CurrentLogin;
-
-	// private Users currentUser;
 
 	public LoginBean getCurrentLogin() {
 		return CurrentLogin;

@@ -2,21 +2,18 @@ package org.openbox.sf5.service;
 
 import org.openbox.sf5.dao.DAO;
 
-//import java.util.List;
 
 public interface ObjectService {
 
-	public void add(Object obj);
+	public <T> void add(T obj);
 
-	//public List<Object> list(String className);
+	public <T> void remove(Class<T> type, long id);
 
-	public void remove(Class<?> clazz, long id);
+	public <T> void update(T obj);
 
-	public void update(Object obj);
+	public <T> T select(Class<T> type, long id);
 
-	public Object select(Class<?> clazz, long id);
-
-	public void saveOrUpdate(Object obj);
+	public <T> void saveOrUpdate(T obj);
 
 	public DAO getDAO();
 

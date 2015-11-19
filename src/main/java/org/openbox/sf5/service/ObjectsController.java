@@ -10,6 +10,32 @@ import javax.inject.Named;
 @SessionScoped
 public class ObjectsController implements Serializable {
 
+
+	private static final long serialVersionUID = 3569160314988465165L;
+
+	public <T> void add(T obj) {
+		Service.add(obj);
+	}
+
+	public <T> void update(T obj) {
+		Service.update(obj);
+	}
+
+	public <T> void remove(Class<T> type, long id) {
+		Service.remove(type, id);
+	}
+
+	public <T> void saveOrUpdate(T obj) {
+		Service.saveOrUpdate(obj);
+	}
+
+	public <T>  T select(Class<T> type, long id) {
+		return Service.select(type, id);
+	}
+
+	@Inject
+	private ObjectService Service;
+
 	public ObjectService getService() {
 		return Service;
 	}
@@ -18,29 +44,5 @@ public class ObjectsController implements Serializable {
 		Service = service;
 	}
 
-	private static final long serialVersionUID = 3569160314988465165L;
-
-	public void add(Object obj) {
-		Service.add(obj);
-	}
-
-	public void update(Object obj) {
-		Service.update(obj);
-	}
-
-	public void remove(Class<?> clazz, long id) {
-		Service.remove(clazz, id);
-	}
-
-	public void saveOrUpdate(Object obj) {
-		Service.saveOrUpdate(obj);
-	}
-
-	public Object select(Class<?> clazz, long id) {
-		return Service.select(clazz, id);
-	}
-
-	@Inject
-	private ObjectService Service;
 
 }

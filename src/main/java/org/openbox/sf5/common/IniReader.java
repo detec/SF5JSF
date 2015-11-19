@@ -135,9 +135,8 @@ public class IniReader implements Serializable {
 			contr.saveOrUpdate(sat);
 		} else {
 			// get sat
-			sat = (Satellites) contr.select(Satellites.class, rs.get(0));
+			sat = contr.select(Satellites.class, rs.get(0));
 		}
-
 	}
 
 	private void readTransponderData(BufferedReader br) throws IOException {
@@ -242,8 +241,6 @@ public class IniReader implements Serializable {
 						+ "where (:Frequency between LowerThreshold and UpperThreshold) "
 						+ "and (Polarization = :KindOfPolarization)";
 
-				// Session s = HibernateUtil.openSession();
-
 				session = cm.getSessionFactroy().openSession();
 
 				List<ValueOfTheCarrierFrequency> carrierList = session.createSQLQuery(sqltext)
@@ -278,7 +275,7 @@ public class IniReader implements Serializable {
 				else {
 
 					long transId = ((BigInteger) transIdList.get(0)).longValue();
-					selectedTrans = (Transponders) contr.select(Transponders.class, transId);
+					selectedTrans = contr.select(Transponders.class, transId);
 
 					// check if this trans changed to newly read trans
 					if (!selectedTrans.equals(newTrans)) {
