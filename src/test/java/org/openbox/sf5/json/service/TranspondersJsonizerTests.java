@@ -3,14 +3,18 @@ package org.openbox.sf5.json.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
-import java.io.File;
-import java.io.FilenameFilter;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.FileVisitOption;
+import java.nio.file.Files;
+import java.nio.file.LinkOption;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -74,15 +78,21 @@ public class TranspondersJsonizerTests extends AbstractJsonizerTest {
 	}
 
 	@Test
-	public void shouldImportTestInis() {
+	public void shouldImportTestInis() throws URISyntaxException {
 
-		int positiveResult = getIniImportResult();
+		int positiveResult = 0;
+		try {
+			positiveResult = getIniImportResult();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		assertEquals(3, positiveResult);
 
 	}
 
-	public int getIniImportResult() {
+	public int getIniImportResult() throws IOException, URISyntaxException {
 
 		IniReader iniReader = new IniReader();
 		iniReader.setCm(cm);
@@ -91,20 +101,33 @@ public class TranspondersJsonizerTests extends AbstractJsonizerTest {
 		List<Boolean> resultList = new ArrayList<>();
 
 		URL transpondersFolderUrl = Thread.currentThread().getContextClassLoader().getResource("transponders/");
-		File transpondersFolderFile = new File(transpondersFolderUrl.getPath());
+		//Path path = FileSystems.getDefault().getPath(transpondersFolderUrl.getPath());
+		Path path = Paths.get(transpondersFolderUrl.toURI());
 
-		File[] matchingFiles = transpondersFolderFile.listFiles(new FilenameFilter() {
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.endsWith("ini");
-			}
-		});
+		//Files transpondersFolderFile = Files(path);
+		if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
+			System.out.println("Folder " + path + " does not exist!");
+			return 0;
+		}
+		Stream<Path> streamPath = Files.find(path, 1, (newpath, attr) -> String.valueOf(path).endsWith(".ini") , FileVisitOption.FOLLOW_LINKS);
 
-		List<File> iniFilesStrings = Arrays.asList(matchingFiles);
 
-		iniFilesStrings.stream().forEach(t -> {
 
-			iniReader.setFilepath(t.getPath());
+//		File[] matchingFiles = transpondersFolderFile.listFiles(new FilenameFilter() {
+//			@Override
+//			public boolean accept(File dir, String name) {
+//				return name.endsWith("ini");
+//			}
+//		});
+
+
+
+//		List<File> iniFilesStrings = Arrays.asList(matchingFiles);
+//
+//		iniFilesStrings.stream().forEach(t -> {
+		streamPath.forEach(t -> {
+			System.out.println(t.toString());
+			iniReader.setFilepath(t.toString());
 			try {
 				iniReader.readData();
 				resultList.add(iniReader.isResult());
