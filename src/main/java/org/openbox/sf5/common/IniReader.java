@@ -116,6 +116,8 @@ public class IniReader implements Serializable {
 
 		Query query = s.createQuery(hql);
 		query.setParameter("name", satName);
+
+		@SuppressWarnings("unchecked")
 		ArrayList<Long> rs = (ArrayList<Long>) query.list();
 
 		if (rs.isEmpty()) {
@@ -130,17 +132,13 @@ public class IniReader implements Serializable {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	private void readTransponderData(BufferedReader br) throws IOException {
 
 		Transponders selectedTrans = null;
-		// replace with Java core
-
-		// String transCountString = new StrBuilder(br.readLine()).substring(2);
 		String transCountString = br.readLine().substring(2);
 
 		int transCount = Integer.parseInt(transCountString);
-
-		// List<Transponders> transList = new ArrayList<Transponders>();
 
 		pattern = Pattern.compile(REGEX);
 
@@ -154,9 +152,8 @@ public class IniReader implements Serializable {
 			CarrierFrequency carrierEnum = null;
 
 			// 62=11919,V,27500,23,S2,8PSK ACM/VCM
-			int count = 0;
+
 			while (matcher.find()) {
-				count++;
 
 				// name will be transponder number in
 				// String Name = matcher.group(1);
@@ -195,7 +192,7 @@ public class IniReader implements Serializable {
 				// define range
 
 				Properties params = new Properties();
-				params.put("enumClass", "org.openbox.sf5.model.RangesOfDVB");
+				params.put("enumClass", RangesOfDVB.class.getName());
 				params.put("type",
 						"12"); /*
 								 * type 12 instructs to use the String
@@ -220,7 +217,7 @@ public class IniReader implements Serializable {
 
 				// get carrier frequency
 				params = new Properties();
-				params.put("enumClass", "org.openbox.sf5.model.CarrierFrequency");
+				params.put("enumClass", CarrierFrequency.class.getName());
 				params.put("type",
 						"12"); /*
 								 * type 12 instructs to use the String
@@ -250,11 +247,8 @@ public class IniReader implements Serializable {
 				sqltext = "Select id FROM Transponders where frequency = :Frequency and satellite = :satelliteId";
 
 				List<Object> transIdList = new ArrayList<>();
-				transIdList = session.createSQLQuery(sqltext)
-						// .addScalar("id")
-						.setParameter("Frequency", Frequency).setParameter("satelliteId", sat.getId())
-						// .setResultTransformer(Transformers.aliasToBean(Transponders.class))
-						.list();
+				transIdList = session.createSQLQuery(sqltext).setParameter("Frequency", Frequency)
+						.setParameter("satelliteId", sat.getId()).list();
 
 				Transponders newTrans = new Transponders(Frequency, aPolarization, FEC, carrierEnum, Speed, DVBStandard,
 						rangeEnum, sat);

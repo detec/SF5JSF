@@ -6,9 +6,7 @@ import static org.junit.Assert.assertEquals;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.nio.file.FileVisitOption;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -101,32 +99,24 @@ public class TranspondersJsonizerTests extends AbstractJsonizerTest {
 		List<Boolean> resultList = new ArrayList<>();
 
 		URL transpondersFolderUrl = Thread.currentThread().getContextClassLoader().getResource("transponders/");
-		//Path path = FileSystems.getDefault().getPath(transpondersFolderUrl.getPath());
+
 		Path path = Paths.get(transpondersFolderUrl.toURI());
 
-		//Files transpondersFolderFile = Files(path);
-		if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
-			System.out.println("Folder " + path + " does not exist!");
-			return 0;
-		}
-		Stream<Path> streamPath = Files.find(path, 1, (newpath, attr) -> String.valueOf(path).endsWith(".ini") , FileVisitOption.FOLLOW_LINKS);
+		// if (!Files.exists(path, LinkOption.NOFOLLOW_LINKS)) {
+		// System.out.println("Folder " + path + " does not exist!");
+		// return 0;
+		// }
+		Stream<Path> streamPath = Files.find(path, 2, (newpath, attr) -> String.valueOf(newpath).endsWith(".ini"));
 
+		// File[] matchingFiles = transpondersFolderFile.listFiles(new
+		// FilenameFilter() {
+		// @Override
+		// public boolean accept(File dir, String name) {
+		// return name.endsWith("ini");
+		// }
+		// });
 
-
-//		File[] matchingFiles = transpondersFolderFile.listFiles(new FilenameFilter() {
-//			@Override
-//			public boolean accept(File dir, String name) {
-//				return name.endsWith("ini");
-//			}
-//		});
-
-
-
-//		List<File> iniFilesStrings = Arrays.asList(matchingFiles);
-//
-//		iniFilesStrings.stream().forEach(t -> {
 		streamPath.forEach(t -> {
-			System.out.println(t.toString());
 			iniReader.setFilepath(t.toString());
 			try {
 				iniReader.readData();
@@ -136,6 +126,8 @@ public class TranspondersJsonizerTests extends AbstractJsonizerTest {
 				e.printStackTrace();
 			}
 		});
+
+		streamPath.close();
 
 		int positiveResult = resultList.stream().filter(t -> t.booleanValue()).collect(Collectors.toList()).size();
 
