@@ -11,7 +11,7 @@ public interface DAO {
 
 	public <T extends AbstractDbEntity> void update(T obj);
 
-	public <T extends AbstractDbEntity> Object select(Class<T> type, long id);
+	public <T extends AbstractDbEntity> T select(Class<T> type, long id);
 
 	public <T extends AbstractDbEntity> void saveOrUpdate(T obj);
 

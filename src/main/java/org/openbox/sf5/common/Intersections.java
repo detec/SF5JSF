@@ -35,6 +35,7 @@ public class Intersections implements Serializable {
 
 		ReturningWork<ResultSet> rowsReturningWork = new ReturningWork<ResultSet>() {
 
+			@SuppressWarnings("resource")
 			@Override
 			public ResultSet execute(Connection connection) throws SQLException {
 				PreparedStatement preparedStatement = null;
@@ -79,7 +80,6 @@ public class Intersections implements Serializable {
 		ResultSet rs = null;
 		rs = session.doReturningWork(rowsReturningWork);
 
-		int rows = 0;
 		List<Integer> arrayLines = new ArrayList<Integer>();
 		while (rs.next()) {
 
@@ -93,13 +93,7 @@ public class Intersections implements Serializable {
 
 			long IntersectionValue = rs.getLong("TheLineOfIntersection");
 
-			// System.out.println("table index " + rowIndex + " query row " +
-			// rs.getRow());
-
 			sc.setTheLineOfIntersection(IntersectionValue + 1);
-			if (IntersectionValue > 0) {
-				rows++;
-			}
 
 		}
 
