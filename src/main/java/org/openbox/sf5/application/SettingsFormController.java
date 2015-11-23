@@ -311,7 +311,15 @@ public class SettingsFormController implements Serializable {
 		dataSettingsConversion.stream().forEach(t -> t.setTheLineOfIntersection(0));
 		saveSetting();
 
-		int rows = intersections.checkIntersection(dataSettingsConversion, setting);
+		List<SettingsConversion> scList = new ArrayList<SettingsConversion>();
+		dataSettingsConversion.stream().forEach(t -> {
+			SettingsConversion sc = t;
+			scList.add(sc);
+		});
+
+		// int rows = intersections.checkIntersection(dataSettingsConversion,
+		// setting);
+		int rows = intersections.checkIntersection(scList, setting);
 
 		String mesString = "Unique problem lines: " + String.valueOf(rows);
 		FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, "Intersections calculation result",

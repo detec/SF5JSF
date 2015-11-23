@@ -17,7 +17,6 @@ import javax.inject.Named;
 
 import org.hibernate.Session;
 import org.hibernate.jdbc.ReturningWork;
-import org.openbox.sf5.application.SettingsFormController.SettingsConversionPresentation;
 import org.openbox.sf5.db.ConnectionManager;
 import org.openbox.sf5.model.Settings;
 import org.openbox.sf5.model.SettingsConversion;
@@ -26,16 +25,22 @@ import org.openbox.sf5.model.SettingsConversion;
 @SessionScoped
 public class Intersections implements Serializable {
 
+	public ConnectionManager getCm() {
+		return cm;
+	}
+
+	public void setCm(ConnectionManager cm) {
+		this.cm = cm;
+	}
+
 	private static final long serialVersionUID = -8627178893457939969L;
 	@Inject
 	private ConnectionManager cm;
 
-	public int checkIntersection(List<SettingsConversionPresentation> dataSettingsConversion, Settings Object)
-			throws SQLException {
+	public int checkIntersection(List<SettingsConversion> dataSettingsConversion, Settings Object) throws SQLException {
 
 		ReturningWork<ResultSet> rowsReturningWork = new ReturningWork<ResultSet>() {
 
-			@SuppressWarnings("resource")
 			@Override
 			public ResultSet execute(Connection connection) throws SQLException {
 				PreparedStatement preparedStatement = null;
@@ -69,7 +74,7 @@ public class Intersections implements Serializable {
 				/*
 				 * finally { preparedStatement.close(); resultSet.close();
 				 * connection.close();
-				 * 
+				 *
 				 * }
 				 */
 
