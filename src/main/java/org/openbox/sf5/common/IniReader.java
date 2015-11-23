@@ -92,6 +92,7 @@ public class IniReader implements Serializable {
 
 		}
 
+		fstream.close();
 		br.close();
 
 		result = true;
