@@ -65,12 +65,13 @@ public class Intersections implements Serializable {
 					return resultSet;
 				} catch (SQLException e) {
 					throw e;
-				} finally {
-					preparedStatement.close();
-					resultSet.close();
-					connection.close();
-
 				}
+				/*
+				 * finally { preparedStatement.close(); resultSet.close();
+				 * connection.close();
+				 * 
+				 * }
+				 */
 
 			}
 		};
