@@ -9,18 +9,20 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 @Entity
 @Table(name = "Users")
 public class Users extends AbstractDbEntity implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -4622662328306687049L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private long id;
 
 	public long getId() {
 
-		return this.id;
+		return id;
 	}
 
 	public void setId(long id) {
@@ -28,6 +30,7 @@ public class Users extends AbstractDbEntity implements Serializable {
 	}
 
 	@Column(name = "Name", unique = false, nullable = false, length = 30)
+	@NotEmpty
 	private String Name;
 
 	public void setName(String Name) {
@@ -35,19 +38,20 @@ public class Users extends AbstractDbEntity implements Serializable {
 	}
 
 	public String getName() {
-		return this.Name;
+		return Name;
 	}
 
 	@Override
 	public String toString() {
-		return this.Login;
+		return Login;
 	}
 
 	@Column(name = "Login", unique = false, nullable = false, length = 12)
+	@NotEmpty
 	private String Login;
 
 	public String getLogin() {
-		return this.Login;
+		return Login;
 	}
 
 	public void setLogin(String Login) {
@@ -77,7 +81,7 @@ public class Users extends AbstractDbEntity implements Serializable {
 			return false;
 		}
 		Users otherUsers = (Users) other;
-		if (otherUsers.Name.equals(this.Name) && otherUsers.Login.equals(this.Login)) {
+		if (otherUsers.Name.equals(Name) && otherUsers.Login.equals(Login)) {
 			return true;
 		} else {
 			return false;

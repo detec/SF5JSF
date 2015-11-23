@@ -19,7 +19,7 @@ public class SatellitesJsonizerTests extends AbstractJsonizerTest {
 
 	@Test
 	public void shouldGetSatellitesByArbitraryFilter() throws JsonParseException, JsonMappingException, IOException {
-		String result = satellitesJsonizer.getSatellitesByArbitraryFilter("Name", "test2");
+		String result = satellitesJsonizer.getSatellitesByArbitraryFilter("Name", "4.8E");
 
 		List<Satellites> satList = mapper.readValue(result,
 				mapper.getTypeFactory().constructCollectionType(List.class, Satellites.class));
@@ -35,14 +35,15 @@ public class SatellitesJsonizerTests extends AbstractJsonizerTest {
 		Satellites readSat = mapper.readValue(result, Satellites.class);
 
 		assertEquals(1, readSat.getId());
-		assertEquals("test1", readSat.getName());
+		assertEquals("4.8E", readSat.getName());
 
 	}
 
 	@Test
 	public void shouldGetSatellitesList() throws JsonParseException, JsonMappingException, IOException {
 		// create 2 satellites. This is the first test that is run.
-		create2Satellites();
+		// It is not the first now.
+		//create2Satellites();
 
 		String result = satellitesJsonizer.getSatellitesList();
 
@@ -50,7 +51,7 @@ public class SatellitesJsonizerTests extends AbstractJsonizerTest {
 		List<Satellites> satList = mapper.readValue(result,
 				mapper.getTypeFactory().constructCollectionType(List.class, Satellites.class));
 
-		assertEquals(2, satList.size());
+		assertEquals(3, satList.size());
 	}
 
 	// for reading Json
