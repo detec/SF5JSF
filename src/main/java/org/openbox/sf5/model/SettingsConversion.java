@@ -12,6 +12,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "SettingsConversion")
 public class SettingsConversion extends AbstractDbEntity implements Serializable {
@@ -35,6 +37,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	@JoinColumn(name = "parent_id", unique = false, nullable = false)
 	private Settings parent_id;
 
+	@JsonProperty("LineNumber")
 	private long LineNumber;
 
 	public SettingsConversion(Settings parent_id) {
@@ -45,6 +48,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 
 	@ManyToOne
 	@JoinColumn(name = "Transponder", unique = false, nullable = false)
+	@JsonProperty("Transponder")
 	private Transponders Transponder;
 
 	public Transponders getTransponder() {
@@ -56,6 +60,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	}
 
 	@Column(name = "Satindex", unique = false, nullable = true, precision = 1)
+	@JsonProperty("Satindex")
 	private long Satindex;
 
 	public long getSatindex() {
@@ -67,6 +72,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	}
 
 	@Column(name = "Tpindex", unique = false, nullable = true, precision = 1)
+	@JsonProperty("Tpindex")
 	private long Tpindex;
 
 	public long getTpindex() {
@@ -78,6 +84,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	}
 
 	@Column(name = "Note", unique = false, nullable = true, length = 120)
+	@JsonProperty("Note")
 	private String Note;
 
 	public String getNote() {
@@ -89,6 +96,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	}
 
 	@Column(name = "TheLineOfIntersection", unique = false, nullable = true, precision = 2)
+	@JsonProperty("TheLineOfIntersection")
 	private long TheLineOfIntersection;
 
 	public long getTheLineOfIntersection() {
@@ -119,7 +127,6 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 			long TheLineOfIntersection) {
 
 		this.parent_id = parent_id;
-		// this.LineNumber = LineNumber;
 		this.Transponder = Transponder;
 		this.Satindex = Satindex;
 		this.Tpindex = Tpindex;

@@ -1,5 +1,6 @@
 package org.openbox.sf5.json.endpoints;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
@@ -13,12 +14,11 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.openbox.sf5.model.Settings;
-
-import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
 @RunWith(JUnit4.class)
 public class SettingsServiceTests {
@@ -29,7 +29,7 @@ public class SettingsServiceTests {
 		Response response = null;
 		Client client = createClient();
 
-		List<Settings> settList = getUserSettings(target, response, client);
+		List<Settings> settList = getUserSettings(client);
 		if (settList.size() == 0) {
 			return;
 		}
@@ -43,26 +43,38 @@ public class SettingsServiceTests {
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
 
-	private List<Settings> getUserSettings(WebTarget target, Response response, Client client) {
+	private List<Settings> getUserSettings(Client client) {
 		List<Settings> settList = new ArrayList<Settings>();
 
 		// Let's check, if there is user with login admin
-		target = client.target("http://localhost:8080/SF5JSF-test/json/users/filter/login/admin");
-		response = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
+		WebTarget target = client.target("http://localhost:8080/SF5JSF-test/json/users/filter/login/admin");
+		Response response = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 
 		if (response.getStatus() == (Status.NOT_FOUND.getStatusCode())) {
 			return settList; // no user with login admin
 		}
 
+		GenericType<List<Settings>> genList = new GenericType<List<Settings>>() {
+		};
+
 		// getting settings by userlogin
 		target = client.target("http://localhost:8080/SF5JSF-test/json/usersettings/filter/login/admin");
+
 		response = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
+		// response =
+		// target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(genList);
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 
+		// http://stackoverflow.com/questions/27643822/marshal-un-marshal-list-objects-in-jersey-jax-rs-using-jaxb
 		// Jersey 2
-		settList = response.readEntity(new GenericType<List<Settings>>() {
-		});
 
+		// List<Book> books =
+		// client.target(REST_SERVICE_URL).request().get(bookType);
+
+		// settList = response.readEntity(genList);
+		settList = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(genList);
+
+		assertThat(settList).isNotNull();
 		return settList;
 
 	}
@@ -74,8 +86,8 @@ public class SettingsServiceTests {
 		Client client = createClient();
 
 		// here we should check, if such user exists and find only his settings.
-		List<Settings> settList = getUserSettings(target, response, client);
-		if (settList.size() == 0) {
+		List<Settings> settList = getUserSettings(client);
+		if (settList == null || settList.size() == 0) {
 			return;
 		}
 
@@ -90,7 +102,10 @@ public class SettingsServiceTests {
 	}
 
 	Client createClient() {
-		return ClientBuilder.newBuilder().register(JacksonJaxbJsonProvider.class).build();
+		// return
+		// ClientBuilder.newBuilder().register(JacksonJaxbJsonProvider.class).build();
+
+		return ClientBuilder.newBuilder().register(JacksonFeature.class).build();
 	}
 
 }

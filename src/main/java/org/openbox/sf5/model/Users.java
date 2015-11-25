@@ -11,6 +11,8 @@ import javax.persistence.Table;
 
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "Users")
 public class Users extends AbstractDbEntity implements Serializable {
@@ -31,6 +33,7 @@ public class Users extends AbstractDbEntity implements Serializable {
 
 	@Column(name = "Name", unique = false, nullable = false, length = 30)
 	@NotEmpty
+	@JsonProperty("Name")
 	private String Name;
 
 	public void setName(String Name) {
@@ -48,6 +51,7 @@ public class Users extends AbstractDbEntity implements Serializable {
 
 	@Column(name = "Login", unique = false, nullable = false, length = 12)
 	@NotEmpty
+	@JsonProperty("Login")
 	private String Login;
 
 	public String getLogin() {
@@ -66,6 +70,11 @@ public class Users extends AbstractDbEntity implements Serializable {
 	}
 
 	public Users() {
+	}
+
+	public Users(String pLogin) {
+		this.Login = pLogin;
+		this.Name = pLogin;
 	}
 
 	@Override

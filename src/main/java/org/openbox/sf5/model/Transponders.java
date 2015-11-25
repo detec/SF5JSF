@@ -168,6 +168,10 @@ public class Transponders extends AbstractDbEntity implements Serializable {
 	public Transponders() {
 	}
 
+	public Transponders(String pFrequency) {
+		this.Frequency = Long.parseLong(pFrequency);
+	}
+
 	@Override
 	public boolean equals(Object other) {
 		if (other == null) {

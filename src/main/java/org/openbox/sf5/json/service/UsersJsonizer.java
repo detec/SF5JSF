@@ -8,7 +8,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.hibernate.criterion.Criterion;
-import org.openbox.sf5.model.Transponders;
 import org.openbox.sf5.model.Users;
 import org.openbox.sf5.service.CriterionService;
 import org.openbox.sf5.service.ObjectsController;
@@ -20,8 +19,7 @@ public class UsersJsonizer implements Serializable {
 
 	public String getUserByLogin(String typeValue) {
 		String returnString = "";
-		Criterion criterion = criterionService.getCriterionByClassFieldAndStringValue(Transponders.class, "Login",
-				typeValue);
+		Criterion criterion = criterionService.getCriterionByClassFieldAndStringValue(Users.class, "Login", typeValue);
 
 		if (criterion == null) {
 			return returnString;

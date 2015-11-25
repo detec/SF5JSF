@@ -43,6 +43,7 @@ public class SettingsJsonizer implements Serializable {
 		Criteria criteria = session.createCriteria(Settings.class).add(userCriterion).add(arbitraryCriterion);
 		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
+		@SuppressWarnings("unchecked")
 		List<Settings> records = criteria.list();
 
 		returnString = JsonObjectFiller.getJsonFromObjectsList(records);
@@ -76,6 +77,7 @@ public class SettingsJsonizer implements Serializable {
 		Criterion settingIdCriterion = Restrictions.eq("id", settingId);
 
 		Session session = cm.getSessionFactroy().openSession();
+		@SuppressWarnings("unchecked")
 		List<Settings> records = session.createCriteria(Settings.class).add(userCriterion).add(settingIdCriterion)
 				.list();
 

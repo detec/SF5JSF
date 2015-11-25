@@ -22,6 +22,8 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "Settings")
 public class Settings extends AbstractDbEntity implements Serializable {
@@ -34,6 +36,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 
 	@Column(name = "Name", unique = false, nullable = false, length = 50)
 	@NotEmpty
+	@JsonProperty("Name")
 	private String Name;
 
 	public void setName(String Name) {
@@ -59,6 +62,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	}
 
 	@Column(name = "PropsFile", unique = false, nullable = true, length = 300)
+	@JsonProperty("PropsFile")
 	private String PropsFile;
 
 	public String getPropsFile() {
@@ -70,6 +74,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	}
 
 	@Column(name = "TheLastEntry", unique = false, nullable = true)
+	@JsonProperty("TheLastEntry")
 	private Timestamp TheLastEntry;
 
 	public Timestamp getTheLastEntry() {
@@ -80,10 +85,10 @@ public class Settings extends AbstractDbEntity implements Serializable {
 		this.TheLastEntry = TheLastEntry;
 	}
 
-	// @ManyToAny(metaColumn = @Column)
 	@ManyToOne
 	@JoinColumn(name = "User", unique = false, nullable = false)
 	@NotNull
+	@JsonProperty("User")
 	private Users User;
 
 	public Users getUser() {
@@ -97,6 +102,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	@OneToMany(mappedBy = "parent_id", fetch = FetchType.EAGER, orphanRemoval = true)
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	@OrderColumn(name = "LineNumber")
+	@JsonProperty("Conversion")
 	private List<SettingsConversion> Conversion;
 
 	public List<SettingsConversion> getConversion() {
@@ -110,6 +116,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	@OneToMany(mappedBy = "parent_id", fetch = FetchType.EAGER, orphanRemoval = true)
 	@Cascade({ CascadeType.SAVE_UPDATE, CascadeType.DELETE })
 	@OrderColumn(name = "LineNumber")
+	@JsonProperty("Satellites")
 	private List<SettingsSatellites> Satellites;
 
 	public List<SettingsSatellites> getSatellites() {
@@ -133,6 +140,10 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	}
 
 	public Settings() {
+	}
+
+	public Settings(String pName) {
+		this.Name = pName;
 	}
 
 	@Override

@@ -11,6 +11,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 @Entity
 @Table(name = "SettingsSatellites")
 public class SettingsSatellites extends AbstractDbEntity implements Serializable {
@@ -37,6 +39,7 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "my_entity_seq_gen")
 	@SequenceGenerator(name = "my_entity_seq_gen", sequenceName = "catalog_seq")
+	@JsonProperty("LineNumber")
 	private long LineNumber;
 
 	public SettingsSatellites(Settings parent_id, long LineNumber) {
@@ -48,6 +51,7 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 
 	@ManyToOne
 	@JoinColumn(name = "Satellite", unique = false, nullable = false)
+	@JsonProperty("Satellite")
 	private Satellites Satellite;
 
 	public Satellites getSatellite() {
