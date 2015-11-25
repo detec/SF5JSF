@@ -21,7 +21,7 @@ import org.junit.runners.JUnit4;
 import org.openbox.sf5.model.Settings;
 
 @RunWith(JUnit4.class)
-public class SettingsServiceTests {
+public class SettingsServiceTests extends AbstractServiceTest {
 
 	@Test
 	public void shouldGetSettings() {
@@ -36,8 +36,7 @@ public class SettingsServiceTests {
 
 		Settings sett = settList.get(0);
 
-		target = client.target("http://localhost:8080/SF5JSF-test/json/usersettings/filter/id/"
-				+ Long.toString(sett.getId()) + ";login=admin");
+		target = client.target(appLocation + "usersettings/filter/id/" + Long.toString(sett.getId()) + ";login=admin");
 
 		response = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -47,7 +46,7 @@ public class SettingsServiceTests {
 		List<Settings> settList = new ArrayList<Settings>();
 
 		// Let's check, if there is user with login admin
-		WebTarget target = client.target("http://localhost:8080/SF5JSF-test/json/users/filter/login/admin");
+		WebTarget target = client.target(appLocation + "users/filter/login/admin");
 		Response response = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 
 		if (response.getStatus() == (Status.NOT_FOUND.getStatusCode())) {
@@ -58,7 +57,7 @@ public class SettingsServiceTests {
 		};
 
 		// getting settings by userlogin
-		target = client.target("http://localhost:8080/SF5JSF-test/json/usersettings/filter/login/admin");
+		target = client.target(appLocation + "usersettings/filter/login/admin");
 
 		response = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 		// response =
@@ -93,8 +92,7 @@ public class SettingsServiceTests {
 
 		Settings sett = settList.get(0);
 
-		target = client.target(
-				"http://localhost:8080/SF5JSF-test/json/usersettings/filter/Name/" + sett.getName() + ";login=admin");
+		target = client.target(appLocation + "usersettings/filter/Name/" + sett.getName() + ";login=admin");
 
 		response = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());

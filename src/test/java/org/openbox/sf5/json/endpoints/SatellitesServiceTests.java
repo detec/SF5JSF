@@ -16,7 +16,7 @@ import org.junit.runners.JUnit4;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
 @RunWith(JUnit4.class)
-public class SatellitesServiceTests {
+public class SatellitesServiceTests extends AbstractServiceTest {
 
 	@Test
 	public void shouldgetSatelliteById() {
@@ -26,7 +26,7 @@ public class SatellitesServiceTests {
 
 		Client client = createClient();
 
-		target = client.target("http://localhost:8080/SF5JSF-test/json/satellites/filter/id/1");
+		target = client.target(appLocation + "satellites/filter/id/1");
 
 		response = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 
@@ -41,7 +41,7 @@ public class SatellitesServiceTests {
 		Response response = null;
 		Client client = createClient();
 
-		target = client.target("http://localhost:8080/SF5JSF-test/json/satellites/all/");
+		target = client.target(appLocation + "satellites/all/");
 
 		response = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -54,7 +54,7 @@ public class SatellitesServiceTests {
 		Response response = null;
 		Client client = createClient();
 
-		target = client.target("http://localhost:8080/SF5JSF-test/json/satellites/filter/Name/13E");
+		target = client.target(appLocation + "satellites/filter/Name/13E");
 
 		response = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());

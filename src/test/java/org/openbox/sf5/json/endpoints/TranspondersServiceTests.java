@@ -16,14 +16,14 @@ import org.junit.runners.JUnit4;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
 @RunWith(JUnit4.class)
-public class TranspondersServiceTests {
+public class TranspondersServiceTests extends AbstractServiceTest {
 
 	@Test
 	public void shouldGetTranspondersByArbitraryFilter() {
 		WebTarget target = null;
 		Response response = null;
 		Client client = createClient();
-		target = client.target("http://localhost:8080/SF5JSF-test/json/transponders/filter/Speed/27500");
+		target = client.target(appLocation + "transponders/filter/Speed/27500");
 
 		response = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -35,7 +35,7 @@ public class TranspondersServiceTests {
 		WebTarget target = null;
 		Response response = null;
 		Client client = createClient();
-		target = client.target("http://localhost:8080/SF5JSF-test/json/transponders/filter/id/1");
+		target = client.target(appLocation + "transponders/filter/id/1");
 
 		response = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -48,7 +48,7 @@ public class TranspondersServiceTests {
 		Response response = null;
 		Client client = createClient();
 
-		target = client.target("http://localhost:8080/SF5JSF-test/json/transponders/filter;satId=1");
+		target = client.target(appLocation + "transponders/filter;satId=1");
 		response = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 	}
@@ -59,7 +59,7 @@ public class TranspondersServiceTests {
 		Response response = null;
 		Client client = createClient();
 
-		target = client.target("http://localhost:8080/SF5JSF-test/json/transponders/all/");
+		target = client.target(appLocation + "transponders/all/");
 
 		response = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
