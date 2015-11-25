@@ -47,7 +47,7 @@ public class SettingsJsonizer implements Serializable {
 		List<Settings> records = criteria.list();
 
 		returnString = JsonObjectFiller.getJsonFromObjectsList(records);
-
+		session.close();
 		return returnString;
 	}
 
@@ -100,7 +100,7 @@ public class SettingsJsonizer implements Serializable {
 		}
 
 		returnString = commonJsonizer.JSonObjectBuilderToString(transJOB);
-
+		session.close();
 		return returnString;
 
 	}
