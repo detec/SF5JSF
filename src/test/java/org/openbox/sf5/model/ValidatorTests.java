@@ -1,4 +1,4 @@
-package org.openbox.sf5.db;
+package org.openbox.sf5.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
