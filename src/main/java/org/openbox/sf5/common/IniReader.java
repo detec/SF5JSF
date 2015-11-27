@@ -49,12 +49,12 @@ public class IniReader implements Serializable {
 
 	}
 
-	public ObjectsController getContr() {
-		return contr;
+	public ObjectsController getObjectsController() {
+		return objectsController;
 	}
 
-	public void setContr(ObjectsController contr) {
-		this.contr = contr;
+	public void setObjectsController(ObjectsController objectsController) {
+		this.objectsController = objectsController;
 	}
 
 	public ConnectionManager getCm() {
@@ -126,10 +126,10 @@ public class IniReader implements Serializable {
 			sat = new Satellites(satName);
 
 			// saving satellite
-			contr.saveOrUpdate(sat);
+			objectsController.saveOrUpdate(sat);
 		} else {
 			// get sat
-			sat = contr.select(Satellites.class, rs.get(0));
+			sat = objectsController.select(Satellites.class, rs.get(0));
 		}
 	}
 
@@ -255,13 +255,13 @@ public class IniReader implements Serializable {
 						rangeEnum, sat);
 
 				if (transIdList.isEmpty()) {
-					contr.saveOrUpdate(newTrans);
+					objectsController.saveOrUpdate(newTrans);
 				}
 
 				else {
 
 					long transId = ((BigInteger) transIdList.get(0)).longValue();
-					selectedTrans = contr.select(Transponders.class, transId);
+					selectedTrans = objectsController.select(Transponders.class, transId);
 
 					// check if this trans changed to newly read trans
 					if (!selectedTrans.equals(newTrans)) {
@@ -275,7 +275,7 @@ public class IniReader implements Serializable {
 						selectedTrans.setSatellite(sat);
 						selectedTrans.setSpeed(Speed);
 						selectedTrans.setVersionOfTheDVB(DVBStandard);
-						contr.update(selectedTrans);
+						objectsController.update(selectedTrans);
 					}
 
 				}
@@ -287,7 +287,7 @@ public class IniReader implements Serializable {
 	}
 
 	@Inject
-	private ObjectsController contr;
+	private ObjectsController objectsController;
 
 	@Inject
 	private ConnectionManager cm;

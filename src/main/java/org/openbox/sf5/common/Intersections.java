@@ -34,6 +34,7 @@ public class Intersections implements Serializable {
 	}
 
 	private static final long serialVersionUID = -8627178893457939969L;
+
 	@Inject
 	private ConnectionManager cm;
 

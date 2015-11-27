@@ -43,7 +43,7 @@ public class SatellitesJsonizerTests extends AbstractJsonizerTest {
 	public void shouldGetSatellitesList() throws JsonParseException, JsonMappingException, IOException {
 		// create 2 satellites. This is the first test that is run.
 		// It is not the first now.
-		//create2Satellites();
+		// create2Satellites();
 
 		String result = satellitesJsonizer.getSatellitesList();
 
@@ -63,7 +63,7 @@ public class SatellitesJsonizerTests extends AbstractJsonizerTest {
 
 			Satellites sat = new Satellites();
 			sat.setName("test" + Integer.toString(i));
-			contr.saveOrUpdate(sat);
+			objectsController.saveOrUpdate(sat);
 		}
 	}
 
@@ -72,8 +72,7 @@ public class SatellitesJsonizerTests extends AbstractJsonizerTest {
 	public void setUp() {
 
 		super.setUpAbstract();
-		// JsonizerTestSetup.setUp(cm, DAO, DAOList, service, contr,
-		// criterionService, listService, commonJsonizer);
+
 		satellitesJsonizer = new SatellitesJsonizer();
 		satellitesJsonizer.setCriterionService(criterionService);
 		satellitesJsonizer.setListService(listService);

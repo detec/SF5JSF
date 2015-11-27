@@ -40,7 +40,7 @@ public class TranspondersJsonizer implements Serializable {
 	public String getTranspondersBySatelliteId(long satId) {
 		String returnString = "";
 
-		Satellites filterSatellite = contr.select(Satellites.class, satId);
+		Satellites filterSatellite = objectsController.select(Satellites.class, satId);
 		if (filterSatellite == null) {
 			return returnString;
 		}
@@ -78,14 +78,14 @@ public class TranspondersJsonizer implements Serializable {
 	private ObjectsListService listService;
 
 	@Inject
-	private ObjectsController contr;
+	private ObjectsController objectsController;
 
-	public ObjectsController getContr() {
-		return contr;
+	public ObjectsController getObjectsController() {
+		return objectsController;
 	}
 
-	public void setContr(ObjectsController contr) {
-		this.contr = contr;
+	public void setObjectsController(ObjectsController objectsController) {
+		this.objectsController = objectsController;
 	}
 
 	public ObjectsListService getListService() {

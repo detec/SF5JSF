@@ -11,10 +11,7 @@ public class StartupBean {
 
 	@PostConstruct
 	private void startup() {
-		// start TableFiller
-		//TableFiller filler = new TableFiller();
 
-		// Injection occurs after bean is created.
 		filler.init();
 	}
 

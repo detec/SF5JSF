@@ -236,7 +236,6 @@ public class SettingsFormController implements Serializable {
 			Files.deleteIfExists(Paths.get(filePath));
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -258,12 +257,10 @@ public class SettingsFormController implements Serializable {
 	}
 
 	public long getId() {
-		// return setting.getId();
 		return Id;
 	}
 
 	public void setId(long pId) {
-		// setting.setId(pId);
 		Id = pId;
 	}
 
@@ -302,7 +299,7 @@ public class SettingsFormController implements Serializable {
 
 		// save if row should be deleted from database.
 		if (deleteArray.size() > 0) {
-			contr.saveOrUpdate(setting);
+			objectsController.saveOrUpdate(setting);
 		}
 	}
 
@@ -360,7 +357,7 @@ public class SettingsFormController implements Serializable {
 		renumerateLines();
 
 		if (deleteArray.size() > 0) {
-			contr.saveOrUpdate(setting);
+			objectsController.saveOrUpdate(setting);
 		}
 	}
 
@@ -448,7 +445,7 @@ public class SettingsFormController implements Serializable {
 
 		// load passed settings id
 		if (Id != 0) {
-			setting = contr.select(Settings.class, Id);
+			setting = objectsController.select(Settings.class, Id);
 		}
 
 		// fill in fields
@@ -620,7 +617,7 @@ public class SettingsFormController implements Serializable {
 
 		// unload table with transponders.
 		setting.setConversion(unloadTableSettingsConversion());
-		contr.saveOrUpdate(setting);
+		objectsController.saveOrUpdate(setting);
 
 	}
 
@@ -648,7 +645,7 @@ public class SettingsFormController implements Serializable {
 	}
 
 	@Inject
-	private ObjectsController contr;
+	private ObjectsController objectsController;
 
 	// http://stackoverflow.com/questions/21988598/how-to-get-selected-tablecell-in-javafx-tableview
 	// If you need data from multiple sources in single table, it is better to
@@ -681,7 +678,6 @@ public class SettingsFormController implements Serializable {
 		}
 
 		public SettingsConversionPresentation(Settings object) {
-			// TODO Auto-generated constructor stub
 			super.setparent_id(object);
 
 			// Note shouldn't be null

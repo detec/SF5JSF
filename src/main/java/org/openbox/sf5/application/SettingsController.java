@@ -141,7 +141,7 @@ public class SettingsController implements Serializable {
 
 		if (this.currentSetting != null) {
 
-			contr.remove(Settings.class, this.currentSetting.getId());
+			objectsController.remove(Settings.class, this.currentSetting.getId());
 
 			String mesString = "Setting remove success!";
 			FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_WARN, "Setting removal", mesString);
@@ -164,7 +164,7 @@ public class SettingsController implements Serializable {
 	}
 
 	@Inject
-	private transient ObjectsController contr;
+	private transient ObjectsController objectsController;
 
 	@Inject
 	private ObjectsListService listService;

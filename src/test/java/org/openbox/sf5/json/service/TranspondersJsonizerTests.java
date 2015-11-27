@@ -58,16 +58,14 @@ public class TranspondersJsonizerTests extends AbstractJsonizerTest {
 		checkTransListIsNotEmpty(result);
 	}
 
-
 	@Before
 	public void setUp() {
 		super.setUpAbstract();
 
 		transpondersJsonizer = new TranspondersJsonizer();
-		transpondersJsonizer.setContr(contr);
+		transpondersJsonizer.setObjectsController(objectsController);
 		transpondersJsonizer.setCriterionService(criterionService);
 		transpondersJsonizer.setListService(listService);
-
 
 	}
 

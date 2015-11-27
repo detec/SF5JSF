@@ -28,7 +28,6 @@ public class IntersectionsTests extends AbstractJsonizerTest {
 	public void setUp() {
 		super.setUpAbstract();
 
-
 		// we need 2 to setup catalogues before transponders import
 		TableFillerTests tft = new TableFillerTests();
 		tft.setUpAbstract(); // fill dependencies
@@ -42,10 +41,9 @@ public class IntersectionsTests extends AbstractJsonizerTest {
 		try {
 			positiveResult = getIniImportResult();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		// check that we have 3 positive *.ini file import.
 		assertEquals(3, positiveResult);
 
 	}
@@ -54,14 +52,14 @@ public class IntersectionsTests extends AbstractJsonizerTest {
 
 		IniReader iniReader = new IniReader();
 		iniReader.setCm(cm);
-		iniReader.setContr(contr);
+		iniReader.setObjectsController(objectsController);
 
 		List<Boolean> resultList = new ArrayList<>();
 
 		URL transpondersFolderUrl = Thread.currentThread().getContextClassLoader().getResource("transponders/");
 
 		Path path = Paths.get(transpondersFolderUrl.toURI());
-
+		// Java NIO, looking for *.ini files
 		Stream<Path> streamPath = Files.find(path, 2, (newpath, attr) -> String.valueOf(newpath).endsWith(".ini"));
 
 		streamPath.forEach(t -> {
@@ -70,7 +68,6 @@ public class IntersectionsTests extends AbstractJsonizerTest {
 				iniReader.readData();
 				resultList.add(iniReader.isResult());
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		});
@@ -87,12 +84,12 @@ public class IntersectionsTests extends AbstractJsonizerTest {
 		Users usr = new Users();
 		usr.setLogin("login");
 		usr.setName("test user");
-		contr.saveOrUpdate(usr);
+		objectsController.saveOrUpdate(usr);
 
 		Settings setting = new Settings();
 		setting.setName("Intersections test");
 		setting.setUser(usr);
-		contr.saveOrUpdate(setting);
+		objectsController.saveOrUpdate(setting);
 
 		List<Transponders> transList = listService.ObjectsList(Transponders.class);
 

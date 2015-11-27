@@ -117,8 +117,6 @@ public class JsonObjectFiller {
 			clazz = classList.get(0);
 		}
 
-		// o.getClass().getField("fieldName").getType().isPrimitive(); for
-		// primitives
 		return clazz;
 	}
 

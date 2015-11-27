@@ -140,7 +140,7 @@ public class LoginBean implements Serializable {
 
 			// Let's save user in database
 			// ObjectsController contr = new ObjectsController();
-			contr.saveOrUpdate(newUser);
+			objectsController.saveOrUpdate(newUser);
 
 			// set current user
 			user = newUser;
@@ -180,7 +180,7 @@ public class LoginBean implements Serializable {
 	}
 
 	@Inject
-	private ObjectsController contr;
+	private ObjectsController objectsController;
 
 	@Inject
 	private ObjectsListService listService;

@@ -26,7 +26,7 @@ public class CommonJsonizer implements Serializable {
 	public <T extends AbstractDbEntity> String buildJsonStringByTypeAndId(long Id, Class<T> type) {
 		String result = "";
 
-		T DBobject = (T) contr.select(type, Id);
+		T DBobject = objectsController.select(type, Id);
 		if (DBobject == null) {
 			return result;
 		}
@@ -79,14 +79,14 @@ public class CommonJsonizer implements Serializable {
 	private static final long serialVersionUID = -6703918663028892352L;
 
 	@Inject
-	private ObjectsController contr;
+	private ObjectsController objectsController;
 
-	public ObjectsController getContr() {
-		return contr;
+	public ObjectsController getObjectsController() {
+		return objectsController;
 	}
 
-	public void setContr(ObjectsController contr) {
-		this.contr = contr;
+	public void setObjectsController(ObjectsController objectsController) {
+		this.objectsController = objectsController;
 	}
 
 }

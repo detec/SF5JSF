@@ -18,7 +18,7 @@ import org.openbox.sf5.service.ObjectsListService;
 public class SatellitesJsonizer implements Serializable {
 
 	public String getSatellitesList() {
-		List<Satellites> satList = (List<Satellites>) listService.ObjectsList(Satellites.class);
+		List<Satellites> satList = listService.ObjectsList(Satellites.class);
 		String result = JsonObjectFiller.getJsonFromObjectsList(satList);
 
 		return result;
@@ -29,7 +29,7 @@ public class SatellitesJsonizer implements Serializable {
 
 		Criterion criterion = criterionService.getCriterionByClassFieldAndStringValue(Satellites.class, fieldName,
 				typeValue);
-		List<Satellites> satList = (List<Satellites>) listService.ObjectsCriterionList(Satellites.class, criterion);
+		List<Satellites> satList = listService.ObjectsCriterionList(Satellites.class, criterion);
 		if (criterion == null) {
 			return returnString;
 		}

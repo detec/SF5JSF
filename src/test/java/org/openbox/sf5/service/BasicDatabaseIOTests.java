@@ -33,7 +33,7 @@ public class BasicDatabaseIOTests extends AbstractJsonizerTest {
 	public void shouldInsertSatellite() {
 
 		Satellites newSat = getNewSatellite();
-		contr.saveOrUpdate(newSat);
+		objectsController.saveOrUpdate(newSat);
 		assertThat(newSat.getId()).isNotEqualTo(0);
 	}
 
@@ -41,7 +41,7 @@ public class BasicDatabaseIOTests extends AbstractJsonizerTest {
 	@Transactional
 	public void shouldInsertTransponder() {
 		Transponders trans = getNewTransponder();
-		contr.saveOrUpdate(trans);
+		objectsController.saveOrUpdate(trans);
 		assertThat(trans.getId()).isNotEqualTo(0);
 
 	}
@@ -50,7 +50,7 @@ public class BasicDatabaseIOTests extends AbstractJsonizerTest {
 	@Transactional
 	public void shouldInsertSetting() {
 		Settings setting = getNewSetting();
-		contr.saveOrUpdate(setting);
+		objectsController.saveOrUpdate(setting);
 		assertThat(setting.getId()).isNotEqualTo(0);
 	}
 
@@ -63,7 +63,7 @@ public class BasicDatabaseIOTests extends AbstractJsonizerTest {
 
 	private Transponders getNewTransponder() {
 		Satellites newSat = getNewSatellite();
-		contr.saveOrUpdate(newSat);
+		objectsController.saveOrUpdate(newSat);
 
 		Transponders trans = new Transponders();
 		trans.setCarrier(CarrierFrequency.Top);
@@ -81,7 +81,7 @@ public class BasicDatabaseIOTests extends AbstractJsonizerTest {
 	private SettingsConversion getNewSettingsConversionLine() {
 		Transponders trans = getNewTransponder();
 		trans.setSpeed(10500);
-		contr.saveOrUpdate(trans);
+		objectsController.saveOrUpdate(trans);
 
 		SettingsConversion sc = new SettingsConversion();
 		sc.setLineNumber(1);
@@ -105,7 +105,7 @@ public class BasicDatabaseIOTests extends AbstractJsonizerTest {
 
 	private Settings getNewSetting() {
 		Users user = getNewUser();
-		contr.saveOrUpdate(user);
+		objectsController.saveOrUpdate(user);
 
 		Settings setting = new Settings();
 		setting.setName("Test");

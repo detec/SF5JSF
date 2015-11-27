@@ -51,14 +51,14 @@ public class UsersJsonizer implements Serializable {
 	private ObjectsListService listService;
 
 	@Inject
-	private ObjectsController contr;
+	private ObjectsController objectsController;
 
-	public ObjectsController getContr() {
-		return contr;
+	public ObjectsController getObjectsController() {
+		return objectsController;
 	}
 
-	public void setContr(ObjectsController contr) {
-		this.contr = contr;
+	public void setObjectsController(ObjectsController objectsController) {
+		this.objectsController = objectsController;
 	}
 
 	public ObjectsListService getListService() {

@@ -113,7 +113,7 @@ public class TranspondersListController implements Serializable {
 	public void init() {
 
 		if (loginBean.getFilterSatId() != 0) {
-			filterSatellite = contr.select(Satellites.class, loginBean.getFilterSatId());
+			filterSatellite = objectsController.select(Satellites.class, loginBean.getFilterSatId());
 
 		}
 
@@ -179,7 +179,7 @@ public class TranspondersListController implements Serializable {
 	}
 
 	@Inject
-	private ObjectsController contr;
+	private ObjectsController objectsController;
 
 	@Inject
 	private ObjectsListService listService;

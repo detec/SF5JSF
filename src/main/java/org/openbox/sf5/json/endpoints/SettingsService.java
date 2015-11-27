@@ -13,8 +13,6 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import org.openbox.sf5.json.service.SettingsJsonizer;
-import org.openbox.sf5.service.CriterionService;
-import org.openbox.sf5.service.ObjectsListService;
 
 // http://localhost:8080/SF5JSF-test/json/usersettings/filter/login/admin
 
@@ -43,17 +41,6 @@ public class SettingsService implements Serializable {
 			returnResponse = Response.status(200).entity(result).build();
 		}
 
-		// Criterion userCriterion =
-		// criterionService.getUserCriterion(typeValue, Settings.class);
-		// if (userCriterion == null) {
-		// return Response.status(404).build();
-		// }
-		//
-		// List<Settings> Settings =
-		// listService.ObjectsCriterionList(Settings.class, userCriterion);
-		// returnResponse = Response.ok(new
-		// GenericEntity<List<Settings>>(Settings) {
-		// }).build();
 		return returnResponse;
 	}
 
@@ -91,12 +78,6 @@ public class SettingsService implements Serializable {
 
 		return returnResponse;
 	}
-
-	@Inject
-	private ObjectsListService listService;
-
-	@Inject
-	private CriterionService criterionService;
 
 	@Inject
 	private SettingsJsonizer settingsJsonizer;

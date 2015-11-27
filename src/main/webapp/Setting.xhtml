@@ -20,6 +20,7 @@
     </f:metadata>
     
 	<ui:define name="content">
+	<h2>Setting form</h2>
 	<h:form id="settingForm">
 	
 	<f:validateBean validationGroups="javax.validation.groups.Default">
@@ -83,12 +84,13 @@
 					</f:facet>
 									
 					<h:outputText value="#{dataSC.transponder}" />
-					<h:link value="..." rendered="#{dataSC.editable}" style="float:right" outcome="transponders" includeViewParams="true">
+<!-- 					<h:link value="..." rendered="#{dataSC.editable}" style="float:right" outcome="transponders" includeViewParams="true"> 
 					<f:param name="SelectionMode" value="true" />
 				 	<f:param name="SettingId" value="#{setting.id}" />
 				 	<f:param name="multiple" value="false" />
 				 	<f:param name="scId" value="#{dataSC.id}" />
 					</h:link>	
+					-->
 					</h:column>
 					<h:column id="Polarization">
 					<f:facet name="header">

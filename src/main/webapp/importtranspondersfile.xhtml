@@ -8,6 +8,7 @@
 <ui:composition template="/WEB-INF/templates/BasicTemplate.xhtml">
 
 	<ui:define name="content">
+	<h2>Import transponder file</h2>
 	<h:form id="form" enctype="multipart/form-data">
 	
 	 <h:inputFile id="file" value="#{importFile.file}" validator="#{importFile.validateFile}"/>
@@ -18,10 +19,11 @@
   </h:commandButton>
   <br/>
   <h:messages id="messages" errorClass="err" warnClass="warn" infoClass="info" style="color: #FF8080" showDetail="true" showSummary="true"/>
-  <br></br>
+  <h:panelGrid columns="1" id="FileBody">
+  <h:outputLabel>Transponder file body</h:outputLabel>
   <h:inputTextarea value="#{importFile.fileContent}"
       readonly="true" cols="60" rows="20"/>
-
+</h:panelGrid>
 	</h:form>
 
 	</ui:define>

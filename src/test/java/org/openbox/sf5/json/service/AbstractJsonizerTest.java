@@ -26,7 +26,7 @@ public abstract class AbstractJsonizerTest {
 
 	public ObjectService service;
 
-	public ObjectsController contr;
+	public ObjectsController objectsController;
 
 	public CriterionService criterionService;
 
@@ -47,8 +47,8 @@ public abstract class AbstractJsonizerTest {
 		service = new ObjectServiceImpl();
 		service.setDAO(DAO);
 
-		contr = new ObjectsController();
-		contr.setService(service);
+		objectsController = new ObjectsController();
+		objectsController.setService(service);
 
 		DAOList = new DAOListImpl();
 		DAOList.setCm(cm);
@@ -57,11 +57,11 @@ public abstract class AbstractJsonizerTest {
 		listService.setDao(DAOList);
 
 		criterionService = new CriterionService();
-		criterionService.setContr(contr);
+		criterionService.setObjectsController(objectsController);
 		criterionService.setListService(listService);
 
 		commonJsonizer = new CommonJsonizer();
-		commonJsonizer.setContr(contr);
+		commonJsonizer.setObjectsController(objectsController);
 
 		// mapper.configure(SerializationFeature.WRITE_NULL_PROPERTIES,
 		// true);

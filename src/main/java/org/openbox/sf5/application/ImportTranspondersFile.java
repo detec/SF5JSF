@@ -61,9 +61,6 @@ public class ImportTranspondersFile implements Serializable {
 				out.close();
 			}
 
-			// calling reader class
-			// IniReader getResult = new IniReader(absolutePath);
-			// we use injection
 			iniReader.setFilepath(absolutePath);
 			iniReader.readData(); // doing import
 			if (iniReader.isResult()) {

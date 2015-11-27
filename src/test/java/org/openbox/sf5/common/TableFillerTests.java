@@ -28,7 +28,6 @@ public class TableFillerTests extends AbstractJsonizerTest {
 
 		executeTableFiller();
 
-
 		// there should be 2 records in THEDVBRANGEVALUES
 		List<TheDVBRangeValues> rangesList = listService.ObjectsList(TheDVBRangeValues.class);
 		assertThat(rangesList.size()).isEqualTo(2);
@@ -37,7 +36,7 @@ public class TableFillerTests extends AbstractJsonizerTest {
 	public void executeTableFiller() {
 		TableFiller tf = new TableFiller();
 		tf.setCm(cm);
-		tf.setContr(contr);
+		tf.setObjectsController(objectsController);
 		tf.init();
 
 	}

@@ -63,7 +63,7 @@ public class CriterionService implements Serializable {
 
 		else {
 			// it is a usual class
-			T filterObject = contr.select((Class<T>) fieldClazz, Long.parseLong(typeValue));
+			T filterObject = objectsController.select((Class<T>) fieldClazz, Long.parseLong(typeValue));
 			criterion = Restrictions.eq(fieldName, filterObject);
 
 		}
@@ -71,6 +71,7 @@ public class CriterionService implements Serializable {
 		return criterion;
 	}
 
+	// gets criterion based on user login
 	public <T extends AbstractDbEntity> Criterion getUserCriterion(String login, Class<T> type) {
 		// Find out user id.
 		SimpleExpression criterion = null;
@@ -97,18 +98,18 @@ public class CriterionService implements Serializable {
 		return Arrays.asList(cls.getEnumConstants());
 	}
 
-	public ObjectsController getContr() {
-		return contr;
+	public ObjectsController getObjectsController() {
+		return objectsController;
 	}
 
-	public void setContr(ObjectsController contr) {
-		this.contr = contr;
+	public void setObjectsController(ObjectsController objectsController) {
+		this.objectsController = objectsController;
 	}
 
 	private static final long serialVersionUID = -2669096886833468746L;
 
 	@Inject
-	private ObjectsController contr;
+	private ObjectsController objectsController;
 
 	@Inject
 	private ObjectsListService listService;
