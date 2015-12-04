@@ -60,17 +60,11 @@ public class SettingsServiceTests extends AbstractServiceTest {
 		target = client.target(appLocation + "usersettings/filter/login/admin");
 
 		response = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
-		// response =
-		// target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(genList);
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 
 		// http://stackoverflow.com/questions/27643822/marshal-un-marshal-list-objects-in-jersey-jax-rs-using-jaxb
 		// Jersey 2
 
-		// List<Book> books =
-		// client.target(REST_SERVICE_URL).request().get(bookType);
-
-		// settList = response.readEntity(genList);
 		settList = target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get(genList);
 
 		assertThat(settList).isNotNull();
