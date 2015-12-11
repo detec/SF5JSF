@@ -10,7 +10,7 @@
   		<mojarra-version>2.2.12</mojarra-version>
   		<hibernate.version>4.3.11.Final</hibernate.version>
   		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  		
+  		<jersey.version>2.22.1</jersey.version>
 </properties>	
   	<build>
 <!--     	<sourceDirectory>src</sourceDirectory> This excludes webapp resources from copying to classes! -->
@@ -56,14 +56,78 @@
       	</plugin>
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
-			<artifactId>maven-surefire-plugin</artifactId>
+			<artifactId>maven-surefire-plugin</artifactId>	
 			<version>2.18.1</version>
 			<configuration>
-			<includes>
-				<include>**/*Tests.java</include>
-			</includes>
-		</configuration>
+				<includes>
+					<include>**/*Tests.java</include>
+				</includes>
+				<excludes>
+            		<exclude>**/*IT.java</exclude>
+            	</excludes>
+			</configuration>
+			<executions>
+        	<execution>
+            	<phase>integration-test</phase>
+            	<goals>
+               	<goal>test</goal>
+            	</goals>
+            		<configuration>
+               		<excludes>
+                  		<exclude>**/*Tests.java</exclude>
+               		</excludes>
+            		<includes>
+						<include>**/*IT.java</include>
+					</includes>
+            		</configuration>
+        		</execution>
+      		</executions>
 		</plugin>
+				<!-- http://stackoverflow.com/questions/20916581/how-to-do-in-container-testing-of-a-web-app-in-spring -->
+		<plugin>
+        	<groupId>org.codehaus.cargo</groupId>
+            <artifactId>cargo-maven2-plugin</artifactId>
+            <version>1.4.16</version>
+             	<configuration>
+                     <container>
+                         <containerId>glassfish4x</containerId>
+						      <zipUrlInstaller>
+						        <url>http://download.java.net/glassfish/4.1.1/release/glassfish-4.1.1.zip</url>
+						      </zipUrlInstaller>
+                     </container>
+                     <configuration>
+                     	<properties>
+                             <cargo.servlet.port>8080</cargo.servlet.port>
+                             <cargo.protocol>http</cargo.protocol>
+                        </properties>
+                        </configuration>
+
+                		<deployables>
+                		<deployable>
+                		 	<properties>
+                		     	<context>${rp.build.warname}</context>
+              				</properties>
+                		</deployable>
+                		</deployables>
+
+                </configuration>
+                <executions>
+                     <execution>
+                        <id>start-container</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                        <goal>start</goal>
+                    </goals>
+                    </execution>
+                    	<execution>
+                    	<id>stop-container</id>
+                    	<phase>post-integration-test</phase>
+                    	<goals>
+                    		<goal>stop</goal>
+                    	</goals>
+                	</execution>
+            	</executions>
+        	</plugin>
 	</plugins>
 	</build>
 		
@@ -71,7 +135,7 @@
    		<profile>
        		<id>test</id> 
        		<properties>
-           		<db.jdbcUrl>jdbc:h2:tcp://localhost/~/sf5jsftest</db.jdbcUrl>
+           		<db.jdbcUrl>jdbc:h2:mem:test</db.jdbcUrl>
            		<rp.build.warname>SF5JSF-test</rp.build.warname>
        		</properties>
    		</profile>
@@ -80,6 +144,13 @@
        		<properties>
            		<db.jdbcUrl>jdbc:h2:tcp://localhost/~/sf5jsf</db.jdbcUrl>
            		<rp.build.warname>SF5JSF</rp.build.warname>
+       		</properties>
+   		</profile>
+   		<profile>
+       		<id>dev</id> 
+       		<properties>
+           		<db.jdbcUrl>jdbc:h2:tcp://localhost/~/sf5jsfdev</db.jdbcUrl>
+           		<rp.build.warname>SF5JSF-test</rp.build.warname>
        		</properties>
    		</profile>
 	</profiles>
@@ -189,19 +260,25 @@
 <dependency>
 	<groupId>org.glassfish.jersey.core</groupId>
 	<artifactId>jersey-client</artifactId>
-	<version>2.22.1</version>
+	<version>${jersey.version}</version>
 	<scope>test</scope>
 </dependency>
 <dependency>
 	<groupId>org.glassfish.jersey.media</groupId>
 	<artifactId>jersey-media-json-jackson</artifactId>
-	<version>2.22.1</version>
+	<version>${jersey.version}</version>
 	<scope>test</scope>
 </dependency>
 <dependency>
 	<groupId>org.glassfish.jersey.media</groupId>
 	<artifactId>jersey-media-json-processing</artifactId>
-	<version>2.22.1</version>
+	<version>${jersey.version}</version>
+	<scope>test</scope>
+</dependency>
+<dependency>
+	<groupId>org.glassfish.jersey.media</groupId>
+	<artifactId>jersey-media-multipart</artifactId>
+	<version>${jersey.version}</version>
 	<scope>test</scope>
 </dependency>
 <dependency>

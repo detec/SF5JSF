@@ -2,7 +2,7 @@ package org.openbox.sf5.service;
 
 import java.io.Serializable;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -10,7 +10,7 @@ import org.openbox.sf5.dao.DAO;
 import org.openbox.sf5.model.AbstractDbEntity;
 
 @Named
-@SessionScoped
+@ApplicationScoped
 public class ObjectServiceImpl implements ObjectService, Serializable {
 
 	private static final long serialVersionUID = 4462873069745434522L;
@@ -33,7 +33,7 @@ public class ObjectServiceImpl implements ObjectService, Serializable {
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends AbstractDbEntity> T select(Class<T> type, long id) {
-		return (T) DAO.select(type, id);
+		return DAO.select(type, id);
 	}
 
 	@Override

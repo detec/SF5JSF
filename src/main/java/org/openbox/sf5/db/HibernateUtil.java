@@ -52,7 +52,7 @@ public class HibernateUtil {
 
 		String propertyName = "hibernate.connection.url";
 		String variableConnectionString = "${db.jdbcUrl}";
-		String devDBConnectionString = "jdbc:h2:tcp://localhost/~/sf5jsftest;MVCC=true";
+		String devDBConnectionString = "jdbc:h2:tcp://localhost/~/sf5jsfdev;MVCC=true";
 
 		// this code is left to Hibernate 4.3 compatibility.
 		if (configuration.getProperty(propertyName).equals(variableConnectionString)) {

@@ -4,7 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -15,7 +15,7 @@ import org.hibernate.criterion.Criterion;
 import org.openbox.sf5.db.ConnectionManager;
 
 @Named
-@SessionScoped
+@ApplicationScoped
 public class DAOListImpl implements DAOList, Serializable {
 
 	private static final long serialVersionUID = -4127115450739908412L;

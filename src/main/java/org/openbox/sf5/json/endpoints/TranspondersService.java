@@ -1,17 +1,23 @@
 package org.openbox.sf5.json.endpoints;
 
+import java.io.InputStream;
 import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.MatrixParam;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
+import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.openbox.sf5.json.service.CommonJsonizer;
 import org.openbox.sf5.json.service.TranspondersJsonizer;
 import org.openbox.sf5.model.Transponders;
@@ -28,6 +34,17 @@ public class TranspondersService implements Serializable {
 
 	// Good combined params example
 	// http://www.mkyong.com/webservices/jax-rs/jax-rs-matrixparam-example/
+
+	// http://howtodoinjava.com/2015/08/05/jersey-file-upload-example/
+	@POST
+	@Path("upload")
+	@Consumes(MediaType.APPLICATION_JSON)
+	public Response importTransponderFile(@FormDataParam("file") InputStream fileInputStream,
+			@FormDataParam("file") FormDataContentDisposition fileMetaData) {
+
+		Boolean result = transpondersJsonizer.uploadTransponders(fileInputStream, fileMetaData);
+		return Response.status(200).entity(result).build();
+	}
 
 	// http://localhost:8080/SF5JSF-test/json/transponders/filter/Speed/27500
 	@GET

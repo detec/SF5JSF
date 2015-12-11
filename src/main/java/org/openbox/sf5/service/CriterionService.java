@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -17,7 +17,7 @@ import org.openbox.sf5.model.AbstractDbEntity;
 import org.openbox.sf5.model.Users;
 
 @Named
-@SessionScoped
+@ApplicationScoped
 public class CriterionService implements Serializable {
 
 	public <T extends AbstractDbEntity> Criterion getCriterionByClassFieldAndStringValue(Class<T> type,

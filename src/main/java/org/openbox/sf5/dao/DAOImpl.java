@@ -2,7 +2,7 @@ package org.openbox.sf5.dao;
 
 import java.io.Serializable;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -11,7 +11,7 @@ import org.openbox.sf5.db.ConnectionManager;
 import org.openbox.sf5.model.AbstractDbEntity;
 
 @Named
-@SessionScoped
+@ApplicationScoped
 public class DAOImpl implements DAO, Serializable {
 
 	@Override

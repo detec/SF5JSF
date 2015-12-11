@@ -3,7 +3,7 @@ package org.openbox.sf5.service;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
@@ -11,7 +11,7 @@ import org.hibernate.criterion.Criterion;
 import org.openbox.sf5.dao.DAOList;
 
 @Named("ObjectsListService")
-@SessionScoped
+@ApplicationScoped
 public class ObjectsListService implements Serializable {
 
 	public <T> List<T> ObjectsList(Class<T> type) {

@@ -1,5 +1,6 @@
 package org.openbox.sf5.json.service;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 
@@ -7,8 +8,10 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.openbox.sf5.common.IniReader;
 import org.openbox.sf5.common.JsonObjectFiller;
 import org.openbox.sf5.model.Satellites;
 import org.openbox.sf5.model.Transponders;
@@ -19,6 +22,17 @@ import org.openbox.sf5.service.ObjectsListService;
 @Named
 @SessionScoped
 public class TranspondersJsonizer implements Serializable {
+
+	public Boolean uploadTransponders(InputStream fileInputStream, FormDataContentDisposition fileMetaData) {
+		try {
+			iniReader.readMultiPartFile(fileInputStream, fileMetaData);
+
+		} catch (Exception e) {
+			return new Boolean(false);
+		}
+
+		return new Boolean(iniReader.isResult());
+	}
 
 	public String getTranspondersByArbitraryFilter(String fieldName, String typeValue) {
 		String returnString = "";
@@ -72,6 +86,17 @@ public class TranspondersJsonizer implements Serializable {
 
 	public void setCriterionService(CriterionService criterionService) {
 		this.criterionService = criterionService;
+	}
+
+	@Inject
+	private IniReader iniReader;
+
+	public IniReader getIniReader() {
+		return iniReader;
+	}
+
+	public void setIniReader(IniReader iniReader) {
+		this.iniReader = iniReader;
 	}
 
 	@Inject

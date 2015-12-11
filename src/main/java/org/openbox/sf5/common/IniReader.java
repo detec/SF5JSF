@@ -1,9 +1,13 @@
 package org.openbox.sf5.common;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -15,8 +19,9 @@ import java.util.regex.Pattern;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.ws.rs.WebApplicationException;
 
-//import org.apache.commons.lang3.text.StrBuilder;
+import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.internal.TypeLocatorImpl;
@@ -63,6 +68,44 @@ public class IniReader implements Serializable {
 
 	public void setCm(ConnectionManager cm) {
 		this.cm = cm;
+	}
+
+	public void readMultiPartFile(InputStream fileInputStream, FormDataContentDisposition fileMetaData)
+			throws IOException {
+		File temp = File.createTempFile("transponders", ".ini");
+		String absolutePath = temp.getAbsolutePath();
+
+		try {
+			int read = 0;
+			byte[] bytes = new byte[1024];
+
+			OutputStream out = new FileOutputStream(temp);
+			while ((read = fileInputStream.read(bytes)) != -1) {
+				out.write(bytes, 0, read);
+			}
+			out.flush();
+			out.close();
+		} catch (IOException e) {
+			throw new WebApplicationException("Error while uploading file. Please try again !!");
+		}
+
+		// calling reader class
+		setFilepath(absolutePath);
+		readData(); // doing import
+
+		// // create a temp file
+		// File temp = File.createTempFile("transponders", ".xml");
+		// String absolutePath = temp.getAbsolutePath();
+		//
+		// byte[] bytes = file.getBytes();
+		// BufferedOutputStream stream = new BufferedOutputStream(new
+		// FileOutputStream(new File(absolutePath)));
+		// stream.write(bytes);
+		// stream.close();
+		//
+		// // calling reader class
+		// setFilepath(absolutePath);
+		// readData(); // doing import
 	}
 
 	public void readData() throws IOException {

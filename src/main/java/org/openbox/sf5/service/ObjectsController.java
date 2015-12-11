@@ -2,14 +2,14 @@ package org.openbox.sf5.service;
 
 import java.io.Serializable;
 
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.openbox.sf5.model.AbstractDbEntity;
 
 @Named
-@SessionScoped
+@ApplicationScoped
 public class ObjectsController implements Serializable {
 
 	private static final long serialVersionUID = 3569160314988465165L;
