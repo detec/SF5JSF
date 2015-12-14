@@ -1,6 +1,7 @@
 package org.openbox.sf5.common;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -9,8 +10,8 @@ import java.util.stream.Stream;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.glassfish.jersey.media.multipart.FormDataMultiPart;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
@@ -42,13 +43,15 @@ public class SendTransponderFilesJSONIT extends AbstractServiceTest {
 			final FormDataMultiPart multipart = (FormDataMultiPart) new FormDataMultiPart().field("foo", "bar")
 					.bodyPart(filePart);
 
-			Invocation.Builder invocationBuilder = serviceTarget.path("upload").request(MediaType.APPLICATION_JSON);
+			Invocation.Builder invocationBuilder = serviceTarget.path("upload").request();
 			// Response responsePost =
 			// invocationBuilder.post(Entity.entity(setting,
 			// MediaType.APPLICATION_JSON));
 
 			Response responsePost = invocationBuilder.post(Entity.entity(multipart, multipart.getMediaType()));
+			assertEquals(Status.OK.getStatusCode(), responsePost.getStatus());
 			Boolean result = responsePost.readEntity(Boolean.class);
+
 			assertThat(result.booleanValue()).isTrue();
 
 			// Response lambdaResponse =

@@ -210,7 +210,6 @@ public class IniReader implements Serializable {
 
 				// frequency
 				String FrequencyString = matcher.group(2);
-				// System.out.println(FrequencyString);
 				Long Frequency = Long.parseLong(FrequencyString);
 
 				// polarization
@@ -253,6 +252,8 @@ public class IniReader implements Serializable {
 						.setParameter("Frequency", Frequency)
 						.setResultTransformer(Transformers.aliasToBean(TheDVBRangeValues.class)).list();
 
+				session.close();
+
 				if (!range.isEmpty()) {
 					rangeEnum = range.get(0).getRangeOfDVB();
 				} else {
@@ -280,6 +281,8 @@ public class IniReader implements Serializable {
 						.setParameter("KindOfPolarization", Polarization.getPolarizationKind(aPolarization).ordinal())
 						.setResultTransformer(Transformers.aliasToBean(ValueOfTheCarrierFrequency.class)).list();
 
+				session.close();
+
 				if (!carrierList.isEmpty()) {
 					carrierEnum = carrierList.get(0).getTypeOfCarrierFrequency();
 				} else {
@@ -290,9 +293,13 @@ public class IniReader implements Serializable {
 				// satellite
 				sqltext = "Select id FROM Transponders where frequency = :Frequency and satellite = :satelliteId";
 
+				session = cm.getSessionFactroy().openSession();
+
 				List<Object> transIdList = new ArrayList<>();
 				transIdList = session.createSQLQuery(sqltext).setParameter("Frequency", Frequency)
 						.setParameter("satelliteId", sat.getId()).list();
+
+				session.close();
 
 				Transponders newTrans = new Transponders(Frequency, aPolarization, FEC, carrierEnum, Speed, DVBStandard,
 						rangeEnum, sat);
@@ -323,7 +330,7 @@ public class IniReader implements Serializable {
 
 				}
 
-				session.close();
+				// session.close();
 			}
 
 		}

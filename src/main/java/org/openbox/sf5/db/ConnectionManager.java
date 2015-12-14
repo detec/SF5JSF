@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
@@ -21,8 +22,46 @@ import org.reflections.Reflections;
 @ApplicationScoped
 public class ConnectionManager implements Serializable {
 
+	private SessionFactory sessionFactory;
+
 	public void disableLogsWhenTesting() {
 		java.util.logging.Logger.getLogger("org.hibernate").setLevel(java.util.logging.Level.OFF);
+
+	}
+
+	@PostConstruct
+	public void initializeSessionFactory() {
+		Configuration configuration = new Configuration();
+		configuration.configure();
+
+		String propertyName = "hibernate.connection.url";
+		String variableConnectionString = "${db.jdbcUrl}";
+		// String devDBConnectionString =
+		// "jdbc:h2:tcp://localhost/~/sf5jsfdev;MVCC=true";
+		String devDBConnectionString = "jdbc:h2:tcp://localhost/~/sf5jsfdev";
+
+		// this code is left to Hibernate 4.3 compatibility.
+		if (configuration.getProperty(propertyName).equals(variableConnectionString)) {
+			// manually override property with test server
+			configuration.setProperty(propertyName, devDBConnectionString);
+
+		}
+
+		// Getting annotated classes that are extending AbstractDbEntity
+		// Set<Class<?>> annotatedSet =
+		// getAllExtendedOrImplementedTypesRecursively(AbstractDbEntity.class);
+		Set<Class<? extends AbstractDbEntity>> annotatedSet = getAllSubclassesAbstractDbEntity();
+
+		// adding classes as annotated.
+		annotatedSet.stream().forEach(t -> configuration.addAnnotatedClass(t));
+
+		// This also doesn't work in Hibernate 5.0.x !!!
+
+		StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
+				.applySettings(configuration.getProperties()).build();
+
+		// builds a session factory from the service registry
+		this.sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 
 	}
 
@@ -121,39 +160,11 @@ public class ConnectionManager implements Serializable {
 		// return sessionFactoryVariable;
 		// Second attempt to use Hibernate 5. End.
 
-		SessionFactory sessionFactoryVariable = null;
+		// SessionFactory sessionFactoryVariable = null;
+		//
+		// return sessionFactoryVariable;
 
-		Configuration configuration = new Configuration();
-		configuration.configure();
-
-		String propertyName = "hibernate.connection.url";
-		String variableConnectionString = "${db.jdbcUrl}";
-		String devDBConnectionString = "jdbc:h2:tcp://localhost/~/sf5jsfdev;MVCC=true";
-
-		// this code is left to Hibernate 4.3 compatibility.
-		if (configuration.getProperty(propertyName).equals(variableConnectionString)) {
-			// manually override property with test server
-			configuration.setProperty(propertyName, devDBConnectionString);
-
-		}
-
-		// Getting annotated classes that are extending AbstractDbEntity
-		// Set<Class<?>> annotatedSet =
-		// getAllExtendedOrImplementedTypesRecursively(AbstractDbEntity.class);
-		Set<Class<? extends AbstractDbEntity>> annotatedSet = getAllSubclassesAbstractDbEntity();
-
-		// adding classes as annotated.
-		annotatedSet.stream().forEach(t -> configuration.addAnnotatedClass(t));
-
-		// This also doesn't work in Hibernate 5.0.x !!!
-
-		StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
-				.applySettings(configuration.getProperties()).build();
-
-		// builds a session factory from the service registry
-		sessionFactoryVariable = configuration.buildSessionFactory(serviceRegistry);
-
-		return sessionFactoryVariable;
+		return this.sessionFactory;
 	}
 
 	public static Set<Class<? extends AbstractDbEntity>> getAllSubclassesAbstractDbEntity() {

@@ -38,7 +38,7 @@ public class TranspondersService implements Serializable {
 	// http://howtodoinjava.com/2015/08/05/jersey-file-upload-example/
 	@POST
 	@Path("upload")
-	@Consumes(MediaType.APPLICATION_JSON)
+	@Consumes({ MediaType.MULTIPART_FORM_DATA })
 	public Response importTransponderFile(@FormDataParam("file") InputStream fileInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileMetaData) {
 

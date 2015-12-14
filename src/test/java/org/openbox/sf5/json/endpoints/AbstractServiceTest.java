@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
 public abstract class AbstractServiceTest {
-	public static final String appLocation = "http://localhost:8080/SF5JSF-test/json/";
+	public static final String appLocation = "http://localhost:8080/SF5JSF-test/";
 
 	public static final String jsonPath = "json";
 
