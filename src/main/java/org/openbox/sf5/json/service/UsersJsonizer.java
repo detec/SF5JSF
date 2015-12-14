@@ -17,6 +17,35 @@ import org.openbox.sf5.service.ObjectsListService;
 @SessionScoped
 public class UsersJsonizer implements Serializable {
 
+	// returns false if there is no such user.
+	public Boolean checkIfUsernameExists(String typeValue) {
+		Boolean result = false;
+		Criterion criterion = criterionService.getCriterionByClassFieldAndStringValue(Users.class, "login", typeValue);
+
+		if (criterion == null) {
+			return result;
+		}
+		List<Users> userList = listService.ObjectsCriterionList(Users.class, criterion);
+		if (userList.size() == 0) {
+			return result;
+		} else {
+			result = true;
+		}
+
+		return result;
+	}
+
+	public int saveNewUser(Users user) {
+		long id = user.getId();
+		// if we receive non-empty id
+		if (id != 0) {
+			return 409;
+		}
+		objectsController.saveOrUpdate(user);
+		return 201;
+
+	}
+
 	public String getUserByLogin(String typeValue) {
 		String returnString = "";
 		Criterion criterion = criterionService.getCriterionByClassFieldAndStringValue(Users.class, "Login", typeValue);

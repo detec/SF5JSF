@@ -6,7 +6,6 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -36,7 +35,7 @@ public class SettingsServiceIT extends AbstractServiceTest {
 
 		Response response = null;
 
-		List<Settings> settList = getUserSettings(client);
+		List<Settings> settList = getUserSettings();
 		if (settList.size() == 0) {
 			return;
 		}
@@ -62,7 +61,7 @@ public class SettingsServiceIT extends AbstractServiceTest {
 
 	}
 
-	private List<Settings> getUserSettings(Client client) {
+	private List<Settings> getUserSettings() {
 		List<Settings> settList = new ArrayList<Settings>();
 
 		// Let's check, if there is user with login admin
@@ -114,7 +113,7 @@ public class SettingsServiceIT extends AbstractServiceTest {
 		Response response = null;
 
 		// here we should check, if such user exists and find only his settings.
-		List<Settings> settList = getUserSettings(client);
+		List<Settings> settList = getUserSettings();
 		if (settList == null || settList.size() == 0) {
 			return;
 		}

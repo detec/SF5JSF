@@ -40,6 +40,7 @@ public abstract class AbstractJsonizerTest {
 
 		cm = new ConnectionManager();
 		cm.disableLogsWhenTesting(); // to disable infos and warnings.
+		cm.initializeSessionFactory();
 
 		DAO = new DAOImpl();
 		DAO.setCm(cm);
@@ -68,7 +69,6 @@ public abstract class AbstractJsonizerTest {
 		mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
 		mapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
 		mapper.setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
-		// mapper.setSerializationInclusion(JsonSerialize.Inclusion.NON_EMPTY);
 		mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 	}
