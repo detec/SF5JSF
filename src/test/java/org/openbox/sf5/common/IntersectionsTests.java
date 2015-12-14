@@ -1,5 +1,6 @@
 package org.openbox.sf5.common;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
@@ -107,6 +108,19 @@ public class IntersectionsTests extends AbstractJsonizerTest {
 		// if something is wrong - test will fail.
 		int rows = intersections.checkIntersection(scList, setting);
 
+	}
+
+	public static Stream<Path> getTransponderFilesStreamPath() throws URISyntaxException, IOException {
+
+		URL transpondersFolderUrl = Thread.currentThread().getContextClassLoader().getResource("transponders/");
+
+		assertThat(transpondersFolderUrl).isNotNull();
+
+		Path path = Paths.get(transpondersFolderUrl.toURI());
+
+		Stream<Path> streamPath = Files.find(path, 2, (newpath, attr) -> String.valueOf(newpath).endsWith(".ini"));
+
+		return streamPath;
 	}
 
 }
