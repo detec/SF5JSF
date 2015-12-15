@@ -17,11 +17,23 @@ import org.openbox.sf5.common.JsonObjectFiller;
 import org.openbox.sf5.db.ConnectionManager;
 import org.openbox.sf5.model.Settings;
 import org.openbox.sf5.service.CriterionService;
+import org.openbox.sf5.service.ObjectsController;
 import org.openbox.sf5.service.ObjectsListService;
 
 @Named
 @SessionScoped
 public class SettingsJsonizer implements Serializable {
+
+	public int saveNewSetting(Settings setting) {
+		long id = setting.getId();
+		// if we receive non-empty id
+		if (id != 0) {
+			// return HttpStatus.CONFLICT;
+			return 409;
+		}
+		objectsController.saveOrUpdate(setting);
+		return 201; // CREATED
+	}
 
 	public String getSettingsByArbitraryFilter(String fieldName, String typeValue, String login) {
 		String returnString = "";
@@ -131,6 +143,17 @@ public class SettingsJsonizer implements Serializable {
 
 	@Inject
 	private ConnectionManager cm;
+
+	@Inject
+	private ObjectsController objectsController;
+
+	public ObjectsController getObjectsController() {
+		return objectsController;
+	}
+
+	public void setObjectsController(ObjectsController objectsController) {
+		this.objectsController = objectsController;
+	}
 
 	@Inject
 	private ObjectsListService listService;

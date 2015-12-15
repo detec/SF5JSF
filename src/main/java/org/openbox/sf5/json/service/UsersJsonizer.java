@@ -18,18 +18,19 @@ import org.openbox.sf5.service.ObjectsListService;
 public class UsersJsonizer implements Serializable {
 
 	// returns false if there is no such user.
-	public Boolean checkIfUsernameExists(String typeValue) {
-		Boolean result = false;
-		Criterion criterion = criterionService.getCriterionByClassFieldAndStringValue(Users.class, "login", typeValue);
+	public long checkIfUsernameExists(String typeValue) {
+		long result = 0;
+		Criterion criterion = criterionService.getCriterionByClassFieldAndStringValue(Users.class, "Login", typeValue);
 
 		if (criterion == null) {
-			return result;
+			return 0;
 		}
 		List<Users> userList = listService.ObjectsCriterionList(Users.class, criterion);
 		if (userList.size() == 0) {
-			return result;
+			return 0;
 		} else {
-			result = true;
+
+			result = userList.get(0).getId();
 		}
 
 		return result;

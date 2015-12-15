@@ -6,19 +6,27 @@ import static org.junit.Assert.assertEquals;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.junit.runners.MethodSorters;
 import org.openbox.sf5.model.Settings;
+import org.openbox.sf5.model.SettingsConversion;
+import org.openbox.sf5.model.Transponders;
+import org.openbox.sf5.model.Users;
 
 @RunWith(JUnit4.class)
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class SettingsServiceIT extends AbstractServiceTest {
 
 	private static final String servicePath = "usersettings";
@@ -28,6 +36,100 @@ public class SettingsServiceIT extends AbstractServiceTest {
 		setUpAbstractTestUser();
 
 		serviceTarget = commonTarget.path(servicePath);
+	}
+
+	private Users getTestUser() {
+		Invocation.Builder invocationBuilder = commonTarget.path("users").path("filter").path("login")
+				.path(this.testUsername).request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+
+		Response response = invocationBuilder.get();
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+
+		Users testUser = response.readEntity(Users.class);
+
+		return testUser;
+
+	}
+
+	@Test
+	public void shouldCreateAndGetSettingById() {
+
+		Response response = null;
+
+		// here we should create a setting.
+		Users adminUser = getTestUser();
+
+		assertThat(adminUser).isNotNull();
+
+		// get some transponders to make lines objects.
+		Invocation.Builder invocationBuilder = commonTarget.path("transponders").path("filter").path("Speed")
+				.path("27500").request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+		response = invocationBuilder.get();
+
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+
+		GenericType<List<Transponders>> genList = new GenericType<List<Transponders>>() {
+		};
+
+		List<Transponders> newTransList = response.readEntity(genList);
+		assertThat(newTransList.size()).isGreaterThanOrEqualTo(0);
+
+		Settings setting = new Settings();
+		setting.setName("Simple");
+		setting.setUser(adminUser);
+		setting.setTheLastEntry(new java.sql.Timestamp(System.currentTimeMillis()));
+
+		List<SettingsConversion> scList = new ArrayList<>();
+
+		// filter up to 32 transponders
+		newTransList.stream().filter(t -> newTransList.indexOf(t) <= 31).forEach(t -> {
+			int currentIndex = newTransList.indexOf(t);
+			int currentNumber = currentIndex + 1;
+			int satIndex = (int) Math.ceil((double) currentNumber / 4);
+			// int tpIndex = currentNumber - (satIndex * 4);
+			int tpIndex = (currentNumber % 4 == 0) ? 4 : currentNumber % 4; // %
+																			// is
+																			// remainder
+
+			SettingsConversion sc = new SettingsConversion(setting, t, satIndex, tpIndex,
+					Long.toString(t.getFrequency()), 0);
+			sc.setLineNumber(currentNumber);
+			// List<SettingsConversion> scConv = setting.getConversion();
+			// scConv.add(sc);
+			scList.add(sc);
+
+		});
+
+		setting.setConversion(scList);
+
+		// //
+		// http://howtodoinjava.com/2015/08/07/jersey-restful-client-examples/#post
+		invocationBuilder = serviceTarget.path("create").matrixParam("login", this.testUsername)
+				.request(MediaType.APPLICATION_JSON);
+		Response responsePost = invocationBuilder.post(Entity.entity(setting, MediaType.APPLICATION_JSON));
+		assertEquals(Status.CREATED.getStatusCode(), responsePost.getStatus());
+
+		// get setting id
+		MultivaluedMap<String, String> headersMap = responsePost.getStringHeaders();
+		List<String> locStringList = headersMap.get("SettingId");
+		assertEquals(1, locStringList.size());
+
+		String settingIdString = locStringList.get(0);
+		long id = Long.parseLong(settingIdString);
+
+		assertThat(id).isGreaterThan(0);
+		setting.setId(id);
+
+		// Here we test getting setting by id.
+		invocationBuilder = serviceTarget.path("filter").path("id").path(Long.toString(setting.getId()))
+
+				.request(MediaType.APPLICATION_JSON);
+
+		response = invocationBuilder.get();
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+
+		Settings settingRead = response.readEntity(Settings.class);
+		assertThat(settingRead).isNotNull();
 	}
 
 	@Test
@@ -62,6 +164,7 @@ public class SettingsServiceIT extends AbstractServiceTest {
 	}
 
 	private List<Settings> getUserSettings() {
+		Response response = null;
 		List<Settings> settList = new ArrayList<Settings>();
 
 		// Let's check, if there is user with login admin
@@ -70,13 +173,12 @@ public class SettingsServiceIT extends AbstractServiceTest {
 		// Response response =
 		// target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 
-		Invocation.Builder invocationBuilder = this.commonTarget.path("users").path("filter").path("login")
-				.path(this.testUsername).request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+		Invocation.Builder invocationBuilder = serviceTarget.path("exists").path("login").path(testUsername)
+				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+		response = invocationBuilder.get();
 
-		Response response = invocationBuilder.get();
-
-		if (response.getStatus() == (Status.NOT_FOUND.getStatusCode())) {
-			return settList; // no user with login admin
+		if (response.getStatus() == Status.ACCEPTED.getStatusCode()) {
+			return settList;
 		}
 
 		GenericType<List<Settings>> genList = new GenericType<List<Settings>>() {

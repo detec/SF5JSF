@@ -28,16 +28,16 @@ public class UsersService implements Serializable {
 	public Response createUser(Users user) {
 		Response returnResponse = null;
 
-		Boolean result = usersJsonizer.checkIfUsernameExists(user.getLogin());
+		long result = usersJsonizer.checkIfUsernameExists(user.getLogin());
 
-		if (result) {
-			returnResponse = Response.status(202).entity(result).build();
+		if (result != 0) {
+			returnResponse = Response.status(202).entity(new Long(result).toString()).build();
 			return returnResponse;
 		}
 
 		int statusResult = usersJsonizer.saveNewUser(user);
 		if (statusResult == 409) {
-			returnResponse = Response.status(409).entity(false).build();
+			returnResponse = Response.status(409).entity(new Boolean(false).toString()).build();
 			return returnResponse;
 		}
 
@@ -50,7 +50,7 @@ public class UsersService implements Serializable {
 
 		// returnResponse = Response.created(user.getId()).build();
 		// returning id as result
-		returnResponse = Response.status(201).entity(user.getId()).build();
+		returnResponse = Response.status(201).entity(new Long(user.getId()).toString()).build();
 		return returnResponse;
 	}
 
@@ -59,14 +59,13 @@ public class UsersService implements Serializable {
 	@Path("exists/login/{login}")
 	public Response ifSuchLoginExists(@PathParam("login") String login) {
 		Response returnResponse = null;
-		Boolean result = usersJsonizer.checkIfUsernameExists(login);
-		if (!result) {
-			// return new ResponseEntity<Boolean>(result,
-			// HttpStatus.NO_CONTENT);
-			return Response.status(204).build();
-		}
+		long result = usersJsonizer.checkIfUsernameExists(login);
+		if (result == 0) {
 
-		returnResponse = Response.status(202).entity(result).build();
+			returnResponse = Response.status(204).entity(new Long(result).toString()).build();
+		} else {
+			returnResponse = Response.status(202).entity(new Long(result).toString()).build();
+		}
 		return returnResponse;
 	}
 
@@ -89,6 +88,14 @@ public class UsersService implements Serializable {
 
 	@Inject
 	private UsersJsonizer usersJsonizer;
+
+	public UsersJsonizer getUsersJsonizer() {
+		return usersJsonizer;
+	}
+
+	public void setUsersJsonizer(UsersJsonizer usersJsonizer) {
+		this.usersJsonizer = usersJsonizer;
+	}
 
 	private static final long serialVersionUID = 1933163250712959368L;
 

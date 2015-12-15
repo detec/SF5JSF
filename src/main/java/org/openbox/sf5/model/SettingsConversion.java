@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -35,6 +36,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 
 	@ManyToOne
 	@JoinColumn(name = "parent_id", unique = false, nullable = false)
+	@JsonBackReference
 	private Settings parent_id;
 
 	@JsonProperty("LineNumber")

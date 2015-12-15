@@ -1,5 +1,6 @@
 package org.openbox.sf5.json.endpoints;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import javax.ws.rs.client.Entity;
@@ -47,7 +48,7 @@ public class BUserServiceIT extends AbstractServiceTest {
 	public void shouldCheckCreateTestLogin() {
 		Response response = null;
 
-		Invocation.Builder invocationBuilder = serviceTarget.path("exists").path("username").path(testUsername)
+		Invocation.Builder invocationBuilder = serviceTarget.path("exists").path("login").path(testUsername)
 				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 		response = invocationBuilder.get();
 
@@ -57,11 +58,14 @@ public class BUserServiceIT extends AbstractServiceTest {
 
 		// here we create user
 		Users testUser = new Users("Test user", testUsername);
-		//testUser.setId(0);
 
-		invocationBuilder = serviceTarget.path("create").request(MediaType.APPLICATION_JSON);
+		invocationBuilder = serviceTarget.path("create").request(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON);
 		Response responsePost = invocationBuilder.post(Entity.entity(testUser, MediaType.APPLICATION_JSON));
 		assertEquals(Status.CREATED.getStatusCode(), responsePost.getStatus());
+
+		long userId = responsePost.readEntity(Long.class);
+		assertThat(userId).isNotZero();
 	}
 
 }

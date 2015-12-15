@@ -11,6 +11,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
@@ -35,6 +36,7 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 
 	@ManyToOne
 	@JoinColumn(name = "parent_id", unique = false, nullable = false)
+	@JsonBackReference
 	private Settings parent_id;
 
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "my_entity_seq_gen")
