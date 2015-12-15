@@ -11,6 +11,7 @@
   		<hibernate.version>4.3.11.Final</hibernate.version>
   		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   		<jersey.version>2.22.1</jersey.version>
+  		<jackson.version>2.6.4</jackson.version>
 </properties>	
   	<build>
 <!--     	<sourceDirectory>src</sourceDirectory> This excludes webapp resources from copying to classes! -->
@@ -224,6 +225,12 @@
     <version>1.0.4</version>
  	<scope>provided</scope>
 </dependency>
+<!-- http://stackoverflow.com/questions/18872931/custom-objectmapper-with-jersey-2-2-and-jackson-2-1  -->
+<!-- <dependency>
+    <groupId>com.fasterxml.jackson.jaxrs</groupId>
+    <artifactId>jackson-jaxrs-json-provider</artifactId>
+    <version>${jackson.version}</version>
+</dependency> -->
 <dependency>
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-validator</artifactId>
@@ -289,19 +296,7 @@
 <dependency>
 	<groupId>com.fasterxml.jackson.core</groupId>
 	<artifactId>jackson-annotations</artifactId>
-	<version>2.6.3</version>
-</dependency>
-<dependency>
-	<groupId>org.jboss.arquillian.container</groupId>
-	<artifactId>arquillian-container-test-api</artifactId>
-	<version>1.1.10.Final</version>
-	<scope>test</scope>
-</dependency>
-<dependency>
-	<groupId>org.jboss.arquillian.junit</groupId>
-	<artifactId>arquillian-junit-container</artifactId>
-	<version>1.1.10.Final</version>
-	<scope>test</scope>
+	<version>${jackson.version}</version>
 </dependency>
 
 </dependencies>

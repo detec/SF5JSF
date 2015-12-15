@@ -47,7 +47,7 @@ public class BUserServiceIT extends AbstractServiceTest {
 	public void shouldCheckCreateTestLogin() {
 		Response response = null;
 
-		Invocation.Builder invocationBuilder = serviceTarget.path("exists").path("username").path(this.testUsername)
+		Invocation.Builder invocationBuilder = serviceTarget.path("exists").path("username").path(testUsername)
 				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 		response = invocationBuilder.get();
 
@@ -56,7 +56,8 @@ public class BUserServiceIT extends AbstractServiceTest {
 		}
 
 		// here we create user
-		Users testUser = new Users("Test user", this.testUsername);
+		Users testUser = new Users("Test user", testUsername);
+		//testUser.setId(0);
 
 		invocationBuilder = serviceTarget.path("create").request(MediaType.APPLICATION_JSON);
 		Response responsePost = invocationBuilder.post(Entity.entity(testUser, MediaType.APPLICATION_JSON));
