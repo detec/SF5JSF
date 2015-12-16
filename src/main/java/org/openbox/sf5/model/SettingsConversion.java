@@ -137,6 +137,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 
 	}
 
+	// No-args constructor
 	public SettingsConversion() {
 	}
 

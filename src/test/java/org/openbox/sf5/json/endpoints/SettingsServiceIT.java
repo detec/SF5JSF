@@ -20,8 +20,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.junit.runners.MethodSorters;
+import org.openbox.sf5.json.common.BuildTestSetting;
 import org.openbox.sf5.model.Settings;
-import org.openbox.sf5.model.SettingsConversion;
 import org.openbox.sf5.model.Transponders;
 import org.openbox.sf5.model.Users;
 
@@ -74,38 +74,17 @@ public class SettingsServiceIT extends AbstractServiceTest {
 		List<Transponders> newTransList = response.readEntity(genList);
 		assertThat(newTransList.size()).isGreaterThanOrEqualTo(0);
 
-		Settings setting = new Settings();
-		setting.setName("Simple");
-		setting.setUser(adminUser);
-		setting.setTheLastEntry(new java.sql.Timestamp(System.currentTimeMillis()));
+		Settings setting = BuildTestSetting.buildSetting(adminUser, newTransList);
 
-		List<SettingsConversion> scList = new ArrayList<>();
-
-		// filter up to 32 transponders
-		newTransList.stream().filter(t -> newTransList.indexOf(t) <= 31).forEach(t -> {
-			int currentIndex = newTransList.indexOf(t);
-			int currentNumber = currentIndex + 1;
-			int satIndex = (int) Math.ceil((double) currentNumber / 4);
-			// int tpIndex = currentNumber - (satIndex * 4);
-			int tpIndex = (currentNumber % 4 == 0) ? 4 : currentNumber % 4; // %
-																			// is
-																			// remainder
-
-			SettingsConversion sc = new SettingsConversion(setting, t, satIndex, tpIndex,
-					Long.toString(t.getFrequency()), 0);
-			sc.setLineNumber(currentNumber);
-			// List<SettingsConversion> scConv = setting.getConversion();
-			// scConv.add(sc);
-			scList.add(sc);
-
-		});
-
-		setting.setConversion(scList);
-
-		// //
 		// http://howtodoinjava.com/2015/08/07/jersey-restful-client-examples/#post
 		invocationBuilder = serviceTarget.path("create").matrixParam("login", this.testUsername)
 				.request(MediaType.APPLICATION_JSON);
+
+		// trying to use test endpoint.
+		// invocationBuilder =
+		// serviceTarget.path("create").request(MediaType.APPLICATION_JSON)
+		// .accept(MediaType.APPLICATION_JSON);
+
 		Response responsePost = invocationBuilder.post(Entity.entity(setting, MediaType.APPLICATION_JSON));
 		assertEquals(Status.CREATED.getStatusCode(), responsePost.getStatus());
 
@@ -122,8 +101,7 @@ public class SettingsServiceIT extends AbstractServiceTest {
 
 		// Here we test getting setting by id.
 		invocationBuilder = serviceTarget.path("filter").path("id").path(Long.toString(setting.getId()))
-
-				.request(MediaType.APPLICATION_JSON);
+				.matrixParam("login", this.testUsername).request(MediaType.APPLICATION_JSON);
 
 		response = invocationBuilder.get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -132,36 +110,34 @@ public class SettingsServiceIT extends AbstractServiceTest {
 		assertThat(settingRead).isNotNull();
 	}
 
-	@Test
-	public void shouldGetSettingById() {
-
-		Response response = null;
-
-		List<Settings> settList = getUserSettings();
-		if (settList.size() == 0) {
-			return;
-		}
-
-		Settings sett = settList.get(0);
-
-		// target = client.target(appLocation + "usersettings/filter/id/" +
-		// Long.toString(sett.getId()) + ";login=admin");
-		//
-		// response =
-		// target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
-		Invocation.Builder invocationBuilder = serviceTarget.path("filter").path("id").path(Long.toString(sett.getId()))
-				.matrixParam("login", this.testUsername).request(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON);
-
-		response = invocationBuilder.get();
-
-		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-
-		Settings setting = response.readEntity(Settings.class);
-
-		assertThat(setting).isNotNull();
-
-	}
+	// This test is done in create test.
+	// @Test
+	// public void shouldGetSettingById() {
+	//
+	// Response response = null;
+	//
+	// List<Settings> settList = getUserSettings();
+	// if (settList.size() == 0) {
+	// return;
+	// }
+	//
+	// Settings sett = settList.get(0);
+	//
+	// Invocation.Builder invocationBuilder =
+	// serviceTarget.path("filter").path("id").path(Long.toString(sett.getId()))
+	// .matrixParam("login",
+	// this.testUsername).request(MediaType.APPLICATION_JSON)
+	// .accept(MediaType.APPLICATION_JSON);
+	//
+	// response = invocationBuilder.get();
+	//
+	// assertEquals(Status.OK.getStatusCode(), response.getStatus());
+	//
+	// Settings setting = response.readEntity(Settings.class);
+	//
+	// assertThat(setting).isNotNull();
+	//
+	// }
 
 	private List<Settings> getUserSettings() {
 		Response response = null;

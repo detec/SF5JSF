@@ -33,12 +33,22 @@ public class SettingsService implements Serializable {
 	@Context
 	UriInfo uriInfo;
 
+	// @POST
+	// @Path("testcreate")
+	// @Consumes({ MediaType.APPLICATION_JSON })
+	// @Produces(MediaType.APPLICATION_JSON)
+	// public Response createSetting(SettingsSimple setting,
+	// @MatrixParam("login") String login) {
+	// Response returnResponse = Response.status(200).build();
+	//
+	// return returnResponse;
+	//
+	// }
+
 	@POST
 	@Path("create")
 	@Consumes({ MediaType.APPLICATION_JSON })
-	public Response createSetting(Settings setting
-
-	, @MatrixParam("login") String login
+	public Response createSetting(Settings setting, @MatrixParam("login") String login
 
 	) {
 
@@ -79,6 +89,10 @@ public class SettingsService implements Serializable {
 			}
 
 			else {
+				// for unsaved references parent_id is null
+				setting.getConversion().forEach(t -> t.setparent_id(setting));
+				setting.getSatellites().forEach(t -> t.setparent_id(setting));
+
 				int statusResult = settingsJsonizer.saveNewSetting(setting);
 				if (statusResult == 409) {
 					// return new ResponseEntity<Void>(HttpStatus.CONFLICT);
@@ -91,7 +105,10 @@ public class SettingsService implements Serializable {
 							.matrixParam("login", login).build();
 
 					returnResponse = Response.status(201).header("SettingId", Long.toString(setting.getId()))
-							.location(settingUri).build();
+
+							.location(settingUri)
+
+							.build();
 				}
 			}
 		}

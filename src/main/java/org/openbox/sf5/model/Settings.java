@@ -22,8 +22,11 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+// https://github.com/FasterXML/jackson-annotations/wiki/Jackson-Annotations
 
 @Entity
 @Table(name = "Settings")
@@ -76,6 +79,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 
 	@Column(name = "TheLastEntry", unique = false, nullable = true)
 	@JsonProperty("TheLastEntry")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
 	private Timestamp TheLastEntry;
 
 	public Timestamp getTheLastEntry() {
@@ -141,6 +145,8 @@ public class Settings extends AbstractDbEntity implements Serializable {
 		this.Satellites = Satellites;
 
 	}
+
+	// No-args constructor
 
 	public Settings() {
 	}

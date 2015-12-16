@@ -13,6 +13,7 @@ import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 @Entity
 @Table(name = "SettingsSatellites")
@@ -30,6 +31,7 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 		return this.id;
 	}
 
+	@JsonSetter
 	public void setId(long id) {
 		this.id = id;
 	}
@@ -87,6 +89,8 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 		this.Satellite = Satellite;
 
 	}
+
+	// No-args constructor
 
 	public SettingsSatellites() {
 	}
