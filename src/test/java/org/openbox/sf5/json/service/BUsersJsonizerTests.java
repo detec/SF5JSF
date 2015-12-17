@@ -20,6 +20,16 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class BUsersJsonizerTests extends AbstractJsonizerTest {
 
+	public void shouldCheckCreateUserForSettings() {
+		long userId = usersJsonizer.checkIfUsernameExists(testUsername);
+		if (userId == 0) {
+			Users testUser = new Users("Test user", testUsername);
+			int status = usersJsonizer.saveNewUser(testUser);
+			assertEquals(201, status);
+		}
+
+	}
+
 	@Test
 	public void shouldCreateNewUser() {
 		// here we create user

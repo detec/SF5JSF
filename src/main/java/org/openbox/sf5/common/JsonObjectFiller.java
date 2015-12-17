@@ -21,7 +21,10 @@ import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
 
 import org.hibernate.collection.internal.PersistentList;
+import org.openbox.sf5.json.JacksonObjectMapperConfiguration;
 import org.openbox.sf5.model.AbstractDbEntity;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 // This class is intended for static functions that convert DB objects into JSON.
 public class JsonObjectFiller {
@@ -165,6 +168,12 @@ public class JsonObjectFiller {
 		formatter.setTimeZone(TimeZone.getTimeZone("Europe/Kiev"));
 
 		return formatter;
+	}
+
+	public ObjectMapper objectMapper = new ObjectMapper();
+
+	public void configureMapper() {
+		JacksonObjectMapperConfiguration.configureMapper(objectMapper);
 	}
 
 }
