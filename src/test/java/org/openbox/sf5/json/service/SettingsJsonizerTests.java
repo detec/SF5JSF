@@ -43,10 +43,10 @@ public class SettingsJsonizerTests extends AbstractJsonizerTest {
 
 		Settings setting = BuildTestSetting.buildSetting(readUser, transList);
 
-		int settId = settingsJsonizer.saveNewSetting(setting);
-		assertEquals(201, settId);
+		int status = settingsJsonizer.saveNewSetting(setting);
+		assertEquals(201, status);
 
-		result = settingsJsonizer.getSettingById(settId, testUsername);
+		result = settingsJsonizer.getSettingById(setting.getId(), testUsername);
 		Settings readSetting = mapper.readValue(result, Settings.class);
 		assertThat(readSetting).isNotNull();
 
