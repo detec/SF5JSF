@@ -4,6 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
+import java.time.LocalTime;
 import java.util.List;
 
 import org.junit.Before;
@@ -49,6 +50,8 @@ public class SettingsJsonizerTests extends AbstractJsonizerTest {
 		result = settingsJsonizer.getSettingById(setting.getId(), testUsername);
 		Settings readSetting = mapper.readValue(result, Settings.class);
 		assertThat(readSetting).isNotNull();
+		// here we test if we can deserialize java.sql.Timestamp
+		assertThat(readSetting.getTheLastEntry()).hasMinute(LocalTime.now().getMinute());
 
 	}
 

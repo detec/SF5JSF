@@ -199,13 +199,11 @@
  		<groupId>com.fasterxml.jackson.datatype</groupId>
  		<artifactId>jackson-datatype-jdk8</artifactId>
  		<version>${jackson.version}</version>
- 		<scope>test</scope>
 </dependency>
 <dependency>
    	<groupId>com.fasterxml.jackson.datatype</groupId>
    	<artifactId>jackson-datatype-jsr310</artifactId>
    	<version>${jackson.version}</version>
-   	<scope>test</scope>
 </dependency>
 <!-- http://stackoverflow.com/questions/18872931/custom-objectmapper-with-jersey-2-2-and-jackson-2-1  -->
 <dependency>
@@ -302,7 +300,8 @@
 	<version>${jersey.version}</version>
 	<scope>test</scope>
 </dependency>
-<dependency>
+<!-- There is assumption that this processes bad JSON for Timestamps. -->
+<!-- <dependency>
 	<groupId>org.glassfish.jersey.media</groupId>
 	<artifactId>jersey-media-json-jackson</artifactId>
 	<version>${jersey.version}</version>
@@ -313,7 +312,7 @@
 	<artifactId>jersey-media-json-processing</artifactId>
 	<version>${jersey.version}</version>
 	<scope>test</scope>
-</dependency>
+</dependency> -->
 <dependency>
 	<groupId>org.glassfish.jersey.media</groupId>
 	<artifactId>jersey-media-multipart</artifactId>

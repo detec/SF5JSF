@@ -4,9 +4,9 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.openbox.sf5.json.JacksonObjectMapperConfiguration;
+import org.openbox.sf5.json.MarshallingFeature;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
@@ -28,10 +28,18 @@ public abstract class AbstractServiceTest {
 
 	public Client createTestUserClient() {
 
-		return ClientBuilder.newBuilder().register(JacksonJaxbJsonProvider.class).register(JacksonFeature.class)
+		return ClientBuilder.newBuilder().register(JacksonJaxbJsonProvider.class)
+
+				// .register(JacksonFeature.class)
+
 				.register(MultiPartFeature.class)
 
+				// we have the same objectmapper config for client and server.
+				.register(MarshallingFeature.class)
+
 				// .register(new LoggingFilter())
+
+				// .register(CustomLoggingFilter.class)
 
 				.build();
 	}

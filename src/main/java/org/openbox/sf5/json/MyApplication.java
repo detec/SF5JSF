@@ -9,8 +9,9 @@ public class MyApplication extends ResourceConfig
 {
 
 	public MyApplication() {
-		// 16.12.2015, let's try without custom mappers.
+
 		register(MarshallingFeature.class);
 
+		// register(CustomLoggingFilter.class);
 	}
 }

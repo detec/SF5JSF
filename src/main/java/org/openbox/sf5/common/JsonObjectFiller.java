@@ -69,8 +69,7 @@ public class JsonObjectFiller {
 
 					// checking if it is Date class
 					else if (fields[i].getType().equals(Timestamp.class)) {
-						SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-						formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+						SimpleDateFormat formatter = getJsonDateFormatter();
 						String strValue = formatter.format(fields[i].get(object));
 						JOB.add(fieldName, strValue);
 					}
@@ -128,7 +127,6 @@ public class JsonObjectFiller {
 				JsonObjectBuilder trans = JsonObjectFiller.getJsonObjectBuilderFromClassInstance(t);
 				arrayOfObjects.add(trans);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -157,6 +155,16 @@ public class JsonObjectFiller {
 
 		return sw.toString();
 
+	}
+
+	public static SimpleDateFormat getJsonDateFormatter() {
+		// SimpleDateFormat formatter = new
+		// SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ");
+		// formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+		formatter.setTimeZone(TimeZone.getTimeZone("Europe/Kiev"));
+
+		return formatter;
 	}
 
 }

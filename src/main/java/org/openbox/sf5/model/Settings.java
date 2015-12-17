@@ -79,7 +79,10 @@ public class Settings extends AbstractDbEntity implements Serializable {
 
 	@Column(name = "TheLastEntry", unique = false, nullable = true)
 	@JsonProperty("TheLastEntry")
-	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
+	// @JsonFormat(shape = JsonFormat.Shape.STRING, pattern =
+	// "yyyy-MM-dd'T'HH:mm:ssZ")
+	// shape=JsonFormat.Shape - it is new for Jackson
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ", timezone = "Europe/Kiev")
 	private Timestamp TheLastEntry;
 
 	public Timestamp getTheLastEntry() {
