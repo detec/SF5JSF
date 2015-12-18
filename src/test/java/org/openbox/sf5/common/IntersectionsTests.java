@@ -90,6 +90,7 @@ public class IntersectionsTests extends AbstractJsonizerTest {
 		Settings setting = new Settings();
 		setting.setName("Intersections test");
 		setting.setUser(usr);
+		setting.setTheLastEntry(new java.sql.Timestamp(System.currentTimeMillis()));
 		objectsController.saveOrUpdate(setting);
 
 		List<Transponders> transList = listService.ObjectsList(Transponders.class);

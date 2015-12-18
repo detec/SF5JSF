@@ -48,12 +48,12 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	}
 
 	public String getName() {
-		return this.Name;
+		return Name;
 	}
 
 	public long getId() {
 
-		return this.id;
+		return id;
 	}
 
 	public void setId(long id) {
@@ -70,7 +70,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	private String PropsFile;
 
 	public String getPropsFile() {
-		return this.PropsFile;
+		return PropsFile;
 	}
 
 	public void setPropsFile(String PropsFile) {
@@ -83,10 +83,11 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	// "yyyy-MM-dd'T'HH:mm:ssZ")
 	// shape=JsonFormat.Shape - it is new for Jackson
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ", timezone = "Europe/Kiev")
+	@NotNull
 	private Timestamp TheLastEntry;
 
 	public Timestamp getTheLastEntry() {
-		return this.TheLastEntry;
+		return TheLastEntry;
 	}
 
 	public void setTheLastEntry(Timestamp TheLastEntry) {
@@ -100,7 +101,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	private Users User;
 
 	public Users getUser() {
-		return this.User;
+		return User;
 	}
 
 	public void setUser(Users User) {
@@ -115,7 +116,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	private List<SettingsConversion> Conversion;
 
 	public List<SettingsConversion> getConversion() {
-		return this.Conversion;
+		return Conversion;
 	}
 
 	public void setConversion(List<SettingsConversion> Conversion) {
@@ -130,7 +131,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	private List<SettingsSatellites> Satellites;
 
 	public List<SettingsSatellites> getSatellites() {
-		return this.Satellites;
+		return Satellites;
 	}
 
 	public void setSatellites(List<SettingsSatellites> Satellites) {
@@ -142,7 +143,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 
 		this.Name = Name;
 		this.PropsFile = PropsFile;
-		this.TheLastEntry = lastEntry;
+		TheLastEntry = lastEntry;
 		this.User = User;
 		this.Conversion = Conversion;
 		this.Satellites = Satellites;
@@ -155,7 +156,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	}
 
 	public Settings(String pName) {
-		this.Name = pName;
+		Name = pName;
 	}
 
 	@Override
@@ -171,10 +172,10 @@ public class Settings extends AbstractDbEntity implements Serializable {
 			return false;
 		}
 		Settings otherSettings = (Settings) other;
-		if (otherSettings.Name.equals(this.Name) && otherSettings.PropsFile.equals(this.PropsFile)
-				&& otherSettings.TheLastEntry == this.TheLastEntry && otherSettings.User.equals(this.User)
-				&& otherSettings.Conversion.equals(this.Conversion)
-				&& otherSettings.Satellites.equals(this.Satellites)) {
+		if (otherSettings.Name.equals(Name) && otherSettings.PropsFile.equals(PropsFile)
+				&& otherSettings.TheLastEntry == TheLastEntry && otherSettings.User.equals(User)
+				&& otherSettings.Conversion.equals(Conversion)
+				&& otherSettings.Satellites.equals(Satellites)) {
 			return true;
 		} else {
 			return false;

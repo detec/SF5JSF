@@ -25,6 +25,9 @@ public class ApplicationConfig extends Application {
 		// http://stackoverflow.com/questions/18252990/uploading-file-using-jersey-over-restfull-service-and-the-resource-configuration
         // Add additional features such as support for Multipart.
         resources.add(MultiPartFeature.class);
+
+        // let's try to register my custom marshalling
+        resources.add(MarshallingFeature.class);
 		return resources;
 
 

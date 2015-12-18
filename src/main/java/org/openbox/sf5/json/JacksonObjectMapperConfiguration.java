@@ -30,8 +30,9 @@ public class JacksonObjectMapperConfiguration {
 		// mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
 		// true);
 
-		// mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
-		// false);
+		// https://metabroadcast.com/blog/using-jackson-2-with-jersey
+		 mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
+		 false);
 		// mapper.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE,
 		// true);
 		// mapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS,

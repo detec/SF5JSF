@@ -13,6 +13,8 @@ public class CustomJsonProvider extends JacksonJaxbJsonProvider {
 
 	private static ObjectMapper mapper = new ObjectMapper();
 
+	// http://stackoverflow.com/questions/18872931/custom-objectmapper-with-jersey-2-2-and-jackson-2-1/18917918#18917918
+
 	static {
 		// mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 		// false);

@@ -15,8 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.openbox.sf5.model.Settings;
-import org.openbox.sf5.model.Transponders;
 
 // Using Hibernate Validator instead of Spring
 @RunWith(JUnit4.class)
@@ -41,7 +39,7 @@ public class ValidatorTests {
 		setting.setName("");
 
 		Set<ConstraintViolation<Settings>> constraintViolations = validator.validate(setting);
-		assertThat(constraintViolations.size()).isEqualTo(2);
+		assertThat(constraintViolations.size()).isEqualTo(3);
 
 		Iterator<ConstraintViolation<Settings>> settingIterator = constraintViolations.iterator();
 
