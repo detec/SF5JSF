@@ -149,8 +149,8 @@ public class SettingsServiceIT extends AbstractServiceTest {
 		// Response response =
 		// target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 
-		Invocation.Builder invocationBuilder = serviceTarget.path("exists").path("login").path(testUsername)
-				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+		Invocation.Builder invocationBuilder = commonTarget.path("users").path("exists").path("login")
+				.path(testUsername).request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 		response = invocationBuilder.get();
 
 		if (response.getStatus() == Status.ACCEPTED.getStatusCode()) {

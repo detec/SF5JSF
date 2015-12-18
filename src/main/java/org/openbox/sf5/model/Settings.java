@@ -17,10 +17,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.openbox.sf5.json.config.TimestampAdapter;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -82,9 +84,14 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	// @JsonFormat(shape = JsonFormat.Shape.STRING, pattern =
 	// "yyyy-MM-dd'T'HH:mm:ssZ")
 	// shape=JsonFormat.Shape - it is new for Jackson
+	// it is only for Jackson
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ", timezone = "Europe/Kiev")
 	@NotNull
-	private Timestamp TheLastEntry;
+	@XmlJavaTypeAdapter(TimestampAdapter.class) // this is for MOXy
+												// http://www.eclipse.org/eclipselink/documentation/2.6/moxy/advanced_concepts006.htm
+	private Timestamp TheLastEntry; // As JSON with MOXy it comes as expected
+									// with TimestampAdapter dateformat from
+									// server
 
 	public Timestamp getTheLastEntry() {
 		return TheLastEntry;
@@ -174,8 +181,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 		Settings otherSettings = (Settings) other;
 		if (otherSettings.Name.equals(Name) && otherSettings.PropsFile.equals(PropsFile)
 				&& otherSettings.TheLastEntry == TheLastEntry && otherSettings.User.equals(User)
-				&& otherSettings.Conversion.equals(Conversion)
-				&& otherSettings.Satellites.equals(Satellites)) {
+				&& otherSettings.Conversion.equals(Conversion) && otherSettings.Satellites.equals(Satellites)) {
 			return true;
 		} else {
 			return false;

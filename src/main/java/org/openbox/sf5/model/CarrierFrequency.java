@@ -30,7 +30,7 @@ public enum CarrierFrequency {
 	public static CarrierFrequency fromString(String string) {
 		CarrierFrequency status = FORMAT_MAP.get(string);
 		if (status == null) {
-			throw new IllegalArgumentException(string + " has no corresponding	 value");
+			throw new IllegalArgumentException(string + " has no corresponding value");
 		}
 		return status;
 	}

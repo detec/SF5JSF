@@ -101,8 +101,11 @@ public class SettingsService implements Serializable {
 
 					// setting successfully saved, should add headers.
 					UriBuilder ub = uriInfo.getAbsolutePathBuilder();
-					URI settingUri = ub.path("filter").path("id").path(Long.toString(setting.getId()))
-							.matrixParam("login", login).build();
+					URI settingUri = ub
+
+							.path("filter").path("id")
+
+							.path(Long.toString(setting.getId())).matrixParam("login", login).build();
 
 					returnResponse = Response.status(201).header("SettingId", Long.toString(setting.getId()))
 

@@ -5,7 +5,7 @@ import org.openbox.sf5.dao.DAOImpl;
 import org.openbox.sf5.dao.DAOList;
 import org.openbox.sf5.dao.DAOListImpl;
 import org.openbox.sf5.db.ConnectionManager;
-import org.openbox.sf5.json.JacksonObjectMapperConfiguration;
+import org.openbox.sf5.json.config.JacksonObjectMapperConfiguration;
 import org.openbox.sf5.service.CriterionService;
 import org.openbox.sf5.service.ObjectService;
 import org.openbox.sf5.service.ObjectServiceImpl;

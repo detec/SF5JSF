@@ -1,4 +1,4 @@
-package org.openbox.sf5.json;
+package org.openbox.sf5.json.config;
 
 import org.openbox.sf5.common.JsonObjectFiller;
 
@@ -20,8 +20,10 @@ public class JacksonObjectMapperConfiguration {
 		mapper.setSerializationInclusion(JsonInclude.Include.ALWAYS);
 		mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
 		mapper.enable(SerializationFeature.INDENT_OUTPUT);
+
 		mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
 		mapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
+
 		// mapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS,
 		// true);
 
@@ -31,8 +33,7 @@ public class JacksonObjectMapperConfiguration {
 		// true);
 
 		// https://metabroadcast.com/blog/using-jackson-2-with-jersey
-		 mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS,
-		 false);
+		mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
 		// mapper.configure(DeserializationFeature.ADJUST_DATES_TO_CONTEXT_TIME_ZONE,
 		// true);
 		// mapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS,

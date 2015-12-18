@@ -30,7 +30,7 @@ public enum DVBStandards {
 	public static DVBStandards fromString(String string) {
 		DVBStandards status = FORMAT_MAP.get(string);
 		if (status == null) {
-			throw new IllegalArgumentException(string + " has no corresponding	 value");
+			throw new IllegalArgumentException(string + " has no corresponding value");
 		}
 		return status;
 	}

@@ -5,8 +5,8 @@ import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
-import org.openbox.sf5.json.JacksonObjectMapperConfiguration;
-import org.openbox.sf5.json.MarshallingFeature;
+import org.openbox.sf5.json.config.JacksonObjectMapperConfiguration;
+import org.openbox.sf5.json.config.MarshallingFeature;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
@@ -28,9 +28,11 @@ public abstract class AbstractServiceTest {
 
 	public Client createTestUserClient() {
 
-		return ClientBuilder.newBuilder().register(JacksonJaxbJsonProvider.class)
+		return ClientBuilder.newBuilder()
 
-				// .register(JacksonFeature.class)
+				// 18.12.2015, will try MOXy, not Jackson
+				// .register(MoxyJsonFeature.class)
+				.register(JacksonJaxbJsonProvider.class)
 
 				.register(MultiPartFeature.class)
 
@@ -38,8 +40,6 @@ public abstract class AbstractServiceTest {
 				.register(MarshallingFeature.class)
 
 				// .register(new LoggingFilter())
-
-				// .register(CustomLoggingFilter.class)
 
 				.build();
 	}

@@ -72,6 +72,7 @@ public class Transponders extends AbstractDbEntity implements Serializable {
 	@Enumerated(EnumType.ORDINAL)
 	@Column(nullable = true)
 	@JsonProperty("FEC")
+	@NotNull
 	private TypesOfFEC FEC;
 
 	public TypesOfFEC getFEC() {

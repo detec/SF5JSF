@@ -34,6 +34,7 @@ public class ValidatorTests {
 		HashMap<String, String> valuesmap = new HashMap<String, String>();
 		valuesmap.put("User", "may not be null");
 		valuesmap.put("Name", "may not be empty");
+		valuesmap.put("TheLastEntry", "may not be null");
 
 		Settings setting = new Settings();
 		setting.setName("");
@@ -44,13 +45,13 @@ public class ValidatorTests {
 		Iterator<ConstraintViolation<Settings>> settingIterator = constraintViolations.iterator();
 
 		// check user
-//		ConstraintViolation<Settings> violation = settingIterator.next();
-//		assertThat(violation.getPropertyPath().toString()).isEqualTo("User");
-//		assertThat(violation.getMessage()).isEqualTo("may not be null");
-//
-//		violation = settingIterator.next();
-//		assertThat(violation.getPropertyPath().toString()).isEqualTo("Name");
-//		assertThat(violation.getMessage()).isEqualTo("may not be empty");
+		// ConstraintViolation<Settings> violation = settingIterator.next();
+		// assertThat(violation.getPropertyPath().toString()).isEqualTo("User");
+		// assertThat(violation.getMessage()).isEqualTo("may not be null");
+		//
+		// violation = settingIterator.next();
+		// assertThat(violation.getPropertyPath().toString()).isEqualTo("Name");
+		// assertThat(violation.getMessage()).isEqualTo("may not be empty");
 
 		while (settingIterator.hasNext()) {
 			ConstraintViolation<Settings> settingViolation = settingIterator.next();
@@ -62,13 +63,12 @@ public class ValidatorTests {
 
 		// first round. All fields are empty
 		Set<ConstraintViolation<Transponders>> trsnapondersConstraintViolations = validator.validate(trans);
-		assertThat(trsnapondersConstraintViolations.size()).isEqualTo(7);
+		assertThat(trsnapondersConstraintViolations.size()).isEqualTo(8);
 		// we move iterator in the cycle
 		// ConstraintViolation<Transponders> transViolation =
 		// trsnapondersConstraintViolations.iterator().next();
 
 		Iterator<ConstraintViolation<Transponders>> iterator = trsnapondersConstraintViolations.iterator();
-
 
 		valuesmap.put("RangeOfDVB", "may not be null");
 		valuesmap.put("Carrier", "may not be null");
@@ -77,6 +77,7 @@ public class ValidatorTests {
 		valuesmap.put("VersionOfTheDVB", "may not be null");
 		valuesmap.put("Speed", "must be greater than or equal to 1000");
 		valuesmap.put("Frequency", "must be greater than or equal to 2000");
+		valuesmap.put("FEC", "may not be null");
 
 		while (iterator.hasNext()) {
 

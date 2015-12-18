@@ -215,7 +215,6 @@
 	<groupId>com.fasterxml.jackson.core</groupId>
 	<artifactId>jackson-annotations</artifactId>
 	<version>${jackson.version}</version>
-	<scope>provided</scope>
 </dependency>
 <dependency>
 	<groupId>com.fasterxml.jackson.core</groupId>
@@ -316,6 +315,11 @@
 <dependency>
 	<groupId>org.glassfish.jersey.media</groupId>
 	<artifactId>jersey-media-multipart</artifactId>
+	<version>${jersey.version}</version>
+</dependency>
+<dependency>
+	<groupId>org.glassfish.jersey.media</groupId>
+	<artifactId>jersey-media-moxy</artifactId>
 	<version>${jersey.version}</version>
 </dependency>
 <dependency>

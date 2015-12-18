@@ -21,7 +21,7 @@ import javax.json.JsonWriterFactory;
 import javax.json.stream.JsonGenerator;
 
 import org.hibernate.collection.internal.PersistentList;
-import org.openbox.sf5.json.JacksonObjectMapperConfiguration;
+import org.openbox.sf5.json.config.JacksonObjectMapperConfiguration;
 import org.openbox.sf5.model.AbstractDbEntity;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
