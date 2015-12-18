@@ -6,7 +6,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
-import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.openbox.sf5.json.config.JacksonObjectMapperConfiguration;
 import org.openbox.sf5.json.config.MarshallingFeature;
@@ -47,7 +46,8 @@ public abstract class AbstractServiceTest {
 				// we have the same objectmapper config for client and server.
 				.register(MarshallingFeature.class)
 
-				.register(new LoggingFilter(LOGGER, true))
+				// Log showed that transponders come OK.
+				// .register(new LoggingFilter(LOGGER, true))
 
 				.build();
 	}
