@@ -170,7 +170,7 @@ public class Transponders extends AbstractDbEntity implements Serializable {
 	}
 
 	public Transponders(String pFrequency) {
-		this.Frequency = Long.parseLong(pFrequency);
+		Frequency = Long.parseLong(pFrequency);
 	}
 
 	@Override
@@ -186,10 +186,15 @@ public class Transponders extends AbstractDbEntity implements Serializable {
 			return false;
 		}
 		Transponders otherTransponders = (Transponders) other;
-		if (otherTransponders.Frequency == Frequency && otherTransponders.Polarization.equals(Polarization)
-				&& otherTransponders.FEC.equals(FEC) && otherTransponders.Carrier.equals(Carrier)
-				&& otherTransponders.Speed == Speed && otherTransponders.VersionOfTheDVB.equals(VersionOfTheDVB)
-				&& otherTransponders.RangeOfDVB.equals(RangeOfDVB) && otherTransponders.Satellite.equals(Satellite)) {
+		if
+//		(otherTransponders.Frequency == Frequency && otherTransponders.Polarization.equals(Polarization)
+//				&& otherTransponders.FEC.equals(FEC) && otherTransponders.Carrier.equals(Carrier)
+//				&& otherTransponders.Speed == Speed && otherTransponders.VersionOfTheDVB.equals(VersionOfTheDVB)
+//				&& otherTransponders.RangeOfDVB.equals(RangeOfDVB) && otherTransponders.Satellite.equals(Satellite))
+
+		// in database applications only id is crucial.
+		(otherTransponders.id == id)
+		{
 			return true;
 		} else {
 			return false;

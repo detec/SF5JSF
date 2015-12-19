@@ -80,7 +80,13 @@ public class SettingsService implements Serializable {
 		if (result == 0) {
 			// UNAUTHORIZED
 			returnResponse = Response.status(401).entity("Login " + login + " does not exist!").build();
-		} else {
+
+
+		}
+		else if (setting == null) {
+			returnResponse = Response.status(401).entity("Setting deserialized is null!").build();
+		}
+		else {
 			// if user and login do not coincide
 			if (!setting.getUser().getLogin().equals(login)) {
 				returnResponse = Response.status(406)

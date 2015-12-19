@@ -206,11 +206,11 @@
    	<version>${jackson.version}</version>
 </dependency>
 <!-- http://stackoverflow.com/questions/18872931/custom-objectmapper-with-jersey-2-2-and-jackson-2-1  -->
-<dependency>
+<!-- <dependency>
 	<groupId>com.fasterxml.jackson.jaxrs</groupId>
 	<artifactId>jackson-jaxrs-json-provider</artifactId>
 	<version>${jackson.version}</version>
-</dependency>
+</dependency> -->
 <dependency>
 	<groupId>com.fasterxml.jackson.core</groupId>
 	<artifactId>jackson-annotations</artifactId>
@@ -321,6 +321,7 @@
 	<groupId>org.glassfish.jersey.media</groupId>
 	<artifactId>jersey-media-moxy</artifactId>
 	<version>${jersey.version}</version>
+	<scope>provided</scope>
 </dependency>
 <dependency>
 	<groupId>org.glassfish.jersey.core</groupId>

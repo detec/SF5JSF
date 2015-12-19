@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
@@ -105,6 +106,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	@JoinColumn(name = "User", unique = false, nullable = false)
 	@NotNull
 	@JsonProperty("User")
+	@Valid
 	private Users User;
 
 	public Users getUser() {

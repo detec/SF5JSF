@@ -4,7 +4,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
+import java.util.Set;
 
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
@@ -22,11 +27,16 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 
 	private static final String servicePath = "transponders";
 
+	private Validator validator;
+
 	@Before
 	public void setUp() {
 		setUpAbstractTestUser();
 
 		serviceTarget = commonTarget.path(servicePath);
+
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+		validator = factory.getValidator();
 	}
 
 	@Test
@@ -54,6 +64,7 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 
 		assertThat(transList).isNotNull();
 		assertThat(transList.size()).isGreaterThan(0);
+		validateTranspondersList(transList);
 
 	}
 
@@ -76,6 +87,8 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 		Transponders trans = response.readEntity(Transponders.class);
 
 		assertThat(trans).isNotNull();
+		Set<ConstraintViolation<Transponders>> constraintViolations = validator.validate(trans);
+		assertEquals(0, constraintViolations.size());
 
 	}
 
@@ -100,7 +113,7 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 
 		assertThat(transList).isNotNull();
 		assertThat(transList.size()).isGreaterThan(0);
-
+		validateTranspondersList(transList);
 	}
 
 	@Test
@@ -124,6 +137,19 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 
 		assertThat(transList).isNotNull();
 		assertThat(transList.size()).isGreaterThan(0);
+		validateTranspondersList(transList);
+	}
+
+	public void validateTranspondersList(List<Transponders> transList) {
+		int[] resultArray = new int[1];
+
+		transList.forEach(t -> {
+			Set<ConstraintViolation<Transponders>> constraintViolations = validator.validate(t);
+			resultArray[0] = resultArray[0] + constraintViolations.size();
+
+		});
+
+		assertEquals(0, resultArray[0]);
 	}
 
 }

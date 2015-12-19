@@ -4,7 +4,6 @@ import javax.ws.rs.core.Feature;
 import javax.ws.rs.core.FeatureContext;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider;
 
 public class MarshallingFeature implements Feature {
 
@@ -30,13 +29,13 @@ public class MarshallingFeature implements Feature {
 		}
 	};
 
-	private static final JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider() {
-		{
-
-			JacksonObjectMapperConfiguration.configureMapper(mapper);
-			setMapper(mapper);
-		}
-	};
+//	private static final JacksonJaxbJsonProvider provider = new JacksonJaxbJsonProvider() {
+//		{
+//
+//			JacksonObjectMapperConfiguration.configureMapper(mapper);
+//			setMapper(mapper);
+//		}
+//	};
 
 	/**
 	 * This method is what actually gets called, when your ResourceConfig
@@ -44,7 +43,7 @@ public class MarshallingFeature implements Feature {
 	 */
 	@Override
 	public boolean configure(FeatureContext context) {
-		context.register(provider);
+		//context.register(provider);
 		return true;
 	}
 
