@@ -211,11 +211,11 @@
 	<artifactId>jackson-jaxrs-json-provider</artifactId>
 	<version>${jackson.version}</version>
 </dependency> -->
-<!-- <dependency>
+<dependency>
 	<groupId>com.fasterxml.jackson.core</groupId>
 	<artifactId>jackson-annotations</artifactId>
 	<version>${jackson.version}</version>
-</dependency> -->
+</dependency>
 <!-- <dependency>
 	<groupId>com.fasterxml.jackson.core</groupId>
 	<artifactId>jackson-core</artifactId>
@@ -301,13 +301,12 @@
 	<scope>test</scope>
 </dependency>
 <!-- There is assumption that this processes bad JSON for Timestamps. -->
-<!-- <dependency>
+<dependency>
 	<groupId>org.glassfish.jersey.media</groupId>
 	<artifactId>jersey-media-json-jackson</artifactId>
 	<version>${jersey.version}</version>
-	<scope>test</scope>
 </dependency>
-<dependency>
+<!-- <dependency>
 	<groupId>org.glassfish.jersey.media</groupId>
 	<artifactId>jersey-media-json-processing</artifactId>
 	<version>${jersey.version}</version>
@@ -318,12 +317,12 @@
 	<artifactId>jersey-media-multipart</artifactId>
 	<version>${jersey.version}</version>
 </dependency>
-<dependency>
+<!-- <dependency>
 	<groupId>org.glassfish.jersey.media</groupId>
 	<artifactId>jersey-media-moxy</artifactId>
 	<version>${jersey.version}</version>
 	<scope>test</scope>
-</dependency>
+</dependency> -->
 <dependency>
 	<groupId>org.glassfish.jersey.core</groupId>
 	<artifactId>jersey-server</artifactId>

@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import javax.ws.rs.ApplicationPath;
 
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
@@ -32,6 +33,9 @@ public class MyApplicationResourceConfig extends ResourceConfig {
 		// LOGGER.info("Registering custom MarshallingFeature");
 		// register(MarshallingFeature.class);
 
+		register(JacksonFeature.class);
+		register(MyObjectMapperProvider.class);
+
 		// Enable Tracing support.
 		property(ServerProperties.TRACING, "ALL");
 
@@ -42,10 +46,10 @@ public class MyApplicationResourceConfig extends ResourceConfig {
 
 		// 18.12.2015 - let's try to use built-in MOXy.
 		// disable automatic discovery of providers
-		// property(ServerProperties.METAINF_SERVICES_LOOKUP_DISABLE, true);
+		 property(ServerProperties.METAINF_SERVICES_LOOKUP_DISABLE, true);
 
 		// it finally works with
-		// property(ServerProperties.MOXY_JSON_FEATURE_DISABLE, true);
+		 property(ServerProperties.MOXY_JSON_FEATURE_DISABLE, true);
 
 	}
 

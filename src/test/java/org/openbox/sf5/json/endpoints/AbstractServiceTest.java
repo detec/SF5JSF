@@ -6,9 +6,11 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.openbox.sf5.json.config.JacksonObjectMapperConfiguration;
 import org.openbox.sf5.json.config.MyApplicationResourceConfig;
+import org.openbox.sf5.json.config.MyObjectMapperProvider;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -45,7 +47,8 @@ public abstract class AbstractServiceTest {
 
 				// without Jackson feature Strings are not unmarshalled
 				// But MOXy doesn't understand this date format
-				//.register(JacksonFeature.class)
+				.register(JacksonFeature.class)
+				.register(MyObjectMapperProvider.class)
 
 				//.register(JacksonJsonProvider.class)
 
