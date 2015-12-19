@@ -10,6 +10,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 @Entity
 @Table(name = "SettingsSatellites")
+@XmlRootElement
 public class SettingsSatellites extends AbstractDbEntity implements Serializable {
 
 	private static final long serialVersionUID = -2945693668519991789L;
@@ -28,7 +30,7 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 
 	public long getId() {
 
-		return this.id;
+		return id;
 	}
 
 	@JsonSetter
@@ -59,7 +61,7 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 	private Satellites Satellite;
 
 	public Satellites getSatellite() {
-		return this.Satellite;
+		return Satellite;
 	}
 
 	public void setSatellite(Satellites Satellite) {
@@ -67,7 +69,7 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 	}
 
 	public Settings getparent_id() {
-		return this.parent_id;
+		return parent_id;
 	}
 
 	public void setparent_id(Settings parent_id) {
@@ -75,7 +77,7 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 	}
 
 	public long getLineNumber() {
-		return this.LineNumber;
+		return LineNumber;
 	}
 
 	public void setLineNumber(long LineNumber) {
@@ -108,8 +110,8 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 			return false;
 		}
 		SettingsSatellites otherSettingsSatellites = (SettingsSatellites) other;
-		if (otherSettingsSatellites.parent_id.equals(this.parent_id)
-				&& otherSettingsSatellites.Satellite.equals(this.Satellite)) {
+		if (otherSettingsSatellites.parent_id.equals(parent_id)
+				&& otherSettingsSatellites.Satellite.equals(Satellite)) {
 			return true;
 		} else {
 			return false;

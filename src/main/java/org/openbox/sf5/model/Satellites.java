@@ -8,11 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "Satellites")
+@XmlRootElement
 public class Satellites extends AbstractDbEntity implements Serializable {
 
 	private static final long serialVersionUID = -2077586473579019427L;

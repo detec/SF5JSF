@@ -12,12 +12,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "SettingsConversion")
+@XmlRootElement
 public class SettingsConversion extends AbstractDbEntity implements Serializable {
 
 	private static final long serialVersionUID = -399944579251735871L;
@@ -28,7 +30,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 
 	public long getId() {
 
-		return this.id;
+		return id;
 	}
 
 	public void setId(long id) {
@@ -56,7 +58,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	private Transponders Transponder;
 
 	public Transponders getTransponder() {
-		return this.Transponder;
+		return Transponder;
 	}
 
 	public void setTransponder(Transponders Transponder) {
@@ -68,7 +70,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	private long Satindex;
 
 	public long getSatindex() {
-		return this.Satindex;
+		return Satindex;
 	}
 
 	public void setSatindex(long Satindex) {
@@ -80,7 +82,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	private long Tpindex;
 
 	public long getTpindex() {
-		return this.Tpindex;
+		return Tpindex;
 	}
 
 	public void setTpindex(long Tpindex) {
@@ -92,7 +94,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	private String Note;
 
 	public String getNote() {
-		return this.Note;
+		return Note;
 	}
 
 	public void setNote(String Note) {
@@ -104,7 +106,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	private long TheLineOfIntersection;
 
 	public long getTheLineOfIntersection() {
-		return this.TheLineOfIntersection;
+		return TheLineOfIntersection;
 	}
 
 	public void setTheLineOfIntersection(long TheLineOfIntersection) {
@@ -112,7 +114,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	}
 
 	public Settings getparent_id() {
-		return this.parent_id;
+		return parent_id;
 	}
 
 	public void setparent_id(Settings parent_id) {
@@ -120,7 +122,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	}
 
 	public long getLineNumber() {
-		return this.LineNumber;
+		return LineNumber;
 	}
 
 	public void setLineNumber(long LineNumber) {
@@ -156,11 +158,11 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 			return false;
 		}
 		SettingsConversion otherSettingsConversion = (SettingsConversion) other;
-		if (otherSettingsConversion.parent_id.equals(this.parent_id)
-				&& otherSettingsConversion.Transponder.equals(this.Transponder)
-				&& otherSettingsConversion.Satindex == this.Satindex && otherSettingsConversion.Tpindex == this.Tpindex
-				&& otherSettingsConversion.Note.equals(this.Note)
-				&& otherSettingsConversion.TheLineOfIntersection == this.TheLineOfIntersection) {
+		if (otherSettingsConversion.parent_id.equals(parent_id)
+				&& otherSettingsConversion.Transponder.equals(Transponder)
+				&& otherSettingsConversion.Satindex == Satindex && otherSettingsConversion.Tpindex == Tpindex
+				&& otherSettingsConversion.Note.equals(Note)
+				&& otherSettingsConversion.TheLineOfIntersection == TheLineOfIntersection) {
 			return true;
 		} else {
 			return false;

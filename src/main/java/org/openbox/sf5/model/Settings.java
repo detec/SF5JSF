@@ -18,6 +18,7 @@ import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.hibernate.annotations.Cascade;
@@ -33,6 +34,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "Settings")
+@XmlRootElement
 public class Settings extends AbstractDbEntity implements Serializable {
 
 	private static final long serialVersionUID = 7055744176770843683L;

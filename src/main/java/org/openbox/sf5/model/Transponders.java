@@ -15,11 +15,13 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "Transponders")
+@XmlRootElement
 public class Transponders extends AbstractDbEntity implements Serializable {
 
 	private static final long serialVersionUID = -3945460836260580586L;
