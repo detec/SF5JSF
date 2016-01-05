@@ -10,6 +10,7 @@ import java.util.stream.Stream;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -43,7 +44,9 @@ public class SendTransponderFilesJSONIT extends AbstractServiceTest {
 			final FormDataMultiPart multipart = (FormDataMultiPart) new FormDataMultiPart().field("foo", "bar")
 					.bodyPart(filePart);
 
-			Invocation.Builder invocationBuilder = serviceTarget.path("upload").request();
+			// 05.01.2016, trying to specify explicitly return type as for XML
+			// there is no direct converter
+			Invocation.Builder invocationBuilder = serviceTarget.path("upload").request(MediaType.APPLICATION_JSON);
 			// Response responsePost =
 			// invocationBuilder.post(Entity.entity(setting,
 			// MediaType.APPLICATION_JSON));

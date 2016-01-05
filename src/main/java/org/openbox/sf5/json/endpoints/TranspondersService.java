@@ -33,6 +33,7 @@ import org.openbox.sf5.service.ObjectsListService;
 @Named
 @SessionScoped
 @Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+@Consumes({ MediaType.MULTIPART_FORM_DATA })
 @Path("transponders/")
 public class TranspondersService implements Serializable {
 

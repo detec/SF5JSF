@@ -1,6 +1,7 @@
 package org.openbox.sf5.json.endpoints;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -14,17 +15,21 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.hibernate.criterion.Criterion;
 import org.openbox.sf5.json.service.UsersJsonizer;
 import org.openbox.sf5.model.Users;
+import org.openbox.sf5.service.CriterionService;
+import org.openbox.sf5.service.ObjectsListService;
 
 @Named
 @SessionScoped
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 @Path("users/")
 public class UsersService implements Serializable {
 
 	@POST
 	@Path("create")
-	@Consumes({ MediaType.APPLICATION_JSON })
 	public Response createUser(Users user) {
 		Response returnResponse = null;
 
@@ -41,21 +46,12 @@ public class UsersService implements Serializable {
 			return returnResponse;
 		}
 
-		// HttpHeaders headers = new HttpHeaders();
-		// headers.add("UserId", Long.toString(user.getId()));
-		// return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
-
-		// https://jersey.java.net/documentation/latest/user-guide.html#d0e6615
-		// Building responses.
-
-		// returnResponse = Response.created(user.getId()).build();
 		// returning id as result
 		returnResponse = Response.status(201).entity(new Long(user.getId()).toString()).build();
 		return returnResponse;
 	}
 
 	@GET
-	@Produces("application/json")
 	@Path("exists/login/{login}")
 	public Response ifSuchLoginExists(@PathParam("login") String login) {
 		Response returnResponse = null;
@@ -69,17 +65,42 @@ public class UsersService implements Serializable {
 		return returnResponse;
 	}
 
+	// @GET
+	// @Path("filter/login/{login}")
+	// public Response getUserByLogin(@PathParam("login") String login) {
+	//
+	// Response returnResponse = null;
+	// String result = usersJsonizer.getUserByLogin(login);
+	// if (result.isEmpty()) {
+	// return Response.status(404).build();
+	// } else {
+	// returnResponse = Response.status(200).entity(result).build();
+	// }
+	//
+	// return returnResponse;
+	//
+	// }
+
 	@GET
-	@Produces("application/json")
 	@Path("filter/login/{login}")
 	public Response getUserByLogin(@PathParam("login") String login) {
 
 		Response returnResponse = null;
-		String result = usersJsonizer.getUserByLogin(login);
-		if (result.isEmpty()) {
-			return Response.status(404).build();
-		} else {
-			returnResponse = Response.status(200).entity(result).build();
+		Criterion criterion = criterionService.getCriterionByClassFieldAndStringValue(Users.class, "Login", login);
+
+		if (criterion == null) {
+			returnResponse = Response.status(204).entity("Could not construct valid criterion for login " + login)
+					.build();
+		}
+
+		else {
+			List<Users> userList = listService.ObjectsCriterionList(Users.class, criterion);
+			if (userList.size() == 0) {
+				returnResponse = Response.status(204).entity("User not found with login " + login).build();
+			} else {
+				Users returnUser = userList.get(0);
+				returnResponse = Response.status(200).entity(returnUser).build();
+			}
 		}
 
 		return returnResponse;
@@ -88,6 +109,12 @@ public class UsersService implements Serializable {
 
 	@Inject
 	private UsersJsonizer usersJsonizer;
+
+	@Inject
+	private ObjectsListService listService;
+
+	@Inject
+	private CriterionService criterionService;
 
 	public UsersJsonizer getUsersJsonizer() {
 		return usersJsonizer;
