@@ -22,7 +22,11 @@ public class JacksonObjectMapperConfiguration {
 		mapper.enable(SerializationFeature.INDENT_OUTPUT);
 
 		mapper.configure(SerializationFeature.WRITE_ENUMS_USING_TO_STRING, true);
+		// 05.01.2016, after using MOXy at server
+		// Toggling this doesn't help
 		mapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING, true);
+		// mapper.configure(DeserializationFeature.READ_ENUMS_USING_TO_STRING,
+		// false);
 
 		// mapper.configure(DeserializationFeature.READ_DATE_TIMESTAMPS_AS_NANOSECONDS,
 		// true);

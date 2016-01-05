@@ -30,6 +30,7 @@ public class MyApplicationResourceConfig extends ResourceConfig {
 		// https://jersey.java.net/documentation/latest/media.html#d0e9110
 		// Enabling MOXy
 		register(MoxyXmlFeature.class);
+		register(MOXyJsonContextResolver.class);
 
 		// class to configure default MOXy provider.
 		// register(MOXyJsonContextResolver.class);
@@ -56,6 +57,10 @@ public class MyApplicationResourceConfig extends ResourceConfig {
 		// property(ServerProperties.MOXY_JSON_FEATURE_DISABLE, true);
 		// 05.01.2016
 		property(ServerProperties.MOXY_JSON_FEATURE_DISABLE, false);
+
+		// https://jersey.java.net/documentation/latest/media.html#d0e9110
+		// property(MarshallerProperties.JSON_MARSHAL_EMPTY_COLLECTIONS, false);
+		// property(MarshallerProperties.INDENT_STRING, true);
 
 	}
 

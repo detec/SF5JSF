@@ -2,6 +2,7 @@ package org.openbox.sf5.json.endpoints;
 
 import java.io.InputStream;
 import java.io.Serializable;
+import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -13,17 +14,25 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import org.openbox.sf5.json.service.CommonJsonizer;
 import org.openbox.sf5.json.service.TranspondersJsonizer;
+import org.openbox.sf5.model.Satellites;
 import org.openbox.sf5.model.Transponders;
+import org.openbox.sf5.service.CriterionService;
+import org.openbox.sf5.service.ObjectsController;
+import org.openbox.sf5.service.ObjectsListService;
 
 @Named
 @SessionScoped
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 @Path("transponders/")
 public class TranspondersService implements Serializable {
 
@@ -47,68 +56,160 @@ public class TranspondersService implements Serializable {
 	}
 
 	// http://localhost:8080/SF5JSF-test/json/transponders/filter/Speed/27500
+	// @GET
+	// @Path("filter/{type}/{typeValue}")
+	// public Response getTranspondersByArbitraryFilter(@PathParam("type")
+	// String fieldName,
+	// @PathParam("typeValue") String typeValue) {
+	//
+	// Response returnResponse = null;
+	// String result =
+	// transpondersJsonizer.getTranspondersByArbitraryFilter(fieldName,
+	// typeValue);
+	// if (result.isEmpty()) {
+	// return Response.status(404).build();
+	// } else {
+	// returnResponse = Response.status(200).entity(result).build();
+	// }
+	//
+	// return returnResponse;
+	// }
+
 	@GET
-	@Produces("application/json")
 	@Path("filter/{type}/{typeValue}")
 	public Response getTranspondersByArbitraryFilter(@PathParam("type") String fieldName,
 			@PathParam("typeValue") String typeValue) {
 
 		Response returnResponse = null;
-		String result = transpondersJsonizer.getTranspondersByArbitraryFilter(fieldName, typeValue);
-		if (result.isEmpty()) {
-			return Response.status(404).build();
-		} else {
-			returnResponse = Response.status(200).entity(result).build();
+		Criterion criterion = criterionService.getCriterionByClassFieldAndStringValue(Transponders.class, fieldName,
+				typeValue);
+
+		if (criterion == null) {
+			returnResponse = Response.status(204)
+					.entity("Criterion not built by filed " + fieldName + " and field value " + typeValue).build();
+		}
+
+		else {
+			List<Transponders> transList = listService.ObjectsCriterionList(Transponders.class, criterion);
+
+			if (transList.isEmpty()) {
+				returnResponse = Response.status(204).entity("No transponders selected by criterion with field "
+						+ fieldName + " and field value " + typeValue).build();
+			} else {
+				GenericEntity<List<Transponders>> gtransList = new GenericEntity<List<Transponders>>(transList) {
+				};
+				returnResponse = Response.status(200).entity(gtransList).build();
+			}
 		}
 
 		return returnResponse;
 	}
 
 	// http://localhost:8080/SF5JSF-test/json/transponders/filter/id/56
+	// @GET
+	// @Produces("application/json")
+	// @Path("filter/id/{transponderId}")
+	// public Response getTransponderById(@PathParam("transponderId") long tpId)
+	// {
+	//
+	// Response returnResponse = null;
+	// String result = commonJsonizer.buildJsonStringByTypeAndId(tpId,
+	// Transponders.class);
+	// if (result.isEmpty()) {
+	// return Response.status(404).build();
+	// } else {
+	// returnResponse = Response.status(200).entity(result).build();
+	// }
+	// return returnResponse;
+	// }
+
 	@GET
-	@Produces("application/json")
 	@Path("filter/id/{transponderId}")
 	public Response getTransponderById(@PathParam("transponderId") long tpId) {
 
 		Response returnResponse = null;
-		String result = commonJsonizer.buildJsonStringByTypeAndId(tpId, Transponders.class);
-		if (result.isEmpty()) {
-			return Response.status(404).build();
+		Transponders trans = objectsController.select(Transponders.class, tpId);
+		if (trans == null) {
+			returnResponse = Response.status(204).entity("No transponder found by id " + tpId).build();
 		} else {
-			returnResponse = Response.status(200).entity(result).build();
+			returnResponse = Response.status(200).entity(trans).build();
 		}
 		return returnResponse;
 	}
 
 	// http://localhost:8080/SF5JSF-test/json/transponders/filter;satId=1
+	// @GET
+	// @Path("filter/")
+	// public Response getTranspondersBySatelliteId(@MatrixParam("satId") long
+	// satId) {
+	//
+	// Response returnResponse = null;
+	// String result = transpondersJsonizer.getTranspondersBySatelliteId(satId);
+	// if (result.isEmpty()) {
+	// return Response.status(404).build();
+	// } else {
+	// returnResponse = Response.status(200).entity(result).build();
+	// }
+	// return returnResponse;
+	// }
+
 	@GET
-	@Produces("application/json")
 	@Path("filter/")
 	public Response getTranspondersBySatelliteId(@MatrixParam("satId") long satId) {
 
 		Response returnResponse = null;
-		String result = transpondersJsonizer.getTranspondersBySatelliteId(satId);
-		if (result.isEmpty()) {
-			return Response.status(404).build();
+
+		Satellites filterSatellite = objectsController.select(Satellites.class, satId);
+		if (filterSatellite == null) {
+			returnResponse = Response.status(204).entity("No satellite found by id " + satId).build();
 		} else {
-			returnResponse = Response.status(200).entity(result).build();
+			Criterion criterion = Restrictions.eq("Satellite", filterSatellite);
+
+			List<Transponders> transList = listService.ObjectsCriterionList(Transponders.class, criterion);
+			if (transList.isEmpty()) {
+				returnResponse = Response.status(204)
+						.entity("No transponders have been selected from satellite " + filterSatellite.toString())
+						.build();
+			} else {
+				GenericEntity<List<Transponders>> gtransList = new GenericEntity<List<Transponders>>(transList) {
+				};
+				returnResponse = Response.status(200).entity(gtransList).build();
+			}
 		}
+
 		return returnResponse;
 	}
 
 	// http://localhost:8080/SF5JSF-test/json/transponders/all/
+	// @GET
+	// @Path("all/")
+	// public Response getTransponders() {
+	//
+	// Response returnResponse = null;
+	// String result = transpondersJsonizer.getTransponders();
+	//
+	// if (result.isEmpty()) {
+	// return Response.status(404).build();
+	// } else {
+	// returnResponse = Response.status(200).entity(result).build();
+	// }
+	//
+	// return returnResponse;
+	// }
+
 	@GET
-	@Produces("application/json")
-	@Path("all/")
+	@Path("all")
 	public Response getTransponders() {
 
 		Response returnResponse = null;
-		String result = transpondersJsonizer.getTransponders();
+		List<Transponders> transList = listService.ObjectsList(Transponders.class);
 
-		if (result.isEmpty()) {
-			return Response.status(404).build();
+		if (transList.isEmpty()) {
+			returnResponse = Response.status(204).entity("No transponders have been selected from database").build();
 		} else {
-			returnResponse = Response.status(200).entity(result).build();
+			GenericEntity<List<Transponders>> gtransList = new GenericEntity<List<Transponders>>(transList) {
+			};
+			returnResponse = Response.status(200).entity(gtransList).build();
 		}
 
 		return returnResponse;
@@ -120,19 +221,13 @@ public class TranspondersService implements Serializable {
 	@Inject
 	private TranspondersJsonizer transpondersJsonizer;
 
-	public TranspondersJsonizer getTranspondersJsonizer() {
-		return transpondersJsonizer;
-	}
+	@Inject
+	private CriterionService criterionService;
 
-	public void setTranspondersJsonizer(TranspondersJsonizer transpondersJsonizer) {
-		this.transpondersJsonizer = transpondersJsonizer;
-	}
+	@Inject
+	private ObjectsListService listService;
 
-	public CommonJsonizer getCommonJsonizer() {
-		return commonJsonizer;
-	}
+	@Inject
+	private ObjectsController objectsController;
 
-	public void setCommonJsonizer(CommonJsonizer commonJsonizer) {
-		this.commonJsonizer = commonJsonizer;
-	}
 }
