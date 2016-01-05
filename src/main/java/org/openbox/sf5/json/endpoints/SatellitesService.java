@@ -1,6 +1,7 @@
 package org.openbox.sf5.json.endpoints;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -9,63 +10,130 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.GenericEntity;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.openbox.sf5.json.service.CommonJsonizer;
-import org.openbox.sf5.json.service.SatellitesJsonizer;
+import org.hibernate.criterion.Criterion;
 import org.openbox.sf5.model.Satellites;
+import org.openbox.sf5.service.CriterionService;
+import org.openbox.sf5.service.ObjectsController;
+import org.openbox.sf5.service.ObjectsListService;
 
 @Named
 @SessionScoped
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 @Path("satellites/")
 public class SatellitesService implements Serializable {
 
 	// http://localhost:8080/SF5JSF-test/json/satellites/all/
+	// @GET
+	// @Path("all/")
+	// public Response getAllSatellites() {
+	// Response returnResponse = null;
+	//
+	// String result = jsonizer.getSatellitesList();
+	// if (result.isEmpty()) {
+	// return Response.status(404).build();
+	// } else {
+	// returnResponse = Response.status(200).entity(result).build();
+	// }
+	// return returnResponse;
+	// }
+
 	@GET
-	@Produces("application/json")
 	@Path("all/")
 	public Response getAllSatellites() {
 		Response returnResponse = null;
 
-		String result = jsonizer.getSatellitesList();
-		if (result.isEmpty()) {
-			return Response.status(404).build();
-		} else {
-			returnResponse = Response.status(200).entity(result).build();
+		List<Satellites> satList = listService.ObjectsList(Satellites.class);
+		if (satList.isEmpty()) {
+			returnResponse = Response.status(204).build();
 		}
+
+		else {
+
+			// returnResponse = Response.status(200).entity(satList).build();
+
+			// http://www.adam-bien.com/roller/abien/entry/jax_rs_returning_a_list
+			GenericEntity<List<Satellites>> gSatList = new GenericEntity<List<Satellites>>(satList) {
+			};
+
+			returnResponse = Response.status(200).entity(gSatList).build();
+
+		}
+
 		return returnResponse;
 	}
 
+	// @GET
+	// @Path("filter/{type}/{typeValue}")
+	// public Response getSatellitesByArbitraryFilter(@PathParam("type") String
+	// fieldName,
+	// @PathParam("typeValue") String typeValue) {
+	//
+	// Response returnResponse = null;
+	//
+	// String result = jsonizer.getSatellitesByArbitraryFilter(fieldName,
+	// typeValue);
+	// if (result.isEmpty()) {
+	// return Response.status(404).build();
+	// } else {
+	// returnResponse = Response.status(200).entity(result).build();
+	// }
+	// return returnResponse;
+	//
+	// }
+
 	@GET
-	@Produces("application/json")
 	@Path("filter/{type}/{typeValue}")
 	public Response getSatellitesByArbitraryFilter(@PathParam("type") String fieldName,
 			@PathParam("typeValue") String typeValue) {
 
 		Response returnResponse = null;
+		Criterion criterion = criterionService.getCriterionByClassFieldAndStringValue(Satellites.class, fieldName,
+				typeValue);
+		List<Satellites> satList = listService.ObjectsCriterionList(Satellites.class, criterion);
 
-		String result = jsonizer.getSatellitesByArbitraryFilter(fieldName, typeValue);
-		if (result.isEmpty()) {
-			return Response.status(404).build();
+		if (criterion == null) {
+			returnResponse = Response.status(204).build();
 		} else {
-			returnResponse = Response.status(200).entity(result).build();
+			GenericEntity<List<Satellites>> gSatList = new GenericEntity<List<Satellites>>(satList) {
+			};
+
+			returnResponse = Response.status(200).entity(gSatList).build();
 		}
 		return returnResponse;
 
 	}
 
+	// @GET
+	// @Path("filter/id/{satelliteId}")
+	// public Response getSatelliteById(@PathParam("satelliteId") long satId) {
+	//
+	// Response returnResponse = null;
+	// String result = commonJsonizer.buildJsonStringByTypeAndId(satId,
+	// Satellites.class);
+	// if (result.isEmpty()) {
+	// return Response.status(404).build();
+	// } else {
+	// returnResponse = Response.status(200).entity(result).build();
+	// }
+	// return returnResponse;
+	//
+	// }
+
 	@GET
-	@Produces("application/json")
 	@Path("filter/id/{satelliteId}")
 	public Response getSatelliteById(@PathParam("satelliteId") long satId) {
-		// return JsonObjectFiller.buildResponseByTypeAndId(contr, satId,
-		// Satellites.class);
+
 		Response returnResponse = null;
-		String result = commonJsonizer.buildJsonStringByTypeAndId(satId, Satellites.class);
-		if (result.isEmpty()) {
-			return Response.status(404).build();
+
+		Satellites sat = objectsController.select(Satellites.class, satId);
+		if (sat == null) {
+			returnResponse = Response.status(204).build();
 		} else {
-			returnResponse = Response.status(200).entity(result).build();
+			returnResponse = Response.status(200).entity(sat).build();
 		}
 		return returnResponse;
 
@@ -74,25 +142,12 @@ public class SatellitesService implements Serializable {
 	private static final long serialVersionUID = 5840312078955871320L;
 
 	@Inject
-	private CommonJsonizer commonJsonizer;
-
-	public CommonJsonizer getCommonJsonizer() {
-		return commonJsonizer;
-	}
-
-	public void setCommonJsonizer(CommonJsonizer commonJsonizer) {
-		this.commonJsonizer = commonJsonizer;
-	}
+	private ObjectsListService listService;
 
 	@Inject
-	private SatellitesJsonizer jsonizer;
+	private CriterionService criterionService;
 
-	public SatellitesJsonizer getJsonizer() {
-		return jsonizer;
-	}
-
-	public void setJsonizer(SatellitesJsonizer jsonizer) {
-		this.jsonizer = jsonizer;
-	}
+	@Inject
+	private ObjectsController objectsController;
 
 }

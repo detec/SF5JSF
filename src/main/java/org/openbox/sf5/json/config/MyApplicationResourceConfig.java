@@ -4,8 +4,8 @@ import java.util.logging.Logger;
 
 import javax.ws.rs.ApplicationPath;
 
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
+import org.glassfish.jersey.moxy.xml.MoxyXmlFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.ServerProperties;
 
@@ -27,17 +27,21 @@ public class MyApplicationResourceConfig extends ResourceConfig {
 		// register(new LoggingFilter(LOGGER, true));
 		register(MultiPartFeature.class);
 
+		// https://jersey.java.net/documentation/latest/media.html#d0e9110
+		// Enabling MOXy
+		register(MoxyXmlFeature.class);
+
 		// class to configure default MOXy provider.
 		// register(MOXyJsonContextResolver.class);
 
 		// LOGGER.info("Registering custom MarshallingFeature");
 		// register(MarshallingFeature.class);
 
-		register(JacksonFeature.class);
-		register(MyObjectMapperProvider.class);
+		// register(JacksonFeature.class);
+		// register(MyObjectMapperProvider.class);
 
 		// Enable Tracing support.
-		property(ServerProperties.TRACING, "ALL");
+		// property(ServerProperties.TRACING, "ALL");
 
 		// it is active by default
 		property(ServerProperties.PROVIDER_SCANNING_RECURSIVE, true);
@@ -46,10 +50,12 @@ public class MyApplicationResourceConfig extends ResourceConfig {
 
 		// 18.12.2015 - let's try to use built-in MOXy.
 		// disable automatic discovery of providers
-		 property(ServerProperties.METAINF_SERVICES_LOOKUP_DISABLE, true);
+		property(ServerProperties.METAINF_SERVICES_LOOKUP_DISABLE, true);
 
 		// it finally works with
-		 property(ServerProperties.MOXY_JSON_FEATURE_DISABLE, true);
+		// property(ServerProperties.MOXY_JSON_FEATURE_DISABLE, true);
+		// 05.01.2016
+		property(ServerProperties.MOXY_JSON_FEATURE_DISABLE, false);
 
 	}
 

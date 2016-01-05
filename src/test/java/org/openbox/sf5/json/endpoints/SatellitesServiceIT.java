@@ -2,6 +2,7 @@ package org.openbox.sf5.json.endpoints;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -48,6 +49,24 @@ public class SatellitesServiceIT extends AbstractServiceTest {
 	}
 
 	@Test
+	public void shouldgetSatelliteByIdXML() {
+		Response response = null;
+
+		Invocation.Builder invocationBuilder = serviceTarget.path("filter").path("id").path("1")
+				.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML);
+
+		response = invocationBuilder.get();
+
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+
+		Satellites satellite = response.readEntity(Satellites.class);
+
+		assertThat(satellite).isNotNull();
+		assertTrue(satellite instanceof Satellites);
+
+	}
+
+	@Test
 	public void shouldgetAllSatellites() {
 
 		Response response = null;
@@ -70,6 +89,32 @@ public class SatellitesServiceIT extends AbstractServiceTest {
 		assertThat(satList).isNotNull();
 		assertThat(satList.size()).isGreaterThan(0);
 
+		Satellites satellite = satList.get(0);
+		assertTrue(satellite instanceof Satellites);
+
+	}
+
+	@Test
+	public void shouldgetAllSatellitesXML() {
+
+		Response response = null;
+
+		Invocation.Builder invocationBuilder = serviceTarget.path("all").request(MediaType.APPLICATION_XML)
+				.accept(MediaType.APPLICATION_XML);
+		response = invocationBuilder.get();
+
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+
+		GenericType<List<Satellites>> genList = new GenericType<List<Satellites>>() {
+		};
+
+		List<Satellites> satList = invocationBuilder.get(genList);
+
+		assertThat(satList).isNotNull();
+		assertThat(satList.size()).isGreaterThan(0);
+
+		Satellites satellite = satList.get(0);
+		assertTrue(satellite instanceof Satellites);
 	}
 
 	@Test
@@ -95,6 +140,29 @@ public class SatellitesServiceIT extends AbstractServiceTest {
 
 		assertThat(satList).isNotNull();
 		assertThat(satList.size()).isGreaterThan(0);
+	}
+
+	@Test
+	public void getSatellitesByArbitraryFilterXML() {
+		Response response = null;
+		Invocation.Builder invocationBuilder = serviceTarget.path("filter").path("Name").path("13E")
+				.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML);
+
+		response = invocationBuilder.get();
+
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+
+		GenericType<List<Satellites>> genList = new GenericType<List<Satellites>>() {
+		};
+
+		List<Satellites> satList = invocationBuilder.get(genList);
+
+		assertThat(satList).isNotNull();
+		assertThat(satList.size()).isGreaterThan(0);
+
+		Satellites satellite = satList.get(0);
+		assertTrue(satellite instanceof Satellites);
+
 	}
 
 }
