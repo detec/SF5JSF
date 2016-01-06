@@ -11,6 +11,7 @@ import org.glassfish.jersey.moxy.xml.MoxyXmlFeature;
 import org.openbox.sf5.json.config.JacksonObjectMapperConfiguration;
 import org.openbox.sf5.json.config.MOXyJsonContextResolver;
 import org.openbox.sf5.json.config.MyApplicationResourceConfig;
+import org.openbox.sf5.json.converters.BooleanMessageBodyReader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -62,6 +63,9 @@ public abstract class AbstractServiceTest {
 				// .register(provider)
 
 				.register(MultiPartFeature.class)
+
+
+				.register(BooleanMessageBodyReader.class)
 
 				// we have the same objectmapper config for client and server.
 				// .register(MarshallingFeature.class)

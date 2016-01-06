@@ -1,4 +1,4 @@
-package org.openbox.sf5.json.config;
+package org.openbox.sf5.json.converters;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;

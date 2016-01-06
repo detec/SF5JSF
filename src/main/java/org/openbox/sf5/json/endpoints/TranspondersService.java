@@ -53,6 +53,8 @@ public class TranspondersService implements Serializable {
 			@FormDataParam("file") FormDataContentDisposition fileMetaData) {
 
 		Boolean result = transpondersJsonizer.uploadTransponders(fileInputStream, fileMetaData);
+
+		// GenericEntity<Boolean> gBoolean = new GenericEntity<Boolean>(result);
 		return Response.status(200).entity(result).build();
 	}
 
