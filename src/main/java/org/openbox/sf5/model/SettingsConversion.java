@@ -11,8 +11,10 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Entity
 @Table(name = "SettingsConversion")
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class SettingsConversion extends AbstractDbEntity implements Serializable {
 
 	private static final long serialVersionUID = -399944579251735871L;
@@ -40,7 +43,8 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	@ManyToOne
 	@JoinColumn(name = "parent_id", unique = false, nullable = false)
 	@JsonBackReference
-	@NotNull
+	// @NotNull - probably this causes 400 error.
+	@XmlTransient
 	private Settings parent_id;
 
 	@JsonProperty("LineNumber")

@@ -1,7 +1,6 @@
 package org.openbox.sf5.json.endpoints;
 
 import java.io.Serializable;
-import java.io.StringWriter;
 import java.net.URI;
 import java.util.List;
 
@@ -21,7 +20,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
-import javax.xml.bind.JAXB;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -186,13 +184,14 @@ public class SettingsService implements Serializable {
 				Settings settingsObject = settList.get(0);
 				// let's marshall manually, because we are receiving 500 error
 				// without log. Even after manual marshalling with @XmlTransient
+				// This causes successful unmarshalling of JSON.
 				returnResponse = Response.status(200).entity(settingsObject).build();
 
-				StringWriter outputBuffer = new StringWriter();
-				JAXB.marshal(settingsObject, outputBuffer);
-				String str = outputBuffer.toString();
-
-				returnResponse = Response.status(200).entity(str).build();
+				// StringWriter outputBuffer = new StringWriter();
+				// JAXB.marshal(settingsObject, outputBuffer);
+				// String str = outputBuffer.toString();
+				//
+				// returnResponse = Response.status(200).entity(str).build();
 			}
 		}
 

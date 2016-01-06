@@ -10,7 +10,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -19,6 +22,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 @Entity
 @Table(name = "SettingsSatellites")
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class SettingsSatellites extends AbstractDbEntity implements Serializable {
 
 	private static final long serialVersionUID = -2945693668519991789L;
@@ -41,6 +45,7 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 	@ManyToOne
 	@JoinColumn(name = "parent_id", unique = false, nullable = false)
 	@JsonBackReference
+	@XmlTransient
 	private Settings parent_id;
 
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "my_entity_seq_gen")
