@@ -9,7 +9,7 @@ public class MOXyJsonContextResolver implements ContextResolver<MoxyJsonConfig> 
 	private final MoxyJsonConfig config;
 
 	public MOXyJsonContextResolver() {
-		config = new MoxyJsonConfig().setAttributePrefix("").setFormattedOutput(true).setMarshalEmptyCollections(true);
+		config = new MoxyJsonConfig().setFormattedOutput(true).setMarshalEmptyCollections(true);
 	}
 
 	@Override

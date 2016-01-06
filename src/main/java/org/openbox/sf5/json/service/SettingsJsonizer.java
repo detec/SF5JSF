@@ -1,6 +1,5 @@
 package org.openbox.sf5.json.service;
 
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
 
@@ -21,9 +20,6 @@ import org.openbox.sf5.service.CriterionService;
 import org.openbox.sf5.service.ObjectsController;
 import org.openbox.sf5.service.ObjectsListService;
 
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
-
 @Named
 @SessionScoped
 public class SettingsJsonizer implements Serializable {
@@ -39,16 +35,16 @@ public class SettingsJsonizer implements Serializable {
 		return 201; // CREATED
 	}
 
-	public int saveNewSetting(String settingJson) throws JsonParseException, JsonMappingException, IOException {
-		// prepare mapper.
-		JsonObjectFiller JsonOF = new JsonObjectFiller();
-		JsonOF.configureMapper();
-
-		Settings readSetting = JsonOF.objectMapper.readValue(settingJson, Settings.class);
-		int result = saveNewSetting(readSetting);
-
-		return result;
-	}
+//	public int saveNewSetting(String settingJson) throws JsonParseException, JsonMappingException, IOException {
+//		// prepare mapper.
+//		JsonObjectFiller JsonOF = new JsonObjectFiller();
+//		JsonOF.configureMapper();
+//
+//		Settings readSetting = JsonOF.objectMapper.readValue(settingJson, Settings.class);
+//		int result = saveNewSetting(readSetting);
+//
+//		return result;
+//	}
 
 	public String getSettingsByArbitraryFilter(String fieldName, String typeValue, String login) {
 		String returnString = "";

@@ -3,7 +3,7 @@ package org.openbox.sf5.json.service;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
-import java.io.IOException;
+import javax.xml.bind.JAXB;
 
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -12,9 +12,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.junit.runners.MethodSorters;
 import org.openbox.sf5.model.Users;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 
 @RunWith(JUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -45,10 +42,12 @@ public class BUsersJsonizerTests extends AbstractJsonizerTest {
 	}
 
 	@Test
-	public void shouldGetUserByLogin() throws JsonParseException, JsonMappingException, IOException {
+	public void shouldGetUserByLogin() {
 		String result = usersJsonizer.getUserByLogin(testUsername);
 
-		Users readUser = mapper.readValue(result, Users.class);
+		// Users readUser = mapper.readValue(result, Users.class);
+		Users readUser = JAXB.unmarshal(result, Users.class);
+
 		assertThat(readUser).isNotNull();
 	}
 

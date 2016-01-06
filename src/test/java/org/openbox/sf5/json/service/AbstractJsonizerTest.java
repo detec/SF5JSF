@@ -5,14 +5,11 @@ import org.openbox.sf5.dao.DAOImpl;
 import org.openbox.sf5.dao.DAOList;
 import org.openbox.sf5.dao.DAOListImpl;
 import org.openbox.sf5.db.ConnectionManager;
-import org.openbox.sf5.json.config.JacksonObjectMapperConfiguration;
 import org.openbox.sf5.service.CriterionService;
 import org.openbox.sf5.service.ObjectService;
 import org.openbox.sf5.service.ObjectServiceImpl;
 import org.openbox.sf5.service.ObjectsController;
 import org.openbox.sf5.service.ObjectsListService;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 // This class is intended for routine work to setup dao and service layers.
 public abstract class AbstractJsonizerTest {
@@ -32,7 +29,7 @@ public abstract class AbstractJsonizerTest {
 
 	public CommonJsonizer commonJsonizer;
 
-	public ObjectMapper mapper = new ObjectMapper();
+	// public ObjectMapper mapper = new ObjectMapper();
 
 	public String testUsername = "ITUser";
 
@@ -74,7 +71,7 @@ public abstract class AbstractJsonizerTest {
 		// mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
 		// false);
 
-		JacksonObjectMapperConfiguration.configureMapper(mapper);
+		// JacksonObjectMapperConfiguration.configureMapper(mapper);
 
 	}
 

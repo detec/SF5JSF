@@ -31,6 +31,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 // https://github.com/FasterXML/jackson-annotations/wiki/Jackson-Annotations
+// http://www.ibm.com/developerworks/rational/library/resolve-jaxb-cycle-errors/index.html
+// Mapping JPA entities to successfully transcode them using XML
 
 @Entity
 @Table(name = "Settings")

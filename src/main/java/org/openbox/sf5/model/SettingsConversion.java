@@ -13,7 +13,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -21,7 +20,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "SettingsConversion")
-@XmlRootElement
+//@XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SettingsConversion extends AbstractDbEntity implements Serializable {
 
@@ -44,6 +43,8 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	@JoinColumn(name = "parent_id", unique = false, nullable = false)
 	@JsonBackReference
 	// @NotNull - probably this causes 400 error.
+//	@XmlElement
+//    @XmlInverseReference(mappedBy="conversion")
 	@XmlTransient
 	private Settings parent_id;
 
@@ -117,6 +118,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 		this.TheLineOfIntersection = TheLineOfIntersection;
 	}
 
+	@XmlTransient
 	public Settings getparent_id() {
 		return parent_id;
 	}

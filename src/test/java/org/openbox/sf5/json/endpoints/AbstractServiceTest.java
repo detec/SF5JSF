@@ -8,13 +8,10 @@ import javax.ws.rs.client.WebTarget;
 
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.moxy.xml.MoxyXmlFeature;
-import org.openbox.sf5.json.config.JacksonObjectMapperConfiguration;
 import org.openbox.sf5.json.config.MOXyJsonContextResolver;
 import org.openbox.sf5.json.config.MyApplicationResourceConfig;
 import org.openbox.sf5.json.converters.BooleanMessageBodyReader;
 import org.openbox.sf5.json.converters.LongMessageBodyReader;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 public abstract class AbstractServiceTest {
 
@@ -26,7 +23,7 @@ public abstract class AbstractServiceTest {
 
 	public Client client;
 
-	public ObjectMapper mapper = new ObjectMapper();
+	// public ObjectMapper mapper = new ObjectMapper();
 
 	public WebTarget commonTarget;
 
@@ -83,7 +80,7 @@ public abstract class AbstractServiceTest {
 
 	public void configureMapper() {
 
-		JacksonObjectMapperConfiguration.configureMapper(mapper);
+		// JacksonObjectMapperConfiguration.configureMapper(mapper);
 	}
 
 }
