@@ -65,17 +65,24 @@ public class SettingsJsonizer implements Serializable {
 		if (arbitraryCriterion == null) {
 			return returnString;
 		}
+		List<Settings> records = getListOfSettingsByUserAndArbitraryCriterion(userCriterion, arbitraryCriterion);
 
+		returnString = JsonObjectFiller.getJsonFromObjectsList(records);
+
+		return returnString;
+	}
+
+	public List<Settings> getListOfSettingsByUserAndArbitraryCriterion(Criterion userCriterion,
+			Criterion arbitraryCriterion) {
 		Session session = cm.getSessionFactroy().openSession();
 		Criteria criteria = session.createCriteria(Settings.class).add(userCriterion).add(arbitraryCriterion);
 		criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
 
 		@SuppressWarnings("unchecked")
 		List<Settings> records = criteria.list();
-
-		returnString = JsonObjectFiller.getJsonFromObjectsList(records);
 		session.close();
-		return returnString;
+
+		return records;
 	}
 
 	public String getSettingsByUserLogin(String login) {
@@ -103,10 +110,7 @@ public class SettingsJsonizer implements Serializable {
 
 		Criterion settingIdCriterion = Restrictions.eq("id", settingId);
 
-		Session session = cm.getSessionFactroy().openSession();
-		@SuppressWarnings("unchecked")
-		List<Settings> records = session.createCriteria(Settings.class).add(userCriterion).add(settingIdCriterion)
-				.list();
+		List<Settings> records = getListOfSettingsByUserAndArbitraryCriterion(userCriterion, settingIdCriterion);
 
 		Settings settingsObject = null;
 
@@ -127,7 +131,7 @@ public class SettingsJsonizer implements Serializable {
 		}
 
 		returnString = commonJsonizer.JSonObjectBuilderToString(transJOB);
-		session.close();
+
 		return returnString;
 
 	}

@@ -2,6 +2,7 @@ package org.openbox.sf5.json.endpoints;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,7 +11,6 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
@@ -72,9 +72,9 @@ public class SettingsServiceIT extends AbstractServiceTest {
 		};
 
 		List<Transponders> newTransList = response.readEntity(genList);
-		assertThat(newTransList.size()).isGreaterThanOrEqualTo(0);
+		assertThat(newTransList.size()).isGreaterThan(0);
 
-		Settings setting = BuildTestSetting.buildSetting(adminUser, newTransList);
+		Settings setting = BuildTestSetting.buildSetting(adminUser, newTransList, "Simple");
 
 		// http://howtodoinjava.com/2015/08/07/jersey-restful-client-examples/#post
 		invocationBuilder = serviceTarget.path("create").matrixParam("login", this.testUsername)
@@ -86,18 +86,8 @@ public class SettingsServiceIT extends AbstractServiceTest {
 		// .accept(MediaType.APPLICATION_JSON);
 
 		Response responsePost = invocationBuilder.post(Entity.entity(setting, MediaType.APPLICATION_JSON));
-		assertEquals(Status.CREATED.getStatusCode(), responsePost.getStatus());
 
-		// get setting id
-		MultivaluedMap<String, String> headersMap = responsePost.getStringHeaders();
-		List<String> locStringList = headersMap.get("SettingId");
-		assertEquals(1, locStringList.size());
-
-		String settingIdString = locStringList.get(0);
-		long id = Long.parseLong(settingIdString);
-
-		assertThat(id).isGreaterThan(0);
-		setting.setId(id);
+		BuildTestSetting.checkCreatedSetting(responsePost, setting);
 
 		// Here we test getting setting by id.
 		invocationBuilder = serviceTarget.path("filter").path("id").path(Long.toString(setting.getId()))
@@ -108,36 +98,8 @@ public class SettingsServiceIT extends AbstractServiceTest {
 
 		Settings settingRead = response.readEntity(Settings.class);
 		assertThat(settingRead).isNotNull();
+		assertTrue(settingRead instanceof Settings);
 	}
-
-	// This test is done in create test.
-	// @Test
-	// public void shouldGetSettingById() {
-	//
-	// Response response = null;
-	//
-	// List<Settings> settList = getUserSettings();
-	// if (settList.size() == 0) {
-	// return;
-	// }
-	//
-	// Settings sett = settList.get(0);
-	//
-	// Invocation.Builder invocationBuilder =
-	// serviceTarget.path("filter").path("id").path(Long.toString(sett.getId()))
-	// .matrixParam("login",
-	// this.testUsername).request(MediaType.APPLICATION_JSON)
-	// .accept(MediaType.APPLICATION_JSON);
-	//
-	// response = invocationBuilder.get();
-	//
-	// assertEquals(Status.OK.getStatusCode(), response.getStatus());
-	//
-	// Settings setting = response.readEntity(Settings.class);
-	//
-	// assertThat(setting).isNotNull();
-	//
-	// }
 
 	private List<Settings> getUserSettings() {
 		Response response = null;
@@ -215,10 +177,10 @@ public class SettingsServiceIT extends AbstractServiceTest {
 		GenericType<List<Settings>> genList = new GenericType<List<Settings>>() {
 		};
 
-		settList = response.readEntity(genList);
+		List<Settings> newSettList = response.readEntity(genList);
 
-		assertThat(settList).isNotNull();
-		assertThat(settList.size()).isGreaterThan(0);
+		assertThat(newSettList).isNotNull();
+		assertThat(newSettList.size()).isGreaterThan(0);
 
 	}
 

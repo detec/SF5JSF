@@ -4,6 +4,7 @@ import java.util.logging.Logger;
 
 import javax.ws.rs.ApplicationPath;
 
+import org.glassfish.jersey.filter.LoggingFilter;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.moxy.xml.MoxyXmlFeature;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -32,8 +33,7 @@ public class MyApplicationResourceConfig extends ResourceConfig {
 		register(MoxyXmlFeature.class);
 		register(MOXyJsonContextResolver.class);
 
-		// class to configure default MOXy provider.
-		// register(MOXyJsonContextResolver.class);
+		register(new LoggingFilter(LOGGER, true));
 
 		// LOGGER.info("Registering custom MarshallingFeature");
 		// register(MarshallingFeature.class);
@@ -42,7 +42,7 @@ public class MyApplicationResourceConfig extends ResourceConfig {
 		// register(MyObjectMapperProvider.class);
 
 		// Enable Tracing support.
-		// property(ServerProperties.TRACING, "ALL");
+		property(ServerProperties.TRACING, "ALL");
 
 		// it is active by default
 		property(ServerProperties.PROVIDER_SCANNING_RECURSIVE, true);

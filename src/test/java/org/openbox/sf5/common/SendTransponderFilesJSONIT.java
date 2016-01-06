@@ -1,6 +1,5 @@
 package org.openbox.sf5.common;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
@@ -52,10 +51,20 @@ public class SendTransponderFilesJSONIT extends AbstractServiceTest {
 			// MediaType.APPLICATION_JSON));
 
 			Response responsePost = invocationBuilder.post(Entity.entity(multipart, multipart.getMediaType()));
-			assertEquals(Status.OK.getStatusCode(), responsePost.getStatus());
-			Boolean result = responsePost.readEntity(Boolean.class);
+			int returnStatus = responsePost.getStatus();
 
-			assertThat(result.booleanValue()).isTrue();
+			if (returnStatus == 500) {
+				String errorMsg = responsePost.readEntity(String.class);
+				assertEquals("", errorMsg); // to print it in common report for
+											// sure.
+			}
+			assertEquals(Status.OK.getStatusCode(), returnStatus);
+
+			// we return 500 status and error message or just 200 status.
+
+			// Boolean result = responsePost.readEntity(Boolean.class);
+			//
+			// assertThat(result.booleanValue()).isTrue();
 
 			// Response lambdaResponse =
 			// target.request().post(Entity.entity(multipart,

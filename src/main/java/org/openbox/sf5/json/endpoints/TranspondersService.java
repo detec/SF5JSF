@@ -22,6 +22,7 @@ import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.openbox.sf5.common.IniReader;
 import org.openbox.sf5.json.service.CommonJsonizer;
 import org.openbox.sf5.json.service.TranspondersJsonizer;
 import org.openbox.sf5.model.Satellites;
@@ -52,10 +53,21 @@ public class TranspondersService implements Serializable {
 	public Response importTransponderFile(@FormDataParam("file") InputStream fileInputStream,
 			@FormDataParam("file") FormDataContentDisposition fileMetaData) {
 
-		Boolean result = transpondersJsonizer.uploadTransponders(fileInputStream, fileMetaData);
+		// Boolean result =
+		// transpondersJsonizer.uploadTransponders(fileInputStream,
+		// fileMetaData);
+		Response returnResponse = null;
+
+		try {
+			iniReader.readMultiPartFile(fileInputStream, fileMetaData);
+
+		} catch (Exception e) {
+			// return new Boolean(false);
+			returnResponse = Response.status(500).entity(e.getMessage()).build();
+		}
 
 		// GenericEntity<Boolean> gBoolean = new GenericEntity<Boolean>(result);
-		return Response.status(200).entity(result).build();
+		return Response.status(200).build();
 	}
 
 	// http://localhost:8080/SF5JSF-test/json/transponders/filter/Speed/27500
@@ -232,5 +244,8 @@ public class TranspondersService implements Serializable {
 
 	@Inject
 	private ObjectsController objectsController;
+
+	@Inject
+	private IniReader iniReader;
 
 }

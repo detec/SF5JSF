@@ -90,7 +90,7 @@ public class SettingsJsonizerTests extends AbstractJsonizerTest {
 
 		List<Transponders> transList = getTestTranspondersWithTest();
 
-		Settings setting = BuildTestSetting.buildSetting(readUser, transList);
+		Settings setting = BuildTestSetting.buildSetting(readUser, transList, "Simple");
 
 		int status = settingsJsonizer.saveNewSetting(setting);
 		assertEquals(201, status);
@@ -109,7 +109,7 @@ public class SettingsJsonizerTests extends AbstractJsonizerTest {
 
 		List<Transponders> transList = getTestTranspondersWithTest();
 
-		Settings setting = BuildTestSetting.buildSetting(readUser, transList);
+		Settings setting = BuildTestSetting.buildSetting(readUser, transList, "Simple");
 		setting.setName("Second");
 		// convert to json
 		String settingString = mapper.writeValueAsString(setting);

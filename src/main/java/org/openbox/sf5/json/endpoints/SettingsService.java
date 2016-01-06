@@ -1,7 +1,9 @@
 package org.openbox.sf5.json.endpoints;
 
 import java.io.Serializable;
+import java.io.StringWriter;
 import java.net.URI;
+import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -14,65 +16,36 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
+import javax.xml.bind.JAXB;
 
+import org.hibernate.criterion.Criterion;
+import org.hibernate.criterion.Restrictions;
 import org.openbox.sf5.json.service.SettingsJsonizer;
 import org.openbox.sf5.json.service.UsersJsonizer;
 import org.openbox.sf5.model.Settings;
+import org.openbox.sf5.service.CriterionService;
+import org.openbox.sf5.service.ObjectsListService;
 
 // http://localhost:8080/SF5JSF-test/json/usersettings/filter/login/admin
 
 @Named
 @SessionScoped
+@Produces({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
+@Consumes({ MediaType.APPLICATION_JSON, MediaType.APPLICATION_XML })
 @Path("usersettings/")
 public class SettingsService implements Serializable {
 
 	@Context
 	UriInfo uriInfo;
 
-	// @POST
-	// @Path("testcreate")
-	// @Consumes({ MediaType.APPLICATION_JSON })
-	// @Produces(MediaType.APPLICATION_JSON)
-	// public Response createSetting(SettingsSimple setting,
-	// @MatrixParam("login") String login) {
-	// Response returnResponse = Response.status(200).build();
-	//
-	// return returnResponse;
-	//
-	// }
-
 	@POST
 	@Path("create")
-	@Consumes({ MediaType.APPLICATION_JSON })
-	public Response createSetting(Settings setting, @MatrixParam("login") String login
-
-	) {
-
-		// String login = "ITUser";
-		// Users currentUser = securityContext.getCurrentlyAuthenticatedUser();
-		//
-		// if (currentUser == null) {
-		// return new ResponseEntity<Void>(HttpStatus.UNAUTHORIZED);
-		// }
-		//
-		// if (!currentUser.equals(setting.getUser())) {
-		// // authenticated user and setting user do not coincide.
-		// return new ResponseEntity<Void>(HttpStatus.NOT_ACCEPTABLE);
-		// }
-		// HttpStatus statusResult = settingsJsonizer.saveNewSetting(setting);
-		// if (statusResult.equals(HttpStatus.CONFLICT)) {
-		// return new ResponseEntity<Void>(HttpStatus.CONFLICT);
-		// }
-		//
-		// HttpHeaders headers = new HttpHeaders();
-		// headers.add("SettingId", Long.toString(setting.getId()));
-		// headers.setLocation(
-		// ucBuilder.path("/json/usersettings/filter/id/{id}").buildAndExpand(setting.getId()).toUri());
-		// return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
+	public Response createSetting(Settings setting, @MatrixParam("login") String login) {
 
 		Response returnResponse = null;
 		long result = usersJsonizer.checkIfUsernameExists(login);
@@ -81,12 +54,9 @@ public class SettingsService implements Serializable {
 			// UNAUTHORIZED
 			returnResponse = Response.status(401).entity("Login " + login + " does not exist!").build();
 
-
-		}
-		else if (setting == null) {
+		} else if (setting == null) {
 			returnResponse = Response.status(401).entity("Setting deserialized is null!").build();
-		}
-		else {
+		} else {
 			// if user and login do not coincide
 			if (!setting.getUser().getLogin().equals(login)) {
 				returnResponse = Response.status(406)
@@ -97,7 +67,11 @@ public class SettingsService implements Serializable {
 			else {
 				// for unsaved references parent_id is null
 				setting.getConversion().forEach(t -> t.setparent_id(setting));
-				setting.getSatellites().forEach(t -> t.setparent_id(setting));
+				if (setting.getSatellites() != null) {
+					// There is problem with MOXy XML that it converts empty
+					// collection to null.
+					setting.getSatellites().forEach(t -> t.setparent_id(setting));
+				}
 
 				int statusResult = settingsJsonizer.saveNewSetting(setting);
 				if (statusResult == 409) {
@@ -126,17 +100,27 @@ public class SettingsService implements Serializable {
 	}
 
 	@GET
-	@Produces("application/json")
 	@Path("filter/login/{typeValue}")
 	public Response getSettingsByUserLogin(@PathParam("typeValue") String typeValue) {
 
 		Response returnResponse = null;
-		String result = settingsJsonizer.getSettingsByUserLogin(typeValue);
 
-		if (result.isEmpty()) {
-			return Response.status(404).build();
+		Criterion userCriterion = criterionService.getUserCriterion(typeValue, Settings.class);
+		if (userCriterion == null) {
+			returnResponse = Response.status(204).entity("User criterion not returned by login " + typeValue).build();
 		} else {
-			returnResponse = Response.status(200).entity(result).build();
+			List<Settings> settList = listService.ObjectsCriterionList(Settings.class, userCriterion);
+
+			if (settList.isEmpty()) {
+				returnResponse = Response.status(204).entity("No settings returned for user with login " + typeValue)
+						.build();
+
+			} else {
+				GenericEntity<List<Settings>> gsettList = new GenericEntity<List<Settings>>(settList) {
+				};
+				returnResponse = Response.status(200).entity(gsettList).build();
+			}
+
 		}
 
 		return returnResponse;
@@ -144,17 +128,35 @@ public class SettingsService implements Serializable {
 
 	// http://localhost:8080/SF5JSF-test/json/usersettings/filter/Name/First;login=admin
 	@GET
-	@Produces("application/json")
 	@Path("filter/{type}/{typeValue}")
 	public Response getSettingsByArbitraryFilter(@PathParam("type") String fieldName,
 			@PathParam("typeValue") String typeValue, @MatrixParam("login") String login) {
 
 		Response returnResponse = null;
-		String result = settingsJsonizer.getSettingsByArbitraryFilter(fieldName, typeValue, login);
-		if (result.isEmpty()) {
-			return Response.status(404).build();
+
+		Criterion userCriterion = criterionService.getUserCriterion(login, Settings.class);
+		if (userCriterion == null) {
+			returnResponse = Response.status(204).entity("User criterion not returned by login " + typeValue).build();
 		} else {
-			returnResponse = Response.status(200).entity(result).build();
+			// building arbitrary criterion
+			Criterion arbitraryCriterion = criterionService.getCriterionByClassFieldAndStringValue(Settings.class,
+					fieldName, typeValue);
+			if (arbitraryCriterion == null) {
+				returnResponse = Response.status(204)
+						.entity("Setting criterion not returned for field " + fieldName + " and value " + typeValue)
+						.build();
+			} else {
+				List<Settings> settList = settingsJsonizer.getListOfSettingsByUserAndArbitraryCriterion(userCriterion,
+						arbitraryCriterion);
+				if (settList.isEmpty()) {
+					returnResponse = Response.status(204)
+							.entity("No settings returned for request parameters specified").build();
+				} else {
+					GenericEntity<List<Settings>> gsettList = new GenericEntity<List<Settings>>(settList) {
+					};
+					returnResponse = Response.status(200).entity(gsettList).build();
+				}
+			}
 		}
 
 		return returnResponse;
@@ -162,16 +164,36 @@ public class SettingsService implements Serializable {
 	}
 
 	@GET
-	@Produces("application/json")
 	@Path("filter/id/{settingId}")
 	public Response getSettingById(@PathParam("settingId") long settingId, @MatrixParam("login") String login) {
 
 		Response returnResponse = null;
-		String result = settingsJsonizer.getSettingById(settingId, login);
-		if (result.isEmpty()) {
-			return Response.status(404).build();
-		} else {
-			returnResponse = Response.status(200).entity(result).build();
+		Criterion userCriterion = criterionService.getUserCriterion(login, Settings.class);
+		if (userCriterion == null) {
+			returnResponse = Response.status(204).entity("User criterion not returned by login " + login).build();
+		}
+
+		else {
+
+			Criterion settingIdCriterion = Restrictions.eq("id", settingId);
+
+			List<Settings> settList = settingsJsonizer.getListOfSettingsByUserAndArbitraryCriterion(userCriterion,
+					settingIdCriterion);
+			if (settList.isEmpty()) {
+				returnResponse = Response.status(204).entity("No settings returned for request parameters specified")
+						.build();
+			} else {
+				Settings settingsObject = settList.get(0);
+				// let's marshall manually, because we are receiving 500 error
+				// without log. Even after manual marshalling with @XmlTransient
+				returnResponse = Response.status(200).entity(settingsObject).build();
+
+				StringWriter outputBuffer = new StringWriter();
+				JAXB.marshal(settingsObject, outputBuffer);
+				String str = outputBuffer.toString();
+
+				returnResponse = Response.status(200).entity(str).build();
+			}
 		}
 
 		return returnResponse;
@@ -180,25 +202,15 @@ public class SettingsService implements Serializable {
 	@Inject
 	private SettingsJsonizer settingsJsonizer;
 
-	public SettingsJsonizer getSettingsJsonizer() {
-		return settingsJsonizer;
-	}
-
-	public void setSettingsJsonizer(SettingsJsonizer settingsJsonizer) {
-		this.settingsJsonizer = settingsJsonizer;
-	}
+	@Inject
+	private ObjectsListService listService;
 
 	private static final long serialVersionUID = 3347470276152176597L;
 
 	@Inject
 	private UsersJsonizer usersJsonizer;
 
-	public UsersJsonizer getUsersJsonizer() {
-		return usersJsonizer;
-	}
-
-	public void setUsersJsonizer(UsersJsonizer usersJsonizer) {
-		this.usersJsonizer = usersJsonizer;
-	}
+	@Inject
+	private CriterionService criterionService;
 
 }

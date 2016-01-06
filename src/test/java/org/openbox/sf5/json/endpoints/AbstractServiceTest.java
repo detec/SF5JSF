@@ -12,6 +12,7 @@ import org.openbox.sf5.json.config.JacksonObjectMapperConfiguration;
 import org.openbox.sf5.json.config.MOXyJsonContextResolver;
 import org.openbox.sf5.json.config.MyApplicationResourceConfig;
 import org.openbox.sf5.json.converters.BooleanMessageBodyReader;
+import org.openbox.sf5.json.converters.LongMessageBodyReader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -64,8 +65,7 @@ public abstract class AbstractServiceTest {
 
 				.register(MultiPartFeature.class)
 
-
-				.register(BooleanMessageBodyReader.class)
+				.register(BooleanMessageBodyReader.class).register(LongMessageBodyReader.class)
 
 				// we have the same objectmapper config for client and server.
 				// .register(MarshallingFeature.class)
