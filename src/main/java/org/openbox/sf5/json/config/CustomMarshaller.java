@@ -1,20 +1,18 @@
 package org.openbox.sf5.json.config;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import org.hibernate.cfg.Settings;
-import org.openbox.sf5.model.Satellites;
-import org.openbox.sf5.model.SettingsConversion;
-import org.openbox.sf5.model.Transponders;
-import org.openbox.sf5.model.Users;
-
 @Provider
 public class CustomMarshaller implements ContextResolver<Marshaller> {
 
+	private Logger LOGGER = Logger.getLogger(CustomMarshaller.class.getName());
 	// http://stackoverflow.com/questions/18436782/specifying-jaxb-2-context-in-jersey-1-17
 
 	private JAXBContext context = null;
@@ -28,8 +26,7 @@ public class CustomMarshaller implements ContextResolver<Marshaller> {
 
 			if (context == null) {
 				try {
-					context = JAXBContext.newInstance(Transponders.class, Satellites.class, Users.class,
-							Settings.class, SettingsConversion.class);
+					context = JAXBContext.newInstance("org.openbox.sf5.model");
 					marshaller = context.createMarshaller();
 					marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 					marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
@@ -39,6 +36,7 @@ public class CustomMarshaller implements ContextResolver<Marshaller> {
 					// that
 					// this
 					// provider won't/can't be used.
+					LOGGER.log(Level.SEVERE, "CustomMarshaller - " + e.getMessage());
 				}
 			}
 		}

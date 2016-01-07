@@ -23,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 @Entity
 @Table(name = "SettingsSatellites")
-@XmlRootElement  // This is necessary for MOXy activation http://lagod.id.au/blog/?p=472
+@XmlRootElement(name="SatellitesTable") // or we get Jaxb marshaller exception duplicate names   // This is necessary for MOXy activation http://lagod.id.au/blog/?p=472
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SettingsSatellites extends AbstractDbEntity implements Serializable {
 
