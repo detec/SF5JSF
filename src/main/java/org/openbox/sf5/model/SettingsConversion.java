@@ -43,8 +43,8 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	@JoinColumn(name = "parent_id", unique = false, nullable = false)
 	@JsonBackReference
 	// @NotNull - probably this causes 400 error.
-//	@XmlElement
-//    @XmlInverseReference(mappedBy="conversion")
+	//@XmlElement
+    //@XmlInverseReference(mappedBy="Conversion")
 	@XmlTransient
 	private Settings parent_id;
 
@@ -119,6 +119,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	}
 
 	@XmlTransient
+   // @XmlInverseReference(mappedBy="Conversion")
 	public Settings getparent_id() {
 		return parent_id;
 	}

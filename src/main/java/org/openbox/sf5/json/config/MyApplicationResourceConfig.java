@@ -43,14 +43,19 @@ public class MyApplicationResourceConfig extends ResourceConfig {
 		// Enable Tracing support.
 		property(ServerProperties.TRACING, "ALL");
 
+
 		// it is active by default
 		property(ServerProperties.PROVIDER_SCANNING_RECURSIVE, true);
+
 
 		property(ServerProperties.APPLICATION_NAME, "Openbox SF5 JavaEE 7 rest app");
 
 		// 18.12.2015 - let's try to use built-in MOXy.
 		// disable automatic discovery of providers
-		property(ServerProperties.METAINF_SERVICES_LOOKUP_DISABLE, true);
+		// no
+		// property(ServerProperties.METAINF_SERVICES_LOOKUP_DISABLE, true);
+		property(ServerProperties.METAINF_SERVICES_LOOKUP_DISABLE, false);
+		// property(ClientProperties.METAINF_SERVICES_LOOKUP_DISABLE, false);
 
 		// it finally works with
 		// property(ServerProperties.MOXY_JSON_FEATURE_DISABLE, true);
@@ -64,3 +69,4 @@ public class MyApplicationResourceConfig extends ResourceConfig {
 	}
 
 }
+

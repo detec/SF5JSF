@@ -44,9 +44,9 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 	@ManyToOne
 	@JoinColumn(name = "parent_id", unique = false, nullable = false)
 	@JsonBackReference
-//	@XmlElement
-//    @XmlInverseReference(mappedBy="satellites")
-	@XmlTransient
+	//@XmlElement
+    //@XmlInverseReference(mappedBy="satellites")
+	 @XmlTransient
 	private Settings parent_id;
 
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "my_entity_seq_gen")
@@ -75,6 +75,8 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 	}
 
 	@XmlTransient
+//	@XmlElement
+//	@XmlInverseReference(mappedBy="satellites")
 	public Settings getparent_id() {
 		return parent_id;
 	}
