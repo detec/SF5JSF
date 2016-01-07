@@ -1,7 +1,6 @@
 package org.openbox.sf5.json.endpoints;
 
 import java.io.Serializable;
-import java.io.StringWriter;
 import java.net.URI;
 import java.util.List;
 
@@ -22,7 +21,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
 import javax.ws.rs.core.UriInfo;
-import javax.xml.bind.JAXB;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
@@ -189,24 +187,26 @@ public class SettingsService implements Serializable {
 				// without log. Even after manual marshalling with @XmlTransient
 				// This causes successful unmarshalling of JSON.
 
-				List<MediaType> mediaTypes = headers.getAcceptableMediaTypes();
-				// for JSON we use this
-				if (mediaTypes.contains(new MediaType("application", "json"))) {
+//				List<MediaType> mediaTypes = headers.getAcceptableMediaTypes();
+//				// for JSON we use this
+//				if (mediaTypes.contains(new MediaType("application", "json"))) {
+//
+//				returnResponse = Response.status(200).entity(settingsObject).build();
+//				}
+//
+//				else if (mediaTypes.contains(new MediaType("application", "xml"))) {
+//
+//				// No, somehow it changes JAXB context and gives 2 errors, including 400 Bad request.
+//				 StringWriter outputBuffer = new StringWriter();
+//				 JAXB.marshal(settingsObject, outputBuffer);
+//				 String str = outputBuffer.toString();
+//				 returnResponse = Response.status(200).entity(str).build();
+//
+//
+//					// returnResponse = Response.status(200).entity(settingsObject).build();
+//				}
 
 				returnResponse = Response.status(200).entity(settingsObject).build();
-				}
-
-				else if (mediaTypes.contains(new MediaType("application", "xml"))) {
-
-				// No, somehow it changes JAXB context and gives 2 errors, including 400 Bad request.
-				 StringWriter outputBuffer = new StringWriter();
-				 JAXB.marshal(settingsObject, outputBuffer);
-				 String str = outputBuffer.toString();
-				 returnResponse = Response.status(200).entity(str).build();
-
-
-					// returnResponse = Response.status(200).entity(settingsObject).build();
-				}
 
 			}
 		}

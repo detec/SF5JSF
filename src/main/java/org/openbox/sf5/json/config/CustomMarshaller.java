@@ -8,6 +8,7 @@ import javax.xml.bind.Marshaller;
 
 import org.hibernate.cfg.Settings;
 import org.openbox.sf5.model.Satellites;
+import org.openbox.sf5.model.SettingsConversion;
 import org.openbox.sf5.model.Transponders;
 import org.openbox.sf5.model.Users;
 
@@ -28,7 +29,7 @@ public class CustomMarshaller implements ContextResolver<Marshaller> {
 			if (context == null) {
 				try {
 					context = JAXBContext.newInstance(Transponders.class, Satellites.class, Users.class,
-							Settings.class);
+							Settings.class, SettingsConversion.class);
 					marshaller = context.createMarshaller();
 					marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 					marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");

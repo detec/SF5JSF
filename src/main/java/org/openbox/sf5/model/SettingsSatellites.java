@@ -12,7 +12,10 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,7 +23,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 @Entity
 @Table(name = "SettingsSatellites")
-//@XmlRootElement
+@XmlRootElement  // This is necessary for MOXy activation http://lagod.id.au/blog/?p=472
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SettingsSatellites extends AbstractDbEntity implements Serializable {
 
@@ -44,9 +47,9 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 	@ManyToOne
 	@JoinColumn(name = "parent_id", unique = false, nullable = false)
 	@JsonBackReference
-	//@XmlElement
-    //@XmlInverseReference(mappedBy="satellites")
-	 @XmlTransient
+	@XmlElement
+    @XmlInverseReference(mappedBy="Satellites")
+	// @XmlTransient
 	private Settings parent_id;
 
 	@GeneratedValue(strategy = GenerationType.AUTO, generator = "my_entity_seq_gen")
@@ -74,7 +77,7 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 		this.Satellite = Satellite;
 	}
 
-	@XmlTransient
+//	@XmlTransient
 //	@XmlElement
 //	@XmlInverseReference(mappedBy="satellites")
 	public Settings getparent_id() {

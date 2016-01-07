@@ -64,7 +64,7 @@ public class MyApplicationResourceConfig extends ResourceConfig {
 
 		// https://jersey.java.net/documentation/latest/media.html#d0e9110
 		// property(MarshallerProperties.JSON_MARSHAL_EMPTY_COLLECTIONS, false);
-		// property(MarshallerProperties.INDENT_STRING, true);
+
 
 	}
 

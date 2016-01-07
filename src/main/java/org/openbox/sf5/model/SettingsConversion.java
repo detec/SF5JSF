@@ -13,14 +13,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.eclipse.persistence.oxm.annotations.XmlInverseReference;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "SettingsConversion")
-//@XmlRootElement
+@XmlRootElement   // This is necessary for MOXy activation http://lagod.id.au/blog/?p=472
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SettingsConversion extends AbstractDbEntity implements Serializable {
 
@@ -43,9 +46,9 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	@JoinColumn(name = "parent_id", unique = false, nullable = false)
 	@JsonBackReference
 	// @NotNull - probably this causes 400 error.
-	//@XmlElement
-    //@XmlInverseReference(mappedBy="Conversion")
-	@XmlTransient
+	@XmlElement
+    @XmlInverseReference(mappedBy="Conversion")
+	//@XmlTransient
 	private Settings parent_id;
 
 	@JsonProperty("LineNumber")
@@ -118,7 +121,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 		this.TheLineOfIntersection = TheLineOfIntersection;
 	}
 
-	@XmlTransient
+	//@XmlTransient
    // @XmlInverseReference(mappedBy="Conversion")
 	public Settings getparent_id() {
 		return parent_id;
