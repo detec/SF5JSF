@@ -13,7 +13,8 @@ import org.glassfish.jersey.server.ServerProperties;
 
 // http://blog.dejavu.sk/2013/11/19/registering-resources-and-providers-in-jersey-2/
 
-@ApplicationPath("/json/")
+//@ApplicationPath("/json/")
+@ApplicationPath(AppPathReader.JAXRS_PATH)
 public class MyApplicationResourceConfig extends ResourceConfig {
 
 	private Logger LOGGER = Logger.getLogger(MyApplicationResourceConfig.class.getName());

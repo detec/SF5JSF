@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.openbox.sf5.json.config.AppPathReader;
+
 @WebFilter(filterName = "AuthFilter", urlPatterns = { "*.xhtml" })
 public class AuthorizationFilter implements Filter {
 
@@ -44,7 +46,7 @@ public class AuthorizationFilter implements Filter {
 		boolean itIsregsterPage = (reqURI.indexOf("/register.xhtml") >= 0);
 		boolean therIsUsername = (ses != null && ses.getAttribute("username") != null);
 
-		boolean itIsJsonPath = (reqURI.indexOf("/json/") >= 0);
+		boolean itIsJsonPath = (reqURI.indexOf(AppPathReader.JAXRS_PATH) >= 0);
 
 		if (itIsLoginpage || therIsUsername || itIsregsterPage || itIsJsonPath) {
 

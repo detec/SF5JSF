@@ -26,7 +26,7 @@ public class CustomMarshaller implements ContextResolver<Marshaller> {
 
 			if (context == null) {
 				try {
-					context = JAXBContext.newInstance("org.openbox.sf5.model");
+					context = JAXBContext.newInstance(AppPathReader.JAXB_PACKAGE_NAME);
 					marshaller = context.createMarshaller();
 					marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
 					marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");

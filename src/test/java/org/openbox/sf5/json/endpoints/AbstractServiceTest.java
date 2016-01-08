@@ -8,6 +8,7 @@ import javax.ws.rs.client.WebTarget;
 
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.moxy.xml.MoxyXmlFeature;
+import org.openbox.sf5.json.config.AppPathReader;
 import org.openbox.sf5.json.config.MOXyJsonContextResolver;
 import org.openbox.sf5.json.config.MyApplicationResourceConfig;
 import org.openbox.sf5.json.converters.BooleanMessageBodyReader;
@@ -19,7 +20,7 @@ public abstract class AbstractServiceTest {
 
 	public static final String appLocation = "http://localhost:8080/SF5JSF-test/";
 
-	public static final String jsonPath = "json";
+	public static final String jsonPath = AppPathReader.JAXRS_PATH;
 
 	public Client client;
 
