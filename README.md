@@ -21,7 +21,7 @@ When replicating this project from its 1C:Enterprise 8.2 original, I hardly trie
 
 ## User authentication ##
 
-This implementation of Openbox SF-5 settings editor provides simplified (without password) SQL-based user authentication and registration, so that it can be run in a cloud. Authentication has been implemented with custom developed servlet filter, which filters all *.xhtml requests, except /jaxrs/* endpoints. Each user can register and access his/her SF-5 settings. Additionally users have a right to update common catalogue with transponder data, without the need for the administrator to do this routine job. The rights system is peer in this application.
+This implementation of Openbox SF-5 settings editor provides simplified (without password) SQL-based user authentication and registration, so that it can be run in a cloud. Authentication has been implemented with custom developed servlet filter, which filters all xhtml requests, except /jaxrs/ endpoints. Each user can register and access his/her SF-5 settings. Additionally users have a right to update common catalogue with transponder data, without the need for the administrator to do this routine job. The rights system is peer in this application.
 
 ## REST service ##
 
@@ -44,12 +44,12 @@ This Openbox SF-5 settings editor implementation provides JAX-RS 2.0 API for get
 	- jaxrs/usersettings/filter/id/{settingId}/sf5;login={login} GET	- get setting by its ID and user login in Openbox SF5 XML format, only "application/xml" "Accept" HTTP header is supported;
 	- jaxrs/usersettings/filter/{type}/{typeValue};login={login} GET 	- get user's settings, filtered by arbitrary field name and field value, with provided user login;
 	- jaxrs/usersettings/filter/login/{typeValue} GET 					- get all user's settings;
-	- jaxrs/usersettings/create;login={login} POST 						- send new setting to save in database for user specified. User should already exist, login in matrix parameter and in "User" field should coincide. New setting id is returned in HTTP header "SettingId".
+	- jaxrs/usersettings/create;login={login} POST 						- send new setting to save in database for user specified. User should already exist, login in matrix parameter and in "User" field should coincide. New setting ID is returned in HTTP header "SettingId".
 	
 - Users
 	- jaxrs/users/filter/login/{login} GET 				- get user by its login, returning JSON value, if found;
-	- jaxrs/users/exists/login/{login} GET 				- enables to check if the user with such login name exists, returning id of user;
-	- jaxrs/users/create POST 							- send new user to save in database, new user id is returned as response body.
+	- jaxrs/users/exists/login/{login} GET 				- enables to check if the user with such login name exists, returning user ID;
+	- jaxrs/users/create POST 							- send new user to save in database, new user ID is returned as response body.
 
 ## Maven profiles ##
 
