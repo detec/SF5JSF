@@ -1,12 +1,8 @@
 package org.openbox.sf5.application;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.io.Serializable;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.StringWriter;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -22,11 +18,14 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
+import javax.xml.bind.JAXB;
+import javax.xml.transform.stream.StreamResult;
 
 import org.openbox.sf5.common.Intersections;
 import org.openbox.sf5.common.XMLExporter;
 import org.openbox.sf5.model.CarrierFrequency;
 import org.openbox.sf5.model.Polarization;
+import org.openbox.sf5.model.Sat;
 import org.openbox.sf5.model.Satellites;
 import org.openbox.sf5.model.Settings;
 import org.openbox.sf5.model.SettingsConversion;
@@ -179,7 +178,8 @@ public class SettingsFormController implements Serializable {
 		this.setting = setting;
 	}
 
-	public void exportToXML() {
+	// public void exportToXML() {
+	public void exportToXML() throws IOException {
 
 		if (!check32Rows()) {
 			return;
@@ -187,12 +187,70 @@ public class SettingsFormController implements Serializable {
 
 		// in case someone forgot to generate it
 		generateSatTpStructure();
-		String filePath = XMLExporter.exportSettingToXML(dataSettingsConversion);
 
-		if (filePath == "") {
-			return;
-		}
 
+		// Replaced by JAX-RS style response
+//		String filePath = XMLExporter.exportSettingToXML(dataSettingsConversion);
+//
+//		if (filePath == "") {
+//			return;
+//		}
+//
+//		// Get the FacesContext
+//		FacesContext facesContext = FacesContext.getCurrentInstance();
+//
+//		// Get HTTP response
+//		HttpServletResponse response = (HttpServletResponse) facesContext.getExternalContext().getResponse();
+//
+//		// Set response headers
+//		response.reset(); // Reset the response in the first place
+//		response.setHeader("Content-Type", "text/xml"); // Set only the content
+//														// type
+//
+//		// Open response output stream
+//		try {
+//			OutputStream responseOutputStream = response.getOutputStream();
+//
+//			FileInputStream inputStream = new FileInputStream(new File(filePath));
+//			// Read PDF contents and write them to the output
+//
+//			byte[] bytesBuffer = new byte[2048];
+//			int bytesRead;
+//			while ((bytesRead = inputStream.read(bytesBuffer)) > 0) {
+//				responseOutputStream.write(bytesBuffer, 0, bytesRead);
+//			}
+//
+//			// Make sure that everything is out
+//			responseOutputStream.flush();
+//
+//			// Close both streams
+//			inputStream.close();
+//			responseOutputStream.close();
+//
+//			// JSF doc:
+//			// Signal the JavaServer Faces implementation that the HTTP response
+//			// for this request has already been generated
+//			// (such as an HTTP redirect), and that the request processing
+//			// lifecycle should be terminated
+//			// as soon as the current phase is completed.
+//			facesContext.responseComplete();
+//
+//			// clean temporary file
+//			Files.deleteIfExists(Paths.get(filePath));
+//
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+
+
+		List<SettingsConversion> scList = new ArrayList<SettingsConversion>();
+		List<SettingsConversionPresentation> DSCList = dataSettingsConversion;
+		DSCList.stream().forEach(t -> {
+			SettingsConversion sc = t;
+			scList.add(sc);
+		});
+
+		Sat sat = XMLExporter.exportSettingsConversionPresentationToSF5Format(scList);
 		// Get the FacesContext
 		FacesContext facesContext = FacesContext.getCurrentInstance();
 
@@ -201,43 +259,23 @@ public class SettingsFormController implements Serializable {
 
 		// Set response headers
 		response.reset(); // Reset the response in the first place
-		response.setHeader("Content-Type", "text/xml"); // Set only the content
+		response.setHeader("Content-Type", "application/xml"); // Set only the content
 														// type
 
-		// Open response output stream
-		try {
-			OutputStream responseOutputStream = response.getOutputStream();
+		response.setStatus(HttpServletResponse.SC_OK);
+		StringWriter sw = new StringWriter();
+		JAXB.marshal(sat, new StreamResult(sw));
+		String SF5Output = sw.toString();
 
-			FileInputStream inputStream = new FileInputStream(new File(filePath));
-			// Read PDF contents and write them to the output
-
-			byte[] bytesBuffer = new byte[2048];
-			int bytesRead;
-			while ((bytesRead = inputStream.read(bytesBuffer)) > 0) {
-				responseOutputStream.write(bytesBuffer, 0, bytesRead);
-			}
-
-			// Make sure that everything is out
-			responseOutputStream.flush();
-
-			// Close both streams
-			inputStream.close();
-			responseOutputStream.close();
-
-			// JSF doc:
-			// Signal the JavaServer Faces implementation that the HTTP response
-			// for this request has already been generated
-			// (such as an HTTP redirect), and that the request processing
-			// lifecycle should be terminated
-			// as soon as the current phase is completed.
-			facesContext.responseComplete();
-
-			// clean temporary file
-			Files.deleteIfExists(Paths.get(filePath));
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		response.getWriter().write(SF5Output);
+		// JSF doc:
+		// Signal the JavaServer Faces implementation that the HTTP response
+		// for this request has already been generated
+		// (such as an HTTP redirect), and that the request processing
+		// lifecycle should be terminated
+		// as soon as the current phase is completed.
+		facesContext.responseComplete();
+		// return Response.status(200).entity(sat).build();
 
 	}
 
