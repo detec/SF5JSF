@@ -15,11 +15,76 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.openbox.sf5.application.SettingsFormController.SettingsConversionPresentation;
+import org.openbox.sf5.model.Polarization;
+import org.openbox.sf5.model.Sat;
+import org.openbox.sf5.model.Sat.Satid;
+import org.openbox.sf5.model.Sat.Satid.Tp;
+import org.openbox.sf5.model.SettingsConversion;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 public class XMLExporter {
+
+	public static Sat exportSettingsConversionPresentationToSF5Format(List<SettingsConversion> dataSettingsConversion) {
+
+		// Generating sat/tp structure
+		generateSatTp(dataSettingsConversion);
+
+		Sat root = new Sat();
+
+		// lambdas do not see variables
+		List<Sat> stubSatList = new ArrayList<Sat>();
+		stubSatList.add(root);
+
+
+
+		// we should iterate through lines and add elements from the deepest to
+		// top.
+
+		dataSettingsConversion.stream().forEach(e -> {
+
+			Tp newTp = new Sat.Satid.Tp();
+			newTp.setFreq((int) e.getTransponder().getFrequency());
+			newTp.setIndex(String.valueOf(e.getTpindex()));
+			newTp.setLnbFreq(String.valueOf(e.getTransponder().getCarrier()));
+			newTp.setPolar(
+					Integer.valueOf(Polarization.getXMLpresentation(e.getTransponder().getPolarization())).intValue());
+			newTp.setSymbol((int) e.getTransponder().getSpeed());
+
+			// int indexOfE = dataSettingsConversion.indexOf(e);
+			// int currentLineNumber = indexOfE + 1;
+
+			// check if satid exists
+			if (root.getSatid().size() < e.getSatindex()) {
+				// adding new empty entry
+				root.getSatid().add(new Sat.Satid());
+			}
+
+			// add new Tp to Satid
+			Satid currentSatid = root.getSatid().get((int) e.getSatindex() - 1);
+			currentSatid.setIndex(String.valueOf(e.getSatindex()));
+			currentSatid.getTp().add(newTp);
+		});
+
+		return root;
+
+	}
+
+	public static void generateSatTp(List<SettingsConversion> dataSettingsConversion) {
+		// Generating sat/tp structure
+		long sat = 1;
+		long currentCount = 0;
+		for (SettingsConversion e : dataSettingsConversion) {
+			currentCount++;
+			e.setSatindex(sat);
+			e.setTpindex(currentCount);
+			if (currentCount == 4) {
+				currentCount = 0;
+				sat++;
+			}
+		}
+	}
 
 	public static String exportSettingToXML(
 			List<SettingsConversionPresentation> dataSettingsConversion) {

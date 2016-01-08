@@ -24,9 +24,12 @@ import javax.ws.rs.core.UriInfo;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.openbox.sf5.common.XMLExporter;
 import org.openbox.sf5.json.service.SettingsJsonizer;
 import org.openbox.sf5.json.service.UsersJsonizer;
+import org.openbox.sf5.model.Sat;
 import org.openbox.sf5.model.Settings;
+import org.openbox.sf5.model.SettingsConversion;
 import org.openbox.sf5.service.CriterionService;
 import org.openbox.sf5.service.ObjectsListService;
 
@@ -207,6 +210,38 @@ public class SettingsService implements Serializable {
 //				}
 
 				returnResponse = Response.status(200).entity(settingsObject).build();
+
+			}
+		}
+
+		return returnResponse;
+	}
+
+	@GET
+	@Path("filter/id/{settingId}/sf5")
+	@Produces(MediaType.APPLICATION_XML)
+	public Response getSettingByIdSF5(@PathParam("settingId") long settingId, @MatrixParam("login") String login) {
+		Response returnResponse = null;
+		Criterion userCriterion = criterionService.getUserCriterion(login, Settings.class);
+		if (userCriterion == null) {
+			returnResponse = Response.status(204).entity("User criterion not returned by login " + login).build();
+		}
+
+		else {
+
+			Criterion settingIdCriterion = Restrictions.eq("id", settingId);
+
+			List<Settings> settList = settingsJsonizer.getListOfSettingsByUserAndArbitraryCriterion(userCriterion,
+					settingIdCriterion);
+			if (settList.isEmpty()) {
+				returnResponse = Response.status(204).entity("No settings returned for request parameters specified")
+						.build();
+			} else {
+				Settings setting = settList.get(0);
+				List<SettingsConversion> conversionLines = setting.getConversion();
+				Sat sat = XMLExporter.exportSettingsConversionPresentationToSF5Format(conversionLines);
+
+				returnResponse = Response.status(200).entity(sat).build();
 
 			}
 		}

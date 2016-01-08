@@ -4,6 +4,13 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +47,7 @@ public class SettingsServiceXMLIT extends AbstractServiceTest {
 
 	private Users getTestUserXML() {
 		Invocation.Builder invocationBuilder = commonTarget.path("users").path("filter").path("login")
-				.path(this.testUsername).request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML);
+				.path(testUsername).request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML);
 		Response response = invocationBuilder.get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 
@@ -50,7 +57,7 @@ public class SettingsServiceXMLIT extends AbstractServiceTest {
 	}
 
 	@Test
-	public void shouldCreateAndGetSettingByIdXML() {
+	public void shouldCreateAndGetSettingByIdXML() throws IOException, URISyntaxException {
 		Response response = null;
 
 		// here we should create a setting.
@@ -74,7 +81,7 @@ public class SettingsServiceXMLIT extends AbstractServiceTest {
 		Settings setting = BuildTestSetting.buildSetting(adminUser, newTransList, "Second");
 
 		// http://howtodoinjava.com/2015/08/07/jersey-restful-client-examples/#post
-		invocationBuilder = serviceTarget.path("create").matrixParam("login", this.testUsername)
+		invocationBuilder = serviceTarget.path("create").matrixParam("login", testUsername)
 				.request(MediaType.APPLICATION_XML);
 
 		Response responsePost = invocationBuilder.post(Entity.entity(setting, MediaType.APPLICATION_XML));
@@ -82,7 +89,7 @@ public class SettingsServiceXMLIT extends AbstractServiceTest {
 
 		// Here we test getting setting by id.
 		invocationBuilder = serviceTarget.path("filter").path("id").path(Long.toString(setting.getId()))
-				.matrixParam("login", this.testUsername).request(MediaType.APPLICATION_XML);
+				.matrixParam("login", testUsername).request(MediaType.APPLICATION_XML);
 
 		response = invocationBuilder.get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -90,6 +97,39 @@ public class SettingsServiceXMLIT extends AbstractServiceTest {
 		Settings settingRead = response.readEntity(Settings.class);
 		assertThat(settingRead).isNotNull();
 		assertTrue(settingRead instanceof Settings);
+
+		// getting device specific output
+		invocationBuilder = serviceTarget.path("filter").path("id").path(Long.toString(setting.getId())).path("sf5").matrixParam("login", testUsername)
+
+				.request(MediaType.APPLICATION_XML);
+
+		response = invocationBuilder.get();
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+		String deviceSettings = response.readEntity(String.class);
+
+		assertThat(deviceSettings).isNotNull();
+
+		// write test files
+//		 ArrayList<String> lines = new ArrayList<String>();
+//		 lines.add(deviceSettings);
+//		 Files.write(Paths.get("e:\\Java\\sf5IToutput.xml"), lines);
+
+		URL responseFile = ClassLoader.getSystemResource("xml/sf5IToutput.xml");
+		assertThat(responseFile).isNotNull();
+
+		URI uri = responseFile.toURI();
+		assertThat(uri).isNotNull();
+
+		String content = new String(Files.readAllBytes(Paths.get(uri)), Charset.forName("UTF-8"));
+		// content = content.replace("\r\n\r\n", "\r\n"); // it adds
+														// superfluous
+														// \r\n
+
+		content = content.replace("</sat>\r\n", "</sat>");
+
+		//content = content.replace("\r\n", ""); // it seems to be without crlf
+
+		assertEquals(deviceSettings, content);
 
 	}
 
@@ -106,7 +146,7 @@ public class SettingsServiceXMLIT extends AbstractServiceTest {
 		Settings sett = settList.get(0);
 
 		Invocation.Builder invocationBuilder = serviceTarget.path("filter").path("Name").path(sett.getName())
-				.matrixParam("login", this.testUsername).request(MediaType.APPLICATION_XML)
+				.matrixParam("login", testUsername).request(MediaType.APPLICATION_XML)
 				.accept(MediaType.APPLICATION_XML);
 
 		response = invocationBuilder.get();
@@ -138,7 +178,7 @@ public class SettingsServiceXMLIT extends AbstractServiceTest {
 		GenericType<List<Settings>> genList = new GenericType<List<Settings>>() {
 		};
 
-		invocationBuilder = serviceTarget.path("filter").path("login").path(this.testUsername)
+		invocationBuilder = serviceTarget.path("filter").path("login").path(testUsername)
 				.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML);
 
 		response = invocationBuilder.get();
