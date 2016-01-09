@@ -41,7 +41,7 @@ This Openbox SF-5 settings editor implementation provides JAX-RS 2.0 API for get
 	
 - OpenBox SF-5 settings
 	- jaxrs/usersettings/filter/id/{settingId};login={login} GET 		- get setting by its ID and user login;
-	- jaxrs/usersettings/filter/id/{settingId}/sf5;login={login} GET	- get setting by its ID and user login in Openbox SF5 XML format, only "application/xml" "Accept" HTTP header is supported;
+	- jaxrs/usersettings/filter/id/{settingId}/sf5;login={login} GET	- get setting by its ID and user login in Openbox SF-5 XML format, only "application/xml" "Accept" HTTP header is supported;
 	- jaxrs/usersettings/filter/{type}/{typeValue};login={login} GET 	- get user's settings, filtered by arbitrary field name and field value, with provided user login;
 	- jaxrs/usersettings/filter/login/{typeValue} GET 					- get all user's settings;
 	- jaxrs/usersettings/create;login={login} POST 						- send new setting to save in database for user specified. User should already exist, login in matrix parameter and in "User" field should coincide. New setting ID is returned in HTTP header "SettingId".
@@ -62,7 +62,7 @@ Different Maven profiles are required to use different database schemes and inte
 
 ## Tests notice ##
 
-There are several JUnit tests, run in H2 in-memory mode. They check if Hibernate works with the database engine specified, if backend data processing features work, if SF5 XML output matches the reference string. But as a former 1C:Enterprise developer I strongly believe that only real client-server environment can show if there are some errors with settings or annotations. That is why Cargo maven plugin is used in Maven test profile. Its paramount purpose is to test JAX-RS endpoints. Every aspect of Openbox SF 5 settings editor is tested: transponders upload and select, user creation and select, satellites select, user settings creation and select. Jersey 2 client is used in integration tests.	
+There are several JUnit tests, run in H2 in-memory mode. They check if Hibernate works with the database engine specified, if backend data processing features work, if SF-5 XML output matches the reference string. But as a former 1C:Enterprise developer I strongly believe that only real client-server environment can show if there are some errors with settings or annotations. That is why Cargo maven plugin is used in Maven test profile. Its paramount purpose is to test JAX-RS endpoints. Every aspect of Openbox SF-5 settings editor is tested: transponders upload and select, user creation and select, satellites select, user settings creation and select. Jersey 2 client is used in integration tests.	
 
 ## System requirements ##
 
