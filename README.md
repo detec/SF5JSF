@@ -80,7 +80,7 @@ There are several JUnit tests, run in H2 in-memory mode. They check if Hibernate
 - Hibernate Validator 5.2;
 - JUnit 4.12;
 - Jersey 2 client;
-- Maven 3.3 with plugins compiler, surefire, resources, war, cargo.
+- Maven 3.3 with plugins compiler, surefire, resources, war, cargo;
 - GlassFish 4.1;
 - Java 8.
 
