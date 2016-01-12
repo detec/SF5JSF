@@ -27,20 +27,6 @@ import org.openbox.sf5.service.ObjectsListService;
 public class SatellitesService implements Serializable {
 
 	// http://localhost:8080/SF5JSF-test/json/satellites/all/
-	// @GET
-	// @Path("all/")
-	// public Response getAllSatellites() {
-	// Response returnResponse = null;
-	//
-	// String result = jsonizer.getSatellitesList();
-	// if (result.isEmpty()) {
-	// return Response.status(404).build();
-	// } else {
-	// returnResponse = Response.status(200).entity(result).build();
-	// }
-	// return returnResponse;
-	// }
-
 	@GET
 	@Path("all/")
 	public Response getAllSatellites() {
@@ -66,25 +52,6 @@ public class SatellitesService implements Serializable {
 		return returnResponse;
 	}
 
-	// @GET
-	// @Path("filter/{type}/{typeValue}")
-	// public Response getSatellitesByArbitraryFilter(@PathParam("type") String
-	// fieldName,
-	// @PathParam("typeValue") String typeValue) {
-	//
-	// Response returnResponse = null;
-	//
-	// String result = jsonizer.getSatellitesByArbitraryFilter(fieldName,
-	// typeValue);
-	// if (result.isEmpty()) {
-	// return Response.status(404).build();
-	// } else {
-	// returnResponse = Response.status(200).entity(result).build();
-	// }
-	// return returnResponse;
-	//
-	// }
-
 	@GET
 	@Path("filter/{type}/{typeValue}")
 	public Response getSatellitesByArbitraryFilter(@PathParam("type") String fieldName,
@@ -106,22 +73,6 @@ public class SatellitesService implements Serializable {
 		return returnResponse;
 
 	}
-
-	// @GET
-	// @Path("filter/id/{satelliteId}")
-	// public Response getSatelliteById(@PathParam("satelliteId") long satId) {
-	//
-	// Response returnResponse = null;
-	// String result = commonJsonizer.buildJsonStringByTypeAndId(satId,
-	// Satellites.class);
-	// if (result.isEmpty()) {
-	// return Response.status(404).build();
-	// } else {
-	// returnResponse = Response.status(200).entity(result).build();
-	// }
-	// return returnResponse;
-	//
-	// }
 
 	@GET
 	@Path("filter/id/{satelliteId}")

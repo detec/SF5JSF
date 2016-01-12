@@ -16,7 +16,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.GenericEntity;
-import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriBuilder;
@@ -167,7 +166,7 @@ public class SettingsService implements Serializable {
 
 	@GET
 	@Path("filter/id/{settingId}")
-	public Response getSettingById(@PathParam("settingId") long settingId, @MatrixParam("login") String login, @Context HttpHeaders headers) {
+	public Response getSettingById(@PathParam("settingId") long settingId, @MatrixParam("login") String login) {
 
 		Response returnResponse = null;
 		Criterion userCriterion = criterionService.getUserCriterion(login, Settings.class);
@@ -190,24 +189,30 @@ public class SettingsService implements Serializable {
 				// without log. Even after manual marshalling with @XmlTransient
 				// This causes successful unmarshalling of JSON.
 
-//				List<MediaType> mediaTypes = headers.getAcceptableMediaTypes();
-//				// for JSON we use this
-//				if (mediaTypes.contains(new MediaType("application", "json"))) {
-//
-//				returnResponse = Response.status(200).entity(settingsObject).build();
-//				}
-//
-//				else if (mediaTypes.contains(new MediaType("application", "xml"))) {
-//
-//				// No, somehow it changes JAXB context and gives 2 errors, including 400 Bad request.
-//				 StringWriter outputBuffer = new StringWriter();
-//				 JAXB.marshal(settingsObject, outputBuffer);
-//				 String str = outputBuffer.toString();
-//				 returnResponse = Response.status(200).entity(str).build();
-//
-//
-//					// returnResponse = Response.status(200).entity(settingsObject).build();
-//				}
+				// List<MediaType> mediaTypes =
+				// headers.getAcceptableMediaTypes();
+				// // for JSON we use this
+				// if (mediaTypes.contains(new MediaType("application",
+				// "json"))) {
+				//
+				// returnResponse =
+				// Response.status(200).entity(settingsObject).build();
+				// }
+				//
+				// else if (mediaTypes.contains(new MediaType("application",
+				// "xml"))) {
+				//
+				// // No, somehow it changes JAXB context and gives 2 errors,
+				// including 400 Bad request.
+				// StringWriter outputBuffer = new StringWriter();
+				// JAXB.marshal(settingsObject, outputBuffer);
+				// String str = outputBuffer.toString();
+				// returnResponse = Response.status(200).entity(str).build();
+				//
+				//
+				// // returnResponse =
+				// Response.status(200).entity(settingsObject).build();
+				// }
 
 				returnResponse = Response.status(200).entity(settingsObject).build();
 

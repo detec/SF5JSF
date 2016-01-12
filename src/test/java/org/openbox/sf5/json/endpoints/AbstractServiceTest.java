@@ -1,5 +1,8 @@
 package org.openbox.sf5.json.endpoints;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
 import java.util.logging.Logger;
 
 import javax.ws.rs.client.Client;
@@ -18,7 +21,9 @@ public abstract class AbstractServiceTest {
 
 	public Logger LOGGER = Logger.getLogger(MyApplicationResourceConfig.class.getName());
 
-	public static final String appLocation = "http://localhost:8080/SF5JSF-test/";
+	// public static final String appLocation =
+	// "http://localhost:8080/SF5JSF-test/";
+	public static final String appLocation = "http://localhost:8080/";
 
 	public static final String jsonPath = AppPathReader.JAXRS_PATH;
 
@@ -32,9 +37,27 @@ public abstract class AbstractServiceTest {
 
 	public String testUsername = "ITUser";
 
+	private Properties property = new Properties();
+
+	// http://stackoverflow.com/questions/8740234/postconstruct-checked-exceptions
+	public void loadProperties() {
+
+		// using try with resources
+		try (InputStream in = getClass().getResourceAsStream("/application.properties")) {
+			property.load(in);
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+
+	}
+
 	public Client createTestUserClient() {
 
 		configureMapper();
+
+		// loading context path
+		loadProperties();
 
 		// JacksonJsonProvider provider = new JacksonJsonProvider(mapper);
 
@@ -76,7 +99,8 @@ public abstract class AbstractServiceTest {
 
 	public void setUpAbstractTestUser() {
 		client = createTestUserClient();
-		commonTarget = client.target(appLocation).path(jsonPath);
+		// commonTarget = client.target(appLocation).path(jsonPath);
+		commonTarget = client.target(appLocation).path(property.getProperty("context.path")).path(jsonPath);
 	}
 
 	public void configureMapper() {

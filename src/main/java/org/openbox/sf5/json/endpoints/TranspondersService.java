@@ -23,8 +23,6 @@ import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.openbox.sf5.common.IniReader;
-import org.openbox.sf5.json.service.CommonJsonizer;
-import org.openbox.sf5.json.service.TranspondersJsonizer;
 import org.openbox.sf5.model.Satellites;
 import org.openbox.sf5.model.Transponders;
 import org.openbox.sf5.service.CriterionService;
@@ -60,6 +58,7 @@ public class TranspondersService implements Serializable {
 
 		try {
 			iniReader.readMultiPartFile(fileInputStream, fileMetaData);
+			returnResponse = Response.status(200).build();
 
 		} catch (Exception e) {
 			// return new Boolean(false);
@@ -67,28 +66,11 @@ public class TranspondersService implements Serializable {
 		}
 
 		// GenericEntity<Boolean> gBoolean = new GenericEntity<Boolean>(result);
-		return Response.status(200).build();
+		// return Response.status(200).build();
+		return returnResponse;
 	}
 
 	// http://localhost:8080/SF5JSF-test/json/transponders/filter/Speed/27500
-	// @GET
-	// @Path("filter/{type}/{typeValue}")
-	// public Response getTranspondersByArbitraryFilter(@PathParam("type")
-	// String fieldName,
-	// @PathParam("typeValue") String typeValue) {
-	//
-	// Response returnResponse = null;
-	// String result =
-	// transpondersJsonizer.getTranspondersByArbitraryFilter(fieldName,
-	// typeValue);
-	// if (result.isEmpty()) {
-	// return Response.status(404).build();
-	// } else {
-	// returnResponse = Response.status(200).entity(result).build();
-	// }
-	//
-	// return returnResponse;
-	// }
 
 	@GET
 	@Path("filter/{type}/{typeValue}")
@@ -121,22 +103,6 @@ public class TranspondersService implements Serializable {
 	}
 
 	// http://localhost:8080/SF5JSF-test/json/transponders/filter/id/56
-	// @GET
-	// @Produces("application/json")
-	// @Path("filter/id/{transponderId}")
-	// public Response getTransponderById(@PathParam("transponderId") long tpId)
-	// {
-	//
-	// Response returnResponse = null;
-	// String result = commonJsonizer.buildJsonStringByTypeAndId(tpId,
-	// Transponders.class);
-	// if (result.isEmpty()) {
-	// return Response.status(404).build();
-	// } else {
-	// returnResponse = Response.status(200).entity(result).build();
-	// }
-	// return returnResponse;
-	// }
 
 	@GET
 	@Path("filter/id/{transponderId}")
@@ -153,21 +119,6 @@ public class TranspondersService implements Serializable {
 	}
 
 	// http://localhost:8080/SF5JSF-test/json/transponders/filter;satId=1
-	// @GET
-	// @Path("filter/")
-	// public Response getTranspondersBySatelliteId(@MatrixParam("satId") long
-	// satId) {
-	//
-	// Response returnResponse = null;
-	// String result = transpondersJsonizer.getTranspondersBySatelliteId(satId);
-	// if (result.isEmpty()) {
-	// return Response.status(404).build();
-	// } else {
-	// returnResponse = Response.status(200).entity(result).build();
-	// }
-	// return returnResponse;
-	// }
-
 	@GET
 	@Path("filter/")
 	public Response getTranspondersBySatelliteId(@MatrixParam("satId") long satId) {
@@ -196,21 +147,6 @@ public class TranspondersService implements Serializable {
 	}
 
 	// http://localhost:8080/SF5JSF-test/json/transponders/all/
-	// @GET
-	// @Path("all/")
-	// public Response getTransponders() {
-	//
-	// Response returnResponse = null;
-	// String result = transpondersJsonizer.getTransponders();
-	//
-	// if (result.isEmpty()) {
-	// return Response.status(404).build();
-	// } else {
-	// returnResponse = Response.status(200).entity(result).build();
-	// }
-	//
-	// return returnResponse;
-	// }
 
 	@GET
 	@Path("all")
@@ -229,12 +165,6 @@ public class TranspondersService implements Serializable {
 
 		return returnResponse;
 	}
-
-	@Inject
-	private CommonJsonizer commonJsonizer;
-
-	@Inject
-	private TranspondersJsonizer transpondersJsonizer;
 
 	@Inject
 	private CriterionService criterionService;

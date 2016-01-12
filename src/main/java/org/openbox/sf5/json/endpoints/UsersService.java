@@ -65,22 +65,6 @@ public class UsersService implements Serializable {
 		return returnResponse;
 	}
 
-	// @GET
-	// @Path("filter/login/{login}")
-	// public Response getUserByLogin(@PathParam("login") String login) {
-	//
-	// Response returnResponse = null;
-	// String result = usersJsonizer.getUserByLogin(login);
-	// if (result.isEmpty()) {
-	// return Response.status(404).build();
-	// } else {
-	// returnResponse = Response.status(200).entity(result).build();
-	// }
-	//
-	// return returnResponse;
-	//
-	// }
-
 	@GET
 	@Path("filter/login/{login}")
 	public Response getUserByLogin(@PathParam("login") String login) {
@@ -115,14 +99,6 @@ public class UsersService implements Serializable {
 
 	@Inject
 	private CriterionService criterionService;
-
-	public UsersJsonizer getUsersJsonizer() {
-		return usersJsonizer;
-	}
-
-	public void setUsersJsonizer(UsersJsonizer usersJsonizer) {
-		this.usersJsonizer = usersJsonizer;
-	}
 
 	private static final long serialVersionUID = 1933163250712959368L;
 
