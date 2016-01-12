@@ -25,16 +25,16 @@ public class GenericXMLListWrapper<T> {
 
 	public GenericXMLListWrapper() {
 		Class<?> cls = getClass();
-		while (!(cls.getSuperclass() == null
-		// || cls.getSuperclass().equals(AbstractExpression.class)
-
-		)) {
-			cls = cls.getSuperclass();
-		}
-
-		if (cls.getSuperclass() == null) {
-			throw new RuntimeException("Unexpected exception occurred.");
-		}
+		// while (!(cls.getSuperclass() == null
+		// // || cls.getSuperclass().equals(AbstractExpression.class)
+		//
+		// )) {
+		// cls = cls.getSuperclass();
+		// }
+		//
+		// if (cls.getSuperclass() == null) {
+		// throw new RuntimeException("Unexpected exception occurred.");
+		// }
 
 		this.entityBeanType = ((Class) ((ParameterizedType) cls.getGenericSuperclass()).getActualTypeArguments()[0]);
 	}
