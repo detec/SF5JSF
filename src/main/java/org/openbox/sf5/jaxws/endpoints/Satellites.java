@@ -31,7 +31,7 @@ public class Satellites extends AbstractWSEndpoint implements Serializable {
 		sendErrorByRSResponse(RSResponse);
 
 		List<Satellites> satList = (List<Satellites>) RSResponse.getEntity();
-		return getWrappedList(satList);
+		return getWrappedList(satList, Satellites.class);
 
 	}
 
@@ -42,7 +42,7 @@ public class Satellites extends AbstractWSEndpoint implements Serializable {
 		sendErrorByRSResponse(RSResponse);
 
 		List<Satellites> satList = (List<Satellites>) RSResponse.getEntity();
-		return getWrappedList(satList);
+		return getWrappedList(satList, Satellites.class);
 	}
 
 	@WebMethod

@@ -1,6 +1,5 @@
 package org.openbox.sf5.model.listwrappers;
 
-import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,11 +19,11 @@ import org.openbox.sf5.model.Satellites;
 public class GenericXMLListWrapper<T> {
 
 	// http://blog.xebia.com/acessing-generic-types-at-runtime-in-java/
-	@XmlTransient
-	private Class entityBeanType;
-
-	public GenericXMLListWrapper() {
-		Class<?> cls = getClass();
+//	@XmlTransient
+//	private Class entityBeanType;
+//
+//	public GenericXMLListWrapper() {
+	//	Class<?> cls = getClass();
 		// while (!(cls.getSuperclass() == null
 		// // || cls.getSuperclass().equals(AbstractExpression.class)
 		//
@@ -36,11 +35,21 @@ public class GenericXMLListWrapper<T> {
 		// throw new RuntimeException("Unexpected exception occurred.");
 		// }
 
-		this.entityBeanType = ((Class) ((ParameterizedType) cls.getGenericSuperclass()).getActualTypeArguments()[0]);
-	}
+//		this.entityBeanType = ((Class) ((ParameterizedType) cls.getGenericSuperclass()).getActualTypeArguments()[0]);
+//	}
 
 	@XmlTransient
-	public Class getEntityBeanType() {
+	private Class<T> entityBeanType;
+
+	public GenericXMLListWrapper() {
+//        this.entityBeanType = (Class<T>) ((ParameterizedType) getClass()
+//                                .getGenericSuperclass()).getActualTypeArguments()[0];
+    	// this.entityBeanType =  (Class<T>) ((ParameterizedType) getClass()).getActualTypeArguments()[0];
+
+      }
+
+	@XmlTransient
+	public Class<T> getEntityBeanType() {
 		return entityBeanType;
 	}
 

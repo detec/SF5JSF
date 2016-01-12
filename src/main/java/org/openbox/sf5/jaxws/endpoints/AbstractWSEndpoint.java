@@ -48,20 +48,21 @@ public abstract class AbstractWSEndpoint {
 		}
 	}
 
-	public <T> GenericXMLListWrapper<T> getWrappedList(List<T> listToWrap) {
+	public <T> GenericXMLListWrapper<T> getWrappedList(List<T> listToWrap, Class<T> type) {
 		GenericXMLListWrapper<T> wrapper = new GenericXMLListWrapper<T>();
 		wrapper.setWrappedList(listToWrap);
 
 		// We should replace stub for satellites in root element
 		final XmlRootElement classAnnotation = wrapper.getClass().getAnnotation(XmlRootElement.class);
 		ChangeAnnotation.changeAnnotationValue(classAnnotation, "name",
-				wrapper.getEntityBeanType().getSimpleName().toLowerCase());
+				type.getSimpleName().toLowerCase());
 				// this seems to work
 
 		// we should also change annotation of @XmlSeeAlso
 		final XmlSeeAlso classSeeAlsoAnnotation = wrapper.getClass().getAnnotation(XmlSeeAlso.class);
 		Class[] clazzArray = new Class[1];
-		clazzArray[0] = wrapper.getEntityBeanType();
+		// clazzArray[0] = wrapper.getEntityBeanType();
+		clazzArray[0] = type;
 		ChangeAnnotation.changeAnnotationValue(classSeeAlsoAnnotation, "value", clazzArray);
 
 		return wrapper;
