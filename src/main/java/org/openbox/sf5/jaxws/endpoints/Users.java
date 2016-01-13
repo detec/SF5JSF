@@ -20,25 +20,41 @@ import org.openbox.sf5.json.endpoints.UsersService;
 @Named
 @SessionScoped
 @WebService(targetNamespace = "http://sf5.openbox.org/usersservice/1.0")
-public class Users implements Serializable {
+public class Users extends AbstractWSEndpoint implements Serializable {
 
 	public Users() {
 
 	}
 
 	@WebMethod
-	public Response createUser(org.openbox.sf5.model.Users user) {
-		return usersService.createUser(user);
+	public long createUser(org.openbox.sf5.model.Users user) {
+		Response RSResponse = usersService.createUser(user);
+		sendErrorByRSResponse(RSResponse);
+
+		String newIdString = (String) RSResponse.getEntity();
+
+		return Long.parseLong(newIdString);
 	}
 
 	@WebMethod
-	public Response ifSuchLoginExists(@WebParam(name = "login") String login) {
-		return usersService.ifSuchLoginExists(login);
+	public long ifSuchLoginExists(@WebParam(name = "login") String login) {
+		Response RSResponse = usersService.ifSuchLoginExists(login);
+		sendErrorByRSResponse(RSResponse);
+
+		String newIdString = (String) RSResponse.getEntity();
+
+		return Long.parseLong(newIdString);
+
 	}
 
 	@WebMethod
-	public Response getUserByLogin(@WebParam(name = "login") String login) {
-		return usersService.getUserByLogin(login);
+	public org.openbox.sf5.model.Users getUserByLogin(@WebParam(name = "login") String login) {
+		Response RSResponse = usersService.getUserByLogin(login);
+		sendErrorByRSResponse(RSResponse);
+
+		org.openbox.sf5.model.Users user = (org.openbox.sf5.model.Users) RSResponse.getEntity();
+
+		return user;
 	}
 
 	@Inject

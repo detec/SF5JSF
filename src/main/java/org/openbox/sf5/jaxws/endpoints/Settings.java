@@ -1,6 +1,7 @@
 package org.openbox.sf5.jaxws.endpoints;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -18,33 +19,54 @@ import org.openbox.sf5.json.endpoints.SettingsService;
 @Named
 @SessionScoped
 @WebService(serviceName = "SettingsService", targetNamespace = "http://sf5.openbox.org/settingsservice/1.0")
-public class Settings implements Serializable {
+public class Settings extends AbstractWSEndpoint implements Serializable {
 
 	public Settings() {
 
 	}
 
 	@WebMethod
-	public Response createSetting(org.openbox.sf5.model.Settings setting, @WebParam(name = "login") String login) {
-		return settingsService.createSetting(setting, login);
+	public long createSetting(org.openbox.sf5.model.Settings setting, @WebParam(name = "login") String login) {
+		Response RSResponse = settingsService.createSetting(setting, login);
+		sendErrorByRSResponse(RSResponse);
+
+		String newIdString = (String) RSResponse.getEntity();
+
+		return Long.parseLong(newIdString);
 	}
 
 	@WebMethod
-	public Response getSettingsByUserLogin(@WebParam(name = "login") String login) {
-		return settingsService.getSettingsByUserLogin(login);
+	public List<org.openbox.sf5.model.Settings> getSettingsByUserLogin(@WebParam(name = "login") String login) {
+		Response RSResponse = settingsService.getSettingsByUserLogin(login);
+		sendErrorByRSResponse(RSResponse);
+
+		List<org.openbox.sf5.model.Settings> settList = (List<org.openbox.sf5.model.Settings>) RSResponse.getEntity();
+
+		return settList;
 	}
 
 	@WebMethod
-	public Response getSettingsByArbitraryFilter(@WebParam(name = "type") String fieldName,
+	public List<org.openbox.sf5.model.Settings> getSettingsByArbitraryFilter(@WebParam(name = "type") String fieldName,
 			@WebParam(name = "typeValue") String typeValue, @WebParam(name = "login") String login) {
-		return settingsService.getSettingsByArbitraryFilter(fieldName, typeValue, login);
+
+		Response RSResponse = settingsService.getSettingsByArbitraryFilter(fieldName, typeValue, login);
+		sendErrorByRSResponse(RSResponse);
+
+		List<org.openbox.sf5.model.Settings> settList = (List<org.openbox.sf5.model.Settings>) RSResponse.getEntity();
+
+		return settList;
 	}
 
 	@WebMethod
-	public Response getSettingById(@WebParam(name = "settingId") long settingId,
+	public org.openbox.sf5.model.Settings getSettingById(@WebParam(name = "settingId") long settingId,
 			@WebParam(name = "login") String login) {
 
-		return settingsService.getSettingById(settingId, login);
+		Response RSResponse = settingsService.getSettingById(settingId, login);
+		sendErrorByRSResponse(RSResponse);
+
+		org.openbox.sf5.model.Settings setting = (org.openbox.sf5.model.Settings) RSResponse.getEntity();
+
+		return setting;
 	}
 
 	@Inject
