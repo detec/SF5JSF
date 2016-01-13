@@ -34,18 +34,19 @@ public class ConnectionManager implements Serializable {
 		Configuration configuration = new Configuration();
 		configuration.configure();
 
-		String propertyName = "hibernate.connection.url";
-		String variableConnectionString = "${db.jdbcUrl}";
-		// String devDBConnectionString =
-		// "jdbc:h2:tcp://localhost/~/sf5jsfdev;MVCC=true";
-		String devDBConnectionString = "jdbc:h2:tcp://localhost/~/sf5jsfdev";
-
-		// this code is left to Hibernate 4.3 compatibility.
-		if (configuration.getProperty(propertyName).equals(variableConnectionString)) {
-			// manually override property with test server
-			configuration.setProperty(propertyName, devDBConnectionString);
-
-		}
+		// Eclipse should filter resources as hibernate.cfg.xml is in resources folder now.
+//		String propertyName = "hibernate.connection.url";
+//		String variableConnectionString = "${db.jdbcUrl}";
+//		// String devDBConnectionString =
+//		// "jdbc:h2:tcp://localhost/~/sf5jsfdev;MVCC=true";
+//		String devDBConnectionString = "jdbc:h2:tcp://localhost/~/sf5jsfdev";
+//
+//		// this code is left to Hibernate 4.3 compatibility.
+//		if (configuration.getProperty(propertyName).equals(variableConnectionString)) {
+//			// manually override property with test server
+//			configuration.setProperty(propertyName, devDBConnectionString);
+//
+//		}
 
 		// Getting annotated classes that are extending AbstractDbEntity
 		// Set<Class<?>> annotatedSet =
@@ -61,7 +62,7 @@ public class ConnectionManager implements Serializable {
 				.applySettings(configuration.getProperties()).build();
 
 		// builds a session factory from the service registry
-		this.sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+		sessionFactory = configuration.buildSessionFactory(serviceRegistry);
 
 	}
 
@@ -164,7 +165,7 @@ public class ConnectionManager implements Serializable {
 		//
 		// return sessionFactoryVariable;
 
-		return this.sessionFactory;
+		return sessionFactory;
 	}
 
 	public static Set<Class<? extends AbstractDbEntity>> getAllSubclassesAbstractDbEntity() {

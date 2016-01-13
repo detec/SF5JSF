@@ -24,7 +24,15 @@
 <!--           			<exclude>**/hibernate.cfg.xml</exclude> -->
         			</excludes>
       			</resource>
-    		</resources>
+      			<!-- Explicitly filter resource -->
+      			<resource>
+        			<directory>src/main/resources</directory>
+        			<filtering>true</filtering>
+      			 <includes>
+          			<include>**/hibernate.cfg.xml</include>
+        		</includes>
+      			</resource>
+      		</resources>
     		
     	<defaultGoal>install</defaultGoal>
 		<testResources>
