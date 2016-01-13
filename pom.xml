@@ -21,7 +21,7 @@
         			<excludes>
           			<exclude>**/*.java</exclude> 
           			<!-- exclude default, unchanged hibernate.cfg.xml -->
-          			<exclude>**/hibernate.cfg.xml</exclude>
+<!--           			<exclude>**/hibernate.cfg.xml</exclude> -->
         			</excludes>
       			</resource>
     		</resources>
@@ -59,7 +59,8 @@
 			<webResources>
 				<resource>
                 <filtering>true</filtering> <!-- THIS IS IMPORTANT! It tells maven to replace your variables with the properties values -->
-                <directory>src/main/java</directory>
+<!--                 <directory>src/main/java</directory> -->
+				<directory>src/main/resources</directory>
                 <targetPath>WEB-INF/classes/</targetPath>
                 <includes>
                 <include>**/hibernate.cfg.xml</include> <!-- the path to hibernate.cfg.xml -->
@@ -154,7 +155,7 @@
         	 <!-- wsimport for web service classes generation
         	  https://jax-ws-commons.java.net/jaxws-maven-plugin/wsimport-mojo.html
         	  -->
-			<plugin>
+<!-- 			<plugin>
                
                 <groupId>org.jvnet.jax-ws-commons</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
@@ -167,10 +168,9 @@
                             <goal>wsimport</goal>
                         </goals>
                         <configuration>
-                        <!-- http://illegalargumentexception.blogspot.com/2011/04/java-jax-ws-web-services-and-clients.html#ws_bindings -->
+    
                        		<bindingDirectory>src/test/resources/bindings</bindingDirectory>
-<!--                             <packageName>org.openbox.sf5.jaxws.client.gen</packageName> -->
-<!--                             <wsdlDirectory>src/test/resources/wsdl</wsdlDirectory> -->
+
                             <wsdlUrls>
                             	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/SatellitesService?wsdl</wsdlUrl>
                             	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/TranspondersService?wsdl</wsdlUrl>
@@ -178,6 +178,55 @@
                             	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/SettingsService?wsdl</wsdlUrl>
                             </wsdlUrls>
                             
+
+					        <verbose>true</verbose>
+                            <sourceDestDir>${basedir}/src/test/java</sourceDestDir>
+                            <target>2.2</target>
+                        </configuration>
+                    </execution>
+                    
+                </executions>
+            </plugin> -->
+
+<!-- 			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>jaxb2-maven-plugin</artifactId>
+				<version>2.2</version>
+				<executions>
+					<execution>
+						<id>schemagen</id>
+						<goals>
+							<goal>schemagen</goal>
+						</goals>
+					</execution>
+				</executions>
+
+				<configuration>
+					<transformSchemas>
+						<transformSchema>
+							<uri>http://www.example.org/employee</uri>
+							<toPrefix>empns</toPrefix>
+							<toFile>employee.xsd</toFile>
+						</transformSchema>
+						<transformSchema>
+							<uri>http://www.example.org/address</uri>
+							<toPrefix>addrns</toPrefix>
+							<toFile>address.xsd</toFile>
+						</transformSchema>
+					</transformSchemas>
+					<includes>
+						<include>org/openbox/sf5/model/*</include>
+					</includes>
+					<excludes>
+						<exclude>hibernate.cfg.xml</exclude>
+					</excludes>
+					<verbose>true</verbose>
+
+				</configuration>
+			</plugin> -->
+
+
+<!-- It seems not to be used. -->
                             <!-- We do not need this section if wsdlDirectory is specified -->
                             <!-- <wsdlFiles>
                                 <wsdlFile>SatellitesService.wsdl</wsdlFile>
@@ -190,36 +239,10 @@
 								See examples https://jax-ws-commons.java.net/jaxws-maven-plugin/examples/using-binding-files.html
 								 -->
 <!--                             <wsdlLocation>http://localhost:8080/${rp.build.warname}/*</wsdlLocation> -->
-					        <verbose>true</verbose>
-                            <sourceDestDir>${basedir}/src/test/java</sourceDestDir>
-                            <target>2.2</target>
-                        </configuration>
-                    </execution>
-                    
-                    <!--    <execution>
-                    	<id>generate-jaxws-test</id>
-                    	<phase>generate-test-sources</phase>
-                    	<goals>
-                    		<goal>wsimport-test</goal>
-                    	</goals>
-                     	<configuration>
-                     	<packageName>org.openbox.sf5.jaxws.client.gen</packageName>
-                            <wsdlUrls>
-                            	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/SatellitesService?wsdl</wsdlUrl>
-                            	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/TranspondersService?wsdl</wsdlUrl>
-                            </wsdlUrls>
-                            <wsdlLocation>http://localhost:8080/${rp.build.warname}/*</wsdlLocation>
-                            <verbose>true</verbose>
-                            <sourceDestDir>${basedir}/src/test/java</sourceDestDir>
-                            <target>2.2</target>
-                        </configuration>
-                    </execution>  -->
-                </executions>
-            </plugin>
 
-<!-- It seems not to be used. -->
-
-	
+<!--                             <packageName>org.openbox.sf5.jaxws.client.gen</packageName> -->
+<!--                             <wsdlDirectory>src/test/resources/wsdl</wsdlDirectory> -->
+                    <!-- http://illegalargumentexception.blogspot.com/2011/04/java-jax-ws-web-services-and-clients.html#ws_bindings -->	
         	
 	</plugins>
     	<pluginManagement>
