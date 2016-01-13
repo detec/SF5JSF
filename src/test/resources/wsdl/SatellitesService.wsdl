@@ -4,17 +4,17 @@
 <xsd:import namespace="http://sf5.openbox.org/satelliteservice/1.0" schemaLocation="http://localhost:8080/SF5JSF-test/SatellitesService?xsd=1"/>
 </xsd:schema>
 </types>
-<message name="getAllSatellites">
-<part name="parameters" element="tns:getAllSatellites"/>
-</message>
-<message name="getAllSatellitesResponse">
-<part name="parameters" element="tns:getAllSatellitesResponse"/>
-</message>
 <message name="getSatelliteById">
 <part name="parameters" element="tns:getSatelliteById"/>
 </message>
 <message name="getSatelliteByIdResponse">
 <part name="parameters" element="tns:getSatelliteByIdResponse"/>
+</message>
+<message name="getAllSatellites">
+<part name="parameters" element="tns:getAllSatellites"/>
+</message>
+<message name="getAllSatellitesResponse">
+<part name="parameters" element="tns:getAllSatellitesResponse"/>
 </message>
 <message name="getSatellitesByArbitraryFilter">
 <part name="parameters" element="tns:getSatellitesByArbitraryFilter"/>
@@ -23,13 +23,13 @@
 <part name="parameters" element="tns:getSatellitesByArbitraryFilterResponse"/>
 </message>
 <portType name="Satellites">
-<operation name="getAllSatellites">
-<input wsam:Action="http://sf5.openbox.org/satelliteservice/1.0/Satellites/getAllSatellitesRequest" message="tns:getAllSatellites"/>
-<output wsam:Action="http://sf5.openbox.org/satelliteservice/1.0/Satellites/getAllSatellitesResponse" message="tns:getAllSatellitesResponse"/>
-</operation>
 <operation name="getSatelliteById">
 <input wsam:Action="http://sf5.openbox.org/satelliteservice/1.0/Satellites/getSatelliteByIdRequest" message="tns:getSatelliteById"/>
 <output wsam:Action="http://sf5.openbox.org/satelliteservice/1.0/Satellites/getSatelliteByIdResponse" message="tns:getSatelliteByIdResponse"/>
+</operation>
+<operation name="getAllSatellites">
+<input wsam:Action="http://sf5.openbox.org/satelliteservice/1.0/Satellites/getAllSatellitesRequest" message="tns:getAllSatellites"/>
+<output wsam:Action="http://sf5.openbox.org/satelliteservice/1.0/Satellites/getAllSatellitesResponse" message="tns:getAllSatellitesResponse"/>
 </operation>
 <operation name="getSatellitesByArbitraryFilter">
 <input wsam:Action="http://sf5.openbox.org/satelliteservice/1.0/Satellites/getSatellitesByArbitraryFilterRequest" message="tns:getSatellitesByArbitraryFilter"/>
@@ -38,7 +38,7 @@
 </portType>
 <binding name="SatellitesPortBinding" type="tns:Satellites">
 <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
-<operation name="getAllSatellites">
+<operation name="getSatelliteById">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>
@@ -47,7 +47,7 @@
 <soap:body use="literal"/>
 </output>
 </operation>
-<operation name="getSatelliteById">
+<operation name="getAllSatellites">
 <soap:operation soapAction=""/>
 <input>
 <soap:body use="literal"/>

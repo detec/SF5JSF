@@ -12,7 +12,6 @@ import javax.jws.WebService;
 import javax.ws.rs.core.Response;
 
 import org.openbox.sf5.json.endpoints.SatellitesService;
-import org.openbox.sf5.model.listwrappers.GenericXMLListWrapper;
 
 @Named
 @SessionScoped
@@ -26,23 +25,28 @@ public class Satellites extends AbstractWSEndpoint implements Serializable {
 	}
 
 	@WebMethod
-	public GenericXMLListWrapper<Satellites> getAllSatellites() {
+	public List<org.openbox.sf5.model.Satellites> getAllSatellites() {
 		Response RSResponse = satellitesService.getAllSatellites();
 		sendErrorByRSResponse(RSResponse);
 
-		List<Satellites> satList = (List<Satellites>) RSResponse.getEntity();
-		return getWrappedList(satList, Satellites.class);
+		List<org.openbox.sf5.model.Satellites> satList = (List<org.openbox.sf5.model.Satellites>) RSResponse
+				.getEntity();
+		// return getWrappedList(satList, Satellites.class);
+
+		return satList;
 
 	}
 
 	@WebMethod
-	public GenericXMLListWrapper<Satellites> getSatellitesByArbitraryFilter(@WebParam(name = "type") String fieldName,
-			@WebParam(name = "typeValue") String typeValue) {
+	public List<org.openbox.sf5.model.Satellites> getSatellitesByArbitraryFilter(
+			@WebParam(name = "type") String fieldName, @WebParam(name = "typeValue") String typeValue) {
 		Response RSResponse = satellitesService.getSatellitesByArbitraryFilter(fieldName, typeValue);
 		sendErrorByRSResponse(RSResponse);
 
-		List<Satellites> satList = (List<Satellites>) RSResponse.getEntity();
-		return getWrappedList(satList, Satellites.class);
+		List<org.openbox.sf5.model.Satellites> satList = (List<org.openbox.sf5.model.Satellites>) RSResponse
+				.getEntity();
+
+		return satList;
 	}
 
 	@WebMethod
