@@ -48,6 +48,7 @@ public class Satellites extends AbstractWSEndpoint implements Serializable {
 	@WebMethod
 	public org.openbox.sf5.model.Satellites getSatelliteById(@WebParam(name = "satelliteId") long satId) {
 		Response RSResponse = satellitesService.getSatelliteById(satId);
+		sendErrorByRSResponse(RSResponse);
 		org.openbox.sf5.model.Satellites satellite = (org.openbox.sf5.model.Satellites) RSResponse.getEntity();
 
 		return satellite;
