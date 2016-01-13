@@ -154,7 +154,7 @@
         	 <!-- wsimport for web service classes generation
         	  https://jax-ws-commons.java.net/jaxws-maven-plugin/wsimport-mojo.html
         	  -->
-<!-- 			<plugin>
+			<plugin>
                
                 <groupId>org.jvnet.jax-ws-commons</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
@@ -167,41 +167,59 @@
                             <goal>wsimport</goal>
                         </goals>
                         <configuration>
-                       
-                            <packageName>org.openbox.sf5.jaxws.client.gen</packageName>
-                            <wsdlDirectory>src/test/resources/wsdl</wsdlDirectory>
-                            <wsdlFiles>
+                        <!-- http://illegalargumentexception.blogspot.com/2011/04/java-jax-ws-web-services-and-clients.html#ws_bindings -->
+                       		<bindingDirectory>src/test/resources/bindings</bindingDirectory>
+<!--                             <packageName>org.openbox.sf5.jaxws.client.gen</packageName> -->
+<!--                             <wsdlDirectory>src/test/resources/wsdl</wsdlDirectory> -->
+                            <wsdlUrls>
+                            	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/SatellitesService?wsdl</wsdlUrl>
+                            	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/TranspondersService?wsdl</wsdlUrl>
+                            	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/UsersService?wsdl</wsdlUrl>
+                            	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/SettingsService?wsdl</wsdlUrl>
+                            </wsdlUrls>
+                            
+                            <!-- We do not need this section if wsdlDirectory is specified -->
+                            <!-- <wsdlFiles>
                                 <wsdlFile>SatellitesService.wsdl</wsdlFile>
-                            </wsdlFiles>
-                            <wsdlLocation>http://localhost:8080/${rp.build.warname}/SatellitesService?wsdl</wsdlLocation>
-                            <verbose>true</verbose>
+                                <wsdlFile>TranspondersService.wsdl</wsdlFile>
+                            </wsdlFiles> -->
+<!--                             <wsdlLocation>http://localhost:8080/${rp.build.warname}/SatellitesService?wsdl</wsdlLocation> -->
+<!--                             <wsdlLocation>http://localhost:8080/${rp.build.warname}/TranspondersService?wsdl</wsdlLocation> -->
+
+								<!-- Perhaps this shouldn't be used with bindings.
+								See examples https://jax-ws-commons.java.net/jaxws-maven-plugin/examples/using-binding-files.html
+								 -->
+<!--                             <wsdlLocation>http://localhost:8080/${rp.build.warname}/*</wsdlLocation> -->
+					        <verbose>true</verbose>
                             <sourceDestDir>${basedir}/src/test/java</sourceDestDir>
                             <target>2.2</target>
                         </configuration>
                     </execution>
                     
-                    <execution>
-                    <id>generate-jaxws-test</id>
+                    <!--    <execution>
+                    	<id>generate-jaxws-test</id>
                     	<phase>generate-test-sources</phase>
                     	<goals>
                     		<goal>wsimport-test</goal>
                     	</goals>
-                     <configuration>
-                     	<packageName>org.openbox.sf5.jaxws.test.gen</packageName>
-                            <wsdlDirectory>src/test/resources/wsdl</wsdlDirectory>
-                            <wsdlFiles>
-                                <wsdlFile>SatellitesService.wsdl</wsdlFile>
-                            </wsdlFiles>
-                            <wsdlLocation>http://localhost:8080/${rp.build.warname}/SatellitesService?wsdl</wsdlLocation>
+                     	<configuration>
+                     	<packageName>org.openbox.sf5.jaxws.client.gen</packageName>
+                            <wsdlUrls>
+                            	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/SatellitesService?wsdl</wsdlUrl>
+                            	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/TranspondersService?wsdl</wsdlUrl>
+                            </wsdlUrls>
+                            <wsdlLocation>http://localhost:8080/${rp.build.warname}/*</wsdlLocation>
                             <verbose>true</verbose>
                             <sourceDestDir>${basedir}/src/test/java</sourceDestDir>
                             <target>2.2</target>
                         </configuration>
-                    </execution>
+                    </execution>  -->
                 </executions>
-            </plugin> -->
+            </plugin>
 
-        	
+<!-- It seems not to be used. -->
+
+	
         	
 	</plugins>
     	<pluginManagement>
