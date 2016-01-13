@@ -196,7 +196,7 @@
                 </executions>
             </plugin> -->
 
-<!-- 			<plugin>
+	<!-- 		<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jaxb2-maven-plugin</artifactId>
 				<version>2.2</version>
@@ -210,18 +210,7 @@
 				</executions>
 
 				<configuration>
-					<transformSchemas>
-						<transformSchema>
-							<uri>http://www.example.org/employee</uri>
-							<toPrefix>empns</toPrefix>
-							<toFile>employee.xsd</toFile>
-						</transformSchema>
-						<transformSchema>
-							<uri>http://www.example.org/address</uri>
-							<toPrefix>addrns</toPrefix>
-							<toFile>address.xsd</toFile>
-						</transformSchema>
-					</transformSchemas>
+
 					<includes>
 						<include>org/openbox/sf5/model/*</include>
 					</includes>
@@ -231,8 +220,8 @@
 					<verbose>true</verbose>
 
 				</configuration>
-			</plugin> -->
-
+			</plugin>
+ -->
 
 <!-- It seems not to be used. -->
                             <!-- We do not need this section if wsdlDirectory is specified -->
