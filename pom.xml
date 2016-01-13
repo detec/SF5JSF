@@ -196,7 +196,8 @@
                 </executions>
             </plugin> -->
 
-	<!-- 		<plugin>
+<!-- http://www.mojohaus.org/jaxb2-maven-plugin/Documentation/v2.2/example_schemagen_basic.html -->
+<!-- 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>jaxb2-maven-plugin</artifactId>
 				<version>2.2</version>
@@ -210,18 +211,26 @@
 				</executions>
 
 				<configuration>
-
+					<excludes>
+						<exclude>org/openbox/sf5/**</exclude>
+					</excludes>
 					<includes>
 						<include>org/openbox/sf5/model/*</include>
 					</includes>
-					<excludes>
-						<exclude>hibernate.cfg.xml</exclude>
-					</excludes>
+					<schemaSourceExcludeFilters>
+                    <noJaxbIndex implementation="org.codehaus.mojo.jaxb2.shared.filters.pattern.PatternFileFilter">
+                        <patterns>
+                            <pattern>jaxb\.index</pattern>
+	                        <pattern>jaxb\.properties</pattern>
+
+                        </patterns>
+                     </noJaxbIndex>
+                </schemaSourceExcludeFilters>
 					<verbose>true</verbose>
 
 				</configuration>
-			</plugin>
- -->
+			</plugin> -->
+
 
 <!-- It seems not to be used. -->
                             <!-- We do not need this section if wsdlDirectory is specified -->
