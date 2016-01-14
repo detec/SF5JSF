@@ -34,35 +34,74 @@ public class ConnectionManager implements Serializable {
 		Configuration configuration = new Configuration();
 		configuration.configure();
 
-		// Eclipse should filter resources as hibernate.cfg.xml is in resources folder now.
-//		String propertyName = "hibernate.connection.url";
-//		String variableConnectionString = "${db.jdbcUrl}";
-//		// String devDBConnectionString =
-//		// "jdbc:h2:tcp://localhost/~/sf5jsfdev;MVCC=true";
-//		String devDBConnectionString = "jdbc:h2:tcp://localhost/~/sf5jsfdev";
-//
-//		// this code is left to Hibernate 4.3 compatibility.
-//		if (configuration.getProperty(propertyName).equals(variableConnectionString)) {
-//			// manually override property with test server
-//			configuration.setProperty(propertyName, devDBConnectionString);
-//
-//		}
+		// Eclipse should filter resources as hibernate.cfg.xml is in resources
+		// folder now.
+		// String propertyName = "hibernate.connection.url";
+		// String variableConnectionString = "${db.jdbcUrl}";
+		// // String devDBConnectionString =
+		// // "jdbc:h2:tcp://localhost/~/sf5jsfdev;MVCC=true";
+		// String devDBConnectionString = "jdbc:h2:tcp://localhost/~/sf5jsfdev";
+		//
+		// // this code is left to Hibernate 4.3 compatibility.
+		// if
+		// (configuration.getProperty(propertyName).equals(variableConnectionString))
+		// {
+		// // manually override property with test server
+		// configuration.setProperty(propertyName, devDBConnectionString);
+		//
+		// }
 
 		// Getting annotated classes that are extending AbstractDbEntity
-		// Set<Class<?>> annotatedSet =
-		// getAllExtendedOrImplementedTypesRecursively(AbstractDbEntity.class);
 		Set<Class<? extends AbstractDbEntity>> annotatedSet = getAllSubclassesAbstractDbEntity();
 
 		// adding classes as annotated.
 		annotatedSet.stream().forEach(t -> configuration.addAnnotatedClass(t));
 
-		// This also doesn't work in Hibernate 5.0.x !!!
+		// // This also doesn't work in Hibernate 5.0.x !!!
 
 		StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
 				.applySettings(configuration.getProperties()).build();
 
 		// builds a session factory from the service registry
 		sessionFactory = configuration.buildSessionFactory(serviceRegistry);
+
+		// A SessionFactory is set up once for an application!
+		// StandardServiceRegistryBuilder serviceRegistry = new
+		// StandardServiceRegistryBuilder();
+
+		/////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+		// HIBERNATE 5.0 doesn't work.
+
+		// final StandardServiceRegistry registry = new
+		// StandardServiceRegistryBuilder().configure() // configures
+		// // settings
+		// // from
+		// // hibernate.cfg.xml
+		// .build();
+		//
+		// // Getting annotated classes that are extending AbstractDbEntity
+		// Set<Class<? extends AbstractDbEntity>> annotatedSet =
+		// getAllSubclassesAbstractDbEntity();
+		//
+		// try {
+		//
+		// MetadataSources ms = new MetadataSources(registry);
+		// // adding classes as annotated.
+		// annotatedSet.stream().forEach(t -> ms.addAnnotatedClass(t));
+		//
+		// // sessionFactory = new
+		// // MetadataSources(registry).buildMetadata().buildSessionFactory();
+		//
+		// sessionFactory = ms.buildMetadata().buildSessionFactory();
+		// } catch (Exception e) {
+		//
+		// e.printStackTrace();
+		// // The registry would be destroyed by the SessionFactory, but we had
+		// // trouble building the SessionFactory
+		// // so destroy it manually.
+		// StandardServiceRegistryBuilder.destroy(registry);
+		// }
 
 	}
 
