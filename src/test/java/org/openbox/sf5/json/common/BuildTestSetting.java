@@ -15,6 +15,7 @@ import org.openbox.sf5.model.SettingsConversion;
 import org.openbox.sf5.model.SettingsSatellites;
 import org.openbox.sf5.model.Transponders;
 import org.openbox.sf5.model.Users;
+import org.openbox.sf5.wsmodel.Timestamp;
 
 public class BuildTestSetting {
 
@@ -42,8 +43,7 @@ public class BuildTestSetting {
 			SettingsConversion sc = new SettingsConversion(setting, t, satIndex, tpIndex,
 					Long.toString(t.getFrequency()), 0);
 			sc.setLineNumber(currentNumber);
-			// List<SettingsConversion> scConv = setting.getConversion();
-			// scConv.add(sc);
+
 			scList.add(sc);
 
 		});
@@ -51,6 +51,56 @@ public class BuildTestSetting {
 		setting.setConversion(scList);
 		setting.setSatellites(new ArrayList<SettingsSatellites>());
 
+		return setting;
+
+	}
+
+	public static org.openbox.sf5.wsmodel.Settings buildSetting(org.openbox.sf5.wsmodel.Users adminUser,
+			List<org.openbox.sf5.wsmodel.Transponders> newTransList, String settingName) {
+
+		org.openbox.sf5.wsmodel.Settings setting = new org.openbox.sf5.wsmodel.Settings();
+		setting.setName(settingName);
+		setting.setUser(adminUser);
+
+		Timestamp wsTimestamp = new org.openbox.sf5.wsmodel.Timestamp();
+		wsTimestamp.setNanos(new Long(System.currentTimeMillis()).intValue());
+		setting.setTheLastEntry(wsTimestamp);
+
+		setting.setPropsFile("file");
+
+		List<org.openbox.sf5.wsmodel.SettingsConversion> scList = new ArrayList<>();
+
+		// filter up to 32 transponders
+		newTransList.stream().filter(t -> newTransList.indexOf(t) <= 31).forEach(t -> {
+			int currentIndex = newTransList.indexOf(t);
+			int currentNumber = currentIndex + 1;
+			int satIndex = (int) Math.ceil((double) currentNumber / 4);
+			// int tpIndex = currentNumber - (satIndex * 4);
+			int tpIndex = (currentNumber % 4 == 0) ? 4 : currentNumber % 4; // %
+			// is
+			// remainder
+
+			org.openbox.sf5.wsmodel.SettingsConversion sc = new org.openbox.sf5.wsmodel.SettingsConversion(
+			// setting, t,
+			// satIndex, tpIndex, Long.toString(t.getFrequency()), 0
+
+			);
+			sc.setParentId(setting);
+			sc.setTransponder(t);
+			sc.setSatindex(satIndex);
+			sc.setTpindex(tpIndex);
+			sc.setNote(Long.toString(t.getFrequency()));
+
+			sc.setLineNumber(currentNumber);
+
+			scList.add(sc);
+
+		});
+
+		// setting.setConversion(scList);
+		// setting.setSatellites(new ArrayList<SettingsSatellites>());
+
+		// !!! tabular parts are not converted by wsimport.
 		return setting;
 
 	}

@@ -58,7 +58,7 @@ public class UsersService implements Serializable {
 		long result = usersJsonizer.checkIfUsernameExists(login);
 		if (result == 0) {
 
-			returnResponse = Response.status(204).entity(new Long(result).toString()).build();
+			returnResponse = Response.status(204).entity("Login does not exist!").build();
 		} else {
 			returnResponse = Response.status(202).entity(new Long(result).toString()).build();
 		}
