@@ -93,7 +93,7 @@ public class AuthorizationFilter implements Filter {
 
 	// fill list of endpoint classes to let them go through filter
 	private void setJAXWSEndpoints() {
-		Reflections reflections = new Reflections("org.openbox.sf5.jaxws.endpoints");
+		Reflections reflections = new Reflections("org.openbox.sf5.jaxws");
 		Set<Class<?>> classes = reflections.getTypesAnnotatedWith(WebService.class);
 
 		// List<String> classNames = new ArrayList<>();

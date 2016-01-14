@@ -3,6 +3,7 @@ package org.openbox.sf5.json.endpoints;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.ws.rs.client.Client;
@@ -13,13 +14,12 @@ import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.moxy.xml.MoxyXmlFeature;
 import org.openbox.sf5.json.config.AppPathReader;
 import org.openbox.sf5.json.config.MOXyJsonContextResolver;
-import org.openbox.sf5.json.config.MyApplicationResourceConfig;
 import org.openbox.sf5.json.converters.BooleanMessageBodyReader;
 import org.openbox.sf5.json.converters.LongMessageBodyReader;
 
 public abstract class AbstractServiceTest {
 
-	public Logger LOGGER = Logger.getLogger(MyApplicationResourceConfig.class.getName());
+	public Logger LOGGER = Logger.getLogger(getClass().getName());
 
 	// public static final String appLocation =
 	// "http://localhost:8080/SF5JSF-test/";
@@ -47,7 +47,7 @@ public abstract class AbstractServiceTest {
 			property.load(in);
 		} catch (IOException e) {
 
-			e.printStackTrace();
+			LOGGER.log(Level.SEVERE, e.getMessage(), e);
 		}
 
 	}

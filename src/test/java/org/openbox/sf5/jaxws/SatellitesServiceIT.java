@@ -1,4 +1,4 @@
-package org.openbox.sf5.jaxws.client.test;
+package org.openbox.sf5.jaxws;
 
 import java.net.URL;
 
@@ -13,7 +13,7 @@ import org.junit.runners.MethodSorters;
 
 @RunWith(JUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class SatellitesServiceIT {
+public class SatellitesServiceIT extends AbstractWSTest {
 
 	// private SatellitesService satellitesService;
 
@@ -23,12 +23,16 @@ public class SatellitesServiceIT {
 
 	@Before
 	public void setUp() throws Exception {
-		url = new URL("http://localhost:8080/SF5JSF-test/");
+		loadProperties();
 
-//		satellitesService = new SatellitesService(new URL(url, "SatellitesService?wsdl"),
-//				new QName("http://sf5.openbox.org/satelliteservice/1.0", "SatellitesService"));
-//
-//		satPort = satellitesService.getSatellitesPort();
+		url = new URL(appLocation + property.getProperty("context.path"));
+
+		// satellitesService = new SatellitesService(new URL(url,
+		// "SatellitesService?wsdl"),
+		// new QName("http://sf5.openbox.org/satelliteservice/1.0",
+		// "SatellitesService"));
+		//
+		// satPort = satellitesService.getSatellitesPort();
 	}
 
 	@Test

@@ -176,17 +176,9 @@
                             <goal>wsimport</goal>
                         </goals>
                         <configuration>
-    
-                       		<bindingDirectory>src/test/resources/bindings</bindingDirectory>
-
-                            <wsdlUrls>
-                            	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/SatellitesService?wsdl</wsdlUrl>
-                            	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/TranspondersService?wsdl</wsdlUrl>
-                            	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/UsersService?wsdl</wsdlUrl>
-                            	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/SettingsService?wsdl</wsdlUrl>
+                           <wsdlUrls>
+                            	 <wsdlUrl>http://localhost:8080/${rp.build.warname}/OpenboxSF5Service?wsdl</wsdlUrl>
                             </wsdlUrls>
-                            
-
 					        <verbose>true</verbose>
                             <sourceDestDir>${basedir}/src/test/java</sourceDestDir>
                             <target>2.2</target>
@@ -251,10 +243,10 @@
                     <!-- http://illegalargumentexception.blogspot.com/2011/04/java-jax-ws-web-services-and-clients.html#ws_bindings -->	
         	
 	</plugins>
+	<!--   			This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
     	<pluginManagement>
     		<plugins>
-    			<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself.-->
-    			<plugin>
+      			<plugin>
     				<groupId>org.eclipse.m2e</groupId>
     				<artifactId>lifecycle-mapping</artifactId>
     				<version>1.0.0</version>
