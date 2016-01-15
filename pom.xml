@@ -162,12 +162,16 @@
         	-->
         	 <!-- wsimport for web service classes generation
         	  https://jax-ws-commons.java.net/jaxws-maven-plugin/wsimport-mojo.html
+        	  
+        	  https://java.net/jira/browse/JAX_WS_COMMONS-129
+        	  
+        	  wsimport -keep -s "E:\Java\MyClasses\SF5JSF\src\test\java" -d "E:\Java\MyClasses\SF5JSF\target\classes" -verbose -encoding UTF-8 -Xnocompile -target 2.2 "http://localhost:8080/SF5JSF-test/OpenboxSF5Service?wsdl"
         	  -->
-			<!-- <plugin>
+	<!-- 		<plugin>
                
                 <groupId>org.jvnet.jax-ws-commons</groupId>
                 <artifactId>jaxws-maven-plugin</artifactId>
-                <version>2.3</version>
+                <version>2.3.1-b20150201.1248</version>
                 <executions>
                     <execution>
                     <id>generate-client</id>
@@ -182,6 +186,7 @@
 					        <verbose>true</verbose>
                             <sourceDestDir>${basedir}/src/test/java</sourceDestDir>
                             <target>2.2</target>
+	
                         </configuration>
                     </execution>
                     

@@ -4,6 +4,7 @@ package org.openbox.sf5.wsmodel;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -50,15 +51,19 @@ public class Transponders
     extends AbstractDbEntity
 {
 
+    @XmlSchemaType(name = "string")
     protected CarrierFrequency carrier;
     @XmlElement(name = "FEC")
     protected String fec;
     protected long frequency;
     protected long id;
+    @XmlSchemaType(name = "string")
     protected Polarization polarization;
+    @XmlSchemaType(name = "string")
     protected RangesOfDVB rangeOfDVB;
     protected Satellites satellite;
     protected long speed;
+    @XmlSchemaType(name = "string")
     protected DvbStandards versionOfTheDVB;
 
     /**

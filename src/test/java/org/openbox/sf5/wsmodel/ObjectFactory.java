@@ -45,6 +45,7 @@ public class ObjectFactory {
     private final static QName _IfSuchLoginExists_QNAME = new QName("http://wsmodel.sf5.openbox.org/", "ifSuchLoginExists");
     private final static QName _GetAllSatellitesResponse_QNAME = new QName("http://wsmodel.sf5.openbox.org/", "getAllSatellitesResponse");
     private final static QName _SettingsConversion_QNAME = new QName("http://wsmodel.sf5.openbox.org/", "settingsConversion");
+    private final static QName _CheckVerifyFault_QNAME = new QName("http://wsmodel.sf5.openbox.org/", "CheckVerifyFault");
     private final static QName _GetTranspondersResponse_QNAME = new QName("http://wsmodel.sf5.openbox.org/", "getTranspondersResponse");
     private final static QName _Satellites_QNAME = new QName("http://wsmodel.sf5.openbox.org/", "satellites");
     private final static QName _CreateSettingResponse_QNAME = new QName("http://wsmodel.sf5.openbox.org/", "createSettingResponse");
@@ -323,6 +324,14 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link WSException }
+     * 
+     */
+    public WSException createWSException() {
+        return new WSException();
+    }
+
+    /**
      * Create an instance of {@link GetAllSatellitesResponse }
      * 
      */
@@ -525,6 +534,15 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://wsmodel.sf5.openbox.org/", name = "settingsConversion")
     public JAXBElement<SettingsConversion> createSettingsConversion(SettingsConversion value) {
         return new JAXBElement<SettingsConversion>(_SettingsConversion_QNAME, SettingsConversion.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link WSException }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://wsmodel.sf5.openbox.org/", name = "CheckVerifyFault")
+    public JAXBElement<WSException> createCheckVerifyFault(WSException value) {
+        return new JAXBElement<WSException>(_CheckVerifyFault_QNAME, WSException.class, null, value);
     }
 
     /**

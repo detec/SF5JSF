@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.junit.runners.MethodSorters;
 import org.openbox.sf5.wsmodel.Transponders;
+import org.openbox.sf5.wsmodel.WSException_Exception;
 
 @RunWith(JUnit4.class)
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -24,7 +25,12 @@ public class TranspondersServiceIT extends AbstractWSTest {
 	@Test
 	public void shouldGetTranspondersByArbitraryFilter() {
 
-		List<Transponders> transList = SF5Port.getTranspondersByArbitraryFilter("Speed", "27500");
+		List<Transponders> transList = null;
+		try {
+			transList = SF5Port.getTranspondersByArbitraryFilter("Speed", "27500");
+		} catch (WSException_Exception e) {
+			e.printStackTrace();
+		}
 
 		assertThat(transList).isNotNull();
 		assertThat(transList.size()).isGreaterThan(0);
@@ -32,14 +38,24 @@ public class TranspondersServiceIT extends AbstractWSTest {
 
 	@Test
 	public void shouldGetTransponderById() {
-		Transponders trans = SF5Port.getTransponderById(1);
+		Transponders trans = null;
+		try {
+			trans = SF5Port.getTransponderById(1);
+		} catch (WSException_Exception e) {
+			e.printStackTrace();
+		}
 		assertThat(trans).isNotNull();
 	}
 
 	@Test
 	public void shouldGetTranspondersBySatelliteId() {
 
-		List<Transponders> transList = SF5Port.getTranspondersBySatelliteId(1);
+		List<Transponders> transList = null;
+		try {
+			transList = SF5Port.getTranspondersBySatelliteId(1);
+		} catch (WSException_Exception e) {
+			e.printStackTrace();
+		}
 		assertThat(transList).isNotNull();
 		assertThat(transList.size()).isGreaterThan(0);
 	}
@@ -47,7 +63,13 @@ public class TranspondersServiceIT extends AbstractWSTest {
 	@Test
 	public void shouldGetAllTransponders() {
 
-		List<Transponders> transList = SF5Port.getTransponders();
+		List<Transponders> transList = null;
+		try {
+			transList = SF5Port.getTransponders();
+		} catch (WSException_Exception e) {
+
+			e.printStackTrace();
+		}
 
 		assertThat(transList).isNotNull();
 		assertThat(transList.size()).isGreaterThan(0);

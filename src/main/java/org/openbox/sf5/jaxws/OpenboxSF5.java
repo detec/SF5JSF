@@ -43,24 +43,24 @@ import org.openbox.sf5.json.endpoints.UsersService;
 public class OpenboxSF5 implements Serializable {
 
 	@WebMethod
-	public long createUser(@WebParam(name = "inputUser") org.openbox.sf5.model.Users user) {
+	public long createUser(@WebParam(name = "inputUser") org.openbox.sf5.model.Users user) throws WSException {
 		Response RSResponse = usersService.createUser(user);
 		boolean isError = CheckIfThereIsErrorInResponse(RSResponse);
-		if (isError) {
-			return 0;
-		}
+//		if (isError) {
+//			return 0;
+//		}
 		String newIdString = (String) RSResponse.getEntity();
 
 		return Long.parseLong(newIdString);
 	}
 
 	@WebMethod
-	public long ifSuchLoginExists(@WebParam(name = "inputLogin") String login) {
+	public long ifSuchLoginExists(@WebParam(name = "inputLogin") String login) throws WSException {
 		Response RSResponse = usersService.ifSuchLoginExists(login);
 		boolean isError = CheckIfThereIsErrorInResponse(RSResponse);
-		if (isError) {
-			return 0;
-		}
+//		if (isError) {
+//			return 0;
+//		}
 		String newIdString = (String) RSResponse.getEntity();
 
 		return Long.parseLong(newIdString);
@@ -68,7 +68,7 @@ public class OpenboxSF5 implements Serializable {
 	}
 
 	@WebMethod
-	public org.openbox.sf5.model.Users getUserByLogin(@WebParam(name = "inputLogin") String login) {
+	public org.openbox.sf5.model.Users getUserByLogin(@WebParam(name = "inputLogin") String login) throws WSException {
 		Response RSResponse = usersService.getUserByLogin(login);
 		CheckIfThereIsErrorInResponse(RSResponse);
 
@@ -78,7 +78,7 @@ public class OpenboxSF5 implements Serializable {
 	}
 
 	public List<org.openbox.sf5.model.Transponders> getTranspondersByArbitraryFilter(
-			@WebParam(name = "inputFieldName") String fieldName, @WebParam(name = "inputFieldValue") String typeValue) {
+			@WebParam(name = "inputFieldName") String fieldName, @WebParam(name = "inputFieldValue") String typeValue) throws WSException {
 
 		Response RSResponse = transpondersService.getTranspondersByArbitraryFilter(fieldName, typeValue);
 		CheckIfThereIsErrorInResponse(RSResponse);
@@ -89,7 +89,7 @@ public class OpenboxSF5 implements Serializable {
 	}
 
 	@WebMethod
-	public org.openbox.sf5.model.Transponders getTransponderById(@WebParam(name = "inputTransponderId") long tpId) {
+	public org.openbox.sf5.model.Transponders getTransponderById(@WebParam(name = "inputTransponderId") long tpId) throws WSException {
 		Response RSResponse = transpondersService.getTransponderById(tpId);
 		CheckIfThereIsErrorInResponse(RSResponse);
 
@@ -99,7 +99,7 @@ public class OpenboxSF5 implements Serializable {
 
 	@WebMethod
 	public List<org.openbox.sf5.model.Transponders> getTranspondersBySatelliteId(
-			@WebParam(name = "inputSatId") long satId) {
+			@WebParam(name = "inputSatId") long satId) throws WSException {
 		Response RSResponse = transpondersService.getTranspondersBySatelliteId(satId);
 		CheckIfThereIsErrorInResponse(RSResponse);
 
@@ -111,7 +111,7 @@ public class OpenboxSF5 implements Serializable {
 	}
 
 	@WebMethod
-	public List<org.openbox.sf5.model.Transponders> getTransponders() {
+	public List<org.openbox.sf5.model.Transponders> getTransponders() throws WSException {
 		Response RSResponse = transpondersService.getTransponders();
 		CheckIfThereIsErrorInResponse(RSResponse);
 
@@ -122,7 +122,7 @@ public class OpenboxSF5 implements Serializable {
 	}
 
 	@WebMethod
-	public long createSetting(org.openbox.sf5.model.Settings setting, @WebParam(name = "inputLogin") String login) {
+	public long createSetting(org.openbox.sf5.model.Settings setting, @WebParam(name = "inputLogin") String login) throws WSException {
 		Response RSResponse = settingsService.createSetting(setting, login);
 		boolean isError = CheckIfThereIsErrorInResponse(RSResponse);
 		if (isError) {
@@ -134,7 +134,7 @@ public class OpenboxSF5 implements Serializable {
 	}
 
 	@WebMethod
-	public List<org.openbox.sf5.model.Settings> getSettingsByUserLogin(@WebParam(name = "inputLogin") String login) {
+	public List<org.openbox.sf5.model.Settings> getSettingsByUserLogin(@WebParam(name = "inputLogin") String login) throws WSException {
 		Response RSResponse = settingsService.getSettingsByUserLogin(login);
 		CheckIfThereIsErrorInResponse(RSResponse);
 
@@ -146,7 +146,7 @@ public class OpenboxSF5 implements Serializable {
 	@WebMethod
 	public List<org.openbox.sf5.model.Settings> getSettingsByArbitraryFilter(
 			@WebParam(name = "inputFieldName") String fieldName, @WebParam(name = "inputFieldValue") String typeValue,
-			@WebParam(name = "inputLogin") String login) {
+			@WebParam(name = "inputLogin") String login) throws WSException {
 
 		Response RSResponse = settingsService.getSettingsByArbitraryFilter(fieldName, typeValue, login);
 		CheckIfThereIsErrorInResponse(RSResponse);
@@ -158,7 +158,7 @@ public class OpenboxSF5 implements Serializable {
 
 	@WebMethod
 	public org.openbox.sf5.model.Settings getSettingById(@WebParam(name = "inputSettingId") long settingId,
-			@WebParam(name = "inputLogin") String login) {
+			@WebParam(name = "inputLogin") String login) throws WSException {
 
 		Response RSResponse = settingsService.getSettingById(settingId, login);
 		CheckIfThereIsErrorInResponse(RSResponse);
@@ -169,7 +169,7 @@ public class OpenboxSF5 implements Serializable {
 	}
 
 	@WebMethod
-	public List<org.openbox.sf5.model.Satellites> getAllSatellites() {
+	public List<org.openbox.sf5.model.Satellites> getAllSatellites() throws WSException {
 		Response RSResponse = satellitesService.getAllSatellites();
 		CheckIfThereIsErrorInResponse(RSResponse);
 
@@ -182,7 +182,7 @@ public class OpenboxSF5 implements Serializable {
 
 	@WebMethod
 	public List<org.openbox.sf5.model.Satellites> getSatellitesByArbitraryFilter(
-			@WebParam(name = "inputFieldName") String fieldName, @WebParam(name = "inputFieldValue") String typeValue) {
+			@WebParam(name = "inputFieldName") String fieldName, @WebParam(name = "inputFieldValue") String typeValue) throws WSException {
 
 		Response RSResponse = satellitesService.getSatellitesByArbitraryFilter(fieldName, typeValue);
 		CheckIfThereIsErrorInResponse(RSResponse);
@@ -194,7 +194,7 @@ public class OpenboxSF5 implements Serializable {
 	}
 
 	@WebMethod
-	public org.openbox.sf5.model.Satellites getSatelliteById(@WebParam(name = "inputSatelliteId") long satId) {
+	public org.openbox.sf5.model.Satellites getSatelliteById(@WebParam(name = "inputSatelliteId") long satId) throws WSException {
 
 		Response RSResponse = satellitesService.getSatelliteById(satId);
 		CheckIfThereIsErrorInResponse(RSResponse);
@@ -228,7 +228,7 @@ public class OpenboxSF5 implements Serializable {
 	}
 
 	// find if there is an error code and throw error
-	private boolean CheckIfThereIsErrorInResponse(Response response) {
+	private boolean CheckIfThereIsErrorInResponse(Response response) throws WSException {
 
 		List<Integer> normalStatusCodes = new ArrayList<Integer>();
 		normalStatusCodes.add(new Integer(200));
@@ -256,6 +256,11 @@ public class OpenboxSF5 implements Serializable {
 		// }
 
 		// }
+
+		if (isError) {
+			String errorMessage = (String) response.getEntity();
+			throw new WSException(errorMessage, statusCode);
+		}
 
 		return isError;
 	}
