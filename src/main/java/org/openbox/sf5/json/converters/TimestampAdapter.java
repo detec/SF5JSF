@@ -2,6 +2,7 @@ package org.openbox.sf5.json.converters;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
 
@@ -20,7 +21,14 @@ public class TimestampAdapter extends XmlAdapter<String, Timestamp> {
 
 	@Override
 	public Timestamp unmarshal(String v) throws Exception {
-		return (Timestamp) dateFormat.parse(v);
+		// String might be as nanoseconds
+		// Timestamp value = new Timestamp(Long.parseLong(v));
+		// value = (value == null) ? (Timestamp) dateFormat.parse(v) :
+		// (Timestamp) dateFormat.parse(v);
+
+		Date date = dateFormat.parse(v);
+		Timestamp value = new Timestamp(date.getTime());
+		return value;
 	}
 
 }

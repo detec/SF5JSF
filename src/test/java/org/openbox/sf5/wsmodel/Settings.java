@@ -6,7 +6,11 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
+import javax.xml.bind.annotation.adapters.CollapsedStringAdapter;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 
 /**
@@ -20,9 +24,9 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;extension base="{http://wsmodel.sf5.openbox.org/}abstractDbEntity">
  *       &lt;sequence>
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="Name" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
+ *         &lt;element name="Name" type="{http://www.w3.org/2001/XMLSchema}ID" minOccurs="0"/>
  *         &lt;element name="PropsFile" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
- *         &lt;element name="TheLastEntry" type="{http://wsmodel.sf5.openbox.org/}timestamp" minOccurs="0"/>
+ *         &lt;element name="TheLastEntry" type="{http://www.w3.org/2001/XMLSchema}string" minOccurs="0"/>
  *         &lt;element name="User" type="{http://wsmodel.sf5.openbox.org/}users" minOccurs="0"/>
  *         &lt;element name="Conversion" type="{http://wsmodel.sf5.openbox.org/}settingsConversion" maxOccurs="unbounded" minOccurs="0"/>
  *         &lt;element name="Satellites" type="{http://wsmodel.sf5.openbox.org/}settingsSatellites" maxOccurs="unbounded" minOccurs="0"/>
@@ -50,11 +54,14 @@ public class Settings
 
     protected long id;
     @XmlElement(name = "Name")
+    @XmlJavaTypeAdapter(CollapsedStringAdapter.class)
+    @XmlID
+    @XmlSchemaType(name = "ID")
     protected String name;
     @XmlElement(name = "PropsFile")
     protected String propsFile;
     @XmlElement(name = "TheLastEntry")
-    protected Timestamp theLastEntry;
+    protected String theLastEntry;
     @XmlElement(name = "User")
     protected Users user;
     @XmlElement(name = "Conversion", nillable = true)
@@ -131,10 +138,10 @@ public class Settings
      * 
      * @return
      *     possible object is
-     *     {@link Timestamp }
+     *     {@link String }
      *     
      */
-    public Timestamp getTheLastEntry() {
+    public String getTheLastEntry() {
         return theLastEntry;
     }
 
@@ -143,10 +150,10 @@ public class Settings
      * 
      * @param value
      *     allowed object is
-     *     {@link Timestamp }
+     *     {@link String }
      *     
      */
-    public void setTheLastEntry(Timestamp value) {
+    public void setTheLastEntry(String value) {
         this.theLastEntry = value;
     }
 

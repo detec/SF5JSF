@@ -20,11 +20,14 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.openbox.sf5.json.converters.TimestampAdapter;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -49,6 +52,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	@Column(name = "Name", unique = false, nullable = false, length = 50)
 	@NotEmpty
 	@JsonProperty("Name")
+	@XmlID
 	private String Name;
 
 	public void setName(String Name) {
@@ -93,8 +97,9 @@ public class Settings extends AbstractDbEntity implements Serializable {
 	// it is only for Jackson
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ", timezone = "Europe/Kiev")
 	@NotNull
-	// Commented this Timestamp adapter as it ddin't want to convert it to non-empty timestamp
-	//@XmlJavaTypeAdapter(TimestampAdapter.class) // this is for MOXy
+	// Commented this Timestamp adapter as it ddin't want to convert it to
+	// non-empty timestamp
+	@XmlJavaTypeAdapter(TimestampAdapter.class) // this is for MOXy
 												// http://www.eclipse.org/eclipselink/documentation/2.6/moxy/advanced_concepts006.htm
 	private Timestamp TheLastEntry; // As JSON with MOXy it comes as expected
 									// with TimestampAdapter dateformat from

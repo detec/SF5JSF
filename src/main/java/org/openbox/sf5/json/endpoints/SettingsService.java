@@ -42,12 +42,13 @@ import org.openbox.sf5.service.ObjectsListService;
 public class SettingsService implements Serializable {
 
 	@Context
-	UriInfo uriInfo;
+	private UriInfo uriInfo;
 
 	@POST
 	@Path("create")
 	public Response createSetting(Settings setting, @MatrixParam("login") String login) {
 
+		// http://stackoverflow.com/questions/20119108/why-is-my-jersey-jax-rs-server-throwing-a-illegalstateexception-about-not-being
 		Response returnResponse = null;
 		long result = usersJsonizer.checkIfUsernameExists(login);
 
@@ -67,7 +68,10 @@ public class SettingsService implements Serializable {
 
 			else {
 				// for unsaved references parent_id is null
-				setting.getConversion().forEach(t -> t.setparent_id(setting));
+				if (setting.getConversion() != null) {
+					setting.getConversion().forEach(t -> t.setparent_id(setting));
+				}
+
 				if (setting.getSatellites() != null) {
 					// There is problem with MOXy XML that it converts empty
 					// collection to null.
@@ -81,14 +85,23 @@ public class SettingsService implements Serializable {
 				} else {
 
 					// setting successfully saved, should add headers.
-					UriBuilder ub = uriInfo.getAbsolutePathBuilder();
-					URI settingUri = ub
 
-							.path("filter").path("id")
+					URI settingUri = null;
 
-							.path(Long.toString(setting.getId())).matrixParam("login", login).build();
+					try {
+						// we also call JAX-WS and id doesn't make response
+						UriBuilder ub = uriInfo.getAbsolutePathBuilder();
+						settingUri = ub
+
+								.path("filter").path("id")
+
+								.path(Long.toString(setting.getId())).matrixParam("login", login).build();
+					} catch (Exception e) {
+
+					}
 
 					returnResponse = Response.status(201).header("SettingId", Long.toString(setting.getId()))
+							.entity(Long.toString(setting.getId()))
 
 							.location(settingUri)
 

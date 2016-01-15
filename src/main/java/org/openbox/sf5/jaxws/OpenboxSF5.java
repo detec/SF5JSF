@@ -1,7 +1,7 @@
 package org.openbox.sf5.jaxws;
 
-import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -230,23 +230,32 @@ public class OpenboxSF5 implements Serializable {
 	// find if there is an error code and throw error
 	private boolean CheckIfThereIsErrorInResponse(Response response) {
 
-		boolean isError = false;
+		List<Integer> normalStatusCodes = new ArrayList<Integer>();
+		normalStatusCodes.add(new Integer(200));
+		normalStatusCodes.add(new Integer(201));
+		normalStatusCodes.add(new Integer(202));
+
 		// checking status of response
 		int statusCode = response.getStatus();
-		if (statusCode != 200 || statusCode != 202) {
-			HttpServletResponse servletResponse = getResponse();
-			// String errorMessage = response.readEntity(String.class);
-			String errorMessage = (String) response.getEntity();
-			isError = true;
-			try {
-				servletResponse.sendError(statusCode, errorMessage);
-			}
 
-			catch (IOException e) {
-				LOG.severe(e.getMessage());
-			}
+		boolean isError = (normalStatusCodes.contains(new Integer(statusCode))) ? false : true;
 
-		}
+		// if (statusCode != 200 && statusCode != 202) {
+
+		// This code is not working
+		// HttpServletResponse servletResponse = getResponse();
+		// // String errorMessage = response.readEntity(String.class);
+		// String errorMessage = (String) response.getEntity();
+		// isError = true;
+		// try {
+		// servletResponse.sendError(statusCode, errorMessage);
+		// }
+		//
+		// catch (IOException e) {
+		// LOG.severe(e.getMessage());
+		// }
+
+		// }
 
 		return isError;
 	}

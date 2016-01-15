@@ -27,21 +27,123 @@ public interface IOpenboxSF5 {
 
     /**
      * 
-     * @param inputFieldName
-     * @param inputFieldValue
+     * @param inputUser
+     * @return
+     *     returns long
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "createUser", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.CreateUser")
+    @ResponseWrapper(localName = "createUserResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.CreateUserResponse")
+    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/createUserRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/createUserResponse")
+    public long createUser(
+        @WebParam(name = "inputUser", targetNamespace = "")
+        Users inputUser);
+
+    /**
+     * 
+     * @param inputLogin
+     * @return
+     *     returns org.openbox.sf5.wsmodel.Users
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getUserByLogin", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetUserByLogin")
+    @ResponseWrapper(localName = "getUserByLoginResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetUserByLoginResponse")
+    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getUserByLoginRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getUserByLoginResponse")
+    public Users getUserByLogin(
+        @WebParam(name = "inputLogin", targetNamespace = "")
+        String inputLogin);
+
+    /**
+     * 
+     * @return
+     *     returns java.util.List<org.openbox.sf5.wsmodel.Transponders>
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getTransponders", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetTransponders")
+    @ResponseWrapper(localName = "getTranspondersResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetTranspondersResponse")
+    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getTranspondersRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getTranspondersResponse")
+    public List<Transponders> getTransponders();
+
+    /**
+     * 
+     * @param arg0
+     * @param inputLogin
+     * @return
+     *     returns long
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "createSetting", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.CreateSetting")
+    @ResponseWrapper(localName = "createSettingResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.CreateSettingResponse")
+    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/createSettingRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/createSettingResponse")
+    public long createSetting(
+        @WebParam(name = "arg0", targetNamespace = "")
+        Settings arg0,
+        @WebParam(name = "inputLogin", targetNamespace = "")
+        String inputLogin);
+
+    /**
+     * 
+     * @param inputSettingId
+     * @param inputLogin
+     * @return
+     *     returns org.openbox.sf5.wsmodel.Settings
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getSettingById", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetSettingById")
+    @ResponseWrapper(localName = "getSettingByIdResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetSettingByIdResponse")
+    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getSettingByIdRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getSettingByIdResponse")
+    public Settings getSettingById(
+        @WebParam(name = "inputSettingId", targetNamespace = "")
+        long inputSettingId,
+        @WebParam(name = "inputLogin", targetNamespace = "")
+        String inputLogin);
+
+    /**
+     * 
      * @return
      *     returns java.util.List<org.openbox.sf5.wsmodel.Satellites>
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getSatellitesByArbitraryFilter", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetSatellitesByArbitraryFilter")
-    @ResponseWrapper(localName = "getSatellitesByArbitraryFilterResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetSatellitesByArbitraryFilterResponse")
-    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getSatellitesByArbitraryFilterRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getSatellitesByArbitraryFilterResponse")
-    public List<Satellites> getSatellitesByArbitraryFilter(
-        @WebParam(name = "inputFieldName", targetNamespace = "")
-        String inputFieldName,
-        @WebParam(name = "inputFieldValue", targetNamespace = "")
-        String inputFieldValue);
+    @RequestWrapper(localName = "getAllSatellites", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetAllSatellites")
+    @ResponseWrapper(localName = "getAllSatellitesResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetAllSatellitesResponse")
+    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getAllSatellitesRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getAllSatellitesResponse")
+    public List<Satellites> getAllSatellites();
+
+    /**
+     * 
+     * @param inputSatelliteId
+     * @return
+     *     returns org.openbox.sf5.wsmodel.Satellites
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "getSatelliteById", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetSatelliteById")
+    @ResponseWrapper(localName = "getSatelliteByIdResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetSatelliteByIdResponse")
+    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getSatelliteByIdRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getSatelliteByIdResponse")
+    public Satellites getSatelliteById(
+        @WebParam(name = "inputSatelliteId", targetNamespace = "")
+        long inputSatelliteId);
+
+    /**
+     * 
+     * @param inputLogin
+     * @return
+     *     returns long
+     */
+    @WebMethod
+    @WebResult(targetNamespace = "")
+    @RequestWrapper(localName = "ifSuchLoginExists", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.IfSuchLoginExists")
+    @ResponseWrapper(localName = "ifSuchLoginExistsResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.IfSuchLoginExistsResponse")
+    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/ifSuchLoginExistsRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/ifSuchLoginExistsResponse")
+    public long ifSuchLoginExists(
+        @WebParam(name = "inputLogin", targetNamespace = "")
+        String inputLogin);
 
     /**
      * 
@@ -95,21 +197,6 @@ public interface IOpenboxSF5 {
      * 
      * @param inputLogin
      * @return
-     *     returns long
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "ifSuchLoginExists", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.IfSuchLoginExists")
-    @ResponseWrapper(localName = "ifSuchLoginExistsResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.IfSuchLoginExistsResponse")
-    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/ifSuchLoginExistsRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/ifSuchLoginExistsResponse")
-    public long ifSuchLoginExists(
-        @WebParam(name = "inputLogin", targetNamespace = "")
-        String inputLogin);
-
-    /**
-     * 
-     * @param inputLogin
-     * @return
      *     returns java.util.List<org.openbox.sf5.wsmodel.Settings>
      */
     @WebMethod
@@ -144,107 +231,20 @@ public interface IOpenboxSF5 {
 
     /**
      * 
+     * @param inputFieldName
+     * @param inputFieldValue
      * @return
      *     returns java.util.List<org.openbox.sf5.wsmodel.Satellites>
      */
     @WebMethod
     @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getAllSatellites", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetAllSatellites")
-    @ResponseWrapper(localName = "getAllSatellitesResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetAllSatellitesResponse")
-    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getAllSatellitesRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getAllSatellitesResponse")
-    public List<Satellites> getAllSatellites();
-
-    /**
-     * 
-     * @param inputSatelliteId
-     * @return
-     *     returns org.openbox.sf5.wsmodel.Satellites
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getSatelliteById", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetSatelliteById")
-    @ResponseWrapper(localName = "getSatelliteByIdResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetSatelliteByIdResponse")
-    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getSatelliteByIdRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getSatelliteByIdResponse")
-    public Satellites getSatelliteById(
-        @WebParam(name = "inputSatelliteId", targetNamespace = "")
-        long inputSatelliteId);
-
-    /**
-     * 
-     * @param inputUser
-     * @return
-     *     returns long
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "createUser", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.CreateUser")
-    @ResponseWrapper(localName = "createUserResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.CreateUserResponse")
-    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/createUserRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/createUserResponse")
-    public long createUser(
-        @WebParam(name = "inputUser", targetNamespace = "")
-        Users inputUser);
-
-    /**
-     * 
-     * @return
-     *     returns java.util.List<org.openbox.sf5.wsmodel.Transponders>
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getTransponders", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetTransponders")
-    @ResponseWrapper(localName = "getTranspondersResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetTranspondersResponse")
-    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getTranspondersRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getTranspondersResponse")
-    public List<Transponders> getTransponders();
-
-    /**
-     * 
-     * @param inputLogin
-     * @return
-     *     returns org.openbox.sf5.wsmodel.Users
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getUserByLogin", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetUserByLogin")
-    @ResponseWrapper(localName = "getUserByLoginResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetUserByLoginResponse")
-    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getUserByLoginRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getUserByLoginResponse")
-    public Users getUserByLogin(
-        @WebParam(name = "inputLogin", targetNamespace = "")
-        String inputLogin);
-
-    /**
-     * 
-     * @param arg0
-     * @param inputLogin
-     * @return
-     *     returns long
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "createSetting", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.CreateSetting")
-    @ResponseWrapper(localName = "createSettingResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.CreateSettingResponse")
-    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/createSettingRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/createSettingResponse")
-    public long createSetting(
-        @WebParam(name = "arg0", targetNamespace = "")
-        Settings arg0,
-        @WebParam(name = "inputLogin", targetNamespace = "")
-        String inputLogin);
-
-    /**
-     * 
-     * @param inputSettingId
-     * @param inputLogin
-     * @return
-     *     returns org.openbox.sf5.wsmodel.Settings
-     */
-    @WebMethod
-    @WebResult(targetNamespace = "")
-    @RequestWrapper(localName = "getSettingById", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetSettingById")
-    @ResponseWrapper(localName = "getSettingByIdResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetSettingByIdResponse")
-    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getSettingByIdRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getSettingByIdResponse")
-    public Settings getSettingById(
-        @WebParam(name = "inputSettingId", targetNamespace = "")
-        long inputSettingId,
-        @WebParam(name = "inputLogin", targetNamespace = "")
-        String inputLogin);
+    @RequestWrapper(localName = "getSatellitesByArbitraryFilter", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetSatellitesByArbitraryFilter")
+    @ResponseWrapper(localName = "getSatellitesByArbitraryFilterResponse", targetNamespace = "http://wsmodel.sf5.openbox.org/", className = "org.openbox.sf5.wsmodel.GetSatellitesByArbitraryFilterResponse")
+    @Action(input = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getSatellitesByArbitraryFilterRequest", output = "http://wsmodel.sf5.openbox.org/IOpenboxSF5/getSatellitesByArbitraryFilterResponse")
+    public List<Satellites> getSatellitesByArbitraryFilter(
+        @WebParam(name = "inputFieldName", targetNamespace = "")
+        String inputFieldName,
+        @WebParam(name = "inputFieldValue", targetNamespace = "")
+        String inputFieldValue);
 
 }

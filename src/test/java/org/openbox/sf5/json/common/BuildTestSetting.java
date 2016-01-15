@@ -3,6 +3,7 @@ package org.openbox.sf5.json.common;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,12 +11,12 @@ import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.openbox.sf5.common.JsonObjectFiller;
 import org.openbox.sf5.model.Settings;
 import org.openbox.sf5.model.SettingsConversion;
 import org.openbox.sf5.model.SettingsSatellites;
 import org.openbox.sf5.model.Transponders;
 import org.openbox.sf5.model.Users;
-import org.openbox.sf5.wsmodel.Timestamp;
 
 public class BuildTestSetting {
 
@@ -62,9 +63,12 @@ public class BuildTestSetting {
 		setting.setName(settingName);
 		setting.setUser(adminUser);
 
-		Timestamp wsTimestamp = new org.openbox.sf5.wsmodel.Timestamp();
-		wsTimestamp.setNanos(new Long(System.currentTimeMillis()).intValue());
-		setting.setTheLastEntry(wsTimestamp);
+		SimpleDateFormat dateFormat = JsonObjectFiller.getJsonDateFormatter();
+
+		// Timestamp wsTimestamp = new org.openbox.sf5.wsmodel.Timestamp();
+		// wsTimestamp.setNanos(new
+		// Long(System.currentTimeMillis()).intValue());
+		setting.setTheLastEntry(dateFormat.format(System.currentTimeMillis()));
 
 		setting.setPropsFile("file");
 
@@ -97,8 +101,9 @@ public class BuildTestSetting {
 
 		});
 
-		// setting.setConversion(scList);
-		// setting.setSatellites(new ArrayList<SettingsSatellites>());
+		// there is no set function as stated in the comments
+		setting.getConversion().addAll((scList));
+		// setting.getSatellites().add(new ArrayList<SettingsSatellites>());
 
 		// !!! tabular parts are not converted by wsimport.
 		return setting;

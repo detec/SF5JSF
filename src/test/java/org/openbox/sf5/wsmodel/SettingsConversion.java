@@ -4,6 +4,8 @@ package org.openbox.sf5.wsmodel;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlSchemaType;
 import javax.xml.bind.annotation.XmlType;
 
 
@@ -18,7 +20,7 @@ import javax.xml.bind.annotation.XmlType;
  *     &lt;extension base="{http://wsmodel.sf5.openbox.org/}abstractDbEntity">
  *       &lt;sequence>
  *         &lt;element name="id" type="{http://www.w3.org/2001/XMLSchema}long"/>
- *         &lt;element name="parent_id" type="{http://wsmodel.sf5.openbox.org/}settings" minOccurs="0"/>
+ *         &lt;element name="parent_id" type="{http://www.w3.org/2001/XMLSchema}IDREF" minOccurs="0"/>
  *         &lt;element name="LineNumber" type="{http://www.w3.org/2001/XMLSchema}long"/>
  *         &lt;element name="Transponder" type="{http://wsmodel.sf5.openbox.org/}transponders" minOccurs="0"/>
  *         &lt;element name="Satindex" type="{http://www.w3.org/2001/XMLSchema}long"/>
@@ -50,7 +52,9 @@ public class SettingsConversion
 
     protected long id;
     @XmlElement(name = "parent_id")
-    protected Settings parentId;
+    @XmlIDREF
+    @XmlSchemaType(name = "IDREF")
+    protected Object parentId;
     @XmlElement(name = "LineNumber")
     protected long lineNumber;
     @XmlElement(name = "Transponder")
@@ -85,10 +89,10 @@ public class SettingsConversion
      * 
      * @return
      *     possible object is
-     *     {@link Settings }
+     *     {@link Object }
      *     
      */
-    public Settings getParentId() {
+    public Object getParentId() {
         return parentId;
     }
 
@@ -97,10 +101,10 @@ public class SettingsConversion
      * 
      * @param value
      *     allowed object is
-     *     {@link Settings }
+     *     {@link Object }
      *     
      */
-    public void setParentId(Settings value) {
+    public void setParentId(Object value) {
         this.parentId = value;
     }
 
