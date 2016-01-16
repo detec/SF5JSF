@@ -1,0 +1,44 @@
+<constraint-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://jboss.org/xml/ns/javax/validation/mapping validation-mapping-1.0.xsd"
+                     xmlns="http://jboss.org/xml/ns/javax/validation/mapping">
+    <default-package>org.openbox.sf5.wsmodel</default-package>
+    <bean class="Transponders" ignore-annotations="true">
+    
+    	 <field name="frequency">
+            <constraint annotation="javax.validation.constraints.Min">
+                <element name="value">2000</element>
+            </constraint>
+         </field>
+         
+         <field name="polarization">
+         	<constraint annotation="javax.validation.constraints.NotNull"/>
+         </field>
+         
+         <field name="fec">
+         	<constraint annotation="javax.validation.constraints.NotNull"/>
+         </field>
+         
+        <field name="carrier">
+         	<constraint annotation="javax.validation.constraints.NotNull"/>
+         </field>
+         
+         <field name="speed">
+            <constraint annotation="javax.validation.constraints.Min">
+                <element name="value">1000</element>
+            </constraint>
+         </field> 
+         
+         <field name="versionOfTheDVB">
+         	<constraint annotation="javax.validation.constraints.NotNull"/>
+         </field>
+         
+         <field name="rangeOfDVB">
+         	<constraint annotation="javax.validation.constraints.NotNull"/>
+         </field>
+         
+         <field name="satellite">
+         	<constraint annotation="javax.validation.constraints.NotNull"/>
+         </field>         
+    </bean>
+    
+</constraint-mappings>
