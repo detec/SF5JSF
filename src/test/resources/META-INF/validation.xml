@@ -6,5 +6,6 @@
     <traversable-resolver>org.hibernate.validator.internal.engine.resolver.DefaultTraversableResolver</traversable-resolver>
     <constraint-validator-factory>org.hibernate.validator.internal.engine.constraintvalidation.ConstraintValidatorFactoryImpl</constraint-validator-factory>
     <constraint-mapping>constraints-transponders-ws.xml</constraint-mapping>
-
+	<constraint-mapping>constraints-settings-ws.xml</constraint-mapping>
+	<constraint-mapping>constraints-users-ws.xml</constraint-mapping>
 </validation-config>

@@ -1,0 +1,20 @@
+<constraint-mappings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://jboss.org/xml/ns/javax/validation/mapping validation-mapping-1.0.xsd"
+                     xmlns="http://jboss.org/xml/ns/javax/validation/mapping">
+    <default-package>org.openbox.sf5.wsmodel</default-package>
+    
+    <bean class="Settings" ignore-annotations="true">
+         <field name="name">
+         	<constraint annotation="org.hibernate.validator.constraints.NotEmpty"/>
+         </field>
+    
+         <field name="theLastEntry">
+         	<constraint annotation="javax.validation.constraints.NotNull"/>
+         </field>
+         
+         <field name="user">
+         	<constraint annotation="javax.validation.constraints.NotNull"/>
+<!--          	<constraint annotation="javax.validation.Valid"/> -->
+         </field>
+    </bean>
+    </constraint-mappings>
