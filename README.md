@@ -21,7 +21,7 @@ When replicating this project from its 1C:Enterprise 8.2 original, I hardly trie
 
 ## User authentication ##
 
-This implementation of Openbox SF-5 settings editor provides simplified (without password) SQL-based user authentication and registration, so that it can be run in a cloud. Authentication has been implemented with custom developed servlet filter, which filters all xhtml requests, except /jaxrs/ endpoints. Each user can register and access his/her SF-5 settings. Additionally users have a right to update common catalogue with transponder data, without the need for the administrator to do this routine job. The rights system is peer in this application.
+This implementation of Openbox SF-5 settings editor provides simplified (without password) SQL-based user authentication and registration, so that it can be run in a cloud. Authentication has been implemented with custom developed servlet filter, which filters all xhtml requests, except /jaxrs/ endpoints and JAX-WS OpenboxSF5Service. Each user can register and access his/her SF-5 settings. Additionally users have a right to update common catalogue with transponder data, without the need for the administrator to do this routine job. The rights system is peer in this application.
 
 ## REST service ##
 
