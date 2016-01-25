@@ -41,7 +41,7 @@ public class SettingsServiceIT extends AbstractWSTest {
 		try {
 			newSettID = SF5Port.createSetting(setting, testUsername);
 		} catch (WSException_Exception e) {
-			e.printStackTrace();
+			System.out.println("Error posting setting to database! " + e);
 		}
 		assertThat(newSettID).isGreaterThan(0);
 		setting.setId(newSettID);
