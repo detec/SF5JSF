@@ -89,7 +89,9 @@
             		<exclude>**/*IT.java</exclude>
             	</excludes>
 			</configuration>
+	<!--
 			<executions>
+ 
         	<execution>
             	<phase>integration-test</phase>
             	<goals>
@@ -103,54 +105,11 @@
 						<include>**/*IT.java</include>
 					</includes>
             		</configuration>
-        		</execution>
+        		</execution> 
+        		
       		</executions>
+      		-->
 		</plugin>
-				<!-- http://stackoverflow.com/questions/20916581/how-to-do-in-container-testing-of-a-web-app-in-spring -->
-		<plugin>
-        	<groupId>org.codehaus.cargo</groupId>
-            <artifactId>cargo-maven2-plugin</artifactId>
-            <version>1.4.16</version>
-             	<configuration>
-                     <container>
-                         <containerId>glassfish4x</containerId>
-						      <zipUrlInstaller>
-						        <url>http://download.java.net/glassfish/4.1.1/release/glassfish-4.1.1.zip</url>
-						      </zipUrlInstaller>
-                     </container>
-                     <configuration>
-                     	<properties>
-                             <cargo.servlet.port>8080</cargo.servlet.port>
-                             <cargo.protocol>http</cargo.protocol>
-                        </properties>
-                        </configuration>
-
-                		<deployables>
-                		<deployable>
-                		 	<properties>
-                		     	<context>${rp.build.warname}</context>
-              				</properties>
-                		</deployable>
-                		</deployables>
-
-                </configuration>
-                <executions>
-                     <execution>
-                        <id>start-container</id>
-                        <phase>pre-integration-test</phase>
-                        <goals>
-                        <goal>start</goal>
-                    </goals>
-                    </execution>
-                    	<execution>
-                    	<id>stop-container</id>
-                    	<phase>post-integration-test</phase>
-                    	<goals>
-                    		<goal>stop</goal>
-                    	</goals>
-                	</execution>
-            	</executions>
-        	</plugin>
         	
         	<!-- https://github.com/javaee-samples/javaee7-samples/blob/master/jaxws/jaxws-client/pom.xml 
         	
@@ -289,21 +248,105 @@
    		<profile>
        		<id>test</id> 
        		<properties>
-           		<db.jdbcUrl>jdbc:h2:mem:test</db.jdbcUrl>
+           		<db.jdbcUrl>jdbc:h2:mem:test;DB_CLOSE_DELAY=-1</db.jdbcUrl>
+           		<db.driver>org.h2.Driver</db.driver>
+           		<db.user>sa</db.user>
+           		<db.password></db.password>
+           		<db.dialect>H2Dialect</db.dialect>
            		<rp.build.warname>SF5JSF-test</rp.build.warname>
        		</properties>
+       		<build>
+    		<plugins>
+	
+			<!-- http://stackoverflow.com/questions/20916581/how-to-do-in-container-testing-of-a-web-app-in-spring -->
+				<plugin>
+	        		<groupId>org.codehaus.cargo</groupId>
+	            	<artifactId>cargo-maven2-plugin</artifactId>
+	            	<version>1.4.16</version>
+	             	<configuration>
+	                     <container>
+	                         <containerId>glassfish4x</containerId>
+							      <zipUrlInstaller>
+							        <url>http://download.java.net/glassfish/4.1.1/release/glassfish-4.1.1.zip</url>
+							      </zipUrlInstaller>
+	                     </container>
+	                     <configuration>
+	                     	<properties>
+	                             <cargo.servlet.port>8080</cargo.servlet.port>
+	                             <cargo.protocol>http</cargo.protocol>
+	                        </properties>
+	                        </configuration>
+	
+	                		<deployables>
+	                		<deployable>
+	                		 	<properties>
+	                		     	<context>${rp.build.warname}</context>
+	              				</properties>
+	                		</deployable>
+	                		</deployables>
+	
+	                </configuration>
+	                <executions>
+	                     <execution>
+	                        <id>start-container</id>
+	                        <phase>pre-integration-test</phase>
+	                        <goals>
+	                        <goal>start</goal>
+	                    </goals>
+	                    </execution>
+	                    	<execution>
+	                    	<id>stop-container</id>
+	                    	<phase>post-integration-test</phase>
+	                    	<goals>
+	                    		<goal>stop</goal>
+	                    	</goals>
+	                	</execution>
+	            	</executions>
+	        	</plugin>
+	        	<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-surefire-plugin</artifactId>	
+					<version>2.18.1</version>
+					<executions>
+ 				       	<execution>
+            			<phase>integration-test</phase>
+            			<goals>
+               				<goal>test</goal>
+            			</goals>
+            			<configuration>
+               				<excludes>
+                  				<exclude>**/*Tests.java</exclude>
+               				</excludes>
+            				<includes>
+								<include>**/*IT.java</include>
+							</includes>
+            			</configuration>
+        		</execution> 
+        		
+      		</executions>
+				</plugin>
+    		</plugins>
+    		</build>
    		</profile>
    		<profile>
        		<id>prod</id>
        		<properties>
-           		<db.jdbcUrl>jdbc:h2:tcp://localhost/~/sf5jsf</db.jdbcUrl>
+           		<db.jdbcUrl>jdbc:postgresql://localhost:5432/sf5jsfprod</db.jdbcUrl>
+           		<db.driver>org.postgresql.Driver</db.driver>
+           		<db.user>sf5jsf</db.user>
+           		<db.password>1</db.password>
+           		<db.dialect>PostgreSQLDialect</db.dialect>
            		<rp.build.warname>SF5JSF</rp.build.warname>
        		</properties>
    		</profile>
    		<profile>
        		<id>dev</id> 
        		<properties>
-           		<db.jdbcUrl>jdbc:h2:tcp://localhost/~/sf5jsfdev</db.jdbcUrl>
+           		<db.jdbcUrl>jdbc:postgresql://localhost:5432/sf5jsfdev</db.jdbcUrl>
+           		<db.driver>org.postgresql.Driver</db.driver>
+           		<db.user>sf5jsf</db.user>
+           		<db.password>1</db.password>
+           		<db.dialect>PostgreSQLDialect</db.dialect>
            		<rp.build.warname>SF5JSF-test</rp.build.warname>
        		</properties>
    		</profile>
@@ -333,7 +376,12 @@
 <dependency>
 	<groupId>com.h2database</groupId>
 	<artifactId>h2</artifactId>
-	<version>1.4.190</version>
+	<version>1.4.191</version>
+</dependency>
+<dependency>
+	<groupId>org.postgresql</groupId>
+	<artifactId>postgresql</artifactId>
+	<version>9.4.1207.jre7</version>
 </dependency>
 <dependency>
 	<groupId>org.glassfish.main.common</groupId>

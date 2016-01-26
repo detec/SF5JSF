@@ -22,7 +22,7 @@ import org.openbox.sf5.wsmodel.WSException_Exception;
 public class SettingsServiceIT extends AbstractWSTest {
 
 	@Test
-	public void shouldCreateAndGetSettingById() {
+	public void shouldCreateAndGetSettingById() throws WSException_Exception {
 		Users adminUser = getTestUser();
 
 		assertThat(adminUser).isNotNull();
@@ -38,11 +38,12 @@ public class SettingsServiceIT extends AbstractWSTest {
 		Settings setting = BuildTestSetting.buildSetting(adminUser, newTransList, "Simple");
 
 		long newSettID = 0;
-		try {
-			newSettID = SF5Port.createSetting(setting, testUsername);
-		} catch (WSException_Exception e) {
-			System.out.println("Error posting setting to database! " + e);
-		}
+
+		// try {
+		newSettID = SF5Port.createSetting(setting, testUsername);
+		// } catch (WSException_Exception e) {
+		// System.out.println("Error posting setting to database! " + e);
+		// }
 		assertThat(newSettID).isGreaterThan(0);
 		setting.setId(newSettID);
 
