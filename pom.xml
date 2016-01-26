@@ -335,7 +335,7 @@
            		<db.driver>org.postgresql.Driver</db.driver>
            		<db.user>sf5jsf</db.user>
            		<db.password>1</db.password>
-           		<db.dialect>PostgreSQLDialect</db.dialect>
+           		<db.dialect>ProgressDialect</db.dialect>
            		<rp.build.warname>SF5JSF</rp.build.warname>
        		</properties>
    		</profile>
@@ -346,7 +346,7 @@
            		<db.driver>org.postgresql.Driver</db.driver>
            		<db.user>sf5jsf</db.user>
            		<db.password>1</db.password>
-           		<db.dialect>PostgreSQLDialect</db.dialect>
+           		<db.dialect>ProgressDialect</db.dialect>
            		<rp.build.warname>SF5JSF-test</rp.build.warname>
        		</properties>
    		</profile>

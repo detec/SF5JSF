@@ -16,6 +16,10 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.hibernate.Session;
+import org.hibernate.dialect.Dialect;
+import org.hibernate.dialect.H2Dialect;
+import org.hibernate.dialect.ProgressDialect;
+import org.hibernate.engine.spi.SessionFactoryImplementor;
 import org.hibernate.jdbc.ReturningWork;
 import org.openbox.sf5.db.ConnectionManager;
 import org.openbox.sf5.model.Settings;
@@ -46,16 +50,25 @@ public class Intersections implements Serializable {
 			public ResultSet execute(Connection connection) throws SQLException {
 				PreparedStatement preparedStatement = null;
 				ResultSet resultSet = null;
+
+				// syntax changed due to H2 and Postgre limitations.
+
+				// http://stackoverflow.com/questions/1571928/retrieve-auto-detected-hibernate-dialect
+				Dialect dialect = ((SessionFactoryImplementor) cm.getSessionFactroy()).getDialect();
+
+				String tempTableDrop = dialect.getDropTemporaryTableString();
+
+				// drop tables
 				try {
-
-					// syntax changed due to H2 limitations.
-
-					// drop tables
-					preparedStatement = connection.prepareStatement(getDropTempTables());
+					preparedStatement = connection.prepareStatement(getDropTempTables(dialect));
 					preparedStatement.execute();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
 
+				try {
 					// fill temp tables
-					preparedStatement = connection.prepareStatement(fillTempTables());
+					preparedStatement = connection.prepareStatement(fillTempTables(dialect));
 					preparedStatement.setLong(1, Object.getId());
 					preparedStatement.execute();
 
@@ -88,7 +101,9 @@ public class Intersections implements Serializable {
 		rs = session.doReturningWork(rowsReturningWork);
 
 		List<Integer> arrayLines = new ArrayList<Integer>();
-		while (rs.next()) {
+		while (rs.next())
+
+		{
 
 			int rowIndex = new BigDecimal(
 					// 11.08.2015, there seems to be a bug in defining rows.
@@ -119,14 +134,31 @@ public class Intersections implements Serializable {
 
 	}
 
-	public static String getDropTempTables() {
-		return "\n" + "DROP TABLE  CONVERSIONTABLE IF EXISTS; \n" + "DROP TABLE  ManyFrequencies IF EXISTS; \n"
-				+ "DROP TABLE  IntersectionTable IF EXISTS; \n";
+	public static String getDropTempTables(Dialect dialect) {
+		String returnString = "";
+		if (dialect instanceof H2Dialect) {
+			returnString = "\n" + "DROP TABLE  CONVERSIONTABLE IF EXISTS; \n"
+					+ "DROP TABLE  ManyFrequencies IF EXISTS; \n" + "DROP TABLE  IntersectionTable IF EXISTS; \n";
+		}
+
+		else if (dialect instanceof ProgressDialect) {
+			returnString = "\n" + "DROP TABLE IF EXISTS CONVERSIONTABLE; \n"
+					+ "DROP TABLE  IF EXISTS ManyFrequencies;  \n" + "DROP TABLE  IF EXISTS IntersectionTable; \n";
+		}
+		return returnString;
 
 	}
 
-	public static String fillTempTables() {
-		return "\n" + "CREATE MEMORY TEMPORARY TABLE CONVERSIONTABLE  AS ( \n" + "SELECT \n" + "LineNumber \n"
+	public static String fillTempTables(Dialect dialect) {
+		// Adjusting to different ddatabase dialects.
+
+		// return "\n" + "CREATE MEMORY TEMPORARY TABLE CONVERSIONTABLE AS ( \n"
+		// + "SELECT \n" + "LineNumber \n"
+		// return
+
+		// http://stackoverflow.com/questions/1915074/understanding-the-in-javas-format-strings
+		String tempTableCreate = dialect.getCreateTemporaryTableString();
+		String fromatString = "\n" + "%1$s CONVERSIONTABLE  AS ( \n" + "SELECT \n" + "LineNumber \n"
 
 				+ ", tp.frequency \n"
 
@@ -144,7 +176,8 @@ public class Intersections implements Serializable {
 
 				+ " ); \n"
 
-				+ "CREATE MEMORY TEMPORARY TABLE ManyFrequencies AS (  \n"
+		// + "CREATE MEMORY TEMPORARY TABLE ManyFrequencies AS ( \n"
+				+ "%1$s ManyFrequencies AS (  \n"
 
 				+ "select \n" + "p1.LineNumber \n" + ", p1.frequency \n" + ", p1.TheLineOfIntersection \n"
 				// + "into #ManyFrequencies \n"
@@ -163,7 +196,8 @@ public class Intersections implements Serializable {
 
 				+ " ); \n"
 
-				+ "CREATE MEMORY TEMPORARY TABLE IntersectionTable AS (   \n"
+		// + "CREATE MEMORY TEMPORARY TABLE IntersectionTable AS ( \n"
+				+ "%1$s IntersectionTable AS (   \n"
 
 				+ "select \n" + "t1.LineNumber \n" + ", t1.frequency \n" + ", t2.LineNumber as TheLineOfIntersection \n"
 				// + "into #IntersectionTable \n"
@@ -171,6 +205,8 @@ public class Intersections implements Serializable {
 				+ "on t1.frequency = t2.frequency \n" + "and t1.LineNumber <> t2.LineNumber \n"
 
 				+ " ); \n";
+
+		return String.format(fromatString, tempTableCreate);
 
 	}
 
@@ -255,7 +291,9 @@ public class Intersections implements Serializable {
 				// + " ); \n"
 
 				+ "select distinct \n" + "conv.LineNumber \n"
-				+ ", ISNULL(inter.TheLineOfIntersection, 0) AS TheLineOfIntersection \n"
+				// + ", ISNULL(inter.TheLineOfIntersection, 0) AS
+				// TheLineOfIntersection \n"
+				+ ", COALESCE(inter.TheLineOfIntersection, 0) AS TheLineOfIntersection \n"
 
 				+ "from ConversionTable conv \n" + "inner join IntersectionTable inter \n"
 				+ "on inter.LineNumber = conv.LineNumber \n"
