@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -141,7 +142,7 @@ public class Transponders extends AbstractDbEntity implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "Satellite", unique = false, nullable = false)
+	@JoinColumn(name = "Satellite", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_Satellite") )
 	@NotNull
 	@JsonProperty("Satellite")
 	private Satellites Satellite;
@@ -189,14 +190,17 @@ public class Transponders extends AbstractDbEntity implements Serializable {
 		}
 		Transponders otherTransponders = (Transponders) other;
 		if
-//		(otherTransponders.Frequency == Frequency && otherTransponders.Polarization.equals(Polarization)
-//				&& otherTransponders.FEC.equals(FEC) && otherTransponders.Carrier.equals(Carrier)
-//				&& otherTransponders.Speed == Speed && otherTransponders.VersionOfTheDVB.equals(VersionOfTheDVB)
-//				&& otherTransponders.RangeOfDVB.equals(RangeOfDVB) && otherTransponders.Satellite.equals(Satellite))
+		// (otherTransponders.Frequency == Frequency &&
+		// otherTransponders.Polarization.equals(Polarization)
+		// && otherTransponders.FEC.equals(FEC) &&
+		// otherTransponders.Carrier.equals(Carrier)
+		// && otherTransponders.Speed == Speed &&
+		// otherTransponders.VersionOfTheDVB.equals(VersionOfTheDVB)
+		// && otherTransponders.RangeOfDVB.equals(RangeOfDVB) &&
+		// otherTransponders.Satellite.equals(Satellite))
 
 		// in database applications only id is crucial.
-		(otherTransponders.id == id)
-		{
+		(otherTransponders.id == id) {
 			return true;
 		} else {
 			return false;

@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -113,8 +114,9 @@ public class Settings extends AbstractDbEntity implements Serializable {
 		this.TheLastEntry = TheLastEntry;
 	}
 
+	// http://stackoverflow.com/questions/4350874/unable-to-use-table-named-user-in-postgresql-hibernate
 	@ManyToOne
-	@JoinColumn(name = "User", unique = false, nullable = false)
+	@JoinColumn(name = "\"user\"", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_User") )
 	@NotNull
 	@JsonProperty("User")
 	@Valid

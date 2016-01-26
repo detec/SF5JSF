@@ -3,6 +3,7 @@ package org.openbox.sf5.model;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -23,7 +24,10 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 
 @Entity
 @Table(name = "SettingsSatellites")
-@XmlRootElement(name="SatellitesTable") // or we get Jaxb marshaller exception duplicate names   // This is necessary for MOXy activation http://lagod.id.au/blog/?p=472
+@XmlRootElement(name = "SatellitesTable") // or we get Jaxb marshaller exception
+											// duplicate names // This is
+											// necessary for MOXy activation
+											// http://lagod.id.au/blog/?p=472
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SettingsSatellites extends AbstractDbEntity implements Serializable {
 
@@ -45,10 +49,10 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "parent_id", unique = false, nullable = false)
+	@JoinColumn(name = "parent_id", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_Setting") )
 	@JsonBackReference
 	@XmlElement
-    @XmlInverseReference(mappedBy="Satellites")
+	@XmlInverseReference(mappedBy = "Satellites")
 	// @XmlTransient
 	private Settings parent_id;
 
@@ -65,7 +69,7 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "Satellite", unique = false, nullable = false)
+	@JoinColumn(name = "Satellite", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_Satellite") )
 	@JsonProperty("Satellite")
 	private Satellites Satellite;
 
@@ -77,9 +81,9 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 		this.Satellite = Satellite;
 	}
 
-//	@XmlTransient
-//	@XmlElement
-//	@XmlInverseReference(mappedBy="satellites")
+	// @XmlTransient
+	// @XmlElement
+	// @XmlInverseReference(mappedBy="satellites")
 	public Settings getparent_id() {
 		return parent_id;
 	}
