@@ -337,10 +337,10 @@
             	<activeByDefault>true</activeByDefault>
         	</activation> 
        		<properties>
-           		<db.jdbcUrl>jdbc:postgresql://localhost:5432/sf5jsfprod</db.jdbcUrl>
+           		<db.jdbcUrl>jdbc:postgresql://$OPENSHIFT_POSTGRESQL_DB_HOST:$OPENSHIFT_POSTGRESQL_DB_PORT/sf5jsf</db.jdbcUrl>
            		<db.driver>org.postgresql.Driver</db.driver>
-           		<db.user>sf5jsf</db.user>
-           		<db.password>1</db.password>
+           		<db.user>adminretwca2</db.user>
+           		<db.password>nNau9t3AwLeg</db.password>
            		<db.dialect>ProgressDialect</db.dialect>
            		<rp.build.warname>SF5JSF</rp.build.warname>
        		</properties>
