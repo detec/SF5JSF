@@ -55,26 +55,26 @@
           	<target>1.8</target>
         	</configuration>
 		</plugin>
+		
+		<!-- Filtering is done now at resources tag -->
 		<plugin>
         	<artifactId>maven-war-plugin</artifactId>
         	<version>2.6</version>
         	<configuration>
-          	<warSourceDirectory>src/main/webapp</warSourceDirectory>
-          	<failOnMissingWebXml>false</failOnMissingWebXml>
-			<packagingExcludes>WEB-INF/web.xml</packagingExcludes>
-<!-- 		<packagingExcludes>**/webapp</packagingExcludes>  -->
-			<warName>${rp.build.warname}</warName>
-			<webResources>
+          		<warSourceDirectory>src/main/webapp</warSourceDirectory>
+          		<failOnMissingWebXml>false</failOnMissingWebXml>
+				<packagingExcludes>WEB-INF/web.xml</packagingExcludes>
+				<warName>${rp.build.warname}</warName>
+<!-- 			<webResources>
 				<resource>
-                <filtering>true</filtering> <!-- THIS IS IMPORTANT! It tells maven to replace your variables with the properties values -->
-<!--                 <directory>src/main/java</directory> -->
+                <filtering>true</filtering>
 				<directory>src/main/resources</directory>
                 <targetPath>WEB-INF/classes/</targetPath>
                 <includes>
-                <include>**/hibernate.cfg.xml</include> <!-- the path to hibernate.cfg.xml -->
+                <include>**/hibernate.cfg.xml</include>
                 </includes>
             	</resource>
-        	</webResources>
+        	</webResources> -->
         	</configuration>
       	</plugin>
 		<plugin>
@@ -359,6 +359,27 @@
            		<rp.build.warname>SF5JSF-test</rp.build.warname>
        		</properties>
    		</profile>
+   		
+   			 <profile>
+         <!-- When built in OpenShift the 'openshift' profile will be used when invoking mvn. -->
+         <!-- Use this profile for any OpenShift specific customization your app will need. -->
+         <!-- By default that is to put the resulting archive into the 'deployments' folder. -->
+         <!-- http://maven.apache.org/guides/mini/guide-building-for-different-environments.html -->
+         <id>openshift</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <artifactId>maven-war-plugin</artifactId>
+                  <version>2.6</version>
+                  <configuration>
+                     <outputDirectory>deployments</outputDirectory>
+                     <warName>ROOT</warName>
+                  </configuration>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+   		
 	</profiles>
 		
 		 
@@ -392,12 +413,13 @@
 	<artifactId>postgresql</artifactId>
 	<version>9.4.1207.jre7</version>
 </dependency>
-<dependency>
+<!-- We will host on openshift with WildFly 9 cartridge -->
+<!-- <dependency>
 	<groupId>org.glassfish.main.common</groupId>
 	<artifactId>glassfish-api</artifactId>
 	<version>4.1</version>
 	<scope>provided</scope>
-</dependency>
+</dependency> -->
 
 <!-- Jackson provided dependencies -->
 <!-- <dependency>
