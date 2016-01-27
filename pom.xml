@@ -337,10 +337,10 @@
             	<activeByDefault>true</activeByDefault>
         	</activation> 
        		<properties>
-           		<db.jdbcUrl>jdbc:postgresql://ec2-54-217-240-205.eu-west-1.compute.amazonaws.com:5432/d3plcrgfkk7gdp</db.jdbcUrl>
+           		<db.jdbcUrl>jdbc:postgresql://localhost:5432/sf5jsfprod</db.jdbcUrl>
            		<db.driver>org.postgresql.Driver</db.driver>
-           		<db.user>iymnfyhiulaenm </db.user>
-           		<db.password>NnhHn1OsIXdFyehzgWxU9X-nM4</db.password>
+           		<db.user>sf5jsf</db.user>
+           		<db.password>1</db.password>
            		<db.dialect>ProgressDialect</db.dialect>
            		<rp.build.warname>SF5JSF</rp.build.warname>
        		</properties>
