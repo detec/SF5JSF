@@ -6,13 +6,20 @@
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 	
 	<persistence-unit name="primary">
+	<!-- http://stackoverflow.com/questions/33113661/cant-bind-hibernate-session-factory-into-javaapp-in-wildfly-8-2-1
+	specifying provider
+	 -->
+		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 		<jta-data-source>java:jboss/datasources/PostgreSQLDS</jta-data-source>
 	
     	<properties>
     	<!-- Properties for Hibernate -->
   			<property name="show_sql" value="true"/>
   			<property name="hibernate.hbm2ddl.auto" value="update"/>
+  			<property name="hibernate.current_session_context_class" value="thread" />
+  			<property name="hibernate.dialect" value="org.hibernate.dialect.ProgressDialect"/>
 
+ 			<property name="hibernate.cache.use_second_level_cache" value="true"/>
 			<property name="eclipselink.logging.level" value="OFF" />
 		</properties>
 

@@ -7,9 +7,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.annotation.PostConstruct;
+import javax.ejb.Stateful;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceUnit;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -20,16 +23,23 @@ import org.reflections.Reflections;
 
 @Named("ConnectionManager")
 @ApplicationScoped
+@Stateful
 public class ConnectionManager implements Serializable {
 
+	// https://docs.jboss.org/author/display/WFLY9/JPA+Reference+Guide
+	@PersistenceUnit(unitName = "primary")
 	private SessionFactory sessionFactory;
+
+	@PersistenceContext(unitName = "primary")
+	private EntityManager em;
 
 	public void disableLogsWhenTesting() {
 		java.util.logging.Logger.getLogger("org.hibernate").setLevel(java.util.logging.Level.OFF);
 
 	}
 
-	@PostConstruct
+	// now we use persistence unit injection.
+	// @PostConstruct
 	public void initializeSessionFactory() {
 		Configuration configuration = new Configuration();
 		configuration.configure();
@@ -56,6 +66,13 @@ public class ConnectionManager implements Serializable {
 
 		// adding classes as annotated.
 		annotatedSet.stream().forEach(t -> configuration.addAnnotatedClass(t));
+
+		// 28.01.2015
+		// resource not found
+		// configuration.addResource("java:jboss/datasources/PostgreSQLDS");
+
+		// https://docs.jboss.org/hibernate/orm/4.3/manual/en-US/html/ch03.html
+		// how to configure datasource.
 
 		// // This also doesn't work in Hibernate 5.0.x !!!
 
