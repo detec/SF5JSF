@@ -12,7 +12,6 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -20,9 +19,9 @@ import javax.servlet.http.HttpSession;
 import org.openbox.sf5.json.config.AppPathReader;
 import org.reflections.Reflections;
 
-@WebFilter(filterName = "AuthFilter", urlPatterns = { "*.xhtml" }) // urlPatterns
-																	// seem not
-																	// to work
+//@WebFilter(filterName = "AuthFilter", urlPatterns = { "*.xhtml" }) // urlPatterns
+// seem not
+// to work
 public class AuthorizationFilter implements Filter {
 
 	private List<String> classNames = new ArrayList<>();

@@ -110,6 +110,21 @@
       		</executions>
       		-->
 		</plugin>
+		
+		    <!-- The WildFly plugin deploys your war to a local WildFly container -->
+            <!-- To use, run: mvn package wildfly:deploy -->
+           <!--  <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <version>${version.wildfly.maven.plugin}</version>
+                <configuration>
+                    <hostname>${wildfly-hostname}</hostname>
+                    <port>${wildfly-port}</port>
+                    <username>${wildfly-username}</username>
+                    <password>${wildfly-password}</password>
+                </configuration>
+            </plugin> -->
+		
         	
         	<!-- https://github.com/javaee-samples/javaee7-samples/blob/master/jaxws/jaxws-client/pom.xml 
         	

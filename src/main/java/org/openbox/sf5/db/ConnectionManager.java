@@ -26,6 +26,9 @@ import org.reflections.Reflections;
 @Stateful
 public class ConnectionManager implements Serializable {
 
+	// http://www.thejavageek.com/2015/01/09/creating-jsf-ejb-jpa-application-using-eclipse-wildfly/
+	// Good guide to full jsf ejb jpa application
+
 	// https://docs.jboss.org/author/display/WFLY9/JPA+Reference+Guide
 	@PersistenceUnit(unitName = "primary")
 	private SessionFactory sessionFactory;
