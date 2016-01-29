@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -23,10 +22,12 @@ import javax.ws.rs.WebApplicationException;
 
 import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.internal.TypeLocatorImpl;
 import org.hibernate.transform.Transformers;
 import org.hibernate.type.EnumType;
+import org.hibernate.type.StandardBasicTypes;
 import org.hibernate.type.Type;
 import org.hibernate.type.TypeResolver;
 import org.openbox.sf5.db.ConnectionManager;
@@ -296,7 +297,12 @@ public class IniReader implements Serializable {
 				session = cm.getSessionFactroy().openSession();
 
 				List<Object> transIdList = new ArrayList<>();
-				transIdList = session.createSQLQuery(sqltext).setParameter("Frequency", Frequency)
+				SQLQuery type = session.createSQLQuery(sqltext);
+
+				transIdList = session.createSQLQuery(sqltext).addScalar("id", StandardBasicTypes.LONG)
+
+						.setParameter("Frequency", Frequency)
+
 						.setParameter("satelliteId", sat.getId()).list();
 
 				session.close();
@@ -315,7 +321,9 @@ public class IniReader implements Serializable {
 					// java.math.BigInteger
 					// long transId = ((BigInteger)
 					// transIdList.get(0)).longValue();
-					long transId = ((BigDecimal) transIdList.get(0)).longValue();
+					// long transId = ((BigDecimal)
+					// transIdList.get(0)).longValue();
+					long transId = (long) transIdList.get(0);
 					selectedTrans = objectsController.select(Transponders.class, transId);
 
 					// check if this trans changed to newly read trans
