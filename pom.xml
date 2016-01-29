@@ -30,6 +30,7 @@
         			<filtering>true</filtering>
       			 <includes>
           			<include>**/hibernate.cfg.xml</include>
+          			<include>**/persistence.xml</include>
         		</includes>
       			</resource>
       		</resources>
@@ -272,6 +273,7 @@
            		<db.password></db.password>
            		<db.dialect>H2Dialect</db.dialect>
            		<rp.build.warname>SF5JSF-test</rp.build.warname>
+           		<db.hbm2ddl>create-drop</db.hbm2ddl>
        		</properties>
        		<build>
     		<plugins>
@@ -282,16 +284,44 @@
 	            	<artifactId>cargo-maven2-plugin</artifactId>
 	            	<version>1.4.16</version>
 	             	<configuration>
-	                     <container>
+	                    <!--  <container>
 	                         <containerId>glassfish4x</containerId>
 							      <zipUrlInstaller>
 							        <url>http://download.java.net/glassfish/4.1.1/release/glassfish-4.1.1.zip</url>
 							      </zipUrlInstaller>
+	                     </container> -->
+	                     <!-- Switching to WildFly 9 -->
+	                     <container>
+	                     	<containerId>wildfly9x</containerId>
+	                     	<zipUrlInstaller>
+								<url>http://download.jboss.org/wildfly/9.0.2.Final/wildfly-9.0.2.Final.zip</url>
+							</zipUrlInstaller>
+											
+							 <dependencies>
+                				<dependency>
+                    				<groupId>org.postgresql</groupId>
+                    				<artifactId>postgresql</artifactId>
+                 				</dependency>
+            				</dependencies>
 	                     </container>
 	                     <configuration>
 	                     	<properties>
 	                             <cargo.servlet.port>8080</cargo.servlet.port>
 	                             <cargo.protocol>http</cargo.protocol>
+	                              <cargo.datasource.datasource.ds1>
+                             		cargo.datasource.url=jdbc:postgresql://localhost:5432/sf5jsftest|
+                             		cargo.datasource.driver=org.postgresql.Driver|
+                             		cargo.datasource.username=sf5jsf|
+                             		cargo.datasource.password=1|
+                             		cargo.datasource.jndi=java:jboss/datasources/PostgreSQLDS
+                             <!-- We will use H2 in-memory datasource 
+                             It seems, that current version does not support ommitting cargo.datasource.password
+                             -->
+ <!--                             cargo.datasource.url=jdbc:h2:mem:test;DB_CLOSE_DELAY=-1|
+                             cargo.datasource.driver=org.h2.Driver|
+                             cargo.datasource.username=sa|
+                             cargo.datasource.jndi=Oracle -->
+                             </cargo.datasource.datasource.ds1>
 	                        </properties>
 	                        </configuration>
 	
@@ -358,6 +388,7 @@
            		<db.password>1</db.password>
            		<db.dialect>ProgressDialect</db.dialect>
            		<rp.build.warname>SF5JSF</rp.build.warname>
+           		<db.hbm2ddl>update</db.hbm2ddl>
        		</properties>
    		</profile>
    		<profile>
@@ -372,6 +403,7 @@
            		<db.password>1</db.password>
            		<db.dialect>ProgressDialect</db.dialect>
            		<rp.build.warname>SF5JSF-test</rp.build.warname>
+           		<db.hbm2ddl>update</db.hbm2ddl>
        		</properties>
    		</profile>
    		
@@ -387,6 +419,7 @@
         	<properties>
         		<rp.build.warname>ROOT</rp.build.warname>
         		<db.dialect>ProgressDialect</db.dialect>
+        		<db.hbm2ddl>update</db.hbm2ddl>
         	</properties>
          <build>
             <plugins>
