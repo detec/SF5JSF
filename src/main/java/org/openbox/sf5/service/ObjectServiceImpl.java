@@ -30,7 +30,6 @@ public class ObjectServiceImpl implements ObjectService, Serializable {
 		DAO.update(obj);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public <T extends AbstractDbEntity> T select(Class<T> type, long id) {
 		return DAO.select(type, id);

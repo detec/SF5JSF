@@ -23,7 +23,8 @@ import org.reflections.Reflections;
 
 @Named("ConnectionManager")
 @ApplicationScoped
-@Stateful
+@Stateful // probably this opens connection to DB, otherwise Startup bean
+// fails.
 public class ConnectionManager implements Serializable {
 
 	// http://www.thejavageek.com/2015/01/09/creating-jsf-ejb-jpa-application-using-eclipse-wildfly/

@@ -5,11 +5,25 @@
         http://java.sun.com/xml/ns/persistence
         http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 	
-	<persistence-unit name="primary">
+	<!-- Modified according to 
+	https://gist.github.com/aziz781/1336488
+	 -->
+	
+	<!-- http://www.adam-bien.com/roller/abien/entry/don_t_use_jpa_s
+	Article about datasources in JEE environment
+	 -->
+	<persistence-unit name="primary" transaction-type="JTA">
 	<!-- http://stackoverflow.com/questions/33113661/cant-bind-hibernate-session-factory-into-javaapp-in-wildfly-8-2-1
 	specifying provider
 	 -->
-		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+	 
+	 <!-- No provider should be specified
+	 https://docs.jboss.org/author/display/WFLY9/JPA+Reference+Guide
+	 
+	  -->
+<!-- 	 	<provider>org.hibernate.ejb.HibernatePersistence</provider> -->
+	 
+<!-- 		<provider>org.hibernate.jpa.HibernatePersistenceProvider</provider> -->
 		<jta-data-source>java:jboss/datasources/PostgreSQLDS</jta-data-source>
 	
     	<properties>
@@ -18,8 +32,21 @@
   			<property name="hibernate.hbm2ddl.auto" value="update"/>
   			<property name="hibernate.current_session_context_class" value="thread" />
   			<property name="hibernate.dialect" value="org.hibernate.dialect.ProgressDialect"/>
+  			
+  			<!-- https://developer.jboss.org/thread/250390?start=0&tstart=0 -->
+  			<!-- http://docs.jboss.org/hibernate/orm/4.3/devguide/en-US/html_single/#d5e682
+  			2.2.1. Physical Transactions - JDBC   - JDBCTransactionFactory
+  			 -->
+<!--   			<property name="hibernate.transaction.factory_class" value="org.hibernate.transaction.JDBCTransactionFactory" /> -->
 
- 			<property name="hibernate.cache.use_second_level_cache" value="true"/>
+		
+			<!-- 2.2.2. Physical Transactions - JTA
+			http://docs.jboss.org/hibernate/orm/4.3/devguide/en-US/html_single/#d5e682
+			 -->
+<!-- 			<property name="hibernate.transaction.factory_class" value="org.hibernate.engine.transaction.internal.jta.JtaTransactionFactory" />  -->
+  			<property name="hibernate.connection.isolation" value="SERIALIZABLE"/>
+
+<!--  			<property name="hibernate.cache.use_second_level_cache" value="true"/> -->
 			<property name="eclipselink.logging.level" value="OFF" />
 		</properties>
 

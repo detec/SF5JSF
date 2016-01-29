@@ -9,7 +9,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
@@ -310,7 +310,12 @@ public class IniReader implements Serializable {
 
 				else {
 
-					long transId = ((BigInteger) transIdList.get(0)).longValue();
+					// Wilffly says Caused by: java.lang.ClassCastException:
+					// java.math.BigDecimal cannot be cast to
+					// java.math.BigInteger
+					// long transId = ((BigInteger)
+					// transIdList.get(0)).longValue();
+					long transId = ((BigDecimal) transIdList.get(0)).longValue();
 					selectedTrans = objectsController.select(Transponders.class, transId);
 
 					// check if this trans changed to newly read trans
