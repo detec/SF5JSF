@@ -188,40 +188,7 @@
                 </executions>
             </plugin> -->
 
-<!-- http://www.mojohaus.org/jaxb2-maven-plugin/Documentation/v2.2/example_schemagen_basic.html -->
-<!-- 			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>jaxb2-maven-plugin</artifactId>
-				<version>2.2</version>
-				<executions>
-					<execution>
-						<id>schemagen</id>
-						<goals>
-							<goal>schemagen</goal>
-						</goals>
-					</execution>
-				</executions>
 
-				<configuration>
-					<excludes>
-						<exclude>org/openbox/sf5/**</exclude>
-					</excludes>
-					<includes>
-						<include>org/openbox/sf5/model/*</include>
-					</includes>
-					<schemaSourceExcludeFilters>
-                    <noJaxbIndex implementation="org.codehaus.mojo.jaxb2.shared.filters.pattern.PatternFileFilter">
-                        <patterns>
-                            <pattern>jaxb\.index</pattern>
-	                        <pattern>jaxb\.properties</pattern>
-
-                        </patterns>
-                     </noJaxbIndex>
-                </schemaSourceExcludeFilters>
-					<verbose>true</verbose>
-
-				</configuration>
-			</plugin> -->
 
 
 <!-- It seems not to be used. -->
@@ -405,7 +372,7 @@
             	<activeByDefault>false</activeByDefault>
         	</activation> 
        		<properties>
-           		<db.jdbcUrl>jdbc:postgresql://$OPENSHIFT_POSTGRESQL_DB_HOST:$OPENSHIFT_POSTGRESQL_DB_PORT/sf5jsf</db.jdbcUrl>
+           		<db.jdbcUrl>jdbc:postgresql://localhost:5432/sf5jsf</db.jdbcUrl>
            		<db.driver>org.postgresql.Driver</db.driver>
            		<db.user>sf5jsf</db.user>
            		<db.password>1</db.password>
