@@ -83,13 +83,16 @@ public class AuthorizationFilter implements Filter {
 
 	private boolean isJAXWSPath(String reqURI) {
 
-		int[] result = new int[1];
+//		int[] result = new int[1];
+//
+//		classNames.stream().forEach(t -> {
+//			// result[0] = result[0] + reqURI.indexOf(t + "Service");
+//			result[0] = result[0] + reqURI.indexOf(t + "OpenboxSF5");
+//		});
+//
+//		return (result[0] > 0);
 
-		classNames.stream().forEach(t -> {
-			result[0] = result[0] + reqURI.indexOf(t + "Service");
-		});
-
-		return (result[0] > 0);
+		return (reqURI.indexOf("OpenboxSF5") > 0);
 
 	}
 

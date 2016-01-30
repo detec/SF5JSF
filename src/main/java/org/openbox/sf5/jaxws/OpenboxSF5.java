@@ -27,7 +27,7 @@ import org.openbox.sf5.json.endpoints.UsersService;
 
 @Named
 @ApplicationScoped
-@WebService(name = "IOpenboxSF5", targetNamespace = "http://wsmodel.sf5.openbox.org/") // model
+@WebService(name = "IOpenboxSF5", targetNamespace = "http://wsmodel.sf5.openbox.org/", serviceName="OpenboxSF5Service") // model
 																						// -
 																						// to
 																						// generate
