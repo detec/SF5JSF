@@ -25,7 +25,7 @@ This implementation of Openbox SF-5 settings editor provides simplified (without
 
 ## REST service ##
 
-This Openbox SF-5 settings editor implementation provides JAX-RS 2.0 API for getting entities from database and posting new ones with the help of GlassFish's built-in Jersey 2. EclipseLink Moxy 2.6 is used for marshalling and unmarshalling both in JSON and XML. Output format is resolved by client's "Accept" HTTP header, "application/json" or "application/xml". Here is the list of supported endpoints, relative to application context path:
+This Openbox SF-5 settings editor implementation provides JAX-RS 2.0 API for getting entities from database and posting new ones with the help of WildFly's built-in Jersey 2. EclipseLink Moxy 2.6 is used for marshalling and unmarshalling both in JSON and XML. Output format is resolved by client's "Accept" HTTP header, "application/json" or "application/xml". Here is the list of supported endpoints, relative to application context path:
 
 - Satellites
 	- jaxrs/satellites/all/ GET 						- get all satellites;
@@ -71,7 +71,7 @@ There are several JUnit tests, run in H2 in-memory mode. They check if Hibernate
 
 ## System requirements ##
 
-- WildFly 9;
+- WildFly 10;
 - Postgre 9.4+ database server, running at the same host with GlassFish (for profiles dev, test and prod);
 - Java 8.
 
@@ -87,7 +87,7 @@ There are several JUnit tests, run in H2 in-memory mode. They check if Hibernate
 - Jersey 2 client;
 - H2 and Postgre RDBMS;
 - Maven 3.3 with plugins compiler, surefire, resources, war, cargo, jaxws;
-- WildFly 9;
+- WildFly 10;
 - Java 8.
 
 The project can be built either with Maven (3.3 or higher) or Eclipse (4.5 or higher).
