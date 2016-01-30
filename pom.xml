@@ -279,9 +279,10 @@
 	                     </container> -->
 	                     <!-- Switching to WildFly 10 -->
 	                     <container>
-	                     	<containerId>wildfly10x</containerId>
+	                     	<containerId>wildfly9x</containerId>
 	                     	<zipUrlInstaller>
-								<url>http://download.jboss.org/wildfly/10.0.0.Final/wildfly-10.0.0.Final.zip</url>
+<!-- 								<url>http://download.jboss.org/wildfly/10.0.0.Final/wildfly-10.0.0.Final.zip</url> -->
+								<url>http://download.jboss.org/wildfly/9.0.1.Final/wildfly-9.0.1.Final.zip</url>
 							</zipUrlInstaller>
 											
 							 <dependencies>
@@ -510,20 +511,20 @@
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-core</artifactId>
 	<version>${hibernate.version}</version>
-	      <exclusions>
-        <exclusion>  <!-- declare the exclusion here -->
+	 <!--      <exclusions>
+        <exclusion>  declare the exclusion here
          <groupId>dom4j</groupId>
           <artifactId>dom4j</artifactId>
         </exclusion>
-      </exclusions> 
+      </exclusions>  -->
 	
 </dependency>
-<dependency>
+<!-- <dependency>
 	<groupId>dom4j</groupId>
 	<artifactId>dom4j</artifactId>
 	<version>1.6.1</version>
 	<scope>test</scope>
-</dependency>
+</dependency> -->
 
 
 <!-- <dependency>
