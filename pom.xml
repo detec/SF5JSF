@@ -8,7 +8,7 @@
 <description>Openbox SF5 settings editor JSF</description>
 <properties>
   		<mojarra-version>2.2.12</mojarra-version>
-  		<hibernate.version>5.0.7.Final</hibernate.version>
+  		<hibernate.version>4.3.11.Final</hibernate.version>
   		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   		<jersey.version>2.22.1</jersey.version>
   		<jackson.version>2.6.4</jackson.version>
@@ -269,7 +269,7 @@
 				<plugin>
 	        		<groupId>org.codehaus.cargo</groupId>
 	            	<artifactId>cargo-maven2-plugin</artifactId>
-	            	<version>1.4.16</version>
+	            	<version>1.4.18</version>
 	             	<configuration>
 	                    <!--  <container>
 	                         <containerId>glassfish4x</containerId>
@@ -277,11 +277,11 @@
 							        <url>http://download.java.net/glassfish/4.1.1/release/glassfish-4.1.1.zip</url>
 							      </zipUrlInstaller>
 	                     </container> -->
-	                     <!-- Switching to WildFly 9 -->
+	                     <!-- Switching to WildFly 10 -->
 	                     <container>
-	                     	<containerId>wildfly9x</containerId>
+	                     	<containerId>wildfly10x</containerId>
 	                     	<zipUrlInstaller>
-								<url>http://download.jboss.org/wildfly/9.0.2.Final/wildfly-9.0.2.Final.zip</url>
+								<url>http://download.jboss.org/wildfly/10.0.0.Final/wildfly-10.0.0.Final.zip</url>
 							</zipUrlInstaller>
 											
 							 <dependencies>
@@ -510,7 +510,6 @@
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-core</artifactId>
 	<version>${hibernate.version}</version>
-	<scope>provided</scope>
 	      <exclusions>
         <exclusion>  <!-- declare the exclusion here -->
          <groupId>dom4j</groupId>
@@ -519,6 +518,14 @@
       </exclusions> 
 	
 </dependency>
+<dependency>
+	<groupId>dom4j</groupId>
+	<artifactId>dom4j</artifactId>
+	<version>1.6.1</version>
+	<scope>test</scope>
+</dependency>
+
+
 <!-- <dependency>
 	<groupId>org.hibernate.javax.persistence</groupId>
 	<artifactId>hibernate-jpa-2.1-api</artifactId>
