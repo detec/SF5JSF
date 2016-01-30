@@ -56,7 +56,8 @@ public class Intersections implements Serializable {
 				// http://stackoverflow.com/questions/1571928/retrieve-auto-detected-hibernate-dialect
 				Dialect dialect = ((SessionFactoryImplementor) cm.getSessionFactroy()).getDialect();
 
-				String tempTableDrop = dialect.getDropTemporaryTableString();
+
+				// String tempTableDrop = dialect.getDropTemporaryTableString();
 
 				// drop tables
 				try {
@@ -157,7 +158,7 @@ public class Intersections implements Serializable {
 		// return
 
 		// http://stackoverflow.com/questions/1915074/understanding-the-in-javas-format-strings
-		String tempTableCreate = dialect.getCreateTemporaryTableString();
+		String tempTableCreate = dialect.getCreateTableString();
 		String fromatString = "\n" + "%1$s CONVERSIONTABLE  AS ( \n" + "SELECT \n" + "LineNumber \n"
 
 				+ ", tp.frequency \n"

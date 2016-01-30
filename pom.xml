@@ -8,7 +8,7 @@
 <description>Openbox SF5 settings editor JSF</description>
 <properties>
   		<mojarra-version>2.2.12</mojarra-version>
-  		<hibernate.version>4.3.11.Final</hibernate.version>
+  		<hibernate.version>5.0.7.Final</hibernate.version>
   		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   		<jersey.version>2.22.1</jersey.version>
   		<jackson.version>2.6.4</jackson.version>
@@ -510,13 +510,21 @@
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-core</artifactId>
 	<version>${hibernate.version}</version>
+	<scope>provided</scope>
+	      <exclusions>
+        <exclusion>  <!-- declare the exclusion here -->
+         <groupId>dom4j</groupId>
+          <artifactId>dom4j</artifactId>
+        </exclusion>
+      </exclusions> 
+	
 </dependency>
-<dependency>
+<!-- <dependency>
 	<groupId>org.hibernate.javax.persistence</groupId>
 	<artifactId>hibernate-jpa-2.1-api</artifactId>
 	<version>1.0.0.Final</version>
 	<scope>provided</scope>
-</dependency>
+</dependency> -->
 
 <dependency>
     <groupId>org.reflections</groupId>
@@ -556,7 +564,7 @@
 <dependency>
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-validator</artifactId>
-	<version>5.2.2.Final</version>
+	<version>5.2.3.Final</version>
 </dependency>
 <!-- JSF implementation: Mojarra org.glassfish - is the one at org.glassfish and it is working! -->
 <dependency>
