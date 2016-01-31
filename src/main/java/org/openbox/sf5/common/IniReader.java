@@ -20,7 +20,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.ws.rs.WebApplicationException;
 
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
 import org.hibernate.Session;
@@ -71,7 +70,7 @@ public class IniReader implements Serializable {
 		this.cm = cm;
 	}
 
-	public void readMultiPartFile(InputStream fileInputStream, FormDataContentDisposition fileMetaData)
+	public void readMultiPartFile(InputStream fileInputStream)
 			throws IOException {
 		File temp = File.createTempFile("transponders", ".ini");
 		String absolutePath = temp.getAbsolutePath();
@@ -94,19 +93,6 @@ public class IniReader implements Serializable {
 		setFilepath(absolutePath);
 		readData(); // doing import
 
-		// // create a temp file
-		// File temp = File.createTempFile("transponders", ".xml");
-		// String absolutePath = temp.getAbsolutePath();
-		//
-		// byte[] bytes = file.getBytes();
-		// BufferedOutputStream stream = new BufferedOutputStream(new
-		// FileOutputStream(new File(absolutePath)));
-		// stream.write(bytes);
-		// stream.close();
-		//
-		// // calling reader class
-		// setFilepath(absolutePath);
-		// readData(); // doing import
 	}
 
 	public void readData() throws IOException {

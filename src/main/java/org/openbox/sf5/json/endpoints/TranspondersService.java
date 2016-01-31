@@ -1,8 +1,10 @@
 package org.openbox.sf5.json.endpoints;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
@@ -18,10 +20,10 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.openbox.sf5.common.IniReader;
 import org.openbox.sf5.model.Satellites;
 import org.openbox.sf5.model.Transponders;
@@ -48,16 +50,29 @@ public class TranspondersService implements Serializable {
 	@POST
 	@Path("upload")
 	@Consumes({ MediaType.MULTIPART_FORM_DATA })
-	public Response importTransponderFile(@FormDataParam("file") InputStream fileInputStream,
-			@FormDataParam("file") FormDataContentDisposition fileMetaData) {
+	// This is Jersey syntax
+//	public Response importTransponderFile(@FormDataParam("file") InputStream fileInputStream,
+//			@FormDataParam("file") FormDataContentDisposition fileMetaData)
+	public Response importTransponderFile(MultipartFormDataInput input) throws IOException
+	{
 
-		// Boolean result =
-		// transpondersJsonizer.uploadTransponders(fileInputStream,
-		// fileMetaData);
 		Response returnResponse = null;
 
+		// http://www.mkyong.com/webservices/jax-rs/file-upload-example-in-resteasy/
+		Map<String, List<InputPart>> uploadForm = input.getFormDataMap();
+		List<InputPart> inputParts = uploadForm.get("file");
+
+		if (inputParts.isEmpty()) {
+			returnResponse = Response.status(400).entity("No uploaded file with name file!").build();
+		}
+
+		else {
+			InputPart inputPart = inputParts.get(0);
+			//convert the uploaded file to inputstream
+			InputStream inputStream = inputPart.getBody(InputStream.class,null);
+
 		try {
-			iniReader.readMultiPartFile(fileInputStream, fileMetaData);
+			iniReader.readMultiPartFile(inputStream);
 			returnResponse = Response.status(200).build();
 
 		} catch (Exception e) {
@@ -65,6 +80,7 @@ public class TranspondersService implements Serializable {
 			returnResponse = Response.status(500).entity(e.getMessage()).build();
 		}
 
+		}
 		// GenericEntity<Boolean> gBoolean = new GenericEntity<Boolean>(result);
 		// return Response.status(200).build();
 		return returnResponse;

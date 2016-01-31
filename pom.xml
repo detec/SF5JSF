@@ -12,6 +12,7 @@
   		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   		<jersey.version>2.22.1</jersey.version>
   		<jackson.version>2.6.4</jackson.version>
+  		<resteasy.version>3.0.14.Final</resteasy.version>
 </properties>	
   	<build>
 <!--     	<sourceDirectory>src</sourceDirectory> This excludes webapp resources from copying to classes! -->
@@ -606,36 +607,42 @@
 	<version>${jersey.version}</version>
 	<scope>test</scope>
 </dependency>
-<!-- There is assumption that this processes bad JSON for Timestamps. -->
-<!-- <dependency>
-	<groupId>org.glassfish.jersey.media</groupId>
-	<artifactId>jersey-media-json-jackson</artifactId>
-	<version>${jersey.version}</version>
-</dependency> -->
-<!-- <dependency>
-	<groupId>org.glassfish.jersey.media</groupId>
-	<artifactId>jersey-media-json-processing</artifactId>
-	<version>${jersey.version}</version>
-	<scope>test</scope>
-</dependency> -->
+
 <dependency>
 	<groupId>org.glassfish.jersey.media</groupId>
 	<artifactId>jersey-media-multipart</artifactId>
 	<version>${jersey.version}</version>
+	<scope>test</scope>
 </dependency>
 
 <!--  Replaced with 3 newer versions -->
-<dependency>
+ <dependency>
 	<groupId>org.glassfish.jersey.media</groupId>
 	<artifactId>jersey-media-moxy</artifactId>
 	<version>${jersey.version}</version>
-</dependency>
+	<scope>test</scope>
+ </dependency>
+<!-- Since we are using WildFly we have to switch to RestEasy --> 
+
 <dependency>
 	<groupId>org.glassfish.jersey.core</groupId>
 	<artifactId>jersey-server</artifactId>
 	<version>${jersey.version}</version>
-	<scope>provided</scope>
+	<scope>test</scope>
+</dependency> 
+
+
+<!-- <dependency>
+	<groupId>org.glassfish.jersey.containers</groupId>
+	<artifactId>jersey-container-servlet-core</artifactId>
+	<version>${jersey.version}</version>
 </dependency>
+<dependency>
+	<groupId>org.glassfish.jersey.containers</groupId>
+	<artifactId>jersey-container-servlet</artifactId>
+	<version>${jersey.version}</version>
+</dependency> -->
+
 <dependency>
 	<groupId>org.glassfish.hk2</groupId>
 	<artifactId>hk2-api</artifactId>
@@ -658,6 +665,32 @@
 	<artifactId>org.eclipse.persistence.asm</artifactId>
 	<version>2.6.2</version>
 </dependency>
+
+<dependency>
+	<groupId>org.jboss.resteasy</groupId>
+	<artifactId>resteasy-jaxrs</artifactId>
+	<version>${resteasy.version}</version>
+	<scope>provided</scope>
+</dependency>
+<dependency>
+	<groupId>org.jboss.resteasy</groupId>
+	<artifactId>resteasy-cdi</artifactId>
+	<version>${resteasy.version}</version>
+	<scope>provided</scope>
+</dependency>
+<dependency>
+	<groupId>org.jboss.resteasy</groupId>
+	<artifactId>resteasy-jaxb-provider</artifactId>
+	<version>${resteasy.version}</version>
+	<scope>provided</scope>
+</dependency>
+<dependency>
+	<groupId>org.jboss.resteasy</groupId>
+	<artifactId>resteasy-multipart-provider</artifactId>
+	<version>${resteasy.version}</version>
+	<scope>provided</scope>
+</dependency>
+
 
 
 </dependencies>

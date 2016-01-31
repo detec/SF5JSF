@@ -8,7 +8,6 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.openbox.sf5.common.IniReader;
@@ -23,9 +22,9 @@ import org.openbox.sf5.service.ObjectsListService;
 @SessionScoped
 public class TranspondersJsonizer implements Serializable {
 
-	public Boolean uploadTransponders(InputStream fileInputStream, FormDataContentDisposition fileMetaData) {
+	public Boolean uploadTransponders(InputStream fileInputStream) {
 		try {
-			iniReader.readMultiPartFile(fileInputStream, fileMetaData);
+			iniReader.readMultiPartFile(fileInputStream);
 
 		} catch (Exception e) {
 			return new Boolean(false);
