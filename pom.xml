@@ -594,8 +594,7 @@
 	<artifactId>assertj-core</artifactId>
 	<version>3.2.0</version>
 </dependency>
-<!-- This is needed to run Hibernate validator -->
-<dependency>
+<!-- <dependency>
 	<groupId>org.glassfish.web</groupId>
 	<artifactId>el-impl</artifactId>
 	<version>2.2</version>
@@ -615,21 +614,20 @@
 	<scope>test</scope>
 </dependency>
 
-<!--  Replaced with 3 newer versions -->
  <dependency>
 	<groupId>org.glassfish.jersey.media</groupId>
 	<artifactId>jersey-media-moxy</artifactId>
 	<version>${jersey.version}</version>
 	<scope>test</scope>
- </dependency>
+ </dependency> -->
 <!-- Since we are using WildFly we have to switch to RestEasy --> 
 
-<dependency>
+<!-- <dependency>
 	<groupId>org.glassfish.jersey.core</groupId>
 	<artifactId>jersey-server</artifactId>
 	<version>${jersey.version}</version>
 	<scope>test</scope>
-</dependency> 
+</dependency>  -->
 
 
 <!-- <dependency>
@@ -643,12 +641,12 @@
 	<version>${jersey.version}</version>
 </dependency> -->
 
-<dependency>
+<!-- <dependency>
 	<groupId>org.glassfish.hk2</groupId>
 	<artifactId>hk2-api</artifactId>
 	<version>2.4.0-b33</version>
 	<scope>test</scope>
-</dependency>
+</dependency> -->
 
 <dependency>
 	<groupId>org.eclipse.persistence</groupId>
@@ -689,6 +687,24 @@
 	<artifactId>resteasy-multipart-provider</artifactId>
 	<version>${resteasy.version}</version>
 	<scope>provided</scope>
+</dependency>
+<dependency>
+	<groupId>org.jboss.resteasy</groupId>
+	<artifactId>resteasy-jackson-provider</artifactId>
+	<version>${resteasy.version}</version>
+	<scope>provided</scope>
+</dependency>
+<dependency>
+	<groupId>org.jboss.resteasy</groupId>
+	<artifactId>jaxrs-api</artifactId>
+	<version>3.0.12.Final</version>
+	<scope>provided</scope>
+</dependency>
+<dependency>
+	<groupId>org.jboss.resteasy</groupId>
+	<artifactId>resteasy-client</artifactId>
+	<version>${resteasy.version}</version>
+	<scope>test</scope>
 </dependency>
 
 

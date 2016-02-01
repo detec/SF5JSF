@@ -7,13 +7,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
 
-import org.glassfish.jersey.media.multipart.MultiPartFeature;
-import org.glassfish.jersey.moxy.xml.MoxyXmlFeature;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.openbox.sf5.json.config.AppPathReader;
-import org.openbox.sf5.json.config.MOXyJsonContextResolver;
 import org.openbox.sf5.json.converters.BooleanMessageBodyReader;
 import org.openbox.sf5.json.converters.LongMessageBodyReader;
 
@@ -61,45 +59,28 @@ public abstract class AbstractServiceTest {
 
 		// JacksonJsonProvider provider = new JacksonJsonProvider(mapper);
 
-		return ClientBuilder.newBuilder()
+		// return ClientBuilder.newBuilder()
+		//
+		// .register(MoxyXmlFeature.class)
+		//
+		// .register(MOXyJsonContextResolver.class)
+		//
+		// .register(MultiPartFeature.class)
+		//
+		// .register(BooleanMessageBodyReader.class).register(LongMessageBodyReader.class)
+		//
+		// .build();
 
-				// 18.12.2015, will try MOXy, not Jackson
-				// .register(MoxyJsonFeature.class)
+		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+		// Increase max total connection to 200
+		cm.setMaxTotal(200);
 
-				// .register(JacksonJaxbJsonProvider.class)
-
-				// without Jackson feature Strings are not unmarshalled
-				// But MOXy doesn't understand this date format
-				// .register(JacksonFeature.class)
-
-				// .register(MyObjectMapperProvider.class)
-
-				// 05.01.2016, trying to use MOXy
-				.register(MoxyXmlFeature.class)
-
-				.register(MOXyJsonContextResolver.class)
-
-				// .register(JacksonJsonProvider.class)
-
-				// registering configured provider with mapper
-				// .register(provider)
-
-				.register(MultiPartFeature.class)
-
-				.register(BooleanMessageBodyReader.class).register(LongMessageBodyReader.class)
-
-				// we have the same objectmapper config for client and server.
-				// .register(MarshallingFeature.class)
-
-				// Log showed that transponders come OK.
-				// .register(new LoggingFilter(LOGGER, true))
-
-				.build();
+		return new ResteasyClientBuilder().connectionPoolSize(20).register(BooleanMessageBodyReader.class)
+				.register(LongMessageBodyReader.class).build();
 	}
 
 	public void setUpAbstractTestUser() {
 		client = createTestUserClient();
-		// commonTarget = client.target(appLocation).path(jsonPath);
 		commonTarget = client.target(appLocation).path(property.getProperty("context.path")).path(jsonPath);
 	}
 

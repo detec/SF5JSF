@@ -2,6 +2,7 @@ package org.openbox.sf5.common;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
@@ -9,12 +10,12 @@ import java.util.stream.Stream;
 
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.Invocation;
+import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
-import org.glassfish.jersey.media.multipart.FormDataMultiPart;
-import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataOutput;
 import org.junit.Before;
 import org.junit.Test;
 import org.openbox.sf5.json.endpoints.AbstractServiceTest;
@@ -37,20 +38,35 @@ public class SendTransponderFilesJSONIT extends AbstractServiceTest {
 
 		transponderFilesPathes.forEach(t -> {
 
-			FileDataBodyPart filePart = new FileDataBodyPart("file", t.toFile());
+			// FileDataBodyPart filePart = new FileDataBodyPart("file",
+			// t.toFile());
+			//
+			// @SuppressWarnings("resource")
+			// final FormDataMultiPart multipart = (FormDataMultiPart) new
+			// FormDataMultiPart().field("foo", "bar")
+			// .bodyPart(filePart);
 
-			@SuppressWarnings("resource")
-			final FormDataMultiPart multipart = (FormDataMultiPart) new FormDataMultiPart().field("foo", "bar")
-					.bodyPart(filePart);
+			// http://stackoverflow.com/questions/10808246/resteasy-client-framework-file-upload
+
+			MultipartFormDataOutput output = new MultipartFormDataOutput();
+			try {
+				output.addFormData("file", new FileInputStream(t.toFile()), MediaType.APPLICATION_OCTET_STREAM_TYPE);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			GenericEntity<MultipartFormDataOutput> entity = new GenericEntity<MultipartFormDataOutput>(output) {
+			};
 
 			// 05.01.2016, trying to specify explicitly return type as for XML
 			// there is no direct converter
 			Invocation.Builder invocationBuilder = serviceTarget.path("upload").request(MediaType.APPLICATION_JSON);
-			// Response responsePost =
-			// invocationBuilder.post(Entity.entity(setting,
-			// MediaType.APPLICATION_JSON));
 
-			Response responsePost = invocationBuilder.post(Entity.entity(multipart, multipart.getMediaType()));
+			// Response responsePost =
+			// invocationBuilder.post(Entity.entity(multipart,
+			// multipart.getMediaType()));
+			Response responsePost = invocationBuilder.post(Entity.entity(entity, MediaType.MULTIPART_FORM_DATA_TYPE));
+
 			int returnStatus = responsePost.getStatus();
 
 			if (returnStatus == 500) {
@@ -60,15 +76,6 @@ public class SendTransponderFilesJSONIT extends AbstractServiceTest {
 			}
 			assertEquals(Status.OK.getStatusCode(), returnStatus);
 
-			// we return 500 status and error message or just 200 status.
-
-			// Boolean result = responsePost.readEntity(Boolean.class);
-			//
-			// assertThat(result.booleanValue()).isTrue();
-
-			// Response lambdaResponse =
-			// target.request().post(Entity.entity(multipart,
-			// multipart.getMediaType()));
 		});
 	}
 

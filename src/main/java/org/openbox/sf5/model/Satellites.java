@@ -37,6 +37,7 @@ public class Satellites extends AbstractDbEntity implements Serializable {
 		this.Name = Name;
 	}
 
+	@JsonProperty("Name")
 	public String getName() {
 		return Name;
 	}
