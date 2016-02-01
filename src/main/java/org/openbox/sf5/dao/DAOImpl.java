@@ -2,8 +2,7 @@ package org.openbox.sf5.dao;
 
 import java.io.Serializable;
 
-import javax.ejb.Stateful;
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
@@ -22,8 +21,8 @@ import org.openbox.sf5.model.AbstractDbEntity;
 // method of the SessionFactory. The concept of a "current" session has to have a scope that defines the bounds in which the notion of "current" is valid.
 
 @Named
-@ApplicationScoped
-@Stateful // http://docs.oracle.com/javaee/6/tutorial/doc/gipjg.html
+// @ApplicationScoped
+@Stateless // http://docs.oracle.com/javaee/6/tutorial/doc/gipjg.html
 // @MessageDriven // https://docs.oracle.com/javaee/6/tutorial/doc/bnbpo.html
 public class DAOImpl implements DAO, Serializable {
 

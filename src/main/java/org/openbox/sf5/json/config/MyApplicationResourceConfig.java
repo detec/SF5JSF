@@ -52,6 +52,7 @@ public class MyApplicationResourceConfig extends javax.ws.rs.core.Application
 
 		HashSet<Object> set = new HashSet<Object>(2);
 		set.add(moxyJsonProvider);
+		set.add(new CustomMarshaller());
 		return set;
 	}
 
