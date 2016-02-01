@@ -47,25 +47,28 @@ public class TranspondersServiceIT extends AbstractWSTest {
 		assertThat(transList).isNotNull();
 		assertThat(transList.size()).isGreaterThan(0);
 		validateTranspondersList(transList);
-	}
 
-	@Test
-	public void shouldGetTransponderById() {
+		Transponders readTrans = transList.get(0);
 		Transponders trans = null;
 		try {
-			trans = SF5Port.getTransponderById(1);
+			trans = SF5Port.getTransponderById(readTrans.getId());
 		} catch (WSException_Exception e) {
 			e.printStackTrace();
 		}
 		assertThat(trans).isNotNull();
+
 	}
 
 	@Test
-	public void shouldGetTranspondersBySatelliteId() {
+	public void shouldGetTranspondersBySatelliteId() throws Exception {
+
+		SatellitesServiceIT satTest = new SatellitesServiceIT();
+		satTest.setUp();
 
 		List<Transponders> transList = null;
+
 		try {
-			transList = SF5Port.getTranspondersBySatelliteId(1);
+			transList = SF5Port.getTranspondersBySatelliteId(satTest.getSatelliteId());
 		} catch (WSException_Exception e) {
 			e.printStackTrace();
 		}

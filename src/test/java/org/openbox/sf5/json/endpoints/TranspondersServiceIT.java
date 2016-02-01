@@ -29,6 +29,8 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 
 	private Validator validator;
 
+	private long transponderId;
+
 	@Before
 	public void setUp() {
 		setUpAbstractTestUser();
@@ -43,13 +45,6 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 	public void shouldGetTranspondersByArbitraryFilter() {
 
 		Response response = null;
-
-		// target = client.target(appLocation +
-		// "transponders/filter/Speed/27500");
-		//
-		// response =
-		// target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
-
 		Invocation.Builder invocationBuilder = serviceTarget.path("filter").path("Speed").path("27500")
 				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 
@@ -65,6 +60,22 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 		assertThat(transList).isNotNull();
 		assertThat(transList.size()).isGreaterThan(0);
 		validateTranspondersList(transList);
+
+		Transponders readTrans = transList.get(0);
+		transponderId = readTrans.getId();
+
+		invocationBuilder = serviceTarget.path("filter").path("id").path(String.valueOf(transponderId))
+				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+
+		response = invocationBuilder.get();
+
+		assertEquals(Status.OK.getStatusCode(), response.getStatus());
+
+		Transponders trans = response.readEntity(Transponders.class);
+
+		assertThat(trans).isNotNull();
+		Set<ConstraintViolation<Transponders>> constraintViolations = validator.validate(trans);
+		assertEquals(0, constraintViolations.size());
 
 	}
 
@@ -86,37 +97,11 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 		assertThat(transList).isNotNull();
 		assertThat(transList.size()).isGreaterThan(0);
 		validateTranspondersList(transList);
-	}
 
-	@Test
-	public void shouldGetTransponderById() {
+		Transponders readTrans = transList.get(0);
+		transponderId = readTrans.getId();
 
-		Response response = null;
-
-		// target = client.target(appLocation + "transponders/filter/id/1");
-		// response =
-		// target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
-
-		Invocation.Builder invocationBuilder = serviceTarget.path("filter").path("id").path("1")
-				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
-
-		response = invocationBuilder.get();
-
-		assertEquals(Status.OK.getStatusCode(), response.getStatus());
-
-		Transponders trans = response.readEntity(Transponders.class);
-
-		assertThat(trans).isNotNull();
-		Set<ConstraintViolation<Transponders>> constraintViolations = validator.validate(trans);
-		assertEquals(0, constraintViolations.size());
-
-	}
-
-	@Test
-	public void shouldGetTransponderByIdXML() {
-		Response response = null;
-
-		Invocation.Builder invocationBuilder = serviceTarget.path("filter").path("id").path("1")
+		invocationBuilder = serviceTarget.path("filter").path("id").path(String.valueOf(transponderId))
 				.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML);
 		response = invocationBuilder.get();
 
@@ -135,12 +120,12 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 
 		Response response = null;
 
-		// target = client.target(appLocation + "transponders/filter;satId=1");
-		// response =
-		// target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
+		SatellitesServiceIT satTest = new SatellitesServiceIT();
+		satTest.setUp();
 
-		Invocation.Builder invocationBuilder = serviceTarget.path("filter").matrixParam("satId", "1")
-				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+		Invocation.Builder invocationBuilder = serviceTarget.path("filter")
+				.matrixParam("satId", String.valueOf(satTest.getSatelliteIdXML())).request(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON);
 
 		response = invocationBuilder.get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -157,8 +142,13 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 	@Test
 	public void shouldGetTranspondersBySatelliteIdXML() {
 		Response response = null;
-		Invocation.Builder invocationBuilder = serviceTarget.path("filter").matrixParam("satId", "1")
-				.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML);
+
+		SatellitesServiceIT satTest = new SatellitesServiceIT();
+		satTest.setUp();
+
+		Invocation.Builder invocationBuilder = serviceTarget.path("filter")
+				.matrixParam("satId", String.valueOf(satTest.getSatelliteIdXML())).request(MediaType.APPLICATION_XML)
+				.accept(MediaType.APPLICATION_XML);
 		response = invocationBuilder.get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 		GenericType<List<Transponders>> genList = new GenericType<List<Transponders>>() {

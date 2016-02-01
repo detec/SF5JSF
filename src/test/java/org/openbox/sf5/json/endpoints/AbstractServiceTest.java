@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.WebTarget;
 
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.eclipse.persistence.jaxb.rs.MOXyJsonProvider;
 import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
 import org.openbox.sf5.json.config.AppPathReader;
 import org.openbox.sf5.json.converters.BooleanMessageBodyReader;
@@ -71,12 +71,8 @@ public abstract class AbstractServiceTest {
 		//
 		// .build();
 
-		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
-		// Increase max total connection to 200
-		cm.setMaxTotal(200);
-
 		return new ResteasyClientBuilder().connectionPoolSize(20).register(BooleanMessageBodyReader.class)
-				.register(LongMessageBodyReader.class).build();
+				.register(LongMessageBodyReader.class).register(MOXyJsonProvider.class).build();
 	}
 
 	public void setUpAbstractTestUser() {
