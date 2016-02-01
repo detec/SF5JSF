@@ -7,8 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import javax.ejb.Stateful;
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,8 +21,8 @@ import org.openbox.sf5.model.AbstractDbEntity;
 import org.reflections.Reflections;
 
 @Named("ConnectionManager")
-@ApplicationScoped
-@Stateful // probably this opens connection to DB, otherwise Startup bean
+// @ApplicationScoped
+@Stateless // probably this opens connection to DB, otherwise Startup bean
 // fails.
 public class ConnectionManager implements Serializable {
 

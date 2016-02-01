@@ -2,8 +2,8 @@ package org.openbox.sf5.service;
 
 import java.io.Serializable;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.openbox.sf5.dao.DAO;
@@ -40,7 +40,8 @@ public class ObjectServiceImpl implements ObjectService, Serializable {
 		DAO.saveOrUpdate(obj);
 	}
 
-	@Inject
+	// @Inject
+	@EJB
 	private DAO DAO;
 
 	@Override

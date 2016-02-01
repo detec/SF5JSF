@@ -15,6 +15,7 @@ import java.util.Properties;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -338,7 +339,8 @@ public class IniReader implements Serializable {
 	@Inject
 	private ObjectsController objectsController;
 
-	@Inject
+	// @Inject
+	@EJB
 	private ConnectionManager cm;
 
 	private static final long serialVersionUID = -1699774508872380035L;

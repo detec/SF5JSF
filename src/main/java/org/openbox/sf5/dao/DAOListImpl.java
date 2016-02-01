@@ -4,8 +4,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -91,7 +91,8 @@ public class DAOListImpl implements DAOList, Serializable {
 		return returnedList;
 	}
 
-	@Inject
+//	@Inject
+	@EJB
 	private ConnectionManager cm;
 
 }

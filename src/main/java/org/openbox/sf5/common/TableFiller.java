@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -21,10 +22,12 @@ import org.openbox.sf5.service.ObjectsController;
 @Named
 @ApplicationScoped
 public class TableFiller implements Serializable {
+
 	@Inject
 	private ObjectsController objectsController;
 
-	@Inject
+	// @Inject
+	@EJB
 	private ConnectionManager cm;
 
 	private static final long serialVersionUID = 8464537239822198552L;

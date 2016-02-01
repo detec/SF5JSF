@@ -2,8 +2,8 @@ package org.openbox.sf5.dao;
 
 import java.io.Serializable;
 
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.inject.Inject;
 import javax.inject.Named;
 import javax.transaction.Transactional;
 
@@ -163,7 +163,8 @@ public class DAOImpl implements DAO, Serializable {
 		}
 	}
 
-	@Inject
+	// @Inject
+	@EJB
 	private ConnectionManager cm;
 
 	@Override

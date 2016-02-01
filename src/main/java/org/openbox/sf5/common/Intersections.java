@@ -11,8 +11,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.hibernate.Session;
@@ -39,8 +39,11 @@ public class Intersections implements Serializable {
 
 	private static final long serialVersionUID = -8627178893457939969L;
 
-	@Inject
+	// @Inject
+	@EJB
 	private ConnectionManager cm;
+
+	List<Integer> arrayLines = new ArrayList<Integer>();
 
 	public int checkIntersection(List<SettingsConversion> dataSettingsConversion, Settings Object) throws SQLException {
 
@@ -79,8 +82,26 @@ public class Intersections implements Serializable {
 
 					// 11.08.2015, trying to remove locks
 					// this removes lock from sys and temp tables.
-					connection.commit();
+					// 01.02.2016, commented as it gives error with EJB
+					// IJ031020: You cannot commit with autocommit set
+					if (!connection.getAutoCommit()) {
+						connection.commit();
+					}
 					// 11.08.2015
+
+					while (resultSet.next()) {
+						int rowIndex = new BigDecimal(
+								// 11.08.2015, there seems to be a bug in defining rows.
+								resultSet.getLong("LineNumber")).intValueExact();
+
+						arrayLines.add(new Integer(rowIndex));
+
+						SettingsConversion sc = dataSettingsConversion.get(rowIndex);
+
+						long IntersectionValue = resultSet.getLong("TheLineOfIntersection");
+
+						sc.setTheLineOfIntersection(IntersectionValue + 1);
+					}
 
 					return resultSet;
 				} catch (SQLException e) {
@@ -101,26 +122,27 @@ public class Intersections implements Serializable {
 		ResultSet rs = null;
 		rs = session.doReturningWork(rowsReturningWork);
 
-		List<Integer> arrayLines = new ArrayList<Integer>();
-		while (rs.next())
+//		List<Integer> arrayLines = new ArrayList<Integer>();
+//		// IJ031040: Connection is not associated with a managed connection: org.jboss.jca.adapters.jdbc.jdk7.WrappedConnectionJDK7
+//		while (rs.next())
+//
+//		{
+//
+//			int rowIndex = new BigDecimal(
+//					// 11.08.2015, there seems to be a bug in defining rows.
+//					rs.getLong("LineNumber")).intValueExact();
+//
+//			arrayLines.add(new Integer(rowIndex));
+//
+//			SettingsConversion sc = dataSettingsConversion.get(rowIndex);
+//
+//			long IntersectionValue = rs.getLong("TheLineOfIntersection");
+//
+//			sc.setTheLineOfIntersection(IntersectionValue + 1);
+//
+//		}
 
-		{
-
-			int rowIndex = new BigDecimal(
-					// 11.08.2015, there seems to be a bug in defining rows.
-					rs.getLong("LineNumber")).intValueExact();
-
-			arrayLines.add(new Integer(rowIndex));
-
-			SettingsConversion sc = dataSettingsConversion.get(rowIndex);
-
-			long IntersectionValue = rs.getLong("TheLineOfIntersection");
-
-			sc.setTheLineOfIntersection(IntersectionValue + 1);
-
-		}
-
-		rs.close();
+		// rs.close();
 
 		// remove duplicates
 		Set<Integer> hs = new HashSet<>();
