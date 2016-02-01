@@ -112,26 +112,6 @@
             		<exclude>**/*IT.java</exclude>
             	</excludes>
 			</configuration>
-	<!--
-			<executions>
- 
-        	<execution>
-            	<phase>integration-test</phase>
-            	<goals>
-               	<goal>test</goal>
-            	</goals>
-            		<configuration>
-               		<excludes>
-                  		<exclude>**/*Tests.java</exclude>
-               		</excludes>
-            		<includes>
-						<include>**/*IT.java</include>
-					</includes>
-            		</configuration>
-        		</execution> 
-        		
-      		</executions>
-      		-->
 		</plugin>
 		
 		    <!-- The WildFly plugin deploys your war to a local WildFly container -->
@@ -316,7 +296,7 @@
 	                        </configuration>
 	
 						<!-- Wildfly ignores this entry and theoretically it needs jboss-web.xml with context-root entry -->
-	                		<!-- <deployables>
+	                		<deployables>
 	                		<deployable>
 	                		
 	                		 	 <properties>
@@ -324,7 +304,7 @@
 	              				</properties> 
 	                		</deployable>
 	                		</deployables>
-	                		-->
+	                		
 	
 	                </configuration>
 	                <executions>
