@@ -25,6 +25,7 @@ import org.hibernate.criterion.Restrictions;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 import org.openbox.sf5.common.IniReader;
+import org.openbox.sf5.json.config.Pretty;
 import org.openbox.sf5.model.Satellites;
 import org.openbox.sf5.model.Transponders;
 import org.openbox.sf5.service.CriterionService;
@@ -51,10 +52,10 @@ public class TranspondersService implements Serializable {
 	@Path("upload")
 	@Consumes({ MediaType.MULTIPART_FORM_DATA })
 	// This is Jersey syntax
-//	public Response importTransponderFile(@FormDataParam("file") InputStream fileInputStream,
-//			@FormDataParam("file") FormDataContentDisposition fileMetaData)
-	public Response importTransponderFile(MultipartFormDataInput input) throws IOException
-	{
+	// public Response importTransponderFile(@FormDataParam("file") InputStream
+	// fileInputStream,
+	// @FormDataParam("file") FormDataContentDisposition fileMetaData)
+	public Response importTransponderFile(MultipartFormDataInput input) throws IOException {
 
 		Response returnResponse = null;
 
@@ -68,17 +69,17 @@ public class TranspondersService implements Serializable {
 
 		else {
 			InputPart inputPart = inputParts.get(0);
-			//convert the uploaded file to inputstream
-			InputStream inputStream = inputPart.getBody(InputStream.class,null);
+			// convert the uploaded file to inputstream
+			InputStream inputStream = inputPart.getBody(InputStream.class, null);
 
-		try {
-			iniReader.readMultiPartFile(inputStream);
-			returnResponse = Response.status(200).build();
+			try {
+				iniReader.readMultiPartFile(inputStream);
+				returnResponse = Response.status(200).build();
 
-		} catch (Exception e) {
-			// return new Boolean(false);
-			returnResponse = Response.status(500).entity(e.getMessage()).build();
-		}
+			} catch (Exception e) {
+				// return new Boolean(false);
+				returnResponse = Response.status(500).entity(e.getMessage()).build();
+			}
 
 		}
 		// GenericEntity<Boolean> gBoolean = new GenericEntity<Boolean>(result);
@@ -90,6 +91,7 @@ public class TranspondersService implements Serializable {
 
 	@GET
 	@Path("filter/{type}/{typeValue}")
+	@Pretty
 	public Response getTranspondersByArbitraryFilter(@PathParam("type") String fieldName,
 			@PathParam("typeValue") String typeValue) {
 
@@ -122,6 +124,7 @@ public class TranspondersService implements Serializable {
 
 	@GET
 	@Path("filter/id/{transponderId}")
+	@Pretty
 	public Response getTransponderById(@PathParam("transponderId") long tpId) {
 
 		Response returnResponse = null;
@@ -137,6 +140,7 @@ public class TranspondersService implements Serializable {
 	// http://localhost:8080/SF5JSF-test/json/transponders/filter;satId=1
 	@GET
 	@Path("filter/")
+	@Pretty
 	public Response getTranspondersBySatelliteId(@MatrixParam("satId") long satId) {
 
 		Response returnResponse = null;
@@ -166,6 +170,7 @@ public class TranspondersService implements Serializable {
 
 	@GET
 	@Path("all")
+	@Pretty
 	public Response getTransponders() {
 
 		Response returnResponse = null;

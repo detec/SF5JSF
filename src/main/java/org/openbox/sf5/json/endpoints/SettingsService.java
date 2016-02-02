@@ -24,6 +24,7 @@ import javax.ws.rs.core.UriInfo;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
 import org.openbox.sf5.common.XMLExporter;
+import org.openbox.sf5.json.config.Pretty;
 import org.openbox.sf5.json.service.SettingsJsonizer;
 import org.openbox.sf5.json.service.UsersJsonizer;
 import org.openbox.sf5.model.Sat;
@@ -115,6 +116,7 @@ public class SettingsService implements Serializable {
 
 	@GET
 	@Path("filter/login/{typeValue}")
+	@Pretty
 	public Response getSettingsByUserLogin(@PathParam("typeValue") String typeValue) {
 
 		Response returnResponse = null;
@@ -143,6 +145,7 @@ public class SettingsService implements Serializable {
 	// http://localhost:8080/SF5JSF-test/json/usersettings/filter/Name/First;login=admin
 	@GET
 	@Path("filter/{type}/{typeValue}")
+	@Pretty
 	public Response getSettingsByArbitraryFilter(@PathParam("type") String fieldName,
 			@PathParam("typeValue") String typeValue, @MatrixParam("login") String login) {
 
@@ -179,6 +182,7 @@ public class SettingsService implements Serializable {
 
 	@GET
 	@Path("filter/id/{settingId}")
+	@Pretty
 	public Response getSettingById(@PathParam("settingId") long settingId, @MatrixParam("login") String login) {
 
 		Response returnResponse = null;
@@ -238,6 +242,7 @@ public class SettingsService implements Serializable {
 	@GET
 	@Path("filter/id/{settingId}/sf5")
 	@Produces(MediaType.APPLICATION_XML)
+	@Pretty
 	public Response getSettingByIdSF5(@PathParam("settingId") long settingId, @MatrixParam("login") String login) {
 		Response returnResponse = null;
 		Criterion userCriterion = criterionService.getUserCriterion(login, Settings.class);

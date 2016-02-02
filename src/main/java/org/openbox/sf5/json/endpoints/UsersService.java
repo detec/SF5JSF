@@ -16,6 +16,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.hibernate.criterion.Criterion;
+import org.openbox.sf5.json.config.Pretty;
 import org.openbox.sf5.json.service.UsersJsonizer;
 import org.openbox.sf5.model.Users;
 import org.openbox.sf5.service.CriterionService;
@@ -53,6 +54,7 @@ public class UsersService implements Serializable {
 
 	@GET
 	@Path("exists/login/{login}")
+	@Pretty
 	public Response ifSuchLoginExists(@PathParam("login") String login) {
 		Response returnResponse = null;
 		long result = usersJsonizer.checkIfUsernameExists(login);
@@ -67,6 +69,7 @@ public class UsersService implements Serializable {
 
 	@GET
 	@Path("filter/login/{login}")
+	@Pretty
 	public Response getUserByLogin(@PathParam("login") String login) {
 
 		Response returnResponse = null;

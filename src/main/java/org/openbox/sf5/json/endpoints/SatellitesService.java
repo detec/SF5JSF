@@ -15,6 +15,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.hibernate.criterion.Criterion;
+import org.openbox.sf5.json.config.Pretty;
 import org.openbox.sf5.model.Satellites;
 import org.openbox.sf5.service.CriterionService;
 import org.openbox.sf5.service.ObjectsController;
@@ -29,6 +30,7 @@ public class SatellitesService implements Serializable {
 	// http://localhost:8080/SF5JSF-test/json/satellites/all/
 	@GET
 	@Path("all/")
+	@Pretty
 	public Response getAllSatellites() {
 		Response returnResponse = null;
 
@@ -54,6 +56,7 @@ public class SatellitesService implements Serializable {
 
 	@GET
 	@Path("filter/{type}/{typeValue}")
+	@Pretty
 	public Response getSatellitesByArbitraryFilter(@PathParam("type") String fieldName,
 			@PathParam("typeValue") String typeValue) {
 
@@ -76,6 +79,7 @@ public class SatellitesService implements Serializable {
 
 	@GET
 	@Path("filter/id/{satelliteId}")
+	@Pretty
 	public Response getSatelliteById(@PathParam("satelliteId") long satId) {
 
 		Response returnResponse = null;
