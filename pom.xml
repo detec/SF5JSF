@@ -403,7 +403,7 @@
             	<activeByDefault>true</activeByDefault>
         	</activation>
         	<properties>
-        		<rp.build.warname>ROOT</rp.build.warname>
+        		<rp.build.warname></rp.build.warname> <!-- For jboss-web.xml -->
         		<db.dialect>ProgressDialect</db.dialect>
         		<db.hbm2ddl>update</db.hbm2ddl>
         	</properties>
@@ -414,6 +414,7 @@
                   <version>2.6</version>
                   <configuration>
                      <outputDirectory>deployments</outputDirectory>
+                     <warName>ROOT</warName>
                   </configuration>
                </plugin>
             </plugins>
