@@ -43,6 +43,8 @@ public class MyApplicationResourceConfig extends javax.ws.rs.core.Application
 		return set;
 	}
 
+	// https://access.redhat.com/documentation/en-US/JBoss_Enterprise_Web_Platform/5/html/RESTEasy_Reference_Guide/Pluggable_JAXBContext_s_with_ContextResolvers.html
+
 	@Override
 	public Set<Object> getSingletons() {
 		MOXyJsonProvider moxyJsonProvider = new MOXyJsonProvider();
@@ -65,9 +67,13 @@ public class MyApplicationResourceConfig extends javax.ws.rs.core.Application
 		//
 		// }
 
+		// suppress xml declaration header
+		// marshaller.setProperty("jaxb.fragment", Boolean.TRUE);
+
 		HashSet<Object> set = new HashSet<Object>(2);
 		set.add(moxyJsonProvider);
 		// set.add(new LogFilter());
+		set.add(new CustomMarshaller());
 		return set;
 	}
 

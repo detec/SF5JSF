@@ -12,9 +12,8 @@ import javax.xml.bind.Marshaller;
 
 @Provider
 @Produces("application/xml")
-public class CustomMarshaller
-		// implements ContextResolver<Marshaller>
-		implements ContextResolver<JAXBContext>
+public class CustomMarshaller implements ContextResolver<Marshaller>
+// implements ContextResolver<JAXBContext>
 
 {
 
@@ -25,39 +24,43 @@ public class CustomMarshaller
 
 	private Marshaller marshaller = null;
 
-	@Override
-	public JAXBContext getContext(Class<?> arg0) {
-		try {
-			context = JAXBContext.newInstance(AppPathReader.JAXB_PACKAGE_NAME);
-		} catch (JAXBException e) {
-			LOGGER.log(Level.SEVERE, "Custom JAXBContext - " + e.getMessage(), e);
-		}
-		return context;
-	}
-
 	// @Override
-	// public Marshaller getContext(Class<?> type) {
-	//
-	// if (marshaller == null) {
-	//
-	// if (context == null) {
+	// public JAXBContext getContext(Class<?> arg0) {
 	// try {
 	// context = JAXBContext.newInstance(AppPathReader.JAXB_PACKAGE_NAME);
-	// marshaller = context.createMarshaller();
-	// marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-	// marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
-	//
 	// } catch (JAXBException e) {
-	// // log warning/error; null will be returned which indicates
-	// // that
-	// // this
-	// // provider won't/can't be used.
-	// LOGGER.log(Level.SEVERE, "CustomMarshaller - " + e.getMessage());
+	// LOGGER.log(Level.SEVERE, "Custom JAXBContext - " + e.getMessage(), e);
 	// }
+	// return context;
 	// }
-	// }
-	//
-	// return marshaller;
-	// }
+
+	@Override
+	public Marshaller getContext(Class<?> type) {
+
+		if (marshaller == null) {
+
+			if (context == null) {
+				try {
+					context = JAXBContext.newInstance(AppPathReader.JAXB_PACKAGE_NAME);
+					marshaller = context.createMarshaller();
+					marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+					marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+					marshaller.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE); // no
+																					// <[?xml
+																					// version="1.0"
+																					// encoding="UTF-8"?>
+
+				} catch (JAXBException e) {
+					// log warning/error; null will be returned which indicates
+					// that
+					// this
+					// provider won't/can't be used.
+					LOGGER.log(Level.SEVERE, "CustomMarshaller - " + e.getMessage());
+				}
+			}
+		}
+
+		return marshaller;
+	}
 
 }

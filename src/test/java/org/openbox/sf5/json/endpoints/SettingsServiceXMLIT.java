@@ -99,7 +99,8 @@ public class SettingsServiceXMLIT extends AbstractServiceTest {
 		assertTrue(settingRead instanceof Settings);
 
 		// getting device specific output
-		invocationBuilder = serviceTarget.path("filter").path("id").path(Long.toString(setting.getId())).path("sf5").matrixParam("login", testUsername)
+		invocationBuilder = serviceTarget.path("filter").path("id").path(Long.toString(setting.getId())).path("sf5")
+				.matrixParam("login", testUsername)
 
 				.request(MediaType.APPLICATION_XML);
 
@@ -110,9 +111,9 @@ public class SettingsServiceXMLIT extends AbstractServiceTest {
 		assertThat(deviceSettings).isNotNull();
 
 		// write test files
-//		 ArrayList<String> lines = new ArrayList<String>();
-//		 lines.add(deviceSettings);
-//		 Files.write(Paths.get("e:\\Java\\sf5IToutput.xml"), lines);
+		// ArrayList<String> lines = new ArrayList<String>();
+		// lines.add(deviceSettings);
+		// Files.write(Paths.get("e:\\Java\\sf5IToutput.xml"), lines);
 
 		URL responseFile = ClassLoader.getSystemResource("xml/sf5IToutput.xml");
 		assertThat(responseFile).isNotNull();
@@ -122,12 +123,12 @@ public class SettingsServiceXMLIT extends AbstractServiceTest {
 
 		String content = new String(Files.readAllBytes(Paths.get(uri)), Charset.forName("UTF-8"));
 		// content = content.replace("\r\n\r\n", "\r\n"); // it adds
-														// superfluous
-														// \r\n
+		// superfluous
+		// \r\n
 
 		content = content.replace("</sat>\r\n", "</sat>");
 
-		//content = content.replace("\r\n", ""); // it seems to be without crlf
+		// content = content.replace("\r\n", ""); // it seems to be without crlf
 
 		assertEquals(deviceSettings, content);
 

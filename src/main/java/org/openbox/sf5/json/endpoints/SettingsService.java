@@ -23,6 +23,7 @@ import javax.ws.rs.core.UriInfo;
 
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Restrictions;
+import org.jboss.resteasy.annotations.providers.jaxb.XmlHeader;
 import org.openbox.sf5.common.XMLExporter;
 import org.openbox.sf5.json.config.Pretty;
 import org.openbox.sf5.json.service.SettingsJsonizer;
@@ -243,6 +244,7 @@ public class SettingsService implements Serializable {
 	@Path("filter/id/{settingId}/sf5")
 	@Produces(MediaType.APPLICATION_XML)
 	@Pretty
+	@XmlHeader("")
 	public Response getSettingByIdSF5(@PathParam("settingId") long settingId, @MatrixParam("login") String login) {
 		Response returnResponse = null;
 		Criterion userCriterion = criterionService.getUserCriterion(login, Settings.class);

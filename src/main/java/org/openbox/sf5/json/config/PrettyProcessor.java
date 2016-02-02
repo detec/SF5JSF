@@ -21,6 +21,8 @@ public class PrettyProcessor implements DecoratorProcessor<Marshaller, Pretty> {
 			MediaType mediaType) {
 		try {
 			target.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+			target.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+			target.setProperty(Marshaller.JAXB_FRAGMENT, Boolean.TRUE);
 		} catch (PropertyException e) {
 			LOGGER.log(Level.SEVERE, "Custom JAXBContext - " + e.getMessage(), e);
 		}

@@ -243,7 +243,7 @@
            		<db.password></db.password>
            		<db.dialect>H2Dialect</db.dialect>
            		<rp.build.warname>SF5JSF-test</rp.build.warname>
-           		<db.hbm2ddl>create-drop</db.hbm2ddl>
+           		<db.hbm2ddl>update</db.hbm2ddl>
        		</properties>
        		<build>
     		<plugins>
@@ -273,6 +273,10 @@
                     				<groupId>org.postgresql</groupId>
                     				<artifactId>postgresql</artifactId>
                  				</dependency>
+                 				<dependency>
+                 					<groupId>com.h2database</groupId>
+                 					<artifactId>h2</artifactId>
+                 				</dependency>
             				</dependencies>
 	                     </container>
 	                     <configuration>
@@ -281,13 +285,13 @@
 	                             <cargo.protocol>http</cargo.protocol>
 <!-- 	                             <cargo.logging>high</cargo.logging> -->
 	                             
-	                              <cargo.datasource.datasource.ds1>
+<!-- 	                             <cargo.datasource.datasource.ds1>
                              		cargo.datasource.url=jdbc:postgresql://localhost:5432/sf5jsftest|
                              		cargo.datasource.driver=org.postgresql.Driver|
                              		cargo.datasource.username=sf5jsf|
                              		cargo.datasource.password=1|
                              		cargo.datasource.jndi=jboss/datasources/PostgreSQLDS
-                             		</cargo.datasource.datasource.ds1>
+                             		</cargo.datasource.datasource.ds1> -->
                              <!-- We will use H2 in-memory datasource 
                              It seems, that current version does not support ommitting cargo.datasource.password
                              -->
@@ -295,7 +299,13 @@
                              cargo.datasource.driver=org.h2.Driver|
                              cargo.datasource.username=sa|
                              cargo.datasource.jndi=Oracle -->
-                             		
+                             	<cargo.datasource.datasource.ds1>
+                             		cargo.datasource.url=jdbc:h2:mem:test;DB_CLOSE_DELAY=-1|
+                             		cargo.datasource.driver=org.h2.Driver|
+                             		cargo.datasource.username=sa|
+                             		cargo.datasource.password=''|
+                             		cargo.datasource.jndi=jboss/datasources/PostgreSQLDS
+                             	</cargo.datasource.datasource.ds1>	
 	                        	</properties>
 	                        </configuration>
 	
@@ -437,7 +447,6 @@
 	<groupId>com.h2database</groupId>
 	<artifactId>h2</artifactId>
 	<version>1.4.191</version>
-	<scope>test</scope>
 </dependency>
 <dependency>
 	<groupId>org.postgresql</groupId>
