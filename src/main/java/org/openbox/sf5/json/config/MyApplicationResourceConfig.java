@@ -50,9 +50,24 @@ public class MyApplicationResourceConfig extends javax.ws.rs.core.Application
 		moxyJsonProvider.setMarshalEmptyCollections(true);
 		moxyJsonProvider.setIncludeRoot(true);
 
+		// when include root true
+		// {
+		//
+		// "users" : {
+		//
+		// "id" : 282,
+		//
+		// "login" : "ITUser",
+		//
+		// "name" : "Test user"
+		//
+		// }
+		//
+		// }
+
 		HashSet<Object> set = new HashSet<Object>(2);
 		set.add(moxyJsonProvider);
-		set.add(new CustomMarshaller());
+		// set.add(new LogFilter());
 		return set;
 	}
 

@@ -71,8 +71,13 @@ public abstract class AbstractServiceTest {
 		//
 		// .build();
 
+		MOXyJsonProvider moxyJsonProvider = new MOXyJsonProvider();
+		moxyJsonProvider.setFormattedOutput(true);
+		moxyJsonProvider.setMarshalEmptyCollections(true);
+		moxyJsonProvider.setIncludeRoot(true);
+
 		return new ResteasyClientBuilder().connectionPoolSize(20).register(BooleanMessageBodyReader.class)
-				.register(LongMessageBodyReader.class).register(MOXyJsonProvider.class).build();
+				.register(LongMessageBodyReader.class).register(moxyJsonProvider).build();
 	}
 
 	public void setUpAbstractTestUser() {

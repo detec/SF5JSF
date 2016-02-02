@@ -279,12 +279,15 @@
 	                     	<properties>
 	                             <cargo.servlet.port>8080</cargo.servlet.port>
 	                             <cargo.protocol>http</cargo.protocol>
+<!-- 	                             <cargo.logging>high</cargo.logging> -->
+	                             
 	                              <cargo.datasource.datasource.ds1>
                              		cargo.datasource.url=jdbc:postgresql://localhost:5432/sf5jsftest|
                              		cargo.datasource.driver=org.postgresql.Driver|
                              		cargo.datasource.username=sf5jsf|
                              		cargo.datasource.password=1|
                              		cargo.datasource.jndi=jboss/datasources/PostgreSQLDS
+                             		</cargo.datasource.datasource.ds1>
                              <!-- We will use H2 in-memory datasource 
                              It seems, that current version does not support ommitting cargo.datasource.password
                              -->
@@ -292,21 +295,20 @@
                              cargo.datasource.driver=org.h2.Driver|
                              cargo.datasource.username=sa|
                              cargo.datasource.jndi=Oracle -->
-                             		</cargo.datasource.datasource.ds1>
+                             		
 	                        	</properties>
 	                        </configuration>
 	
 						<!-- Wildfly ignores this entry and theoretically it needs jboss-web.xml with context-root entry -->
 	                		<deployables>
 	                		<deployable>
-	                		
-	                		 	 <properties>
+	                			<pingURL>http://localhost:8080/${rp.build.warname}/</pingURL>
+	                			 <pingTimeout>120000</pingTimeout> <!-- 2 min -->
+	                		 	<properties>
 	                		     	<context>${rp.build.warname}</context>
 	              				</properties> 
 	                		</deployable>
 	                		</deployables>
-	                		
-	
 	                </configuration>
 	                <executions>
 	                     <execution>
@@ -441,48 +443,9 @@
 	<groupId>org.postgresql</groupId>
 	<artifactId>postgresql</artifactId>
 	<version>9.4.1207.jre7</version>
-</dependency>
-<!-- We will host on openshift with WildFly 9 cartridge -->
-<!-- <dependency>
-	<groupId>org.glassfish.main.common</groupId>
-	<artifactId>glassfish-api</artifactId>
-	<version>4.1</version>
 	<scope>provided</scope>
-</dependency> -->
-
-<!-- Jackson provided dependencies -->
-<!-- <dependency>
-   	<groupId>com.fasterxml.jackson.core</groupId>
-   	<artifactId>jackson-databind</artifactId>
-   	<version>${jackson.version}</version>
 </dependency>
-<dependency>
- 	<groupId>com.fasterxml.jackson.datatype</groupId>
- 	<artifactId>jackson-datatype-jdk8</artifactId>
- 	<version>${jackson.version}</version>
-</dependency>
-<dependency>
-   	<groupId>com.fasterxml.jackson.datatype</groupId>
-   	<artifactId>jackson-datatype-jsr310</artifactId>
-   	<version>${jackson.version}</version>
-</dependency> -->
 
-<!-- http://stackoverflow.com/questions/18872931/custom-objectmapper-with-jersey-2-2-and-jackson-2-1  -->
-<!-- <dependency>
-	<groupId>com.fasterxml.jackson.jaxrs</groupId>
-	<artifactId>jackson-jaxrs-json-provider</artifactId>
-	<version>${jackson.version}</version>
-</dependency> -->
-<!-- <dependency>
-	<groupId>com.fasterxml.jackson.core</groupId>
-	<artifactId>jackson-annotations</artifactId>
-	<version>${jackson.version}</version>
-</dependency> -->
-<!-- <dependency>
-	<groupId>com.fasterxml.jackson.core</groupId>
-	<artifactId>jackson-core</artifactId>
-	<version>${jackson.version}</version>
-</dependency> -->
 
 <!--  Left for compatibility -->
 <dependency>
@@ -648,6 +611,11 @@
 	<scope>test</scope>
 </dependency>
 
+<dependency>
+	<groupId>commons-io</groupId>
+	<artifactId>commons-io</artifactId>
+	<version>2.4</version>
+</dependency>
 
 
 </dependencies>
