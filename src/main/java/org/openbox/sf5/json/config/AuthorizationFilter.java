@@ -1,4 +1,4 @@
-package org.openbox.sf5.application;
+package org.openbox.sf5.json.config;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.openbox.sf5.json.config.AppPathReader;
 import org.reflections.Reflections;
 
 //@WebFilter(filterName = "AuthFilter", urlPatterns = { "*.xhtml" }) // urlPatterns
@@ -54,9 +53,29 @@ public class AuthorizationFilter implements Filter {
 
 		// Let's split conditions into separate parts
 		// changed >= to >
-		boolean itIsLoginpage = (reqURI.indexOf("/login.xhtml") > 0);
-		boolean itIsregsterPage = (reqURI.indexOf("/register.xhtml") > 0);
-		boolean therIsUsername = (ses != null && ses.getAttribute("username") != null);
+		// Of course, one day it should be refactored.
+		// boolean itIsLoginpageJSF = (reqURI.indexOf("/login.jsf") > 0);
+
+		// boolean itIsLoginPageXHTML = (reqURI.indexOf("/login.xhtml") > 0);
+		boolean itIsLoginPageXHTML = reqURI.contains("/login.xhtml");
+
+		// boolean itIsregsterPageJSF = (reqURI.indexOf("/register.jsf") > 0);
+		// boolean itIsregsterPageXHTML = (reqURI.indexOf("/register.xhtml") >
+		// 0);
+		// boolean itIsRootPath = reqURI.equals("/");
+		// boolean itIsIndexPage = reqURI.equals("/index.html");
+
+		List<String> strList = new ArrayList<>();
+		strList.add(reqt.getContextPath() + "/login.jsf");
+		strList.add(reqt.getContextPath() + "/login.xhtml");
+		strList.add(reqt.getContextPath() + "/register.jsf");
+		strList.add(reqt.getContextPath() + "/register.xhtml");
+		strList.add(reqt.getContextPath() + "/");
+		strList.add(reqt.getContextPath() + "/index.html");
+
+		boolean isAllowedPath = strList.contains(reqURI);
+
+		boolean thereIsUsername = (ses != null && ses.getAttribute("username") != null);
 
 		boolean itIsJsonPath = (reqURI.indexOf(AppPathReader.JAXRS_PATH) > 0);
 
@@ -72,7 +91,7 @@ public class AuthorizationFilter implements Filter {
 
 		boolean isJAXWSPath = isJAXWSPath(reqURI);
 
-		if (itIsLoginpage || therIsUsername || itIsregsterPage || itIsJsonPath || isJAXWSPath) {
+		if (isAllowedPath || itIsLoginPageXHTML || thereIsUsername || itIsJsonPath || isJAXWSPath) {
 
 			chain.doFilter(request, response);
 		} else {
@@ -83,14 +102,14 @@ public class AuthorizationFilter implements Filter {
 
 	private boolean isJAXWSPath(String reqURI) {
 
-//		int[] result = new int[1];
-//
-//		classNames.stream().forEach(t -> {
-//			// result[0] = result[0] + reqURI.indexOf(t + "Service");
-//			result[0] = result[0] + reqURI.indexOf(t + "OpenboxSF5");
-//		});
-//
-//		return (result[0] > 0);
+		// int[] result = new int[1];
+		//
+		// classNames.stream().forEach(t -> {
+		// // result[0] = result[0] + reqURI.indexOf(t + "Service");
+		// result[0] = result[0] + reqURI.indexOf(t + "OpenboxSF5");
+		// });
+		//
+		// return (result[0] > 0);
 
 		return (reqURI.indexOf("OpenboxSF5") > 0);
 

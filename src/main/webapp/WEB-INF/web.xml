@@ -21,15 +21,17 @@
   <param-name>javax.servlet.jsp.jstl.fmt.localizationContext</param-name>
   <param-value>resources.application</param-value>
  </context-param>
- <!-- Adding filter -->
+ <!-- Adding filter It is defined with @WebFilter annotation-->
+ <!-- 
  <filter>
   <filter-name>AuthFilter</filter-name>
-  <filter-class>org.openbox.sf5.application.AuthorizationFilter</filter-class>
+  <filter-class>org.openbox.sf5.json.config.AuthorizationFilter</filter-class>
  </filter>
  <filter-mapping>
   <filter-name>AuthFilter</filter-name>
   <url-pattern>/*</url-pattern>
  </filter-mapping>
+  -->
  <listener>
   <listener-class>com.sun.faces.config.ConfigureListener</listener-class>
  </listener>
