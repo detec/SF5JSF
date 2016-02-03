@@ -4,6 +4,10 @@ This pet project derives from my old 1C:Enterprise 8.2 (<http://1c-dn.com/>) too
 - <http://openbox.ua/instruments/sf5/>   - official page of the gadget;
 - <http://infostart.ru/public/76804/>	 - page of the initial 1C:Enterprise 8.2 project.
 
+## Openshift ##
+
+This application is hosted in Openshift cloud. Its address is <http://sf5jsf-detec.rhcloud.com>. Its database already has user logins 'admin' and 'user' with one sample gadget setting saved in every profile. Anyone can register its own user and start creating Openbox SF-5 gadget settings.
+
 ## Features ##
 
 Leaving behind satellite television details, Openbox SF-5 settings editor is a representation of a typical full-cycle CRUD application. It is able to:
