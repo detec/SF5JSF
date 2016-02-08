@@ -265,7 +265,7 @@
 	                     	<containerId>wildfly9x</containerId>
 	                     	<zipUrlInstaller>
 <!-- 								<url>http://download.jboss.org/wildfly/10.0.0.Final/wildfly-10.0.0.Final.zip</url> -->
-								<url>http://download.jboss.org/wildfly/9.0.1.Final/wildfly-9.0.1.Final.zip</url>
+								<url>http://download.jboss.org/wildfly/9.0.2.Final/wildfly-9.0.2.Final.zip</url>
 							</zipUrlInstaller>
 											
 							 <dependencies>
