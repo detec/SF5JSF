@@ -124,7 +124,7 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 		satTest.setUp();
 
 		Invocation.Builder invocationBuilder = serviceTarget.path("filter")
-				.matrixParam("satId", String.valueOf(satTest.getSatelliteIdXML())).request(MediaType.APPLICATION_JSON)
+				.matrixParam("satId", String.valueOf(satTest.getSatelliteId())).request(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON);
 
 		response = invocationBuilder.get();
