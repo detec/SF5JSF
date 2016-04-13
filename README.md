@@ -63,11 +63,10 @@ The service name is OpenboxSF5Service, its WSDL can be obtained at /application_
 
 Different Maven profiles are required to use different database types/schemas for development, production and integration tests. Openbox SF-5 settings editor uses following Maven profiles:
 
-	- dev 	Development profile, database url is jdbc:postgresql://localhost:5432/sf5jsfdev. 
-			This database url is used in Eclipse-based container deploy.
-	- test 	Profile for additional integration tests, run with Cargo Maven plugin with Postgre database server, database url is jdbc:postgresql://localhost:5432/sf5jsftest.
-	- prod 	Profile for production builds, database url is jdbc:postgresql://localhost:5432/sf5jsf.
-	- openshift Profile for deployment in an OpenShift cloud.
+	- dev 	- development profile;
+	- test 	- profile for additional integration tests, run with Cargo Maven plugin;
+	- prod 	- profile for production builds;
+	- openshift - profile for deployment in an OpenShift cloud.
 
 ## Tests notice ##
 
@@ -77,7 +76,7 @@ There are several JUnit tests, run in H2 in-memory mode. They check if Hibernate
 
 - configured non-XA datasource with JNDI name "java:jboss/datasources/PostgreSQLDS"; Postgre and H2 supported;
 - WildFly 9;
-- Postgre 9.2+ database server, running at the same host with WildFly (for profiles dev, prod and openshift);
+- Postgre 9.2+ database server (for profiles dev, prod and openshift);
 - Java 8.
 
 ## Technologies ##
