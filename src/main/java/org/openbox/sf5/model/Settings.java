@@ -39,6 +39,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 // Mapping JPA entities to successfully transcode them using XML
 
 @Entity
+// For some weird reason says: database column 'user' not found
+// Container and unit tests fail.
+// @Table(name = "Settings", indexes = { @Index(columnList = "\"user\"", name =
+// "\"user\"") })
 @Table(name = "Settings")
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -116,7 +120,7 @@ public class Settings extends AbstractDbEntity implements Serializable {
 
 	// http://stackoverflow.com/questions/4350874/unable-to-use-table-named-user-in-postgresql-hibernate
 	@ManyToOne
-	@JoinColumn(name = "\"user\"", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_User") )
+	@JoinColumn(name = "\"user\"", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_User"))
 	@NotNull
 	@JsonProperty("User")
 	@Valid
