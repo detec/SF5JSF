@@ -49,7 +49,7 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "parent_id", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_Setting") )
+	@JoinColumn(name = "parent_id", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_Setting"))
 	@JsonBackReference
 	@XmlElement
 	@XmlInverseReference(mappedBy = "Satellites")
@@ -69,7 +69,7 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "Satellite", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_Satellite") )
+	@JoinColumn(name = "Satellite", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_Satellite"))
 	@JsonProperty("Satellite")
 	private Satellites Satellite;
 
@@ -111,28 +111,6 @@ public class SettingsSatellites extends AbstractDbEntity implements Serializable
 	// No-args constructor
 
 	public SettingsSatellites() {
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		if (other == null) {
-			return false;
-		}
-		if (other == this) {
-			return true;
-		}
-
-		if (!(other instanceof SettingsSatellites)) {
-			return false;
-		}
-		SettingsSatellites otherSettingsSatellites = (SettingsSatellites) other;
-		if (otherSettingsSatellites.parent_id.equals(parent_id)
-				&& otherSettingsSatellites.Satellite.equals(Satellite)) {
-			return true;
-		} else {
-			return false;
-		}
-
 	}
 
 }

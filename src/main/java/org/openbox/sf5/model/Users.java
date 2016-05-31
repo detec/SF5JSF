@@ -79,25 +79,4 @@ public class Users extends AbstractDbEntity implements Serializable {
 		Name = pLogin;
 	}
 
-	@Override
-	public boolean equals(Object other) {
-		if (other == null) {
-			return false;
-		}
-		if (other == this) {
-			return true;
-		}
-
-		if (!(other instanceof Users)) {
-			return false;
-		}
-		Users otherUsers = (Users) other;
-		if (otherUsers.Name.equals(Name) && otherUsers.Login.equals(Login)) {
-			return true;
-		} else {
-			return false;
-		}
-
-	}
-
 }

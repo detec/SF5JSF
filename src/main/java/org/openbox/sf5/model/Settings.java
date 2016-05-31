@@ -185,27 +185,4 @@ public class Settings extends AbstractDbEntity implements Serializable {
 		Name = pName;
 	}
 
-	@Override
-	public boolean equals(Object other) {
-		if (other == null) {
-			return false;
-		}
-		if (other == this) {
-			return true;
-		}
-
-		if (!(other instanceof Settings)) {
-			return false;
-		}
-		Settings otherSettings = (Settings) other;
-		if (otherSettings.Name.equals(Name) && otherSettings.PropsFile.equals(PropsFile)
-				&& otherSettings.TheLastEntry == TheLastEntry && otherSettings.User.equals(User)
-				&& otherSettings.Conversion.equals(Conversion) && otherSettings.Satellites.equals(Satellites)) {
-			return true;
-		} else {
-			return false;
-		}
-
-	}
-
 }

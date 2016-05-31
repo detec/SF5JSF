@@ -142,7 +142,7 @@ public class Transponders extends AbstractDbEntity implements Serializable {
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "Satellite", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_Satellite") )
+	@JoinColumn(name = "Satellite", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_Satellite"))
 	@NotNull
 	@JsonProperty("Satellite")
 	private Satellites Satellite;
@@ -174,38 +174,6 @@ public class Transponders extends AbstractDbEntity implements Serializable {
 
 	public Transponders(String pFrequency) {
 		Frequency = Long.parseLong(pFrequency);
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		if (other == null) {
-			return false;
-		}
-		if (other == this) {
-			return true;
-		}
-
-		if (!(other instanceof Transponders)) {
-			return false;
-		}
-		Transponders otherTransponders = (Transponders) other;
-		if
-		// (otherTransponders.Frequency == Frequency &&
-		// otherTransponders.Polarization.equals(Polarization)
-		// && otherTransponders.FEC.equals(FEC) &&
-		// otherTransponders.Carrier.equals(Carrier)
-		// && otherTransponders.Speed == Speed &&
-		// otherTransponders.VersionOfTheDVB.equals(VersionOfTheDVB)
-		// && otherTransponders.RangeOfDVB.equals(RangeOfDVB) &&
-		// otherTransponders.Satellite.equals(Satellite))
-
-		// in database applications only id is crucial.
-		(otherTransponders.id == id) {
-			return true;
-		} else {
-			return false;
-		}
-
 	}
 
 	protected void setObjectFieldsFrom(Transponders origObj) throws IllegalAccessException {

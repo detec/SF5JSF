@@ -61,24 +61,4 @@ public class Satellites extends AbstractDbEntity implements Serializable {
 
 	}
 
-	@Override
-	public boolean equals(Object other) {
-		if (other == null) {
-			return false;
-		}
-		if (other == this) {
-			return true;
-		}
-
-		if (!(other instanceof Satellites)) {
-			return false;
-		}
-		Satellites otherSatellite = (Satellites) other;
-		if (otherSatellite.Name.equals(Name)) {
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 }

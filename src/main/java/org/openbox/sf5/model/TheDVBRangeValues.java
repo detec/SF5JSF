@@ -11,36 +11,10 @@ import javax.persistence.Table;
 @Table(name = "TheDVBRangeValues")
 public class TheDVBRangeValues extends AbstractDbEntity implements Serializable {
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((RangeOfDVB == null) ? 0 : RangeOfDVB.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		TheDVBRangeValues other = (TheDVBRangeValues) obj;
-		if (RangeOfDVB != other.RangeOfDVB) {
-			return false;
-		}
-		return true;
-	}
-
 	private static final long serialVersionUID = 1635144675404567877L;
 
 	@Id
-	RangesOfDVB RangeOfDVB;
+	private RangesOfDVB RangeOfDVB;
 
 	public RangesOfDVB getRangeOfDVB() {
 		return this.RangeOfDVB;

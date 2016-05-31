@@ -50,7 +50,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	// http://blog.cronn.de/cyclic-references-in-jaxb/
 
 	@ManyToOne
-	@JoinColumn(name = "parent_id", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_Setting") )
+	@JoinColumn(name = "parent_id", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_Setting"))
 	@JsonBackReference
 	// @NotNull - probably this causes 400 error.
 	@XmlElement
@@ -69,7 +69,7 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 	}
 
 	@ManyToOne
-	@JoinColumn(name = "Transponder", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_Transponder") )
+	@JoinColumn(name = "Transponder", unique = false, nullable = false, foreignKey = @ForeignKey(name = "FK_Transponder"))
 	@JsonProperty("Transponder")
 	private Transponders Transponder;
 
@@ -161,31 +161,6 @@ public class SettingsConversion extends AbstractDbEntity implements Serializable
 
 	// No-args constructor
 	public SettingsConversion() {
-	}
-
-	@Override
-	public boolean equals(Object other) {
-		if (other == null) {
-			return false;
-		}
-		if (other == this) {
-			return true;
-		}
-
-		if (!(other instanceof SettingsConversion)) {
-			return false;
-		}
-		SettingsConversion otherSettingsConversion = (SettingsConversion) other;
-		if (otherSettingsConversion.parent_id.equals(parent_id)
-				&& otherSettingsConversion.Transponder.equals(Transponder)
-				&& otherSettingsConversion.Satindex == Satindex && otherSettingsConversion.Tpindex == Tpindex
-				&& otherSettingsConversion.Note.equals(Note)
-				&& otherSettingsConversion.TheLineOfIntersection == TheLineOfIntersection) {
-			return true;
-		} else {
-			return false;
-		}
-
 	}
 
 	protected void setObjectFieldsFrom(SettingsConversion origObj) throws IllegalAccessException {
