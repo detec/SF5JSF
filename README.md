@@ -32,28 +32,28 @@ This implementation of Openbox SF-5 settings editor provides simplified (without
 This Openbox SF-5 settings editor implementation provides JAX-RS 2.0 API for getting entities from database and posting new ones with the help of WildFly's built-in RESTEasy. EclipseLink MOXy 2.6 is used for marshalling and unmarshalling both in JSON and XML. Output format is resolved by client's "Accept" HTTP header, "application/json" or "application/xml". Here is the list of supported endpoints, relative to application context path:
 
 - Satellites
-	- jaxrs/satellites/all/ GET 						- get all satellites;
+	- jaxrs/satellites/ GET 							- get all satellites;
 	- jaxrs/satellites/filter/{type}/{typeValue} GET 	- get satellites, filtered by arbitrary field name and field value;
-	- jaxrs/satellites/filter/id/{satelliteId} GET  	- get satellite by its ID.
+	- jaxrs/satellites/{satelliteId} GET  				- get satellite by its ID.
 	
 - Transponders	
-	- jaxrs/transponders/all/ GET 						- get all transponders;
+	- jaxrs/transponders/ GET 							- get all transponders;
 	- jaxrs/transponders/filter;satId={satId} GET 		- get all transponders from specified satellite;
-	- jaxrs/transponders/filter/id/{transponderId} GET 	- get transponder by its ID;
+	- jaxrs/transponders/{transponderId} GET 			- get transponder by its ID;
 	- jaxrs/transponders/filter/{type}/{typeValue} GET 	- get transponders, filtered by arbitrary field name and field value;
 	- jaxrs/transponders/upload POST 					- upload .ini file with transponders for further import. Content-type should be multipart/form-data, with element named "file".
 	
 - OpenBox SF-5 settings
-	- jaxrs/usersettings/filter/id/{settingId};login={login} GET 		- get setting by its ID and user login;
-	- jaxrs/usersettings/filter/id/{settingId}/sf5;login={login} GET	- get setting by its ID and user login in Openbox SF-5 XML format, only "application/xml" "Accept" HTTP header is supported;
+	- jaxrs/usersettings/{settingId};login={login} GET 					- get setting by its ID and user login;
+	- jaxrs/usersettings/{settingId}/sf5;login={login} GET				- get setting by its ID and user login in Openbox SF-5 XML format, only "application/xml" "Accept" HTTP header is supported;
 	- jaxrs/usersettings/filter/{type}/{typeValue};login={login} GET 	- get user's settings, filtered by arbitrary field name and field value, with provided user login;
 	- jaxrs/usersettings/filter/login/{typeValue} GET 					- get all user's settings;
-	- jaxrs/usersettings/create;login={login} POST 						- send new setting to save in database for user specified. User should already exist, login in matrix parameter and in "User" field should coincide. New setting ID is returned in HTTP header "SettingId".
+	- jaxrs/usersettings/;login={login} POST 							- send new setting to save in database for user specified. User should already exist, login in matrix parameter and in "User" field should coincide. New setting ID is returned in HTTP header "SettingId".
 	
 - Users
 	- jaxrs/users/filter/login/{login} GET 				- get user by its login, if found;
 	- jaxrs/users/exists/login/{login} GET 				- enables to check if the user with such login name exists, returning user ID;
-	- jaxrs/users/create POST 							- send new user to save in database, new user ID is returned as response body.
+	- jaxrs/users/ POST 								- send new user to save in database, new user ID is returned as response body.
 
 ## JAX-WS service ##
 
