@@ -123,7 +123,7 @@ public class TranspondersService implements Serializable {
 	// http://localhost:8080/SF5JSF-test/json/transponders/filter/id/56
 
 	@GET
-	@Path("filter/id/{transponderId}")
+	@Path("{transponderId}")
 	@Pretty
 	public Response getTransponderById(@PathParam("transponderId") long tpId) {
 
@@ -169,7 +169,7 @@ public class TranspondersService implements Serializable {
 	// http://localhost:8080/SF5JSF-test/json/transponders/all/
 
 	@GET
-	@Path("all")
+	// @Path("all")
 	@Pretty
 	public Response getTransponders() {
 

@@ -64,8 +64,12 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 		Transponders readTrans = transList.get(0);
 		transponderId = readTrans.getId();
 
-		invocationBuilder = serviceTarget.path("filter").path("id").path(String.valueOf(transponderId))
-				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+		invocationBuilder = serviceTarget
+
+				// .path("filter").path("id")
+
+				.path(String.valueOf(transponderId)).request(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON);
 
 		response = invocationBuilder.get();
 
@@ -101,8 +105,12 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 		Transponders readTrans = transList.get(0);
 		transponderId = readTrans.getId();
 
-		invocationBuilder = serviceTarget.path("filter").path("id").path(String.valueOf(transponderId))
-				.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML);
+		invocationBuilder = serviceTarget
+
+				// .path("filter").path("id")
+
+				.path(String.valueOf(transponderId)).request(MediaType.APPLICATION_XML)
+				.accept(MediaType.APPLICATION_XML);
 		response = invocationBuilder.get();
 
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -170,8 +178,11 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 		// response =
 		// target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 
-		Invocation.Builder invocationBuilder = serviceTarget.path("all").request(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON);
+		Invocation.Builder invocationBuilder = serviceTarget
+
+				// .path("all")
+
+				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 		response = invocationBuilder.get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 
@@ -188,8 +199,11 @@ public class TranspondersServiceIT extends AbstractServiceTest {
 	@Test
 	public void shouldGetAllTranspondersXML() {
 		Response response = null;
-		Invocation.Builder invocationBuilder = serviceTarget.path("all").request(MediaType.APPLICATION_XML)
-				.accept(MediaType.APPLICATION_XML);
+		Invocation.Builder invocationBuilder = serviceTarget
+
+				// .path("all")
+
+				.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML);
 		response = invocationBuilder.get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
 
