@@ -77,21 +77,23 @@ public class SettingsServiceIT extends AbstractServiceTest {
 		Settings setting = BuildTestSetting.buildSetting(adminUser, newTransList, "Simple");
 
 		// http://howtodoinjava.com/2015/08/07/jersey-restful-client-examples/#post
-		invocationBuilder = serviceTarget.path("create").matrixParam("login", this.testUsername)
-				.request(MediaType.APPLICATION_JSON);
+		invocationBuilder = serviceTarget
 
-		// trying to use test endpoint.
-		// invocationBuilder =
-		// serviceTarget.path("create").request(MediaType.APPLICATION_JSON)
-		// .accept(MediaType.APPLICATION_JSON);
+				// .path("create")
+
+				.matrixParam("login", this.testUsername).request(MediaType.APPLICATION_JSON);
 
 		Response responsePost = invocationBuilder.post(Entity.entity(setting, MediaType.APPLICATION_JSON));
 
 		BuildTestSetting.checkCreatedSetting(responsePost, setting);
 
 		// Here we test getting setting by id.
-		invocationBuilder = serviceTarget.path("filter").path("id").path(Long.toString(setting.getId()))
-				.matrixParam("login", this.testUsername).request(MediaType.APPLICATION_JSON);
+		invocationBuilder = serviceTarget
+
+				// .path("filter").path("id")
+
+				.path(Long.toString(setting.getId())).matrixParam("login", this.testUsername)
+				.request(MediaType.APPLICATION_JSON);
 
 		response = invocationBuilder.get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -103,7 +105,7 @@ public class SettingsServiceIT extends AbstractServiceTest {
 
 	private List<Settings> getUserSettings() {
 		Response response = null;
-		List<Settings> settList = new ArrayList<Settings>();
+		List<Settings> settList = new ArrayList<>();
 
 		// Let's check, if there is user with login admin
 		// WebTarget target = client.target(appLocation +
@@ -159,12 +161,6 @@ public class SettingsServiceIT extends AbstractServiceTest {
 		}
 
 		Settings sett = settList.get(0);
-
-		// target = client.target(appLocation + "usersettings/filter/Name/" +
-		// sett.getName() + ";login=admin");
-		//
-		// response =
-		// target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 
 		Invocation.Builder invocationBuilder = serviceTarget.path("filter").path("Name").path(sett.getName())
 				.matrixParam("login", this.testUsername).request(MediaType.APPLICATION_JSON)

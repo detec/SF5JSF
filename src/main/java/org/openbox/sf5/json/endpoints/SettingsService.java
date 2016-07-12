@@ -47,7 +47,7 @@ public class SettingsService implements Serializable {
 	private UriInfo uriInfo;
 
 	@POST
-	@Path("create")
+	// @Path("create")
 	public Response createSetting(Settings setting, @MatrixParam("login") String login) {
 
 		// http://stackoverflow.com/questions/20119108/why-is-my-jersey-jax-rs-server-throwing-a-illegalstateexception-about-not-being
@@ -95,7 +95,7 @@ public class SettingsService implements Serializable {
 						UriBuilder ub = uriInfo.getAbsolutePathBuilder();
 						settingUri = ub
 
-								.path("filter").path("id")
+								// .path("filter").path("id")
 
 								.path(Long.toString(setting.getId())).matrixParam("login", login).build();
 					} catch (Exception e) {
@@ -182,7 +182,7 @@ public class SettingsService implements Serializable {
 	}
 
 	@GET
-	@Path("filter/id/{settingId}")
+	@Path("{settingId}")
 	@Pretty
 	public Response getSettingById(@PathParam("settingId") long settingId, @MatrixParam("login") String login) {
 
@@ -241,7 +241,7 @@ public class SettingsService implements Serializable {
 	}
 
 	@GET
-	@Path("filter/id/{settingId}/sf5")
+	@Path("{settingId}/sf5")
 	@Produces(MediaType.APPLICATION_XML)
 	@Pretty
 	@XmlHeader("")

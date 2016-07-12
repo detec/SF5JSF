@@ -81,15 +81,22 @@ public class SettingsServiceXMLIT extends AbstractServiceTest {
 		Settings setting = BuildTestSetting.buildSetting(adminUser, newTransList, "Second");
 
 		// http://howtodoinjava.com/2015/08/07/jersey-restful-client-examples/#post
-		invocationBuilder = serviceTarget.path("create").matrixParam("login", testUsername)
-				.request(MediaType.APPLICATION_XML);
+		invocationBuilder = serviceTarget
+
+				// .path("create")
+
+				.matrixParam("login", testUsername).request(MediaType.APPLICATION_XML);
 
 		Response responsePost = invocationBuilder.post(Entity.entity(setting, MediaType.APPLICATION_XML));
 		BuildTestSetting.checkCreatedSetting(responsePost, setting);
 
 		// Here we test getting setting by id.
-		invocationBuilder = serviceTarget.path("filter").path("id").path(Long.toString(setting.getId()))
-				.matrixParam("login", testUsername).request(MediaType.APPLICATION_XML);
+		invocationBuilder = serviceTarget
+
+				// .path("filter").path("id")
+
+				.path(Long.toString(setting.getId())).matrixParam("login", testUsername)
+				.request(MediaType.APPLICATION_XML);
 
 		response = invocationBuilder.get();
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -99,8 +106,11 @@ public class SettingsServiceXMLIT extends AbstractServiceTest {
 		assertTrue(settingRead instanceof Settings);
 
 		// getting device specific output
-		invocationBuilder = serviceTarget.path("filter").path("id").path(Long.toString(setting.getId())).path("sf5")
-				.matrixParam("login", testUsername)
+		invocationBuilder = serviceTarget
+
+				// .path("filter").path("id")
+
+				.path(Long.toString(setting.getId())).path("sf5").matrixParam("login", testUsername)
 
 				.request(MediaType.APPLICATION_XML);
 
@@ -166,7 +176,7 @@ public class SettingsServiceXMLIT extends AbstractServiceTest {
 
 	private List<Settings> getUserSettingsXML() {
 		Response response = null;
-		List<Settings> settList = new ArrayList<Settings>();
+		List<Settings> settList = new ArrayList<>();
 
 		Invocation.Builder invocationBuilder = commonTarget.path("users").path("exists").path("login")
 				.path(testUsername).request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML);
