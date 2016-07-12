@@ -41,8 +41,11 @@ public class SatellitesServiceIT extends AbstractServiceTest {
 		Response response = null;
 		// target = client.target(appLocation + "satellites/all/");
 
-		Invocation.Builder invocationBuilder = serviceTarget.path("all").request(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON);
+		Invocation.Builder invocationBuilder = serviceTarget
+
+				// .path("all")
+
+				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 
 		// response =
 		// target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
@@ -68,8 +71,11 @@ public class SatellitesServiceIT extends AbstractServiceTest {
 
 		Response response = null;
 
-		Invocation.Builder invocationBuilder = serviceTarget.path("all").request(MediaType.APPLICATION_XML)
-				.accept(MediaType.APPLICATION_XML);
+		Invocation.Builder invocationBuilder = serviceTarget
+
+				// .path("all")
+
+				.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML);
 		response = invocationBuilder.get();
 
 		assertEquals(Status.OK.getStatusCode(), response.getStatus());
@@ -88,11 +94,6 @@ public class SatellitesServiceIT extends AbstractServiceTest {
 
 	public long getSatelliteId() {
 		Response response = null;
-
-		// target = client.target(appLocation + "satellites/filter/Name/13E");
-
-		// response =
-		// target.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON).get();
 
 		Invocation.Builder invocationBuilder = serviceTarget.path("filter").path("Name").path("13E")
 				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
@@ -122,8 +123,12 @@ public class SatellitesServiceIT extends AbstractServiceTest {
 		getSatelliteId();
 
 		// test getting by id
-		Invocation.Builder invocationBuilder = serviceTarget.path("filter").path("id").path(String.valueOf(satelliteId))
-				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
+		Invocation.Builder invocationBuilder = serviceTarget
+
+				// .path("filter").path("id")
+
+				.path(String.valueOf(satelliteId)).request(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON);
 
 		response = invocationBuilder.get();
 
@@ -165,8 +170,11 @@ public class SatellitesServiceIT extends AbstractServiceTest {
 		Response response = null;
 		getSatelliteIdXML();
 
-		Invocation.Builder invocationBuilder = serviceTarget.path("filter").path("id").path(String.valueOf(satelliteId))
-				.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML);
+		Invocation.Builder invocationBuilder = serviceTarget
+
+				// .path("filter").path("id")
+
+				.path(String.valueOf(satelliteId)).request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML);
 
 		response = invocationBuilder.get();
 

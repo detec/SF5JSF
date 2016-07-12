@@ -29,7 +29,7 @@ public class SatellitesService implements Serializable {
 
 	// http://localhost:8080/SF5JSF-test/json/satellites/all/
 	@GET
-	@Path("all/")
+	// @Path("all/")
 	@Pretty
 	public Response getAllSatellites() {
 		Response returnResponse = null;
@@ -78,7 +78,7 @@ public class SatellitesService implements Serializable {
 	}
 
 	@GET
-	@Path("filter/id/{satelliteId}")
+	@Path("{satelliteId}")
 	@Pretty
 	public Response getSatelliteById(@PathParam("satelliteId") long satId) {
 
