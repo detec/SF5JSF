@@ -72,8 +72,11 @@ public class BUserServiceIT extends AbstractServiceTest {
 		// here we create user
 		Users testUser = new Users("Test user", testUsername);
 
-		invocationBuilder = serviceTarget.path("create").request(MediaType.APPLICATION_JSON)
-				.accept(MediaType.APPLICATION_JSON);
+		invocationBuilder = serviceTarget
+
+				// .path("create")
+
+				.request(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON);
 		Response responsePost = invocationBuilder.post(Entity.entity(testUser, MediaType.APPLICATION_JSON));
 		assertEquals(Status.CREATED.getStatusCode(), responsePost.getStatus());
 
@@ -95,8 +98,11 @@ public class BUserServiceIT extends AbstractServiceTest {
 		// here we create user
 		Users testUser = new Users("Fake user", "Fake");
 
-		invocationBuilder = serviceTarget.path("create").request(MediaType.APPLICATION_XML)
-				.accept(MediaType.APPLICATION_XML);
+		invocationBuilder = serviceTarget
+
+				// .path("create")
+
+				.request(MediaType.APPLICATION_XML).accept(MediaType.APPLICATION_XML);
 		Response responsePost = invocationBuilder.post(Entity.entity(testUser, MediaType.APPLICATION_XML));
 		assertEquals(Status.CREATED.getStatusCode(), responsePost.getStatus());
 

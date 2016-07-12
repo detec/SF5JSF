@@ -30,7 +30,7 @@ import org.openbox.sf5.service.ObjectsListService;
 public class UsersService implements Serializable {
 
 	@POST
-	@Path("create")
+	// @Path("create")
 	public Response createUser(Users user) {
 		Response returnResponse = null;
 
