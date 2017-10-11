@@ -63,7 +63,7 @@
     	<plugins>
 		<plugin>
         	<artifactId>maven-compiler-plugin</artifactId>
-        	<version>3.3</version>
+        	<version>3.7.0</version>
         	<configuration>
           	<source>1.8</source>
           	<target>1.8</target>
@@ -73,7 +73,7 @@
 		<!-- Filtering is done now at resources tag -->
 		<plugin>
         	<artifactId>maven-war-plugin</artifactId>
-        	<version>2.6</version>
+        	<version>3.1.0</version>
         	<configuration>
           		<warSourceDirectory>src/main/webapp</warSourceDirectory>
           		<failOnMissingWebXml>false</failOnMissingWebXml>
@@ -104,7 +104,7 @@
 		<plugin>
 			<groupId>org.apache.maven.plugins</groupId>
 			<artifactId>maven-surefire-plugin</artifactId>	
-			<version>2.18.1</version>
+			<version>2.20.1</version>
 			<configuration>
 				<includes>
 					<include>**/*Tests.java</include>
@@ -252,7 +252,7 @@
 				<plugin>
 	        		<groupId>org.codehaus.cargo</groupId>
 	            	<artifactId>cargo-maven2-plugin</artifactId>
-	            	<version>1.4.18</version>
+	            	<version>1.6.4</version>
 	             	<configuration>
 	                    <!--  <container>
 	                         <containerId>glassfish4x</containerId>
@@ -340,7 +340,7 @@
 	        	<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-surefire-plugin</artifactId>	
-					<version>2.18.1</version>
+					<version>2.20.1</version>
 					<executions>
  				       	<execution>
             			<phase>integration-test</phase>
@@ -411,7 +411,7 @@
             <plugins>
                <plugin>
                   <artifactId>maven-war-plugin</artifactId>
-                  <version>2.6</version>
+                  <version>3.1.0</version>
                   <configuration>
                      <outputDirectory>deployments</outputDirectory>
                      <warName>ROOT</warName>
@@ -447,7 +447,7 @@
 <dependency>
 	<groupId>com.h2database</groupId>
 	<artifactId>h2</artifactId>
-	<version>1.4.191</version>
+	<version>1.4.196</version>
 </dependency>
 <dependency>
 	<groupId>org.postgresql</groupId>
@@ -467,8 +467,6 @@
 	<groupId>org.hibernate</groupId>
 	<artifactId>hibernate-core</artifactId>
 	<version>${hibernate.version}</version>
-
-	
 	<scope>provided</scope>
 </dependency>
 
@@ -496,7 +494,7 @@
 <dependency>
     <groupId>org.reflections</groupId>
     <artifactId>reflections</artifactId>
-    <version>0.9.10</version>
+    <version>0.9.11</version>
 </dependency>
 
 <dependency>
